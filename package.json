@@ -10,7 +10,7 @@
   "scripts": {
     "build": "tsc"
   },
-  "author": "maxim oransky maxim.oransky@gmail.com",
+  "author": "tada.team info@tada.team",
   "license": "MIT",
   "devDependencies": {
     "typescript": "^2.7.2"
