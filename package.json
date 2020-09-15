@@ -1,6 +1,6 @@
 {
   "name": "tdproto",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "tada protocol",
   "main": "dist/tdproto.umd.js",
   "module": "dist/tdproto.es5.js",
