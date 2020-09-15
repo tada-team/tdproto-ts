@@ -6,7 +6,6 @@
   "module": "dist/tdproto.es5.js",
   "typings": "dist/types/tdproto.d.ts",
   "repository": "git://github.com/tada-team/tdproto-ts.git",
-  "publishConfig": { "registry": "https://npm.pkg.github.com/@tada-team" },
   "scripts": {
     "build": "tsc"
   },
