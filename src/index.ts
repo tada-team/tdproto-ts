@@ -2,22 +2,6 @@
 
 type MessageLinks = MessageLink[];
 /**
- * PDF preview of mediafile. Experimental.
- */
-export interface PdfVersion {
-   /**
-    * Absolute url.
-    */
-   url: string;
-
-   /**
-    * First string of text content. Omitempty.
-    */
-   textPreview: string;
-
-}
-
-/**
  * Mimimal chat representaion.
  */
 export interface ChatShort {
@@ -43,6 +27,9 @@ export interface ChatShort {
 
 }
 
+let NewChatShort = function(e: any): ChatShort { return {jid: e["jid"], chatType: e["chat_type"], displayName: e["display_name"], icons: e["icons"]} }
+
+
 /**
  * Mimimal chat representaion for deletion.
  */
@@ -58,7 +45,7 @@ export interface DeletedChat {
    chatType: ChatType;
 
    /**
-    * Chat fields (related to concrete participan) changes indicator.
+    * Chat fields (related to concrete participan) version.
     */
    gentime: number;
 
@@ -68,6 +55,9 @@ export interface DeletedChat {
    isArchive: boolean;
 
 }
+
+let NewDeletedChat = function(e: any): DeletedChat { return {jid: e["jid"], chatType: e["chat_type"], gentime: e["gentime"], isArchive: e["is_archive"]} }
+
 
 /**
  * Chat (direct, group, task) representaion.
@@ -84,12 +74,12 @@ export interface Chat {
    chatType: ChatType;
 
    /**
-    * Base fields (not related to concrete participant) changes indicator. Omitempty.
+    * Base fields (not related to concrete participant) version. Omitempty.
     */
    baseGentime: number;
 
    /**
-    * Chat fields (related to concrete participan) changes indicator.
+    * Chat fields related to concrete participan) version.
     */
    gentime: number;
 
@@ -405,6 +395,9 @@ export interface Chat {
 
 }
 
+let NewChat = function(e: any): Chat { return {jid: e["jid"], chatType: e["chat_type"], baseGentime: e["base_gentime"], gentime: e["gentime"], created: e["created"], displayName: e["display_name"], icons: e["icons"], countersEnabled: e["counters_enabled"], canCall: e["can_call"], canSendMessage: e["can_send_message"], cantSendMessageReason: e["cant_send_message_reason"], collapsed: e["collapsed"], draft: e["draft"], draftNum: e["draft_num"], hidden: e["hidden"], notificationsEnabled: e["notifications_enabled"], numImportants: e["num_importants"], numUnread: e["num_unread"], numUnreadNotices: e["num_unread_notices"], lastMessage: e["last_message"], lastReadMessageId: e["last_read_message_id"], section: e["section"], changeableFields: e["changeable_fields"], pinned: e["pinned"], pinnedSortOrdering: e["pinned_sort_ordering"], numMembers: e["num_members"], canDelete: e["can_delete"], description: e["description"], feed: e["feed"], pinnedMessage: e["pinned_message"], colorIndex: e["color_index"], numItems: e["num_items"], numCheckedItems: e["num_checked_items"], assignee: e["assignee"], num: e["num"], observers: e["observers"], owner: e["owner"], taskStatus: e["task_status"], title: e["title"], done: e["done"], doneReason: e["done_reason"], deadline: e["deadline"], deadlineExpired: e["deadline_expired"], links: e["links"], tags: e["tags"], importance: e["importance"], urgency: e["urgency"], spentTime: e["spent_time"], complexity: e["complexity"], linkedMessages: e["linked_messages"], items: e["items"], parents: e["parents"], tabs: e["tabs"], status: e["status"], members: e["members"], canAddMember: e["can_add_member"], canRemoveMember: e["can_remove_member"], canChangeMemberStatus: e["can_change_member_status"], canChangeSettings: e["can_change_settings"], defaultForAll: e["default_for_all"], readonlyForMembers: e["readonly_for_members"], autocleanupAge: e["autocleanup_age"], public: e["public"], canJoin: e["can_join"], canDeleteAnyMessage: e["can_delete_any_message"], canSetImportantAnyMessage: e["can_set_important_any_message"]} }
+
+
 /**
  * Link to sub/sup task.
  */
@@ -440,6 +433,9 @@ export interface Subtask {
    public: boolean;
 
 }
+
+let NewSubtask = function(e: any): Subtask { return {jid: e["jid"], assignee: e["assignee"], title: e["title"], num: e["num"], displayName: e["display_name"], public: e["public"]} }
+
 
 /**
  * Task checklist item.
@@ -477,6 +473,9 @@ export interface TaskItem {
 
 }
 
+let NewTaskItem = function(e: any): TaskItem { return {uid: e["uid"], sortOrdering: e["sort_ordering"], text: e["text"], checked: e["checked"], canToggle: e["can_toggle"], subtask: e["subtask"]} }
+
+
 /**
  * Group chat membership status.
  */
@@ -498,130 +497,8 @@ export interface GroupMembership {
 
 }
 
-/**
- * Audiocall information.
- */
-export interface CallEvent {
-   /**
-    * Call start, iso date.
-    */
-   start: string | null;
+let NewGroupMembership = function(e: any): GroupMembership { return {jid: e["jid"], status: e["status"], canRemove: e["can_remove"]} }
 
-   /**
-    * Call finish, iso date.
-    */
-   finish: string | null;
-
-   /**
-    * Call record enabled.
-    */
-   audiorecord: boolean;
-
-   /**
-    * Call members.
-    */
-   onliners: CallOnliner[];
-
-}
-
-/**
- * Call participant.
- */
-export interface CallOnliner {
-   /**
-    * Contact id.
-    */
-   jid: JID;
-
-   /**
-    * Contact name.
-    */
-   displayName: string;
-
-   /**
-    * Contact icon.
-    */
-   icon: string;
-
-   /**
-    * Microphone muted. Computed from devices muted states.
-    */
-   muted: boolean;
-
-   /**
-    * Member devices, strictly one for now.
-    */
-   devices: CallDevice[];
-
-}
-
-/**
- * Call participant device.
- */
-export interface CallDevice {
-   /**
-    * Device muted.
-    */
-   muted: boolean;
-
-   /**
-    * Device description.
-    */
-   useragent: string;
-
-}
-
-/**
- * Small or large icon.
- */
-export interface SingleIcon {
-   /**
-    * absolute url to icon.
-    */
-   url: string;
-
-   /**
-    * Icon width, in pixels.
-    */
-   width: number;
-
-   /**
-    * Icon height, in pixels.
-    */
-   height: number;
-
-}
-
-/**
- * Icon data. Contains sm+lg (for uploaded image) OR stub+letters+color (for icon generated from display name).
- */
-export interface IconData {
-   /**
-    * Small icon. Omitempty.
-    */
-   sm: SingleIcon | null;
-
-   /**
-    * Large image. Omitempty.
-    */
-   lg: SingleIcon | null;
-
-   /**
-    * Generated image with 1-2 letters. Omitempty.
-    */
-   stub: string;
-
-   /**
-    * Letters from stub icon. Omitempty.
-    */
-   letters: string;
-
-   /**
-    * Stub icon background color. Omitempty.
-    */
-   color: string;
-
-}
 
 /**
  * Chat message content.
@@ -759,47 +636,50 @@ export interface MessageContent {
 
 }
 
+let NewMessageContent = function(e: any): MessageContent { return {text: e["text"], type: e["type"], subtype: e["subtype"], upload: e["upload"], mediaUrl: e["mediaURL"], size: e["size"], duration: e["duration"], processing: e["processing"], previewHeight: e["previewHeight"], previewWidth: e["previewWidth"], previewUrl: e["previewURL"], preview2xUrl: e["preview2xURL"], name: e["name"], animated: e["animated"], title: e["title"], old: e["old"], new: e["new"], actor: e["actor"], comment: e["comment"], givenName: e["given_name"], familyName: e["family_name"], patronymic: e["patronymic"], phones: e["phones"], emails: e["emails"], stickerpack: e["stickerpack"], pdfVersion: e["pdf_version"]} }
+
+
 /**
  * Chat message.
  */
 export interface Message {
    /**
-    * message content struct.
+    * Message content struct.
     */
    content: MessageContent;
 
    /**
-    * simple plaintext message representation. Omitempty.
+    * Simple plaintext message representation. Omitempty.
     */
    pushText: string;
 
    /**
-    * sender jid.
+    * Sender contact id.
     */
    from: JID;
 
    /**
-    * recipient jid.
+    * Recipient jid.
     */
    to: JID;
 
    /**
-    * message uid.
+    * Message uid.
     */
    messageId: string;
 
    /**
-    * message creation datetime (set by server side).
+    * Message creation datetime (set by server side).
     */
    created: string;
 
    /**
-    * object version.
+    * Object version.
     */
    gentime: number;
 
    /**
-    * chat type.
+    * Chat type.
     */
    chatType: ChatType;
 
@@ -900,6 +780,9 @@ export interface Message {
 
 }
 
+let NewMessage = function(e: any): Message { return {content: e["content"], pushText: e["push_text"], from: e["from"], to: e["to"], messageId: e["message_id"], created: e["created"], gentime: e["gentime"], chatType: e["chat_type"], chat: e["chat"], links: e["links"], important: e["important"], edited: e["edited"], received: e["received"], numReceived: e["num_received"], nopreview: e["nopreview"], hasPreviews: e["has_previews"], prev: e["prev"], isFirst: e["is_first"], isLast: e["is_last"], reactions: e["reactions"], replyTo: e["reply_to"], linkedMessages: e["linked_messages"], notice: e["notice"], silently: e["silently"], editableUntil: e["editable_until"], num: e["num"], debug: e["_debug"]} }
+
+
 /**
  * Website title and description.
  */
@@ -915,6 +798,9 @@ export interface MessageLinkPreview {
    description: string;
 
 }
+
+let NewMessageLinkPreview = function(e: any): MessageLinkPreview { return {title: e["title"], description: e["description"]} }
+
 
 /**
  * Checked message links. In short: "Click here: {link.Pattern}" => "Click here: <a href='{link.Url}'>{link.Text}</a>".
@@ -957,6 +843,9 @@ export interface MessageLink {
 
 }
 
+let NewMessageLink = function(e: any): MessageLink { return {pattern: e["pattern"], url: e["url"], text: e["text"], preview: e["preview"], uploads: e["uploads"], noPreview: e["nopreview"], youtubeId: e["youtube_id"]} }
+
+
 /**
  * Message emoji reaction.
  */
@@ -978,6 +867,9 @@ export interface MessageReaction {
 
 }
 
+let NewMessageReaction = function(e: any): MessageReaction { return {name: e["name"], counter: e["counter"], details: e["details"]} }
+
+
 /**
  * Message reaction detail.
  */
@@ -998,6 +890,110 @@ export interface MessageReactionDetail {
    name: string;
 
 }
+
+let NewMessageReactionDetail = function(e: any): MessageReactionDetail { return {created: e["created"], sender: e["sender"], name: e["name"]} }
+
+
+/**
+ * PDF preview of mediafile. Experimental.
+ */
+export interface PdfVersion {
+   /**
+    * Absolute url.
+    */
+   url: string;
+
+   /**
+    * First string of text content. Omitempty.
+    */
+   textPreview: string;
+
+}
+
+let NewPdfVersion = function(e: any): PdfVersion { return {url: e["url"], textPreview: e["text_preview"]} }
+
+
+/**
+ * Audiocall information.
+ */
+export interface CallEvent {
+   /**
+    * Call start, iso date.
+    */
+   start: string | null;
+
+   /**
+    * Call finish, iso date.
+    */
+   finish: string | null;
+
+   /**
+    * Call record enabled.
+    */
+   audiorecord: boolean;
+
+   /**
+    * Call members.
+    */
+   onliners: CallOnliner[];
+
+}
+
+let NewCallEvent = function(e: any): CallEvent { return {start: e["start"], finish: e["finish"], audiorecord: e["audiorecord"], onliners: e["onliners"]} }
+
+
+/**
+ * Call participant.
+ */
+export interface CallOnliner {
+   /**
+    * Contact id.
+    */
+   jid: JID;
+
+   /**
+    * Contact name.
+    */
+   displayName: string;
+
+   /**
+    * Contact icon.
+    */
+   icon: string;
+
+   /**
+    * Microphone muted. Computed from devices muted states.
+    */
+   muted: boolean;
+
+   /**
+    * Member devices, strictly one for now.
+    */
+   devices: CallDevice[];
+
+}
+
+let NewCallOnliner = function(e: any): CallOnliner { return {jid: e["jid"], displayName: e["display_name"], icon: e["icon"], muted: e["muted"], devices: e["devices"]} }
+
+
+/**
+ * Call participant device.
+ */
+export interface CallDevice {
+   /**
+    * Device muted.
+    */
+   muted: boolean;
+
+   /**
+    * Device description.
+    */
+   useragent: string;
+
+}
+
+let NewCallDevice = function(e: any): CallDevice { return {muted: e["muted"], useragent: e["useragent"]} }
+
 
 /**
  * Uploaded media.
@@ -1055,6 +1051,9 @@ export interface Upload {
 
 }
 
+let NewUpload = function(e: any): Upload { return {uid: e["uid"], size: e["size"], duration: e["duration"], name: e["name"], url: e["url"], preview: e["preview"], contentType: e["content_type"], animated: e["animated"], processing: e["processing"], pdfVersion: e["pdf_version"]} }
+
+
 /**
  * Upload preview.
  */
@@ -1080,6 +1079,9 @@ export interface UploadPreview {
    height: number;
 
 }
+
+let NewUploadPreview = function(e: any): UploadPreview { return {url: e["url"], url2x: e["url_2x"], width: e["width"], height: e["height"]} }
+
 
 /**
  * {hostname}/features.js / {hostname}/features.json structure.
@@ -1352,6 +1354,9 @@ export interface Features {
 
 }
 
+let NewFeatures = function(e: any): Features { return {host: e["host"], build: e["build"], desktopVersion: e["desktop_version"], frontVersion: e["front_version"], appTitle: e["app_title"], userver: e["userver"], iOSApp: e["ios_app"], androidApp: e["android_app"], theme: e["theme"], minAppVersion: e["min_app_version"], freeRegistration: e["free_registration"], maxUploadMb: e["max_upload_mb"], maxLinkedMessages: e["max_linked_messages"], maxUsernamePartLength: e["max_username_part_length"], maxGroupTitleLength: e["max_group_title_length"], maxRoleLength: e["max_role_length"], maxMoodLength: e["max_mood_length"], maxMessageLength: e["max_message_length"], maxSectionLength: e["max_section_length"], maxTagLength: e["max_tag_length"], maxTaskTitleLength: e["max_task_title_length"], maxTeams: e["max_teams"], afkAge: e["afk_age"], authByPassword: e["auth_by_password"], authByQrCode: e["auth_by_qr_code"], authBySms: e["auth_by_sms"], iCEServers: e["ice_servers"], customServer: e["custom_server"], installationType: e["installation_type"], isTesting: e["is_testing"], metrika: e["metrika"], minSearchLength: e["min_search_length"], resendTimeout: e["resend_timeout"], sentryDsnJS: e["sentry_dsn_js"], serverDrafts: e["server_drafts"], firebaseAppId: e["firebase_app_id"], firebaseSenderId: e["firebase_sender_id"], calls: e["calls"], mobileCalls: e["mobile_calls"], callsRecord: e["calls_record"], onlyOneDevicePerCall: e["only_one_device_per_call"], maxParticipantsPerCall: e["max_participants_per_call"], safariPushId: e["safari_push_id"], terms: e["terms"], singleGroupTeams: e["single_group_teams"], wikiPages: e["wiki_pages"], allowAdminMute: e["allow_admin_mute"], taskChecklist: e["task_checklist"], readonlyGroups: e["readonly_groups"], taskDashboard: e["task_dashboard"], taskMessages: e["task_messages"], taskPublic: e["task_public"], taskTags: e["task_tags"]} }
+
+
 /**
  * Interactive Connectivity Establishment Server for WEB Rtc connection.
  */
@@ -1363,8 +1368,72 @@ export interface ICEServer {
 
 }
 
+let NewICEServer = function(e: any): ICEServer { return {urls: e["urls"]} }
+
+
 /**
  * Exprtimental translation fields for "team" entity renaming.
  */
 export interface Terms {
 }
+
+let NewTerms = function(e: any): Terms { return {} }
+
+
+/**
+ * Small or large icon.
+ */
+export interface SingleIcon {
+   /**
+    * absolute url to icon.
+    */
+   url: string;
+
+   /**
+    * Icon width, in pixels.
+    */
+   width: number;
+
+   /**
+    * Icon height, in pixels.
+    */
+   height: number;
+
+}
+
+let NewSingleIcon = function(e: any): SingleIcon { return {url: e["url"], width: e["width"], height: e["height"]} }
+
+
+/**
+ * Icon data. Contains sm+lg (for uploaded image) OR stub+letters+color (for icon generated from display name).
+ */
+export interface IconData {
+   /**
+    * Small icon. Omitempty.
+    */
+   sm: SingleIcon | null;
+
+   /**
+    * Large image. Omitempty.
+    */
+   lg: SingleIcon | null;
+
+   /**
+    * Generated image with 1-2 letters. Omitempty.
+    */
+   stub: string;
+
+   /**
+    * Letters from stub icon. Omitempty.
+    */
+   letters: string;
+
+   /**
+    * Stub icon background color. Omitempty.
+    */
+   color: string;
+
+}
+
+let NewIconData = function(e: any): IconData { return {sm: e["sm"], lg: e["lg"], stub: e["stub"], letters: e["letters"], color: e["color"]} }
+
