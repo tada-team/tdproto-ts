@@ -2,60 +2,327 @@
 
 
 /**
- * Website title and description.
+ * Small or large icon.
  */
-export interface MessageLinkPreview {
+export interface SingleIcon {
    /**
-    * Website title or og:title content.
+    * absolute url to icon.
     */
-   title: string;
+   url: string;
 
    /**
-    * Website description. Omitempty.
+    * Icon width, in pixels.
     */
-   description: string;
+   width: number;
+
+   /**
+    * Icon height, in pixels.
+    */
+   height: number;
 
 }
 
 
 /**
- * Checked message links. In short: "Click here: {link.Pattern}" => "Click here: <a href='{link.Url}'>{link.Text}</a>".
+ * Icon data. Contains sm+lg (for uploaded image) OR stub+letters+color (for icon generated from display name).
  */
-export interface MessageLink {
+export interface IconData {
    /**
-    * Text fragment that should be replaced by link.
+    * Small icon. Nullable. Omitempty.
     */
-   pattern: string;
+   sm: SingleIcon;
 
    /**
-    * Internal (tadateam://) or external link.
+    * Large image. Nullable. Omitempty.
     */
-   url: string;
+   lg: SingleIcon;
 
    /**
-    * Text replacement.
+    * Generated image with 1-2 letters. Omitempty.
     */
-   text: string;
+   stub: string;
 
    /**
-    * Optional preview info, for websites. Nullable. Omitempty.
+    * Letters from stub icon. Omitempty.
     */
-   preview: MessageLinkPreview;
+   letters: string;
 
    /**
-    * Optional upload info. Omitempty.
+    * Stub icon background color. Omitempty.
     */
-   uploads: Upload[];
+   color: string;
+
+}
+
+
+/**
+ * {hostname}/features.js / {hostname}/features.json structure.
+ */
+export interface Features {
+   /**
+    * Current host.
+    */
+   host: string;
 
    /**
-    * Website previews disabled. Omitempty.
+    * Build/revision of server side.
     */
-   noPreview: bool;
+   build: string;
 
    /**
-    * Optional youtube movie id. Omitempty.
+    * Desktop application version.
     */
-   youtubeId: string;
+   desktopVersion: string;
+
+   /**
+    * Webclient version.
+    */
+   frontVersion: string;
+
+   /**
+    * Application title.
+    */
+   appTitle: string;
+
+   /**
+    * Static files server address.
+    */
+   userver: string;
+
+   /**
+    * Link to AppStore.
+    */
+   iOSApp: string;
+
+   /**
+    * Link to Google Play.
+    */
+   androidApp: string;
+
+   /**
+    * Default UI theme.
+    */
+   theme: string;
+
+   /**
+    * Minimal application version required for this server. Used for breaking changes.
+    */
+   minAppVersion: string;
+
+   /**
+    * Free registration allowed.
+    */
+   freeRegistration: bool;
+
+   /**
+    * Maximum size of user's upload.
+    */
+   maxUploadMb: number;
+
+   /**
+    * Maximum number of forwarded messages.
+    */
+   maxLinkedMessages: number;
+
+   /**
+    * Maximum chars for: family_name, given_name, patronymic if any.
+    */
+   maxUsernamePartLength: number;
+
+   /**
+    * Maximum chars for group chat name.
+    */
+   maxGroupTitleLength: number;
+
+   /**
+    * Maximum chars for role in team.
+    */
+   maxRoleLength: number;
+
+   /**
+    * Maximum chars for mood in team.
+    */
+   maxMoodLength: number;
+
+   /**
+    * Maximum chars for text message.
+    */
+   maxMessageLength: number;
+
+   /**
+    * Maximum length for project and contact's sections names.
+    */
+   maxSectionLength: number;
+
+   /**
+    * Maximum length for tags.
+    */
+   maxTagLength: number;
+
+   /**
+    * Maximum length for task title.
+    */
+   maxTaskTitleLength: number;
+
+   /**
+    * Maximum teams for one account.
+    */
+   maxTeams: number;
+
+   /**
+    * Max inactivity seconds.
+    */
+   afkAge: number;
+
+   /**
+    * Password authentication enabled. Omitempty.
+    */
+   authByPassword: bool;
+
+   /**
+    * QR-code / link authentication enabled. Omitempty.
+    */
+   authByQrCode: bool;
+
+   /**
+    * SMS authentication enabled. Omitempty.
+    */
+   authBySms: bool;
+
+   /**
+    * ICE servers for WebRTC.
+    */
+   iCEServers: ICEServer[];
+
+   /**
+    * True for onpremise installation.
+    */
+   customServer: bool;
+
+   /**
+    * Name of instalation.
+    */
+   installationType: string;
+
+   /**
+    * Testing installation.
+    */
+   isTesting: bool;
+
+   /**
+    * Yandex metrika counter id.
+    */
+   metrika: string;
+
+   /**
+    * Minimal chars number for starting global search.
+    */
+   minSearchLength: number;
+
+   /**
+    * Resend message in n seconds if no confirmation from server given.
+    */
+   resendTimeout: number;
+
+   /**
+    * Frontent sentry.io settings.
+    */
+   sentryDsnJS: string;
+
+   /**
+    * Message drafts saved on server.
+    */
+   serverDrafts: bool;
+
+   /**
+    * Firebase application id for web-push notifacations.
+    */
+   firebaseAppId: string;
+
+   /**
+    * Firebase sender id for web-push notifacations.
+    */
+   firebaseSenderId: string;
+
+   /**
+    * Calls functions enabled.
+    */
+   calls: bool;
+
+   /**
+    * Calls functions enabled for mobile applications.
+    */
+   mobileCalls: bool;
+
+   /**
+    * Calls record enabled.
+    */
+   callsRecord: bool;
+
+   /**
+    * Disallow call from multiply devices. Experimental. Omitempty.
+    */
+   onlyOneDevicePerCall: bool;
+
+   /**
+    * Maximum number of participants per call. Omitempty.
+    */
+   maxParticipantsPerCall: number;
+
+   /**
+    * Safari push id for web-push notifacations.
+    */
+   safariPushId: string;
+
+   /**
+    * Team entity naming. Experimental.
+    */
+   terms: Terms;
+
+   /**
+    * Cross team communication. Experimental.
+    */
+   singleGroupTeams: bool;
+
+   /**
+    * Wiki pages in chats. Experimental.
+    */
+   wikiPages: bool;
+
+   /**
+    * Wiki pages in chats. Experimental. Omitempty.
+    */
+   allowAdminMute: bool;
+
+   /**
+    * Deprecated.
+    */
+   taskChecklist: bool;
+
+   /**
+    * Deprecated.
+    */
+   readonlyGroups: bool;
+
+   /**
+    * Deprecated.
+    */
+   taskDashboard: bool;
+
+   /**
+    * Deprecated.
+    */
+   taskMessages: bool;
+
+   /**
+    * Deprecated.
+    */
+   taskPublic: bool;
+
+   /**
+    * Deprecated.
+    */
+   taskTags: bool;
 
 }
 
@@ -548,327 +815,60 @@ export interface GroupMembership {
 
 
 /**
- * Small or large icon.
+ * Website title and description.
  */
-export interface SingleIcon {
+export interface MessageLinkPreview {
    /**
-    * absolute url to icon.
+    * Website title or og:title content.
+    */
+   title: string;
+
+   /**
+    * Website description. Omitempty.
+    */
+   description: string;
+
+}
+
+
+/**
+ * Checked message links. In short: "Click here: {link.Pattern}" => "Click here: <a href='{link.Url}'>{link.Text}</a>".
+ */
+export interface MessageLink {
+   /**
+    * Text fragment that should be replaced by link.
+    */
+   pattern: string;
+
+   /**
+    * Internal (tadateam://) or external link.
     */
    url: string;
 
    /**
-    * Icon width, in pixels.
+    * Text replacement.
     */
-   width: number;
+   text: string;
 
    /**
-    * Icon height, in pixels.
+    * Optional preview info, for websites. Nullable. Omitempty.
     */
-   height: number;
-
-}
-
-
-/**
- * Icon data. Contains sm+lg (for uploaded image) OR stub+letters+color (for icon generated from display name).
- */
-export interface IconData {
-   /**
-    * Small icon. Nullable. Omitempty.
-    */
-   sm: SingleIcon;
+   preview: MessageLinkPreview;
 
    /**
-    * Large image. Nullable. Omitempty.
+    * Optional upload info. Omitempty.
     */
-   lg: SingleIcon;
+   uploads: Upload[];
 
    /**
-    * Generated image with 1-2 letters. Omitempty.
+    * Website previews disabled. Omitempty.
     */
-   stub: string;
+   noPreview: bool;
 
    /**
-    * Letters from stub icon. Omitempty.
+    * Optional youtube movie id. Omitempty.
     */
-   letters: string;
-
-   /**
-    * Stub icon background color. Omitempty.
-    */
-   color: string;
-
-}
-
-
-/**
- * {hostname}/features.js / {hostname}/features.json structure.
- */
-export interface Features {
-   /**
-    * Current host.
-    */
-   host: string;
-
-   /**
-    * Build/revision of server side.
-    */
-   build: string;
-
-   /**
-    * Desktop application version.
-    */
-   desktopVersion: string;
-
-   /**
-    * Webclient version.
-    */
-   frontVersion: string;
-
-   /**
-    * Application title.
-    */
-   appTitle: string;
-
-   /**
-    * Static files server address.
-    */
-   userver: string;
-
-   /**
-    * Link to AppStore.
-    */
-   iOSApp: string;
-
-   /**
-    * Link to Google Play.
-    */
-   androidApp: string;
-
-   /**
-    * Default UI theme.
-    */
-   theme: string;
-
-   /**
-    * Minimal application version required for this server. Used for breaking changes.
-    */
-   minAppVersion: string;
-
-   /**
-    * Free registration allowed.
-    */
-   freeRegistration: bool;
-
-   /**
-    * Maximum size of user's upload.
-    */
-   maxUploadMb: number;
-
-   /**
-    * Maximum number of forwarded messages.
-    */
-   maxLinkedMessages: number;
-
-   /**
-    * Maximum chars for: family_name, given_name, patronymic if any.
-    */
-   maxUsernamePartLength: number;
-
-   /**
-    * Maximum chars for group chat name.
-    */
-   maxGroupTitleLength: number;
-
-   /**
-    * Maximum chars for role in team.
-    */
-   maxRoleLength: number;
-
-   /**
-    * Maximum chars for mood in team.
-    */
-   maxMoodLength: number;
-
-   /**
-    * Maximum chars for text message.
-    */
-   maxMessageLength: number;
-
-   /**
-    * Maximum length for project and contact's sections names.
-    */
-   maxSectionLength: number;
-
-   /**
-    * Maximum length for tags.
-    */
-   maxTagLength: number;
-
-   /**
-    * Maximum length for task title.
-    */
-   maxTaskTitleLength: number;
-
-   /**
-    * Maximum teams for one account.
-    */
-   maxTeams: number;
-
-   /**
-    * Max inactivity seconds.
-    */
-   afkAge: number;
-
-   /**
-    * Password authentication enabled. Omitempty.
-    */
-   authByPassword: bool;
-
-   /**
-    * QR-code / link authentication enabled. Omitempty.
-    */
-   authByQrCode: bool;
-
-   /**
-    * SMS authentication enabled. Omitempty.
-    */
-   authBySms: bool;
-
-   /**
-    * ICE servers for WebRTC.
-    */
-   iCEServers: ICEServer[];
-
-   /**
-    * True for onpremise installation.
-    */
-   customServer: bool;
-
-   /**
-    * Name of instalation.
-    */
-   installationType: string;
-
-   /**
-    * Testing installation.
-    */
-   isTesting: bool;
-
-   /**
-    * Yandex metrika counter id.
-    */
-   metrika: string;
-
-   /**
-    * Minimal chars number for starting global search.
-    */
-   minSearchLength: number;
-
-   /**
-    * Resend message in n seconds if no confirmation from server given.
-    */
-   resendTimeout: number;
-
-   /**
-    * Frontent sentry.io settings.
-    */
-   sentryDsnJS: string;
-
-   /**
-    * Message drafts saved on server.
-    */
-   serverDrafts: bool;
-
-   /**
-    * Firebase application id for web-push notifacations.
-    */
-   firebaseAppId: string;
-
-   /**
-    * Firebase sender id for web-push notifacations.
-    */
-   firebaseSenderId: string;
-
-   /**
-    * Calls functions enabled.
-    */
-   calls: bool;
-
-   /**
-    * Calls functions enabled for mobile applications.
-    */
-   mobileCalls: bool;
-
-   /**
-    * Calls record enabled.
-    */
-   callsRecord: bool;
-
-   /**
-    * Disallow call from multiply devices. Experimental. Omitempty.
-    */
-   onlyOneDevicePerCall: bool;
-
-   /**
-    * Maximum number of participants per call. Omitempty.
-    */
-   maxParticipantsPerCall: number;
-
-   /**
-    * Safari push id for web-push notifacations.
-    */
-   safariPushId: string;
-
-   /**
-    * Team entity naming. Experimental.
-    */
-   terms: Terms;
-
-   /**
-    * Cross team communication. Experimental.
-    */
-   singleGroupTeams: bool;
-
-   /**
-    * Wiki pages in chats. Experimental.
-    */
-   wikiPages: bool;
-
-   /**
-    * Wiki pages in chats. Experimental. Omitempty.
-    */
-   allowAdminMute: bool;
-
-   /**
-    * Deprecated.
-    */
-   taskChecklist: bool;
-
-   /**
-    * Deprecated.
-    */
-   readonlyGroups: bool;
-
-   /**
-    * Deprecated.
-    */
-   taskDashboard: bool;
-
-   /**
-    * Deprecated.
-    */
-   taskMessages: bool;
-
-   /**
-    * Deprecated.
-    */
-   taskPublic: bool;
-
-   /**
-    * Deprecated.
-    */
-   taskTags: bool;
+   youtubeId: string;
 
 }
 
@@ -945,5 +945,89 @@ export interface CallDevice {
     * Device description.
     */
    useragent: string;
+
+}
+
+
+/**
+ * Uploaded media.
+ */
+export interface Upload {
+   /**
+    * Upload id.
+    */
+   uid: string;
+
+   /**
+    * Upload size in bytes.
+    */
+   size: number;
+
+   /**
+    * Mediafile duration (for audio/video only). Omitempty.
+    */
+   duration: number;
+
+   /**
+    * Filename.
+    */
+   name: string;
+
+   /**
+    * Absolute url.
+    */
+   url: string;
+
+   /**
+    * Preview details. Nullable. Omitempty.
+    */
+   preview: UploadPreview;
+
+   /**
+    * Content type.
+    */
+   contentType: string;
+
+   /**
+    * Is animated (images only). Omitempty.
+    */
+   animated: bool;
+
+   /**
+    * File still processing (video only). Omitempty.
+    */
+   processing: bool;
+
+   /**
+    * PDF version of file. Experimental. Nullable. Omitempty.
+    */
+   pdfVersion: PdfVersion;
+
+}
+
+
+/**
+ * Upload preview.
+ */
+export interface UploadPreview {
+   /**
+    * Absolute url to image.
+    */
+   url: string;
+
+   /**
+    * Absolute url to high resolution image (retina).
+    */
+   url2x: string;
+
+   /**
+    * Width in pixels.
+    */
+   width: number;
+
+   /**
+    * Height in pixels.
+    */
+   height: number;
 
 }
