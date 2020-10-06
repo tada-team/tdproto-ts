@@ -1,5 +1,5 @@
 /**
- * Links to an icon with size parameters.
+ * Link to an icon with size parameters.
  */
 export interface Icon {
     /**
