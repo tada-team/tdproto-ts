@@ -2,495 +2,6 @@
 
 type JID = string;
 
-
-
-/**
- * Mimimal chat representaion.
- */
-export interface ChatShort {
-   /**
-    * Group/Task/Contact id.
-    */
-   jid: JID;
-
-   /**
-    * Chat type.
-    */
-   chatType: ChatType;
-
-   /**
-    * Title.
-    */
-   displayName: string;
-
-   /**
-    * Icon data. Nullable.
-    */
-   icons: IconData;
-
-}
-
-
-/**
- * Mimimal chat representaion for deletion.
- */
-export interface DeletedChat {
-   /**
-    * Group/Task/Contact id.
-    */
-   jid: JID;
-
-   /**
-    * Chat type.
-    */
-   chatType: ChatType;
-
-   /**
-    * Chat fields (related to concrete participan) changes indicator.
-    */
-   gentime: int64;
-
-   /**
-    * Archive flag. Always true for this structure.
-    */
-   isArchive: bool;
-
-}
-
-
-/**
- * Chat (direct, group, task) representaion.
- */
-export interface Chat {
-   /**
-    * Group/Task/Contact id.
-    */
-   jid: JID;
-
-   /**
-    * Chat type.
-    */
-   chatType: ChatType;
-
-   /**
-    * Base fields (not related to concrete participant) changes indicator. Omitempty.
-    */
-   baseGentime: int64;
-
-   /**
-    * Chat fields (related to concrete participan) changes indicator.
-    */
-   gentime: int64;
-
-   /**
-    * Creation date, iso datetime.
-    */
-   created: string;
-
-   /**
-    * Title.
-    */
-   displayName: string;
-
-   /**
-    * Icons info. Nullable.
-    */
-   icons: IconData;
-
-   /**
-    * Include unread messages to counters. Omitempty.
-    */
-   countersEnabled: bool;
-
-   /**
-    * Can I call to this chat. Omitempty.
-    */
-   canCall: bool;
-
-   /**
-    * Can I send message to this chat. Omitempty.
-    */
-   canSendMessage: bool;
-
-   /**
-    * Why I can't send message to this chat (if can't). Omitempty.
-    */
-   cantSendMessageReason: string;
-
-   /**
-    * Description collapsed. Used for tasks only. Omitempty.
-    */
-   collapsed: bool;
-
-   /**
-    * Last message draft, if any. Omitempty.
-    */
-   draft: string;
-
-   /**
-    * Last message draft version , if any. Omitempty.
-    */
-   draftNum: int64;
-
-   /**
-    * Hidden chat. Omitempty.
-    */
-   hidden: bool;
-
-   /**
-    * Push notifications enabled. Omitempty.
-    */
-   notificationsEnabled: bool;
-
-   /**
-    * Number of importants messages. Omitempty.
-    */
-   numImportants: number;
-
-   /**
-    * Unreads conuter. Omitempty.
-    */
-   numUnread: number;
-
-   /**
-    * Mentions (@) counter. Omitempty.
-    */
-   numUnreadNotices: number;
-
-   /**
-    * Last message object. Nullable. Omitempty.
-    */
-   lastMessage: Message;
-
-   /**
-    * Last read message id, if any. Omitempty.
-    */
-   lastReadMessageId: string;
-
-   /**
-    * Project / section id, if any. Omitempty.
-    */
-   section: string;
-
-   /**
-    * List of editable fields. Omitempty.
-    */
-   changeableFields: string[];
-
-   /**
-    * Is chat pinned on top. Omitempty.
-    */
-   pinned: bool;
-
-   /**
-    * Sort oreding for pinned chat. Omitempty.
-    */
-   pinnedSortOrdering: number;
-
-   /**
-    * Non-archive participants number. Nullable. Omitempty.
-    */
-   numMembers: number;
-
-   /**
-    * Can I delete this chat. Omitempty.
-    */
-   canDelete: bool;
-
-   /**
-    * Group or task description. Omitempty.
-    */
-   description: string;
-
-   /**
-    * Present in feed (main screen). Omitempty.
-    */
-   feed: bool;
-
-   /**
-    * Pinned message for this chat. Nullable. Omitempty.
-    */
-   pinnedMessage: Message;
-
-   /**
-    * Custom color index from table of colors. Tasks only. Nullable. Omitempty.
-    */
-   colorIndex: uint16;
-
-   /**
-    * Items in checklist. Tasks only. Nullable. Omitempty.
-    */
-   numItems: number;
-
-   /**
-    * Checked items in checklist. Tasks only. Nullable. Omitempty.
-    */
-   numCheckedItems: number;
-
-   /**
-    * Assignee contact id. Tasks only. Nullable. Omitempty.
-    */
-   assignee: JID;
-
-   /**
-    * Task number in this team. Omitempty.
-    */
-   num: number;
-
-   /**
-    * Task observers id's. Nullable. Omitempty.
-    */
-   observers: JID[];
-
-   /**
-    * Task creator. Nullable. Omitempty.
-    */
-   owner: JID;
-
-   /**
-    * Task status. May be custom. Omitempty.
-    */
-   taskStatus: string;
-
-   /**
-    * Task title. Generated from number and description. Omitempty.
-    */
-   title: string;
-
-   /**
-    * Task done date in iso format, if any. Omitempty.
-    */
-   done: string;
-
-   /**
-    * Task done reason, if any. Omitempty.
-    */
-   doneReason: string;
-
-   /**
-    * Task deadline in iso format, if any. Omitempty.
-    */
-   deadline: string;
-
-   /**
-    * Is task deadline expired. Omitempty.
-    */
-   deadlineExpired: bool;
-
-   /**
-    * Links in description. Omitempty.
-    */
-   links: MessageLinks;
-
-   /**
-    * Task tags list, if any. Omitempty.
-    */
-   tags: string[];
-
-   /**
-    * Task importance, if available in team. Nullable. Omitempty.
-    */
-   importance: number;
-
-   /**
-    * Task urgency, if available in team. Nullable. Omitempty.
-    */
-   urgency: number;
-
-   /**
-    * Task spent time, number. Nullable. Omitempty.
-    */
-   spentTime: number;
-
-   /**
-    * Task complexity, number. Nullable. Omitempty.
-    */
-   complexity: number;
-
-   /**
-    * Used for "Create task from messages...". Omitempty.
-    */
-   linkedMessages: interface{}[];
-
-   /**
-    * Checklist items. Task only. Omitempty.
-    */
-   items: TaskItem[];
-
-   /**
-    * Parent tasks. Omitempty.
-    */
-   parents: Subtask[];
-
-   /**
-    * Tab names. Nullable. Omitempty.
-    */
-   tabs: TaskTabKey[];
-
-   /**
-    * My status in group chat. Omitempty.
-    */
-   status: GroupStatus;
-
-   /**
-    * Group chat members. Omitempty.
-    */
-   members: GroupMembership[];
-
-   /**
-    * Can I add member to this group chat. Omitempty.
-    */
-   canAddMember: bool;
-
-   /**
-    * Can I remove member from this group chat. Omitempty.
-    */
-   canRemoveMember: bool;
-
-   /**
-    * Can I change member status in this group chat. Omitempty.
-    */
-   canChangeMemberStatus: bool;
-
-   /**
-    * deprecated: use changeable fields. Omitempty.
-    */
-   canChangeSettings: bool;
-
-   /**
-    * Any new team member will be added to this group chat. Omitempty.
-    */
-   defaultForAll: bool;
-
-   /**
-    * Readonly for non-admins group chat (Like Channels in Telegram bug switchable). Omitempty.
-    */
-   readonlyForMembers: bool;
-
-   /**
-    * Delete messages in this chat in seconds. Experemental function. Nullable. Omitempty.
-    */
-   autocleanupAge: number;
-
-   /**
-    * Can other team member see this task/group chat. Omitempty.
-    */
-   public: bool;
-
-   /**
-    * Can I join to this public group/task. Omitempty.
-    */
-   canJoin: bool;
-
-   /**
-    * Can I delete any message in this chat. Nullable. Omitempty.
-    */
-   canDeleteAnyMessage: bool;
-
-   /**
-    * Can I change Important flag in any message in this chat. Nullable. Omitempty.
-    */
-   canSetImportantAnyMessage: bool;
-
-}
-
-
-/**
- * Link to sub/sup task.
- */
-export interface Subtask {
-   /**
-    * Task id.
-    */
-   jid: JID;
-
-   /**
-    * Assignee contact id. Tasks only.
-    */
-   assignee: JID;
-
-   /**
-    * Task title. Generated from number and description.
-    */
-   title: string;
-
-   /**
-    * Task number in this team.
-    */
-   num: number;
-
-   /**
-    * Title.
-    */
-   displayName: string;
-
-   /**
-    * Can other team member see this task/group chat. Omitempty.
-    */
-   public: bool;
-
-}
-
-
-/**
- * Task checklist item.
- */
-export interface TaskItem {
-   /**
-    * Id. Omitempty.
-    */
-   uid: string;
-
-   /**
-    * Sort ordering. Omitempty.
-    */
-   sortOrdering: number;
-
-   /**
-    * Text or "#{OtherTaskNumber}".
-    */
-   text: string;
-
-   /**
-    * Item checked. Omitempty.
-    */
-   checked: bool;
-
-   /**
-    * Can I toggle this item. Omitempty.
-    */
-   canToggle: bool;
-
-   /**
-    * Link to subtask. Optional. Nullable. Omitempty.
-    */
-   subtask: Subtask;
-
-}
-
-
-/**
- * Group chat membership status.
- */
-export interface GroupMembership {
-   /**
-    * Contact id. Nullable.
-    */
-   jid: JID;
-
-   /**
-    * Status in group.
-    */
-   status: GroupStatus;
-
-   /**
-    * Can I remove this member. Omitempty.
-    */
-   canRemove: bool;
-
-}
-
-
 /**
  * Small or large icon.
  */
@@ -518,14 +29,14 @@ export interface SingleIcon {
  */
 export interface IconData {
    /**
-    * Small icon. Nullable. Omitempty.
+    * Small icon. Omitempty.
     */
-   sm: SingleIcon;
+   sm: SingleIcon | null;
 
    /**
-    * Large image. Nullable. Omitempty.
+    * Large image. Omitempty.
     */
-   lg: SingleIcon;
+   lg: SingleIcon | null;
 
    /**
     * Generated image with 1-2 letters. Omitempty.
@@ -541,225 +52,6 @@ export interface IconData {
     * Stub icon background color. Omitempty.
     */
    color: string;
-
-}
-
-
-/**
- * Website title and description.
- */
-export interface MessageLinkPreview {
-   /**
-    * Website title or og:title content.
-    */
-   title: string;
-
-   /**
-    * Website description. Omitempty.
-    */
-   description: string;
-
-}
-
-
-/**
- * Checked message links. In short: "Click here: {link.Pattern}" => "Click here: <a href='{link.Url}'>{link.Text}</a>".
- */
-export interface MessageLink {
-   /**
-    * Text fragment that should be replaced by link.
-    */
-   pattern: string;
-
-   /**
-    * Internal (tadateam://) or external link.
-    */
-   url: string;
-
-   /**
-    * Text replacement.
-    */
-   text: string;
-
-   /**
-    * Optional preview info, for websites. Nullable. Omitempty.
-    */
-   preview: MessageLinkPreview;
-
-   /**
-    * Optional upload info. Omitempty.
-    */
-   uploads: Upload[];
-
-   /**
-    * Website previews disabled. Omitempty.
-    */
-   noPreview: bool;
-
-   /**
-    * Optional youtube movie id. Omitempty.
-    */
-   youtubeId: string;
-
-}
-
-
-/**
- * Audiocall information.
- */
-export interface CallEvent {
-   /**
-    * Call start, iso date. Nullable.
-    */
-   start: string;
-
-   /**
-    * Call finish, iso date. Nullable.
-    */
-   finish: string;
-
-   /**
-    * Call record enabled.
-    */
-   audiorecord: bool;
-
-   /**
-    * Call members.
-    */
-   onliners: CallOnliner[];
-
-}
-
-
-/**
- * Call participant.
- */
-export interface CallOnliner {
-   /**
-    * Contact id.
-    */
-   jid: JID;
-
-   /**
-    * Contact name.
-    */
-   displayName: string;
-
-   /**
-    * Contact icon.
-    */
-   icon: string;
-
-   /**
-    * Microphone muted. Computed from devices muted states.
-    */
-   muted: bool;
-
-   /**
-    * Member devices, strictly one for now.
-    */
-   devices: CallDevice[];
-
-}
-
-
-/**
- * Call participant device.
- */
-export interface CallDevice {
-   /**
-    * Device muted.
-    */
-   muted: bool;
-
-   /**
-    * Device description.
-    */
-   useragent: string;
-
-}
-
-
-/**
- * Uploaded media.
- */
-export interface Upload {
-   /**
-    * Upload id.
-    */
-   uid: string;
-
-   /**
-    * Upload size in bytes.
-    */
-   size: number;
-
-   /**
-    * Mediafile duration (for audio/video only). Omitempty.
-    */
-   duration: number;
-
-   /**
-    * Filename.
-    */
-   name: string;
-
-   /**
-    * Absolute url.
-    */
-   url: string;
-
-   /**
-    * Preview details. Nullable. Omitempty.
-    */
-   preview: UploadPreview;
-
-   /**
-    * Content type.
-    */
-   contentType: string;
-
-   /**
-    * Is animated (images only). Omitempty.
-    */
-   animated: bool;
-
-   /**
-    * File still processing (video only). Omitempty.
-    */
-   processing: bool;
-
-   /**
-    * PDF version of file. Experimental. Nullable. Omitempty.
-    */
-   pdfVersion: PdfVersion;
-
-}
-
-
-/**
- * Upload preview.
- */
-export interface UploadPreview {
-   /**
-    * Absolute url to image.
-    */
-   url: string;
-
-   /**
-    * Absolute url to high resolution image (retina).
-    */
-   url2x: string;
-
-   /**
-    * Width in pixels.
-    */
-   width: number;
-
-   /**
-    * Height in pixels.
-    */
-   height: number;
 
 }
 
@@ -1032,5 +324,711 @@ export interface Features {
     * Deprecated.
     */
    taskTags: bool;
+
+}
+
+
+/**
+ * Audiocall information.
+ */
+export interface CallEvent {
+   /**
+    * Call start, iso date.
+    */
+   start: string | null;
+
+   /**
+    * Call finish, iso date.
+    */
+   finish: string | null;
+
+   /**
+    * Call record enabled.
+    */
+   audiorecord: bool;
+
+   /**
+    * Call members.
+    */
+   onliners: CallOnliner[];
+
+}
+
+
+/**
+ * Call participant.
+ */
+export interface CallOnliner {
+   /**
+    * Contact id.
+    */
+   jid: JID;
+
+   /**
+    * Contact name.
+    */
+   displayName: string;
+
+   /**
+    * Contact icon.
+    */
+   icon: string;
+
+   /**
+    * Microphone muted. Computed from devices muted states.
+    */
+   muted: bool;
+
+   /**
+    * Member devices, strictly one for now.
+    */
+   devices: CallDevice[];
+
+}
+
+
+/**
+ * Call participant device.
+ */
+export interface CallDevice {
+   /**
+    * Device muted.
+    */
+   muted: bool;
+
+   /**
+    * Device description.
+    */
+   useragent: string;
+
+}
+
+
+/**
+ * Mimimal chat representaion.
+ */
+export interface ChatShort {
+   /**
+    * Group/Task/Contact id.
+    */
+   jid: JID;
+
+   /**
+    * Chat type.
+    */
+   chatType: ChatType;
+
+   /**
+    * Title.
+    */
+   displayName: string;
+
+   /**
+    * Icon data.
+    */
+   icons: IconData | null;
+
+}
+
+
+/**
+ * Mimimal chat representaion for deletion.
+ */
+export interface DeletedChat {
+   /**
+    * Group/Task/Contact id.
+    */
+   jid: JID;
+
+   /**
+    * Chat type.
+    */
+   chatType: ChatType;
+
+   /**
+    * Chat fields (related to concrete participan) changes indicator.
+    */
+   gentime: int64;
+
+   /**
+    * Archive flag. Always true for this structure.
+    */
+   isArchive: bool;
+
+}
+
+
+/**
+ * Chat (direct, group, task) representaion.
+ */
+export interface Chat {
+   /**
+    * Group/Task/Contact id.
+    */
+   jid: JID;
+
+   /**
+    * Chat type.
+    */
+   chatType: ChatType;
+
+   /**
+    * Base fields (not related to concrete participant) changes indicator. Omitempty.
+    */
+   baseGentime: int64;
+
+   /**
+    * Chat fields (related to concrete participan) changes indicator.
+    */
+   gentime: int64;
+
+   /**
+    * Creation date, iso datetime.
+    */
+   created: string;
+
+   /**
+    * Title.
+    */
+   displayName: string;
+
+   /**
+    * Icons info.
+    */
+   icons: IconData | null;
+
+   /**
+    * Include unread messages to counters. Omitempty.
+    */
+   countersEnabled: bool;
+
+   /**
+    * Can I call to this chat. Omitempty.
+    */
+   canCall: bool;
+
+   /**
+    * Can I send message to this chat. Omitempty.
+    */
+   canSendMessage: bool;
+
+   /**
+    * Why I can't send message to this chat (if can't). Omitempty.
+    */
+   cantSendMessageReason: string;
+
+   /**
+    * Description collapsed. Used for tasks only. Omitempty.
+    */
+   collapsed: bool;
+
+   /**
+    * Last message draft, if any. Omitempty.
+    */
+   draft: string;
+
+   /**
+    * Last message draft version , if any. Omitempty.
+    */
+   draftNum: int64;
+
+   /**
+    * Hidden chat. Omitempty.
+    */
+   hidden: bool;
+
+   /**
+    * Push notifications enabled. Omitempty.
+    */
+   notificationsEnabled: bool;
+
+   /**
+    * Number of importants messages. Omitempty.
+    */
+   numImportants: number;
+
+   /**
+    * Unreads conuter. Omitempty.
+    */
+   numUnread: number;
+
+   /**
+    * Mentions (@) counter. Omitempty.
+    */
+   numUnreadNotices: number;
+
+   /**
+    * Last message object. Omitempty.
+    */
+   lastMessage: Message | null;
+
+   /**
+    * Last read message id, if any. Omitempty.
+    */
+   lastReadMessageId: string;
+
+   /**
+    * Project / section id, if any. Omitempty.
+    */
+   section: string;
+
+   /**
+    * List of editable fields. Omitempty.
+    */
+   changeableFields: string[];
+
+   /**
+    * Is chat pinned on top. Omitempty.
+    */
+   pinned: bool;
+
+   /**
+    * Sort oreding for pinned chat. Omitempty.
+    */
+   pinnedSortOrdering: number;
+
+   /**
+    * Non-archive participants number. Omitempty.
+    */
+   numMembers: number | null;
+
+   /**
+    * Can I delete this chat. Omitempty.
+    */
+   canDelete: bool;
+
+   /**
+    * Group or task description. Omitempty.
+    */
+   description: string;
+
+   /**
+    * Present in feed (main screen). Omitempty.
+    */
+   feed: bool;
+
+   /**
+    * Pinned message for this chat. Omitempty.
+    */
+   pinnedMessage: Message | null;
+
+   /**
+    * Custom color index from table of colors. Tasks only. Omitempty.
+    */
+   colorIndex: uint16 | null;
+
+   /**
+    * Items in checklist. Tasks only. Omitempty.
+    */
+   numItems: number | null;
+
+   /**
+    * Checked items in checklist. Tasks only. Omitempty.
+    */
+   numCheckedItems: number | null;
+
+   /**
+    * Assignee contact id. Tasks only. Omitempty.
+    */
+   assignee: JID | null;
+
+   /**
+    * Task number in this team. Omitempty.
+    */
+   num: number;
+
+   /**
+    * Task observers id's. Omitempty.
+    */
+   observers: JID[] | null;
+
+   /**
+    * Task creator. Omitempty.
+    */
+   owner: JID | null;
+
+   /**
+    * Task status. May be custom. Omitempty.
+    */
+   taskStatus: string;
+
+   /**
+    * Task title. Generated from number and description. Omitempty.
+    */
+   title: string;
+
+   /**
+    * Task done date in iso format, if any. Omitempty.
+    */
+   done: string;
+
+   /**
+    * Task done reason, if any. Omitempty.
+    */
+   doneReason: string;
+
+   /**
+    * Task deadline in iso format, if any. Omitempty.
+    */
+   deadline: string;
+
+   /**
+    * Is task deadline expired. Omitempty.
+    */
+   deadlineExpired: bool;
+
+   /**
+    * Links in description. Omitempty.
+    */
+   links: MessageLinks;
+
+   /**
+    * Task tags list, if any. Omitempty.
+    */
+   tags: string[];
+
+   /**
+    * Task importance, if available in team. Omitempty.
+    */
+   importance: number | null;
+
+   /**
+    * Task urgency, if available in team. Omitempty.
+    */
+   urgency: number | null;
+
+   /**
+    * Task spent time, number. Omitempty.
+    */
+   spentTime: number | null;
+
+   /**
+    * Task complexity, number. Omitempty.
+    */
+   complexity: number | null;
+
+   /**
+    * Used for "Create task from messages...". Omitempty.
+    */
+   linkedMessages: interface{}[];
+
+   /**
+    * Checklist items. Task only. Omitempty.
+    */
+   items: TaskItem[];
+
+   /**
+    * Parent tasks. Omitempty.
+    */
+   parents: Subtask[];
+
+   /**
+    * Tab names. Omitempty.
+    */
+   tabs: TaskTabKey[] | null;
+
+   /**
+    * My status in group chat. Omitempty.
+    */
+   status: GroupStatus;
+
+   /**
+    * Group chat members. Omitempty.
+    */
+   members: GroupMembership[];
+
+   /**
+    * Can I add member to this group chat. Omitempty.
+    */
+   canAddMember: bool;
+
+   /**
+    * Can I remove member from this group chat. Omitempty.
+    */
+   canRemoveMember: bool;
+
+   /**
+    * Can I change member status in this group chat. Omitempty.
+    */
+   canChangeMemberStatus: bool;
+
+   /**
+    * deprecated: use changeable fields. Omitempty.
+    */
+   canChangeSettings: bool;
+
+   /**
+    * Any new team member will be added to this group chat. Omitempty.
+    */
+   defaultForAll: bool;
+
+   /**
+    * Readonly for non-admins group chat (Like Channels in Telegram bug switchable). Omitempty.
+    */
+   readonlyForMembers: bool;
+
+   /**
+    * Delete messages in this chat in seconds. Experemental function. Omitempty.
+    */
+   autocleanupAge: number | null;
+
+   /**
+    * Can other team member see this task/group chat. Omitempty.
+    */
+   public: bool;
+
+   /**
+    * Can I join to this public group/task. Omitempty.
+    */
+   canJoin: bool;
+
+   /**
+    * Can I delete any message in this chat. Omitempty.
+    */
+   canDeleteAnyMessage: bool | null;
+
+   /**
+    * Can I change Important flag in any message in this chat. Omitempty.
+    */
+   canSetImportantAnyMessage: bool | null;
+
+}
+
+
+/**
+ * Link to sub/sup task.
+ */
+export interface Subtask {
+   /**
+    * Task id.
+    */
+   jid: JID;
+
+   /**
+    * Assignee contact id. Tasks only.
+    */
+   assignee: JID;
+
+   /**
+    * Task title. Generated from number and description.
+    */
+   title: string;
+
+   /**
+    * Task number in this team.
+    */
+   num: number;
+
+   /**
+    * Title.
+    */
+   displayName: string;
+
+   /**
+    * Can other team member see this task/group chat. Omitempty.
+    */
+   public: bool;
+
+}
+
+
+/**
+ * Task checklist item.
+ */
+export interface TaskItem {
+   /**
+    * Id. Omitempty.
+    */
+   uid: string;
+
+   /**
+    * Sort ordering. Omitempty.
+    */
+   sortOrdering: number;
+
+   /**
+    * Text or "#{OtherTaskNumber}".
+    */
+   text: string;
+
+   /**
+    * Item checked. Omitempty.
+    */
+   checked: bool;
+
+   /**
+    * Can I toggle this item. Omitempty.
+    */
+   canToggle: bool;
+
+   /**
+    * Link to subtask. Optional. Omitempty.
+    */
+   subtask: Subtask | null;
+
+}
+
+
+/**
+ * Group chat membership status.
+ */
+export interface GroupMembership {
+   /**
+    * Contact id.
+    */
+   jid: JID;
+
+   /**
+    * Status in group.
+    */
+   status: GroupStatus;
+
+   /**
+    * Can I remove this member. Omitempty.
+    */
+   canRemove: bool;
+
+}
+
+
+/**
+ * Website title and description.
+ */
+export interface MessageLinkPreview {
+   /**
+    * Website title or og:title content.
+    */
+   title: string;
+
+   /**
+    * Website description. Omitempty.
+    */
+   description: string;
+
+}
+
+
+/**
+ * Checked message links. In short: "Click here: {link.Pattern}" => "Click here: <a href='{link.Url}'>{link.Text}</a>".
+ */
+export interface MessageLink {
+   /**
+    * Text fragment that should be replaced by link.
+    */
+   pattern: string;
+
+   /**
+    * Internal (tadateam://) or external link.
+    */
+   url: string;
+
+   /**
+    * Text replacement.
+    */
+   text: string;
+
+   /**
+    * Optional preview info, for websites. Omitempty.
+    */
+   preview: MessageLinkPreview | null;
+
+   /**
+    * Optional upload info. Omitempty.
+    */
+   uploads: Upload[];
+
+   /**
+    * Website previews disabled. Omitempty.
+    */
+   noPreview: bool;
+
+   /**
+    * Optional youtube movie id. Omitempty.
+    */
+   youtubeId: string;
+
+}
+
+
+/**
+ * Uploaded media.
+ */
+export interface Upload {
+   /**
+    * Upload id.
+    */
+   uid: string;
+
+   /**
+    * Upload size in bytes.
+    */
+   size: number;
+
+   /**
+    * Mediafile duration (for audio/video only). Omitempty.
+    */
+   duration: number;
+
+   /**
+    * Filename.
+    */
+   name: string;
+
+   /**
+    * Absolute url.
+    */
+   url: string;
+
+   /**
+    * Preview details. Omitempty.
+    */
+   preview: UploadPreview | null;
+
+   /**
+    * Content type.
+    */
+   contentType: string;
+
+   /**
+    * Is animated (images only). Omitempty.
+    */
+   animated: bool;
+
+   /**
+    * File still processing (video only). Omitempty.
+    */
+   processing: bool;
+
+   /**
+    * PDF version of file. Experimental. Omitempty.
+    */
+   pdfVersion: PdfVersion | null;
+
+}
+
+
+/**
+ * Upload preview.
+ */
+export interface UploadPreview {
+   /**
+    * Absolute url to image.
+    */
+   url: string;
+
+   /**
+    * Absolute url to high resolution image (retina).
+    */
+   url2x: string;
+
+   /**
+    * Width in pixels.
+    */
+   width: number;
+
+   /**
+    * Height in pixels.
+    */
+   height: number;
 
 }
