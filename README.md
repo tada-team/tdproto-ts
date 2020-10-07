@@ -2,5 +2,5 @@
 Tada protocol in TypeScript
 
 ```bash
-npm install @tada-team/tdproto
+npm install tdproto
 ```
