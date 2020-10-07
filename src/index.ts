@@ -65,242 +65,63 @@ declare namespace TdProto {
    
    type TeamUnread = [ChatType:Unread]
    /**
-    * Team.
+    * Push message over websockets. Readonly.
     */
-   export interface Team {
+   export interface MessagePush {
       /**
-      * Team id.
+      * Push title.
       */
-      uid: string;
-
-      /**
-      * Team deleted.
-      */
-      isArchive: boolean;
+      title: string;
 
       /**
-      * Object version.
+      * Push subtitle.
       */
-      gentime: number;
+      subtitle: string;
 
       /**
-      * Team name.
+      * Push body.
       */
-      name: string;
+      message: string;
 
       /**
-      * Default task deadline.
+      * Absolute url to push icon.
       */
-      defaultTaskDeadline: string;
+      iconUrl: string;
 
       /**
-      * Max message update/deletion age, in seconds.
+      * Url opened on click.
       */
-      maxMessageUpdateAge: number;
+      clickAction: string;
 
       /**
-      * Team icons.
+      * Push tag (for join pushes).
       */
-      icons: IconData;
+      tag: string;
 
       /**
-      * User last activity was in this team.
+      * Team uid.
       */
-      lastActive: boolean;
+      team: string;
 
       /**
-      * What status I can set to other team mebers.
+      * Sender contact id.
       */
-      changeableStatuses: TeamStatus[];
+      sender: JID;
 
       /**
-      * My profile in this team isn't full.
+      * Chat id.
       */
-      badProfile: boolean;
+      chat: JID;
 
       /**
-      * Neet confirmation after invite to this team.
+      * Message id.
       */
-      needConfirmation: boolean;
+      messageId: string;
 
       /**
-      * Patronymic in usernames for this team.
+      * Message creation iso datetime.
       */
-      usePatronymic: boolean;
-
-      /**
-      * Username fields ordering.
-      */
-      userFields: string[];
-
-      /**
-      * Family name should be first in display name.
-      */
-      displayFamilyNameFirst: boolean;
-
-      /**
-      * Use importance field in task.
-      */
-      useTaskImportance: boolean;
-
-      /**
-      * Minimal value of task imporance. Default is 1.
-      */
-      taskImportanceMin: number;
-
-      /**
-      * Maximum value of task imporance. Default is 5.
-      */
-      taskImportanceMax: number;
-
-      /**
-      * Bigger number = bigger importance. Default: lower number = bigger importance.
-      */
-      taskImportanceRev: boolean;
-
-      /**
-      * Use urgency field in task.
-      */
-      useTaskUrgency: boolean;
-
-      /**
-      * Use complexity field in task.
-      */
-      useTaskComplexity: boolean;
-
-      /**
-      * Use spent time field in task.
-      */
-      useTaskSpentTime: boolean;
-
-      /**
-      * Total uploads size, bytes.
-      */
-      uploadsSize: number;
-
-      /**
-      * Maximum uploads size, bytes, if any.
-      */
-      uploadsSizeLimit: number;
-
-      /**
-      * Unread message counters.
-      */
-      unreads: TeamUnread | null;
-
-      /**
-      * My profile in this team.
-      */
-      me: Contact;
-
-      /**
-      * Team contacts. Used only for team creation.
-      */
-      contacts: Contact[];
-
-      /**
-      * For single group teams, jid of chat.
-      */
-      singleGroup: JID | null;
-
-      /**
-      * Color theme, if any.
-      */
-      theme: Theme | null;
-
-      /**
-      * Don't show archived users by default.
-      */
-      hideArchivedUsers: boolean;
-
-   }
-
-   /**
-    * Short team representation. For invites, push notifications, etc.
-    */
-   export interface TeamShort {
-      /**
-      * Team id.
-      */
-      uid: string;
-
-      /**
-      * Team name.
-      */
-      name: string;
-
-      /**
-      * Team icons.
-      */
-      icons: IconData;
-
-   }
-
-   /**
-    * Team deletion message.
-    */
-   export interface DeletedTeam {
-      /**
-      * Team id.
-      */
-      uid: string;
-
-      /**
-      * Team deleted.
-      */
-      isArchive: boolean;
-
-      /**
-      * Object version.
-      */
-      gentime: number;
-
-   }
-
-   /**
-    * Task color rules color.
-    */
-   export interface TaskColor {
-      /**
-      * Regular.
-      */
-      regular: string;
-
-      /**
-      * Dark.
-      */
-      dark: string;
-
-      /**
-      * Light.
-      */
-      light: string;
-
-   }
-
-   /**
-    * Wiki page. Experimental.
-    */
-   export interface WikiPage {
-      /**
-      * Object version.
-      */
-      gentime: number;
-
-      /**
-      * Update time, iso.
-      */
-      updated: string;
-
-      /**
-      * Last editor contact id.
-      */
-      editor: JID;
-
-      /**
-      * Page text.
-      */
-      text: string;
+      created: string;
 
    }
 
@@ -338,6 +159,495 @@ declare namespace TdProto {
       * Unread message counters.
       */
       unreads: TeamUnread;
+
+   }
+
+   /**
+    * Wiki page. Experimental.
+    */
+   export interface WikiPage {
+      /**
+      * Object version.
+      */
+      gentime: number;
+
+      /**
+      * Update time, iso.
+      */
+      updated: string;
+
+      /**
+      * Last editor contact id.
+      */
+      editor: JID;
+
+      /**
+      * Page text.
+      */
+      text: string;
+
+   }
+
+   /**
+    * Server information. Readonly.
+    */
+   export interface Features {
+      /**
+      * Current host.
+      */
+      host: string;
+
+      /**
+      * Build/revision of server side.
+      */
+      build: string;
+
+      /**
+      * Desktop application version.
+      */
+      desktopVersion: string;
+
+      /**
+      * Webclient version.
+      */
+      frontVersion: string;
+
+      /**
+      * Application title.
+      */
+      appTitle: string;
+
+      /**
+      * Static files server address.
+      */
+      userver: string;
+
+      /**
+      * Link to AppStore.
+      */
+      iOSApp: string;
+
+      /**
+      * Link to Google Play.
+      */
+      androidApp: string;
+
+      /**
+      * Default UI theme.
+      */
+      theme: string;
+
+      /**
+      * Minimal application version required for this server. Used for breaking changes.
+      */
+      minAppVersion: string;
+
+      /**
+      * Free registration allowed.
+      */
+      freeRegistration: boolean;
+
+      /**
+      * Maximum size of user's upload.
+      */
+      maxUploadMb: number;
+
+      /**
+      * Maximum number of forwarded messages.
+      */
+      maxLinkedMessages: number;
+
+      /**
+      * Maximum chars for: family_name, given_name, patronymic if any.
+      */
+      maxUsernamePartLength: number;
+
+      /**
+      * Maximum chars for group chat name.
+      */
+      maxGroupTitleLength: number;
+
+      /**
+      * Maximum chars for role in team.
+      */
+      maxRoleLength: number;
+
+      /**
+      * Maximum chars for mood in team.
+      */
+      maxMoodLength: number;
+
+      /**
+      * Maximum chars for text message.
+      */
+      maxMessageLength: number;
+
+      /**
+      * Maximum length for project and contact's sections names.
+      */
+      maxSectionLength: number;
+
+      /**
+      * Maximum length for tags.
+      */
+      maxTagLength: number;
+
+      /**
+      * Maximum length for task title.
+      */
+      maxTaskTitleLength: number;
+
+      /**
+      * Maximum length for Color Rule.
+      */
+      maxColorRuleDescriptionLength: number;
+
+      /**
+      * Maximum teams for one account.
+      */
+      maxTeams: number;
+
+      /**
+      * Max inactivity seconds.
+      */
+      afkAge: number;
+
+      /**
+      * Password authentication enabled.
+      */
+      authByPassword: boolean;
+
+      /**
+      * QR-code / link authentication enabled.
+      */
+      authByQrCode: boolean;
+
+      /**
+      * SMS authentication enabled.
+      */
+      authBySms: boolean;
+
+      /**
+      * ICE servers for WebRTC.
+      */
+      iCEServers: ICEServer[];
+
+      /**
+      * True for onpremise installation.
+      */
+      customServer: boolean;
+
+      /**
+      * Name of instalation.
+      */
+      installationType: string;
+
+      /**
+      * Testing installation.
+      */
+      isTesting: boolean;
+
+      /**
+      * Yandex metrika counter id.
+      */
+      metrika: string;
+
+      /**
+      * Minimal chars number for starting global search.
+      */
+      minSearchLength: number;
+
+      /**
+      * Resend message in n seconds if no confirmation from server given.
+      */
+      resendTimeout: number;
+
+      /**
+      * Frontent sentry.io settings.
+      */
+      sentryDsnJS: string;
+
+      /**
+      * Message drafts saved on server.
+      */
+      serverDrafts: boolean;
+
+      /**
+      * Firebase application id for web-push notifacations.
+      */
+      firebaseAppId: string;
+
+      /**
+      * Firebase sender id for web-push notifacations.
+      */
+      firebaseSenderId: string;
+
+      /**
+      * Calls functions enabled.
+      */
+      calls: boolean;
+
+      /**
+      * Calls functions enabled for mobile applications.
+      */
+      mobileCalls: boolean;
+
+      /**
+      * Calls record enabled.
+      */
+      callsRecord: boolean;
+
+      /**
+      * Disallow call from multiply devices. Experimental.
+      */
+      onlyOneDevicePerCall: boolean;
+
+      /**
+      * Maximum number of participants per call.
+      */
+      maxParticipantsPerCall: number;
+
+      /**
+      * Safari push id for web-push notifacations.
+      */
+      safariPushId: string;
+
+      /**
+      * Team entity naming. Experimental.
+      */
+      terms: Terms;
+
+      /**
+      * Cross team communication. Experimental.
+      */
+      singleGroupTeams: boolean;
+
+      /**
+      * Wiki pages in chats. Experimental.
+      */
+      wikiPages: boolean;
+
+      /**
+      * Wiki pages in chats. Experimental.
+      */
+      allowAdminMute: boolean;
+
+      /**
+      * Deprecated.
+      */
+      taskChecklist: boolean;
+
+      /**
+      * Deprecated.
+      */
+      readonlyGroups: boolean;
+
+      /**
+      * Deprecated.
+      */
+      taskDashboard: boolean;
+
+      /**
+      * Deprecated.
+      */
+      taskMessages: boolean;
+
+      /**
+      * Deprecated.
+      */
+      taskPublic: boolean;
+
+      /**
+      * Deprecated.
+      */
+      taskTags: boolean;
+
+   }
+
+   /**
+    * Interactive Connectivity Establishment Server for WEB Rtc connection. Readonly.
+    */
+   export interface ICEServer {
+      /**
+      * URls.
+      */
+      urls: string;
+
+   }
+
+   /**
+    * Exprtimental translation fields for "team" entity renaming. Readonly.
+    */
+   export interface Terms {
+      /**
+      * EnInTeam.
+      */
+      enInTeam: string;
+
+      /**
+      * EnTeam.
+      */
+      enTeam: string;
+
+      /**
+      * EnTeamAccess.
+      */
+      enTeamAccess: string;
+
+      /**
+      * EnTeamAdmin.
+      */
+      enTeamAdmin: string;
+
+      /**
+      * EnTeamAdmins.
+      */
+      enTeamAdmins: string;
+
+      /**
+      * EnTeamGuest.
+      */
+      enTeamGuest: string;
+
+      /**
+      * EnTeamMember.
+      */
+      enTeamMember: string;
+
+      /**
+      * EnTeamMembers.
+      */
+      enTeamMembers: string;
+
+      /**
+      * EnTeamOwner.
+      */
+      enTeamOwner: string;
+
+      /**
+      * EnTeamSettings.
+      */
+      enTeamSettings: string;
+
+      /**
+      * RuTeamSettings.
+      */
+      ruTeamSettings: string;
+
+      /**
+      * EnTeams.
+      */
+      enTeams: string;
+
+      /**
+      * EnToTeam.
+      */
+      enToTeam: string;
+
+      /**
+      * RuInTeam.
+      */
+      ruInTeam: string;
+
+      /**
+      * RuTeam.
+      */
+      ruTeam: string;
+
+      /**
+      * RuTeamAccess.
+      */
+      ruTeamAccess: string;
+
+      /**
+      * RuTeamAdmin.
+      */
+      ruTeamAdmin: string;
+
+      /**
+      * RuTeamAdmins.
+      */
+      ruTeamAdmins: string;
+
+      /**
+      * RuTeamD.
+      */
+      ruTeamD: string;
+
+      /**
+      * RuTeamGuest.
+      */
+      ruTeamGuest: string;
+
+      /**
+      * RuTeamMember.
+      */
+      ruTeamMember: string;
+
+      /**
+      * RuTeamMembers.
+      */
+      ruTeamMembers: string;
+
+      /**
+      * RuTeamOwner.
+      */
+      ruTeamOwner: string;
+
+      /**
+      * RuTeamP.
+      */
+      ruTeamP: string;
+
+      /**
+      * RuTeamR.
+      */
+      ruTeamR: string;
+
+      /**
+      * RuTeams.
+      */
+      ruTeams: string;
+
+      /**
+      * RuTeamsD.
+      */
+      ruTeamsD: string;
+
+      /**
+      * RuTeamsP.
+      */
+      ruTeamsP: string;
+
+      /**
+      * RuTeamsR.
+      */
+      ruTeamsR: string;
+
+      /**
+      * RuTeamsT.
+      */
+      ruTeamsT: string;
+
+      /**
+      * RuTeamsV.
+      */
+      ruTeamsV: string;
+
+      /**
+      * RuTeamT.
+      */
+      ruTeamT: string;
+
+      /**
+      * RuTeamV.
+      */
+      ruTeamV: string;
+
+      /**
+      * RuToTeam.
+      */
+      ruToTeam: string;
 
    }
 
@@ -390,6 +700,122 @@ declare namespace TdProto {
       * Stub icon background color.
       */
       color: string;
+
+   }
+
+   /**
+    * PDF preview of mediafile. Experimental.
+    */
+   export interface PdfVersion {
+      /**
+      * Absolute url.
+      */
+      url: string;
+
+      /**
+      * First string of text content.
+      */
+      textPreview: string;
+
+   }
+
+   /**
+    * Task tag.
+    */
+   export interface Tag {
+      /**
+      * Tag id.
+      */
+      uid: string;
+
+      /**
+      * Tag name.
+      */
+      name: string;
+
+   }
+
+   /**
+    * Delete tag message.
+    */
+   export interface DeletedTag {
+      /**
+      * Tag id.
+      */
+      uid: string;
+
+   }
+
+   /**
+    * Audiocall information.
+    */
+   export interface CallEvent {
+      /**
+      * Call start, iso date.
+      */
+      start: string | null;
+
+      /**
+      * Call finish, iso date.
+      */
+      finish: string | null;
+
+      /**
+      * Call record enabled.
+      */
+      audiorecord: boolean;
+
+      /**
+      * Call members.
+      */
+      onliners: CallOnliner[];
+
+   }
+
+   /**
+    * Call participant.
+    */
+   export interface CallOnliner {
+      /**
+      * Contact id.
+      */
+      jid: JID;
+
+      /**
+      * Contact name.
+      */
+      displayName: string;
+
+      /**
+      * Contact icon.
+      */
+      icon: string;
+
+      /**
+      * Microphone muted. Computed from devices muted states.
+      */
+      muted: boolean;
+
+      /**
+      * Member devices, strictly one for now.
+      */
+      devices: CallDevice[];
+
+   }
+
+   /**
+    * Call participant device.
+    */
+   export interface CallDevice {
+      /**
+      * Device muted.
+      */
+      muted: boolean;
+
+      /**
+      * Device description.
+      */
+      useragent: string;
 
    }
 
@@ -539,12 +965,12 @@ declare namespace TdProto {
       content: MessageContent;
 
       /**
-      * Simple plaintext message representation.
+      * Simple plaintext message representation. Readonly.
       */
       pushText: string;
 
       /**
-      * Sender contact id.
+      * Sender contact id. Readonly.
       */
       from: JID;
 
@@ -559,27 +985,27 @@ declare namespace TdProto {
       messageId: string;
 
       /**
-      * Message creation datetime (set by server side).
+      * Message creation datetime (set by server side). Readonly.
       */
       created: string;
 
       /**
-      * Object version.
+      * Object version. Readonly.
       */
       gentime: number;
 
       /**
-      * Chat type.
+      * Chat type. Readonly.
       */
       chatType: ChatType;
 
       /**
-      * Chat id.
+      * Chat id. Readonly.
       */
       chat: JID;
 
       /**
-      * External/internals links.
+      * External/internals links. Readonly.
       */
       links: MessageLinks;
 
@@ -589,17 +1015,17 @@ declare namespace TdProto {
       important: boolean;
 
       /**
-      * Datetime of message modification or deletion.
+      * Datetime of message modification or deletion. Readonly.
       */
       edited: string;
 
       /**
-      * Message was seen by anybody in chat. True or null.
+      * Message was seen by anybody in chat. True or null. Readonly.
       */
       received: boolean;
 
       /**
-      * Unused yet.
+      * Unused yet. Readonly.
       */
       numReceived: number;
 
@@ -609,27 +1035,27 @@ declare namespace TdProto {
       nopreview: boolean;
 
       /**
-      * Has link previews. True or null.
+      * Has link previews. True or null. Readonly.
       */
       hasPreviews: boolean;
 
       /**
-      * Previous message id in this chat. Uid or null.
+      * Previous message id in this chat. Uid or null. Readonly.
       */
       prev: string;
 
       /**
-      * This message is first in this chat. True or null.
+      * This message is first in this chat. True or null. Readonly.
       */
       isFirst: boolean;
 
       /**
-      * This message is first in this chat. True or null.
+      * This message is first in this chat. True or null. Readonly.
       */
       isLast: boolean;
 
       /**
-      * Message reactions struct. Can be null.
+      * Message reactions struct. Can be null. Readonly.
       */
       reactions: MessageReaction[];
 
@@ -644,27 +1070,27 @@ declare namespace TdProto {
       linkedMessages: Message[];
 
       /**
-      * Has mention (@). True or null.
+      * Has mention (@). True or null. Readonly.
       */
       notice: boolean;
 
       /**
-      * Message has no pushes and did not affect any counters.
+      * Message has no pushes and did not affect any counters. Readonly.
       */
       silently: boolean;
 
       /**
-      * Author can change this message until date. Can be null.
+      * Author can change this message until date. Can be null. Readonly.
       */
       editableUntil: string;
 
       /**
-      * Index number of this message. Starts from 0. Null for deleted messages. Changes when any previous message wad deleted.
+      * Index number of this message. Starts from 0. Null for deleted messages. Changes when any previous message wad deleted. Readonly.
       */
       num: number | null;
 
       /**
-      * Debug information, if any.
+      * Debug information, if any. Readonly.
       */
       debug: string;
 
@@ -766,6 +1192,452 @@ declare namespace TdProto {
       * Reaction emoji.
       */
       name: string;
+
+   }
+
+   /**
+    * Custom task status.
+    */
+   export interface TaskStatus {
+      /**
+      * Status id.
+      */
+      uid: string;
+
+      /**
+      * Status sort ordering.
+      */
+      sortOrdering: number;
+
+      /**
+      * Status internal name.
+      */
+      name: string;
+
+      /**
+      * Status localized name.
+      */
+      title: string;
+
+      /**
+      * Status not used anymore.
+      */
+      isArchive: boolean;
+
+   }
+
+   /**
+    * Color theme.
+    */
+   export interface Theme {
+      /**
+      * BgColor.
+      */
+      bgColor: string;
+
+      /**
+      * BgHoverColor.
+      */
+      bgHoverColor: string;
+
+      /**
+      * TextColor.
+      */
+      textColor: string;
+
+      /**
+      * MutedTextColor.
+      */
+      mutedTextColor: string;
+
+      /**
+      * AccentColor.
+      */
+      accentColor: string;
+
+      /**
+      * AccentHoverColor.
+      */
+      accentHoverColor: string;
+
+      /**
+      * TextOnAccentHoverColor.
+      */
+      textOnAccentHoverColor: string;
+
+      /**
+      * MainAccent.
+      */
+      mainAccent: string;
+
+      /**
+      * MainAccentHover.
+      */
+      mainAccentHover: string;
+
+      /**
+      * MainLightAccent.
+      */
+      mainLightAccent: string;
+
+      /**
+      * MainLink.
+      */
+      mainLink: string;
+
+      /**
+      * AppAccentColor.
+      */
+      appAccentColor: string;
+
+      /**
+      * AppPrimaryColor.
+      */
+      appPrimaryColor: string;
+
+   }
+
+   /**
+    * Contact.
+    */
+   export interface Contact {
+      /**
+      * Contact Id.
+      */
+      jid: JID;
+
+      /**
+      * Full name in chats.
+      */
+      displayName: string;
+
+      /**
+      * Short name in chats.
+      */
+      shortName: string;
+
+      /**
+      * Contact email in this team.
+      */
+      contactEmail: string;
+
+      /**
+      * Contact phone in this team.
+      */
+      contactPhone: string;
+
+      /**
+      * Icons data.
+      */
+      icons: IconData | null;
+
+      /**
+      * Role in this team.
+      */
+      role: string;
+
+      /**
+      * Mood in this team.
+      */
+      mood: string;
+
+      /**
+      * Status in this team.
+      */
+      teamStatus: TeamStatus;
+
+      /**
+      * Last activity in this team (iso datetime).
+      */
+      lastActivity: string | null;
+
+      /**
+      * Can contact add users to this team.
+      */
+      addToTeamRights: boolean;
+
+      /**
+      * Contact deleted.
+      */
+      isArchive: boolean;
+
+      /**
+      * Bot name. Empty for users.
+      */
+      botname: string;
+
+      /**
+      * Section ids.
+      */
+      sections: string[];
+
+      /**
+      * Can I send message to this contact.
+      */
+      canSendMessage: boolean | null;
+
+      /**
+      * Why I can't send message to this chat (if can't).
+      */
+      cantSendMessageReason: string;
+
+      /**
+      * Can I call to this contact.
+      */
+      canCall: boolean | null;
+
+      /**
+      * Can I call create task for this contact.
+      */
+      canCreateTask: boolean | null;
+
+      /**
+      * Can I add this contact to group chats.
+      */
+      canAddToGroup: boolean | null;
+
+      /**
+      * Can I remove this contact from team.
+      */
+      canDelete: boolean | null;
+
+      /**
+      * Changeable fields.
+      */
+      changeableFields: string[] | null;
+
+      /**
+      * Family name.
+      */
+      familyName: string | null;
+
+      /**
+      * Given name.
+      */
+      givenName: string | null;
+
+      /**
+      * Patronymic, if any.
+      */
+      patronymic: string | null;
+
+      /**
+      * Default language code.
+      */
+      defaultLang: string | null;
+
+      /**
+      * Enable debug messages in UI.
+      */
+      debugShowActivity: boolean | null;
+
+      /**
+      * Enable remove all messages experimental features.
+      */
+      dropallEnabled: boolean | null;
+
+      /**
+      * Use Ctrl/Cmd + Enter insted Enter.
+      */
+      altSend: boolean | null;
+
+      /**
+      * Send push notifications even contact is online.
+      */
+      alwaysSendPushes: boolean | null;
+
+      /**
+      * Timezone, if any.
+      */
+      timezone: string | null;
+
+      /**
+      * Quiet time start.
+      */
+      quietTimeStart: string | null;
+
+      /**
+      * Quiet time finish.
+      */
+      quietTimeFinish: string | null;
+
+      /**
+      * Push notifications for group chats.
+      */
+      groupNotificationsEnabled: boolean | null;
+
+      /**
+      * Push notifications for task chats.
+      */
+      taskNotificationsEnabled: boolean | null;
+
+      /**
+      * Short view in contact list.
+      */
+      contactShortView: boolean | null;
+
+      /**
+      * Short view in group list.
+      */
+      groupShortView: boolean | null;
+
+      /**
+      * Short view in task list.
+      */
+      taskShortView: boolean | null;
+
+      /**
+      * Short view in contact list in mobile app.
+      */
+      contactMshortView: boolean | null;
+
+      /**
+      * Short view in group list in mobile app.
+      */
+      groupMshortView: boolean | null;
+
+      /**
+      * Short view in task list in mobile app.
+      */
+      taskMshortView: boolean | null;
+
+      /**
+      * Show archived contacts in contact list.
+      */
+      contactShowArchived: boolean | null;
+
+      /**
+      * Show inread chats first in feed.
+      */
+      unreadFirst: boolean | null;
+
+      /**
+      * Show inread chats first in feed in mobile app.
+      */
+      mUnreadFirst: boolean | null;
+
+      /**
+      * Can I add new members to this team.
+      */
+      canAddToTeam: boolean | null;
+
+      /**
+      * Can I manage sections in this team.
+      */
+      canManageSections: boolean | null;
+
+      /**
+      * Can I manage tags in this team.
+      */
+      canManageTags: boolean | null;
+
+      /**
+      * Can I manage integrations in this team.
+      */
+      canManageIntegrations: boolean | null;
+
+      /**
+      * Can I manage color rules in this team.
+      */
+      canManageColorRules: boolean | null;
+
+      /**
+      * Can I create group chats in this team.
+      */
+      canCreateGroup: boolean | null;
+
+      /**
+      * Can I view/join public group in this team.
+      */
+      canJoinPublicGroups: boolean | null;
+
+      /**
+      * Can I view/join public tasks in this team.
+      */
+      canJoinPublicTasks: boolean | null;
+
+      /**
+      * Deprecated: use CanDeleteAnyMessage in chat object.
+      */
+      canDeleteAnyMessage: boolean | null;
+
+      /**
+      * Extra contact fields.
+      */
+      customFields: ContactCustomFields | null;
+
+   }
+
+   /**
+    * Extra contact fields.
+    */
+   export interface ContactCustomFields {
+      /**
+      * Company.
+      */
+      company: string;
+
+      /**
+      * Department.
+      */
+      department: string;
+
+      /**
+      * Title.
+      */
+      title: string;
+
+      /**
+      * MobilePhone.
+      */
+      mobilePhone: string;
+
+   }
+
+   /**
+    * Short contact representaion.
+    */
+   export interface ContactShort {
+      /**
+      * Contact Id.
+      */
+      jid: JID;
+
+      /**
+      * Full name in chats.
+      */
+      displayName: string;
+
+      /**
+      * Short name in chats.
+      */
+      shortName: string;
+
+      /**
+      * Icons data.
+      */
+      icons: IconData | null;
+
+   }
+
+   /**
+    * Task color rules color.
+    */
+   export interface TaskColor {
+      /**
+      * Regular.
+      */
+      regular: string;
+
+      /**
+      * Dark.
+      */
+      dark: string;
+
+      /**
+      * Light.
+      */
+      light: string;
 
    }
 
@@ -1251,6 +2123,236 @@ declare namespace TdProto {
    }
 
    /**
+    * Remind.
+    */
+   export interface Remind {
+      /**
+      * Remind id.
+      */
+      uid: string;
+
+      /**
+      * Chat id.
+      */
+      chat: JID;
+
+      /**
+      * Activation time, iso.
+      */
+      fireAt: string;
+
+      /**
+      * Comment, if any.
+      */
+      comment: string;
+
+   }
+
+   /**
+    * Remind deleted message.
+    */
+   export interface DeletedRemind {
+      /**
+      * Remind id.
+      */
+      uid: string;
+
+   }
+
+   /**
+    * Team.
+    */
+   export interface Team {
+      /**
+      * Team id. Readonly.
+      */
+      uid: string;
+
+      /**
+      * Team deleted. Readonly.
+      */
+      isArchive: boolean;
+
+      /**
+      * Object version. Readonly.
+      */
+      gentime: number;
+
+      /**
+      * Team name.
+      */
+      name: string;
+
+      /**
+      * Default task deadline.
+      */
+      defaultTaskDeadline: string;
+
+      /**
+      * Max message update/deletion age, in seconds.
+      */
+      maxMessageUpdateAge: number;
+
+      /**
+      * Team icons. Readonly.
+      */
+      icons: IconData;
+
+      /**
+      * User last activity was in this team. Readonly.
+      */
+      lastActive: boolean;
+
+      /**
+      * What status I can set to other team mebers. Readonly.
+      */
+      changeableStatuses: TeamStatus[];
+
+      /**
+      * My profile in this team isn't full. Readonly.
+      */
+      badProfile: boolean;
+
+      /**
+      * Neet confirmation after invite to this team. Readonly.
+      */
+      needConfirmation: boolean;
+
+      /**
+      * Patronymic in usernames for this team.
+      */
+      usePatronymic: boolean;
+
+      /**
+      * Username fields ordering. Readonly.
+      */
+      userFields: string[];
+
+      /**
+      * Family name should be first in display name.
+      */
+      displayFamilyNameFirst: boolean;
+
+      /**
+      * Use importance field in task.
+      */
+      useTaskImportance: boolean;
+
+      /**
+      * Minimal value of task imporance. Default is 1.
+      */
+      taskImportanceMin: number;
+
+      /**
+      * Maximum value of task imporance. Default is 5.
+      */
+      taskImportanceMax: number;
+
+      /**
+      * Bigger number = bigger importance. Default: lower number = bigger importance.
+      */
+      taskImportanceRev: boolean;
+
+      /**
+      * Use urgency field in task.
+      */
+      useTaskUrgency: boolean;
+
+      /**
+      * Use complexity field in task.
+      */
+      useTaskComplexity: boolean;
+
+      /**
+      * Use spent time field in task.
+      */
+      useTaskSpentTime: boolean;
+
+      /**
+      * Total uploads size, bytes. Readonly.
+      */
+      uploadsSize: number;
+
+      /**
+      * Maximum uploads size, bytes, if any. Readonly.
+      */
+      uploadsSizeLimit: number;
+
+      /**
+      * Unread message counters. Readonly.
+      */
+      unreads: TeamUnread | null;
+
+      /**
+      * My profile in this team. Readonly.
+      */
+      me: Contact;
+
+      /**
+      * Team contacts. Used only for team creation. Readonly.
+      */
+      contacts: Contact[];
+
+      /**
+      * For single group teams, jid of chat. Readonly.
+      */
+      singleGroup: JID | null;
+
+      /**
+      * Color theme, if any. Readonly.
+      */
+      theme: Theme | null;
+
+      /**
+      * Don't show archived users by default.
+      */
+      hideArchivedUsers: boolean;
+
+   }
+
+   /**
+    * Short team representation. For invites, push notifications, etc. Readonly.
+    */
+   export interface TeamShort {
+      /**
+      * Team id.
+      */
+      uid: string;
+
+      /**
+      * Team name.
+      */
+      name: string;
+
+      /**
+      * Team icons.
+      */
+      icons: IconData;
+
+   }
+
+   /**
+    * Team deletion message. Readonly.
+    */
+   export interface DeletedTeam {
+      /**
+      * Team id.
+      */
+      uid: string;
+
+      /**
+      * Team deleted.
+      */
+      isArchive: boolean;
+
+      /**
+      * Object version.
+      */
+      gentime: number;
+
+   }
+
+   /**
     * Uploaded media.
     */
    export interface Upload {
@@ -1332,1105 +2434,60 @@ declare namespace TdProto {
 
    }
 
-   /**
-    * PDF preview of mediafile. Experimental.
-    */
-   export interface PdfVersion {
-      /**
-      * Absolute url.
-      */
-      url: string;
-
-      /**
-      * First string of text content.
-      */
-      textPreview: string;
-
-   }
-
-   /**
-    * {hostname}/features.js / {hostname}/features.json structure.
-    */
-   export interface Features {
-      /**
-      * Current host.
-      */
-      host: string;
-
-      /**
-      * Build/revision of server side.
-      */
-      build: string;
-
-      /**
-      * Desktop application version.
-      */
-      desktopVersion: string;
-
-      /**
-      * Webclient version.
-      */
-      frontVersion: string;
-
-      /**
-      * Application title.
-      */
-      appTitle: string;
-
-      /**
-      * Static files server address.
-      */
-      userver: string;
-
-      /**
-      * Link to AppStore.
-      */
-      iOSApp: string;
-
-      /**
-      * Link to Google Play.
-      */
-      androidApp: string;
-
-      /**
-      * Default UI theme.
-      */
-      theme: string;
-
-      /**
-      * Minimal application version required for this server. Used for breaking changes.
-      */
-      minAppVersion: string;
-
-      /**
-      * Free registration allowed.
-      */
-      freeRegistration: boolean;
-
-      /**
-      * Maximum size of user's upload.
-      */
-      maxUploadMb: number;
-
-      /**
-      * Maximum number of forwarded messages.
-      */
-      maxLinkedMessages: number;
-
-      /**
-      * Maximum chars for: family_name, given_name, patronymic if any.
-      */
-      maxUsernamePartLength: number;
-
-      /**
-      * Maximum chars for group chat name.
-      */
-      maxGroupTitleLength: number;
-
-      /**
-      * Maximum chars for role in team.
-      */
-      maxRoleLength: number;
-
-      /**
-      * Maximum chars for mood in team.
-      */
-      maxMoodLength: number;
-
-      /**
-      * Maximum chars for text message.
-      */
-      maxMessageLength: number;
-
-      /**
-      * Maximum length for project and contact's sections names.
-      */
-      maxSectionLength: number;
-
-      /**
-      * Maximum length for tags.
-      */
-      maxTagLength: number;
-
-      /**
-      * Maximum length for task title.
-      */
-      maxTaskTitleLength: number;
-
-      /**
-      * Maximum teams for one account.
-      */
-      maxTeams: number;
-
-      /**
-      * Max inactivity seconds.
-      */
-      afkAge: number;
-
-      /**
-      * Password authentication enabled.
-      */
-      authByPassword: boolean;
-
-      /**
-      * QR-code / link authentication enabled.
-      */
-      authByQrCode: boolean;
-
-      /**
-      * SMS authentication enabled.
-      */
-      authBySms: boolean;
-
-      /**
-      * ICE servers for WebRTC.
-      */
-      iCEServers: ICEServer[];
-
-      /**
-      * True for onpremise installation.
-      */
-      customServer: boolean;
-
-      /**
-      * Name of instalation.
-      */
-      installationType: string;
-
-      /**
-      * Testing installation.
-      */
-      isTesting: boolean;
-
-      /**
-      * Yandex metrika counter id.
-      */
-      metrika: string;
-
-      /**
-      * Minimal chars number for starting global search.
-      */
-      minSearchLength: number;
-
-      /**
-      * Resend message in n seconds if no confirmation from server given.
-      */
-      resendTimeout: number;
-
-      /**
-      * Frontent sentry.io settings.
-      */
-      sentryDsnJS: string;
-
-      /**
-      * Message drafts saved on server.
-      */
-      serverDrafts: boolean;
-
-      /**
-      * Firebase application id for web-push notifacations.
-      */
-      firebaseAppId: string;
-
-      /**
-      * Firebase sender id for web-push notifacations.
-      */
-      firebaseSenderId: string;
-
-      /**
-      * Calls functions enabled.
-      */
-      calls: boolean;
-
-      /**
-      * Calls functions enabled for mobile applications.
-      */
-      mobileCalls: boolean;
-
-      /**
-      * Calls record enabled.
-      */
-      callsRecord: boolean;
-
-      /**
-      * Disallow call from multiply devices. Experimental.
-      */
-      onlyOneDevicePerCall: boolean;
-
-      /**
-      * Maximum number of participants per call.
-      */
-      maxParticipantsPerCall: number;
-
-      /**
-      * Safari push id for web-push notifacations.
-      */
-      safariPushId: string;
-
-      /**
-      * Team entity naming. Experimental.
-      */
-      terms: Terms;
-
-      /**
-      * Cross team communication. Experimental.
-      */
-      singleGroupTeams: boolean;
-
-      /**
-      * Wiki pages in chats. Experimental.
-      */
-      wikiPages: boolean;
-
-      /**
-      * Wiki pages in chats. Experimental.
-      */
-      allowAdminMute: boolean;
-
-      /**
-      * Deprecated.
-      */
-      taskChecklist: boolean;
-
-      /**
-      * Deprecated.
-      */
-      readonlyGroups: boolean;
-
-      /**
-      * Deprecated.
-      */
-      taskDashboard: boolean;
-
-      /**
-      * Deprecated.
-      */
-      taskMessages: boolean;
-
-      /**
-      * Deprecated.
-      */
-      taskPublic: boolean;
-
-      /**
-      * Deprecated.
-      */
-      taskTags: boolean;
-
-   }
-
-   /**
-    * Interactive Connectivity Establishment Server for WEB Rtc connection.
-    */
-   export interface ICEServer {
-      /**
-      * URls.
-      */
-      urls: string;
-
-   }
-
-   /**
-    * Exprtimental translation fields for "team" entity renaming.
-    */
-   export interface Terms {
-      /**
-      * EnInTeam.
-      */
-      enInTeam: string;
-
-      /**
-      * EnTeam.
-      */
-      enTeam: string;
-
-      /**
-      * EnTeamAccess.
-      */
-      enTeamAccess: string;
-
-      /**
-      * EnTeamAdmin.
-      */
-      enTeamAdmin: string;
-
-      /**
-      * EnTeamAdmins.
-      */
-      enTeamAdmins: string;
-
-      /**
-      * EnTeamGuest.
-      */
-      enTeamGuest: string;
-
-      /**
-      * EnTeamMember.
-      */
-      enTeamMember: string;
-
-      /**
-      * EnTeamMembers.
-      */
-      enTeamMembers: string;
-
-      /**
-      * EnTeamOwner.
-      */
-      enTeamOwner: string;
-
-      /**
-      * EnTeamSettings.
-      */
-      enTeamSettings: string;
-
-      /**
-      * RuTeamSettings.
-      */
-      ruTeamSettings: string;
-
-      /**
-      * EnTeams.
-      */
-      enTeams: string;
-
-      /**
-      * EnToTeam.
-      */
-      enToTeam: string;
-
-      /**
-      * RuInTeam.
-      */
-      ruInTeam: string;
-
-      /**
-      * RuTeam.
-      */
-      ruTeam: string;
-
-      /**
-      * RuTeamAccess.
-      */
-      ruTeamAccess: string;
-
-      /**
-      * RuTeamAdmin.
-      */
-      ruTeamAdmin: string;
-
-      /**
-      * RuTeamAdmins.
-      */
-      ruTeamAdmins: string;
-
-      /**
-      * RuTeamD.
-      */
-      ruTeamD: string;
-
-      /**
-      * RuTeamGuest.
-      */
-      ruTeamGuest: string;
-
-      /**
-      * RuTeamMember.
-      */
-      ruTeamMember: string;
-
-      /**
-      * RuTeamMembers.
-      */
-      ruTeamMembers: string;
-
-      /**
-      * RuTeamOwner.
-      */
-      ruTeamOwner: string;
-
-      /**
-      * RuTeamP.
-      */
-      ruTeamP: string;
-
-      /**
-      * RuTeamR.
-      */
-      ruTeamR: string;
-
-      /**
-      * RuTeams.
-      */
-      ruTeams: string;
-
-      /**
-      * RuTeamsD.
-      */
-      ruTeamsD: string;
-
-      /**
-      * RuTeamsP.
-      */
-      ruTeamsP: string;
-
-      /**
-      * RuTeamsR.
-      */
-      ruTeamsR: string;
-
-      /**
-      * RuTeamsT.
-      */
-      ruTeamsT: string;
-
-      /**
-      * RuTeamsV.
-      */
-      ruTeamsV: string;
-
-      /**
-      * RuTeamT.
-      */
-      ruTeamT: string;
-
-      /**
-      * RuTeamV.
-      */
-      ruTeamV: string;
-
-      /**
-      * RuToTeam.
-      */
-      ruToTeam: string;
-
-   }
-
-   /**
-    * Audiocall information.
-    */
-   export interface CallEvent {
-      /**
-      * Call start, iso date.
-      */
-      start: string | null;
-
-      /**
-      * Call finish, iso date.
-      */
-      finish: string | null;
-
-      /**
-      * Call record enabled.
-      */
-      audiorecord: boolean;
-
-      /**
-      * Call members.
-      */
-      onliners: CallOnliner[];
-
-   }
-
-   /**
-    * Call participant.
-    */
-   export interface CallOnliner {
-      /**
-      * Contact id.
-      */
-      jid: JID;
-
-      /**
-      * Contact name.
-      */
-      displayName: string;
-
-      /**
-      * Contact icon.
-      */
-      icon: string;
-
-      /**
-      * Microphone muted. Computed from devices muted states.
-      */
-      muted: boolean;
-
-      /**
-      * Member devices, strictly one for now.
-      */
-      devices: CallDevice[];
-
-   }
-
-   /**
-    * Call participant device.
-    */
-   export interface CallDevice {
-      /**
-      * Device muted.
-      */
-      muted: boolean;
-
-      /**
-      * Device description.
-      */
-      useragent: string;
-
-   }
-
-   /**
-    * Remind.
-    */
-   export interface Remind {
-      /**
-      * Remind id.
-      */
-      uid: string;
-
-      /**
-      * Chat id.
-      */
-      chat: JID;
-
-      /**
-      * Activation time, iso.
-      */
-      fireAt: string;
-
-      /**
-      * Comment, if any.
-      */
-      comment: string;
-
-   }
-
-   /**
-    * Remind deleted message.
-    */
-   export interface DeletedRemind {
-      /**
-      * Remind id.
-      */
-      uid: string;
-
-   }
-
-   /**
-    * Task tag.
-    */
-   export interface Tag {
-      /**
-      * Tag id.
-      */
-      uid: string;
-
-      /**
-      * Tag name.
-      */
-      name: string;
-
-   }
-
-   /**
-    * Delete tag message.
-    */
-   export interface DeletedTag {
-      /**
-      * Tag id.
-      */
-      uid: string;
-
-   }
-
-   /**
-    * Contact.
-    */
-   export interface Contact {
-      /**
-      * Contact Id.
-      */
-      jid: JID;
-
-      /**
-      * Full name in chats.
-      */
-      displayName: string;
-
-      /**
-      * Short name in chats.
-      */
-      shortName: string;
-
-      /**
-      * Contact email in this team.
-      */
-      contactEmail: string;
-
-      /**
-      * Contact phone in this team.
-      */
-      contactPhone: string;
-
-      /**
-      * Icons data.
-      */
-      icons: IconData | null;
-
-      /**
-      * Role in this team.
-      */
-      role: string;
-
-      /**
-      * Mood in this team.
-      */
-      mood: string;
-
-      /**
-      * Status in this team.
-      */
-      teamStatus: TeamStatus;
-
-      /**
-      * Last activity in this team (iso datetime).
-      */
-      lastActivity: string | null;
-
-      /**
-      * Can contact add users to this team.
-      */
-      addToTeamRights: boolean;
-
-      /**
-      * Contact deleted.
-      */
-      isArchive: boolean;
-
-      /**
-      * Bot name. Empty for users.
-      */
-      botname: string;
-
-      /**
-      * Section ids.
-      */
-      sections: string[];
-
-      /**
-      * Can I send message to this contact.
-      */
-      canSendMessage: boolean | null;
-
-      /**
-      * Why I can't send message to this chat (if can't).
-      */
-      cantSendMessageReason: string;
-
-      /**
-      * Can I call to this contact.
-      */
-      canCall: boolean | null;
-
-      /**
-      * Can I call create task for this contact.
-      */
-      canCreateTask: boolean | null;
-
-      /**
-      * Can I add this contact to group chats.
-      */
-      canAddToGroup: boolean | null;
-
-      /**
-      * Can I remove this contact from team.
-      */
-      canDelete: boolean | null;
-
-      /**
-      * Changeable fields.
-      */
-      changeableFields: string[] | null;
-
-      /**
-      * Family name.
-      */
-      familyName: string | null;
-
-      /**
-      * Given name.
-      */
-      givenName: string | null;
-
-      /**
-      * Patronymic, if any.
-      */
-      patronymic: string | null;
-
-      /**
-      * Default language code.
-      */
-      defaultLang: string | null;
-
-      /**
-      * Enable debug messages in UI.
-      */
-      debugShowActivity: boolean | null;
-
-      /**
-      * Enable remove all messages experimental features.
-      */
-      dropallEnabled: boolean | null;
-
-      /**
-      * Use Ctrl/Cmd + Enter insted Enter.
-      */
-      altSend: boolean | null;
-
-      /**
-      * Send push notifications even contact is online.
-      */
-      alwaysSendPushes: boolean | null;
-
-      /**
-      * Timezone, if any.
-      */
-      timezone: string | null;
-
-      /**
-      * Quiet time start.
-      */
-      quietTimeStart: string | null;
-
-      /**
-      * Quiet time finish.
-      */
-      quietTimeFinish: string | null;
-
-      /**
-      * Push notifications for group chats.
-      */
-      groupNotificationsEnabled: boolean | null;
-
-      /**
-      * Push notifications for task chats.
-      */
-      taskNotificationsEnabled: boolean | null;
-
-      /**
-      * Short view in contact list.
-      */
-      contactShortView: boolean | null;
-
-      /**
-      * Short view in group list.
-      */
-      groupShortView: boolean | null;
-
-      /**
-      * Short view in task list.
-      */
-      taskShortView: boolean | null;
-
-      /**
-      * Short view in contact list in mobile app.
-      */
-      contactMshortView: boolean | null;
-
-      /**
-      * Short view in group list in mobile app.
-      */
-      groupMshortView: boolean | null;
-
-      /**
-      * Short view in task list in mobile app.
-      */
-      taskMshortView: boolean | null;
-
-      /**
-      * Show archived contacts in contact list.
-      */
-      contactShowArchived: boolean | null;
-
-      /**
-      * Show inread chats first in feed.
-      */
-      unreadFirst: boolean | null;
-
-      /**
-      * Show inread chats first in feed in mobile app.
-      */
-      mUnreadFirst: boolean | null;
-
-      /**
-      * Can I add new members to this team.
-      */
-      canAddToTeam: boolean | null;
-
-      /**
-      * Can I manage sections in this team.
-      */
-      canManageSections: boolean | null;
-
-      /**
-      * Can I manage tags in this team.
-      */
-      canManageTags: boolean | null;
-
-      /**
-      * Can I manage integrations in this team.
-      */
-      canManageIntegrations: boolean | null;
-
-      /**
-      * Can I manage color rules in this team.
-      */
-      canManageColorRules: boolean | null;
-
-      /**
-      * Can I create group chats in this team.
-      */
-      canCreateGroup: boolean | null;
-
-      /**
-      * Can I view/join public group in this team.
-      */
-      canJoinPublicGroups: boolean | null;
-
-      /**
-      * Can I view/join public tasks in this team.
-      */
-      canJoinPublicTasks: boolean | null;
-
-      /**
-      * Deprecated: use CanDeleteAnyMessage in chat object.
-      */
-      canDeleteAnyMessage: boolean | null;
-
-      /**
-      * Extra contact fields.
-      */
-      customFields: ContactCustomFields | null;
-
-   }
-
-   /**
-    * Extra contact fields.
-    */
-   export interface ContactCustomFields {
-      /**
-      * Company.
-      */
-      company: string;
-
-      /**
-      * Department.
-      */
-      department: string;
-
-      /**
-      * Title.
-      */
-      title: string;
-
-      /**
-      * MobilePhone.
-      */
-      mobilePhone: string;
-
-   }
-
-   /**
-    * Short contact representaion.
-    */
-   export interface ContactShort {
-      /**
-      * Contact Id.
-      */
-      jid: JID;
-
-      /**
-      * Full name in chats.
-      */
-      displayName: string;
-
-      /**
-      * Short name in chats.
-      */
-      shortName: string;
-
-      /**
-      * Icons data.
-      */
-      icons: IconData | null;
-
-   }
-
-   /**
-    * Custom task status.
-    */
-   export interface TaskStatus {
-      /**
-      * Status id.
-      */
-      uid: string;
-
-      /**
-      * Status sort ordering.
-      */
-      sortOrdering: number;
-
-      /**
-      * Status internal name.
-      */
-      name: string;
-
-      /**
-      * Status localized name.
-      */
-      title: string;
-
-      /**
-      * Status not used anymore.
-      */
-      isArchive: boolean;
-
-   }
-
-   /**
-    * Color theme.
-    */
-   export interface Theme {
-      /**
-      * BgColor.
-      */
-      bgColor: string;
-
-      /**
-      * BgHoverColor.
-      */
-      bgHoverColor: string;
-
-      /**
-      * TextColor.
-      */
-      textColor: string;
-
-      /**
-      * MutedTextColor.
-      */
-      mutedTextColor: string;
-
-      /**
-      * AccentColor.
-      */
-      accentColor: string;
-
-      /**
-      * AccentHoverColor.
-      */
-      accentHoverColor: string;
-
-      /**
-      * TextOnAccentHoverColor.
-      */
-      textOnAccentHoverColor: string;
-
-      /**
-      * MainAccent.
-      */
-      mainAccent: string;
-
-      /**
-      * MainAccentHover.
-      */
-      mainAccentHover: string;
-
-      /**
-      * MainLightAccent.
-      */
-      mainLightAccent: string;
-
-      /**
-      * MainLink.
-      */
-      mainLink: string;
-
-      /**
-      * AppAccentColor.
-      */
-      appAccentColor: string;
-
-      /**
-      * AppPrimaryColor.
-      */
-      appPrimaryColor: string;
-
-   }
-
 }
 
 const undef = (v: any): boolean => (typeof v === 'undefined')
+
+
 /**
- * Create NewTeam from raw json.
+ * Create NewMessagePush from raw json.
  */
-export const NewTeam = (e: any): TdProto.Team => ({
+export const NewMessagePush = (e: any): TdProto.MessagePush => ({
+    title: e['title'],
+    subtitle: e['subtitle'],
+    message: e['message'],
+    iconUrl: e['icon_url'],
+    clickAction: e['click_action'],
+    tag: e['tag'],
+    team: e['team'],
+    sender: e['sender'],
+    chat: e['chat'],
+    messageId: e['message_id'],
+    created: e['created'],
+})
+
+/**
+ * Create NewUnread from raw json.
+ */
+export const NewUnread = (e: any): TdProto.Unread => ({
+    numMessages: e['messages'],
+    numNoticeMessages: e['notice_messages'],
+    numChats: e['chats'],
+})
+
+/**
+ * Export Unread to json.
+ */
+export const ExportUnread = (e: TdProto.Unread|null): any => (e === null ? null : {
+	'messages': e.numMessages,
+	'notice_messages': e.numNoticeMessages,
+	'chats': e.numChats,
+})
+
+/**
+ * Create NewTeamCounter from raw json.
+ */
+export const NewTeamCounter = (e: any): TdProto.TeamCounter => ({
     uid: e['uid'],
-    isArchive: undef(e['is_archive']) ? false : e['is_archive'],
-    gentime: e['gentime'],
-    name: e['name'],
-    defaultTaskDeadline: undef(e['default_task_deadline']) ? '' : e['default_task_deadline'],
-    maxMessageUpdateAge: e['max_message_update_age'],
-    icons: e['icons'].map(NewIconData),
-    lastActive: e['last_active'],
-    changeableStatuses: undef(e['changeable_statuses']) ? [] : e['changeable_statuses'],
-    badProfile: undef(e['bad_profile']) ? false : e['bad_profile'],
-    needConfirmation: e['need_confirmation'],
-    usePatronymic: undef(e['use_patronymic']) ? false : e['use_patronymic'],
-    userFields: e['user_fields'],
-    displayFamilyNameFirst: undef(e['display_family_name_first']) ? false : e['display_family_name_first'],
-    useTaskImportance: undef(e['use_task_importance']) ? false : e['use_task_importance'],
-    taskImportanceMin: undef(e['task_importance_min']) ? 0 : e['task_importance_min'],
-    taskImportanceMax: undef(e['task_importance_max']) ? 0 : e['task_importance_max'],
-    taskImportanceRev: undef(e['task_importance_rev']) ? false : e['task_importance_rev'],
-    useTaskUrgency: undef(e['use_task_urgency']) ? false : e['use_task_urgency'],
-    useTaskComplexity: undef(e['use_task_complexity']) ? false : e['use_task_complexity'],
-    useTaskSpentTime: undef(e['use_task_spent_time']) ? false : e['use_task_spent_time'],
-    uploadsSize: undef(e['uploads_size']) ? 0 : e['uploads_size'],
-    uploadsSizeLimit: undef(e['uploads_size_limit']) ? 0 : e['uploads_size_limit'],
     unreads: e['unread'],
-    me: e['me'].map(NewContact),
-    contacts: undef(e['contacts']) ? [] : e['contacts'].map(NewContact),
-    singleGroup: undef(e['single_group']) ? null : e['single_group'],
-    theme: undef(e['theme']) ? null : e['theme'].map(NewTheme),
-    hideArchivedUsers: undef(e['hide_archived_users']) ? false : e['hide_archived_users'],
 })
 
 /**
- * Create NewTeamShort from raw json.
+ * Export TeamCounter to json.
  */
-export const NewTeamShort = (e: any): TdProto.TeamShort => ({
-    uid: e['uid'],
-    name: e['name'],
-    icons: e['icons'].map(NewIconData),
-})
-
-/**
- * Create NewDeletedTeam from raw json.
- */
-export const NewDeletedTeam = (e: any): TdProto.DeletedTeam => ({
-    uid: e['uid'],
-    isArchive: e['is_archive'],
-    gentime: e['gentime'],
-})
-
-/**
- * Create NewTaskColor from raw json.
- */
-export const NewTaskColor = (e: any): TdProto.TaskColor => ({
-    regular: e['regular'],
-    dark: e['dark'],
-    light: e['light'],
+export const ExportTeamCounter = (e: TdProto.TeamCounter|null): any => (e === null ? null : {
+	'uid': e.uid,
+	'unread': e.unreads,
 })
 
 /**
@@ -2444,303 +2501,13 @@ export const NewWikiPage = (e: any): TdProto.WikiPage => ({
 })
 
 /**
- * Create NewUnread from raw json.
+ * Export WikiPage to json.
  */
-export const NewUnread = (e: any): TdProto.Unread => ({
-    numMessages: e['messages'],
-    numNoticeMessages: e['notice_messages'],
-    numChats: e['chats'],
-})
-
-/**
- * Create NewTeamCounter from raw json.
- */
-export const NewTeamCounter = (e: any): TdProto.TeamCounter => ({
-    uid: e['uid'],
-    unreads: e['unread'],
-})
-
-/**
- * Create NewSingleIcon from raw json.
- */
-export const NewSingleIcon = (e: any): TdProto.SingleIcon => ({
-    url: e['url'],
-    width: e['width'],
-    height: e['height'],
-})
-
-/**
- * Create NewIconData from raw json.
- */
-export const NewIconData = (e: any): TdProto.IconData => ({
-    sm: undef(e['sm']) ? null : e['sm'].map(NewSingleIcon),
-    lg: undef(e['lg']) ? null : e['lg'].map(NewSingleIcon),
-    stub: undef(e['stub']) ? '' : e['stub'],
-    letters: undef(e['letters']) ? '' : e['letters'],
-    color: undef(e['color']) ? '' : e['color'],
-})
-
-/**
- * Create NewMessageContent from raw json.
- */
-export const NewMessageContent = (e: any): TdProto.MessageContent => ({
-    text: e['text'],
-    type: e['type'],
-    subtype: undef(e['subtype']) ? '' : e['subtype'],
-    upload: undef(e['upload']) ? '' : e['upload'],
-    mediaUrl: undef(e['mediaURL']) ? '' : e['mediaURL'],
-    size: undef(e['size']) ? 0 : e['size'],
-    duration: undef(e['duration']) ? null : e['duration'],
-    processing: undef(e['processing']) ? false : e['processing'],
-    previewHeight: undef(e['previewHeight']) ? 0 : e['previewHeight'],
-    previewWidth: undef(e['previewWidth']) ? 0 : e['previewWidth'],
-    previewUrl: undef(e['previewURL']) ? '' : e['previewURL'],
-    preview2xUrl: undef(e['preview2xURL']) ? '' : e['preview2xURL'],
-    name: undef(e['name']) ? '' : e['name'],
-    animated: undef(e['animated']) ? false : e['animated'],
-    title: undef(e['title']) ? '' : e['title'],
-    old: undef(e['old']) ? null : e['old'],
-    new: undef(e['new']) ? null : e['new'],
-    actor: undef(e['actor']) ? null : e['actor'],
-    comment: undef(e['comment']) ? '' : e['comment'],
-    givenName: undef(e['given_name']) ? null : e['given_name'],
-    familyName: undef(e['family_name']) ? null : e['family_name'],
-    patronymic: undef(e['patronymic']) ? null : e['patronymic'],
-    phones: undef(e['phones']) ? [] : e['phones'],
-    emails: undef(e['emails']) ? [] : e['emails'],
-    stickerpack: undef(e['stickerpack']) ? '' : e['stickerpack'],
-    pdfVersion: undef(e['pdf_version']) ? null : e['pdf_version'].map(NewPdfVersion),
-})
-
-/**
- * Create NewMessage from raw json.
- */
-export const NewMessage = (e: any): TdProto.Message => ({
-    content: e['content'].map(NewMessageContent),
-    pushText: undef(e['push_text']) ? '' : e['push_text'],
-    from: e['from'],
-    to: e['to'],
-    messageId: e['message_id'],
-    created: e['created'],
-    gentime: e['gentime'],
-    chatType: e['chat_type'],
-    chat: e['chat'],
-    links: undef(e['links']) ? [] : e['links'],
-    important: undef(e['important']) ? false : e['important'],
-    edited: undef(e['edited']) ? '' : e['edited'],
-    received: undef(e['received']) ? false : e['received'],
-    numReceived: undef(e['num_received']) ? 0 : e['num_received'],
-    nopreview: undef(e['nopreview']) ? false : e['nopreview'],
-    hasPreviews: undef(e['has_previews']) ? false : e['has_previews'],
-    prev: undef(e['prev']) ? '' : e['prev'],
-    isFirst: undef(e['is_first']) ? false : e['is_first'],
-    isLast: undef(e['is_last']) ? false : e['is_last'],
-    reactions: undef(e['reactions']) ? [] : e['reactions'].map(NewMessageReaction),
-    replyTo: undef(e['reply_to']) ? null : e['reply_to'].map(NewMessage),
-    linkedMessages: undef(e['linked_messages']) ? [] : e['linked_messages'].map(NewMessage),
-    notice: undef(e['notice']) ? false : e['notice'],
-    silently: undef(e['silently']) ? false : e['silently'],
-    editableUntil: undef(e['editable_until']) ? '' : e['editable_until'],
-    num: undef(e['num']) ? null : e['num'],
-    debug: undef(e['_debug']) ? '' : e['_debug'],
-})
-
-/**
- * Create NewMessageLinkPreview from raw json.
- */
-export const NewMessageLinkPreview = (e: any): TdProto.MessageLinkPreview => ({
-    title: e['title'],
-    description: undef(e['description']) ? '' : e['description'],
-})
-
-/**
- * Create NewMessageLink from raw json.
- */
-export const NewMessageLink = (e: any): TdProto.MessageLink => ({
-    pattern: e['pattern'],
-    url: e['url'],
-    text: e['text'],
-    preview: undef(e['preview']) ? null : e['preview'].map(NewMessageLinkPreview),
-    uploads: undef(e['uploads']) ? [] : e['uploads'].map(NewUpload),
-    noPreview: undef(e['nopreview']) ? false : e['nopreview'],
-    youtubeId: undef(e['youtube_id']) ? '' : e['youtube_id'],
-})
-
-/**
- * Create NewMessageReaction from raw json.
- */
-export const NewMessageReaction = (e: any): TdProto.MessageReaction => ({
-    name: e['name'],
-    counter: e['counter'],
-    details: e['details'].map(NewMessageReactionDetail),
-})
-
-/**
- * Create NewMessageReactionDetail from raw json.
- */
-export const NewMessageReactionDetail = (e: any): TdProto.MessageReactionDetail => ({
-    created: e['created'],
-    sender: e['sender'],
-    name: e['name'],
-})
-
-/**
- * Create NewChatShort from raw json.
- */
-export const NewChatShort = (e: any): TdProto.ChatShort => ({
-    jid: e['jid'],
-    chatType: e['chat_type'],
-    displayName: e['display_name'],
-    icons: e['icons'].map(NewIconData),
-})
-
-/**
- * Create NewDeletedChat from raw json.
- */
-export const NewDeletedChat = (e: any): TdProto.DeletedChat => ({
-    jid: e['jid'],
-    chatType: e['chat_type'],
-    gentime: e['gentime'],
-    isArchive: e['is_archive'],
-})
-
-/**
- * Create NewChat from raw json.
- */
-export const NewChat = (e: any): TdProto.Chat => ({
-    jid: e['jid'],
-    chatType: e['chat_type'],
-    baseGentime: undef(e['base_gentime']) ? 0 : e['base_gentime'],
-    gentime: e['gentime'],
-    created: e['created'],
-    displayName: e['display_name'],
-    icons: e['icons'].map(NewIconData),
-    countersEnabled: undef(e['counters_enabled']) ? false : e['counters_enabled'],
-    canCall: undef(e['can_call']) ? false : e['can_call'],
-    canSendMessage: undef(e['can_send_message']) ? false : e['can_send_message'],
-    cantSendMessageReason: undef(e['cant_send_message_reason']) ? '' : e['cant_send_message_reason'],
-    collapsed: undef(e['collapsed']) ? false : e['collapsed'],
-    draft: undef(e['draft']) ? '' : e['draft'],
-    draftNum: undef(e['draft_num']) ? 0 : e['draft_num'],
-    hidden: undef(e['hidden']) ? false : e['hidden'],
-    notificationsEnabled: undef(e['notifications_enabled']) ? false : e['notifications_enabled'],
-    numImportants: undef(e['num_importants']) ? 0 : e['num_importants'],
-    numUnread: undef(e['num_unread']) ? 0 : e['num_unread'],
-    numUnreadNotices: undef(e['num_unread_notices']) ? 0 : e['num_unread_notices'],
-    lastMessage: undef(e['last_message']) ? null : e['last_message'].map(NewMessage),
-    lastReadMessageId: undef(e['last_read_message_id']) ? '' : e['last_read_message_id'],
-    section: undef(e['section']) ? '' : e['section'],
-    changeableFields: undef(e['changeable_fields']) ? [] : e['changeable_fields'],
-    pinned: undef(e['pinned']) ? false : e['pinned'],
-    pinnedSortOrdering: undef(e['pinned_sort_ordering']) ? 0 : e['pinned_sort_ordering'],
-    numMembers: undef(e['num_members']) ? null : e['num_members'],
-    canDelete: undef(e['can_delete']) ? false : e['can_delete'],
-    description: undef(e['description']) ? '' : e['description'],
-    feed: undef(e['feed']) ? false : e['feed'],
-    pinnedMessage: undef(e['pinned_message']) ? null : e['pinned_message'].map(NewMessage),
-    colorIndex: undef(e['color_index']) ? null : e['color_index'],
-    numItems: undef(e['num_items']) ? null : e['num_items'],
-    numCheckedItems: undef(e['num_checked_items']) ? null : e['num_checked_items'],
-    assignee: undef(e['assignee']) ? null : e['assignee'],
-    num: undef(e['num']) ? 0 : e['num'],
-    observers: undef(e['observers']) ? [] : e['observers'],
-    owner: undef(e['owner']) ? null : e['owner'],
-    taskStatus: undef(e['task_status']) ? '' : e['task_status'],
-    title: undef(e['title']) ? '' : e['title'],
-    done: undef(e['done']) ? '' : e['done'],
-    doneReason: undef(e['done_reason']) ? '' : e['done_reason'],
-    deadline: undef(e['deadline']) ? '' : e['deadline'],
-    deadlineExpired: undef(e['deadline_expired']) ? false : e['deadline_expired'],
-    links: undef(e['links']) ? [] : e['links'],
-    tags: undef(e['tags']) ? [] : e['tags'],
-    importance: undef(e['importance']) ? null : e['importance'],
-    urgency: undef(e['urgency']) ? null : e['urgency'],
-    spentTime: undef(e['spent_time']) ? null : e['spent_time'],
-    complexity: undef(e['complexity']) ? null : e['complexity'],
-    linkedMessages: undef(e['linked_messages']) ? [] : e['linked_messages'],
-    items: undef(e['items']) ? [] : e['items'].map(NewTaskItem),
-    parents: undef(e['parents']) ? [] : e['parents'].map(NewSubtask),
-    tabs: undef(e['tabs']) ? [] : e['tabs'],
-    status: undef(e['status']) ? null : e['status'],
-    members: undef(e['members']) ? [] : e['members'].map(NewGroupMembership),
-    canAddMember: undef(e['can_add_member']) ? false : e['can_add_member'],
-    canRemoveMember: undef(e['can_remove_member']) ? false : e['can_remove_member'],
-    canChangeMemberStatus: undef(e['can_change_member_status']) ? false : e['can_change_member_status'],
-    canChangeSettings: undef(e['can_change_settings']) ? false : e['can_change_settings'],
-    defaultForAll: undef(e['default_for_all']) ? false : e['default_for_all'],
-    readonlyForMembers: undef(e['readonly_for_members']) ? false : e['readonly_for_members'],
-    autocleanupAge: undef(e['autocleanup_age']) ? null : e['autocleanup_age'],
-    public: undef(e['public']) ? false : e['public'],
-    canJoin: undef(e['can_join']) ? false : e['can_join'],
-    canDeleteAnyMessage: undef(e['can_delete_any_message']) ? null : e['can_delete_any_message'],
-    canSetImportantAnyMessage: undef(e['can_set_important_any_message']) ? null : e['can_set_important_any_message'],
-})
-
-/**
- * Create NewSubtask from raw json.
- */
-export const NewSubtask = (e: any): TdProto.Subtask => ({
-    jid: e['jid'],
-    assignee: e['assignee'],
-    title: e['title'],
-    num: e['num'],
-    displayName: e['display_name'],
-    public: undef(e['public']) ? false : e['public'],
-})
-
-/**
- * Create NewTaskItem from raw json.
- */
-export const NewTaskItem = (e: any): TdProto.TaskItem => ({
-    uid: undef(e['uid']) ? '' : e['uid'],
-    sortOrdering: undef(e['sort_ordering']) ? 0 : e['sort_ordering'],
-    text: e['text'],
-    checked: undef(e['checked']) ? false : e['checked'],
-    canToggle: undef(e['can_toggle']) ? false : e['can_toggle'],
-    subtask: undef(e['subtask']) ? null : e['subtask'].map(NewSubtask),
-})
-
-/**
- * Create NewGroupMembership from raw json.
- */
-export const NewGroupMembership = (e: any): TdProto.GroupMembership => ({
-    jid: e['jid'],
-    status: e['status'],
-    canRemove: undef(e['can_remove']) ? false : e['can_remove'],
-})
-
-/**
- * Create NewUpload from raw json.
- */
-export const NewUpload = (e: any): TdProto.Upload => ({
-    uid: e['uid'],
-    size: e['size'],
-    duration: undef(e['duration']) ? 0 : e['duration'],
-    name: e['name'],
-    url: e['url'],
-    preview: undef(e['preview']) ? null : e['preview'].map(NewUploadPreview),
-    contentType: e['content_type'],
-    animated: undef(e['animated']) ? false : e['animated'],
-    processing: undef(e['processing']) ? false : e['processing'],
-    pdfVersion: undef(e['pdf_version']) ? null : e['pdf_version'].map(NewPdfVersion),
-})
-
-/**
- * Create NewUploadPreview from raw json.
- */
-export const NewUploadPreview = (e: any): TdProto.UploadPreview => ({
-    url: e['url'],
-    url2x: e['url_2x'],
-    width: e['width'],
-    height: e['height'],
-})
-
-/**
- * Create NewPdfVersion from raw json.
- */
-export const NewPdfVersion = (e: any): TdProto.PdfVersion => ({
-    url: e['url'],
-    textPreview: undef(e['text_preview']) ? '' : e['text_preview'],
+export const ExportWikiPage = (e: TdProto.WikiPage|null): any => (e === null ? null : {
+	'gentime': e.gentime,
+	'updated': e.updated,
+	'editor': e.editor,
+	'text': e.text,
 })
 
 /**
@@ -2768,6 +2535,7 @@ export const NewFeatures = (e: any): TdProto.Features => ({
     maxSectionLength: e['max_section_length'],
     maxTagLength: e['max_tag_length'],
     maxTaskTitleLength: e['max_task_title_length'],
+    maxColorRuleDescriptionLength: e['max_color_rule_description_length'],
     maxTeams: e['max_teams'],
     afkAge: e['afk_age'],
     authByPassword: undef(e['auth_by_password']) ? false : e['auth_by_password'],
@@ -2850,6 +2618,92 @@ export const NewTerms = (e: any): TdProto.Terms => ({
 })
 
 /**
+ * Create NewSingleIcon from raw json.
+ */
+export const NewSingleIcon = (e: any): TdProto.SingleIcon => ({
+    url: e['url'],
+    width: e['width'],
+    height: e['height'],
+})
+
+/**
+ * Export SingleIcon to json.
+ */
+export const ExportSingleIcon = (e: TdProto.SingleIcon|null): any => (e === null ? null : {
+	'url': e.url,
+	'width': e.width,
+	'height': e.height,
+})
+
+/**
+ * Create NewIconData from raw json.
+ */
+export const NewIconData = (e: any): TdProto.IconData => ({
+    sm: undef(e['sm']) ? null : e['sm'].map(NewSingleIcon),
+    lg: undef(e['lg']) ? null : e['lg'].map(NewSingleIcon),
+    stub: undef(e['stub']) ? '' : e['stub'],
+    letters: undef(e['letters']) ? '' : e['letters'],
+    color: undef(e['color']) ? '' : e['color'],
+})
+
+/**
+ * Export IconData to json.
+ */
+export const ExportIconData = (e: TdProto.IconData|null): any => (e === null ? null : {
+	'sm': ExportSingleIcon(e.sm),
+	'lg': ExportSingleIcon(e.lg),
+	'stub': e.stub,
+	'letters': e.letters,
+	'color': e.color,
+})
+
+/**
+ * Create NewPdfVersion from raw json.
+ */
+export const NewPdfVersion = (e: any): TdProto.PdfVersion => ({
+    url: e['url'],
+    textPreview: undef(e['text_preview']) ? '' : e['text_preview'],
+})
+
+/**
+ * Export PdfVersion to json.
+ */
+export const ExportPdfVersion = (e: TdProto.PdfVersion|null): any => (e === null ? null : {
+	'url': e.url,
+	'text_preview': e.textPreview,
+})
+
+/**
+ * Create NewTag from raw json.
+ */
+export const NewTag = (e: any): TdProto.Tag => ({
+    uid: e['uid'],
+    name: e['name'],
+})
+
+/**
+ * Export Tag to json.
+ */
+export const ExportTag = (e: TdProto.Tag|null): any => (e === null ? null : {
+	'uid': e.uid,
+	'name': e.name,
+})
+
+/**
+ * Create NewDeletedTag from raw json.
+ */
+export const NewDeletedTag = (e: any): TdProto.DeletedTag => ({
+    uid: e['uid'],
+})
+
+/**
+ * Export DeletedTag to json.
+ */
+export const ExportDeletedTag = (e: TdProto.DeletedTag|null): any => (e === null ? null : {
+	'uid': e.uid,
+})
+
+/**
  * Create NewCallEvent from raw json.
  */
 export const NewCallEvent = (e: any): TdProto.CallEvent => ({
@@ -2857,6 +2711,16 @@ export const NewCallEvent = (e: any): TdProto.CallEvent => ({
     finish: e['finish'],
     audiorecord: e['audiorecord'],
     onliners: e['onliners'].map(NewCallOnliner),
+})
+
+/**
+ * Export CallEvent to json.
+ */
+export const ExportCallEvent = (e: TdProto.CallEvent|null): any => (e === null ? null : {
+	'start': e.start,
+	'finish': e.finish,
+	'audiorecord': e.audiorecord,
+	'onliners': e.onliners.map(ExportCallOnliner),
 })
 
 /**
@@ -2871,6 +2735,17 @@ export const NewCallOnliner = (e: any): TdProto.CallOnliner => ({
 })
 
 /**
+ * Export CallOnliner to json.
+ */
+export const ExportCallOnliner = (e: TdProto.CallOnliner|null): any => (e === null ? null : {
+	'jid': e.jid,
+	'display_name': e.displayName,
+	'icon': e.icon,
+	'muted': e.muted,
+	'devices': e.devices.map(ExportCallDevice),
+})
+
+/**
  * Create NewCallDevice from raw json.
  */
 export const NewCallDevice = (e: any): TdProto.CallDevice => ({
@@ -2879,35 +2754,259 @@ export const NewCallDevice = (e: any): TdProto.CallDevice => ({
 })
 
 /**
- * Create NewRemind from raw json.
+ * Export CallDevice to json.
  */
-export const NewRemind = (e: any): TdProto.Remind => ({
-    uid: e['uid'],
-    chat: e['chat'],
-    fireAt: e['fire_at'],
+export const ExportCallDevice = (e: TdProto.CallDevice|null): any => (e === null ? null : {
+	'muted': e.muted,
+	'useragent': e.useragent,
+})
+
+/**
+ * Create NewMessageContent from raw json.
+ */
+export const NewMessageContent = (e: any): TdProto.MessageContent => ({
+    text: e['text'],
+    type: e['type'],
+    subtype: undef(e['subtype']) ? '' : e['subtype'],
+    upload: undef(e['upload']) ? '' : e['upload'],
+    mediaUrl: undef(e['mediaURL']) ? '' : e['mediaURL'],
+    size: undef(e['size']) ? 0 : e['size'],
+    duration: undef(e['duration']) ? null : e['duration'],
+    processing: undef(e['processing']) ? false : e['processing'],
+    previewHeight: undef(e['previewHeight']) ? 0 : e['previewHeight'],
+    previewWidth: undef(e['previewWidth']) ? 0 : e['previewWidth'],
+    previewUrl: undef(e['previewURL']) ? '' : e['previewURL'],
+    preview2xUrl: undef(e['preview2xURL']) ? '' : e['preview2xURL'],
+    name: undef(e['name']) ? '' : e['name'],
+    animated: undef(e['animated']) ? false : e['animated'],
+    title: undef(e['title']) ? '' : e['title'],
+    old: undef(e['old']) ? null : e['old'],
+    new: undef(e['new']) ? null : e['new'],
+    actor: undef(e['actor']) ? null : e['actor'],
     comment: undef(e['comment']) ? '' : e['comment'],
+    givenName: undef(e['given_name']) ? null : e['given_name'],
+    familyName: undef(e['family_name']) ? null : e['family_name'],
+    patronymic: undef(e['patronymic']) ? null : e['patronymic'],
+    phones: undef(e['phones']) ? [] : e['phones'],
+    emails: undef(e['emails']) ? [] : e['emails'],
+    stickerpack: undef(e['stickerpack']) ? '' : e['stickerpack'],
+    pdfVersion: undef(e['pdf_version']) ? null : e['pdf_version'].map(NewPdfVersion),
 })
 
 /**
- * Create NewDeletedRemind from raw json.
+ * Export MessageContent to json.
  */
-export const NewDeletedRemind = (e: any): TdProto.DeletedRemind => ({
-    uid: e['uid'],
+export const ExportMessageContent = (e: TdProto.MessageContent|null): any => (e === null ? null : {
+	'text': e.text,
+	'type': e.type,
+	'subtype': e.subtype,
+	'upload': e.upload,
+	'mediaURL': e.mediaUrl,
+	'size': e.size,
+	'duration': e.duration,
+	'processing': e.processing,
+	'previewHeight': e.previewHeight,
+	'previewWidth': e.previewWidth,
+	'previewURL': e.previewUrl,
+	'preview2xURL': e.preview2xUrl,
+	'name': e.name,
+	'animated': e.animated,
+	'title': e.title,
+	'old': e.old,
+	'new': e.new,
+	'actor': e.actor,
+	'comment': e.comment,
+	'given_name': e.givenName,
+	'family_name': e.familyName,
+	'patronymic': e.patronymic,
+	'phones': e.phones,
+	'emails': e.emails,
+	'stickerpack': e.stickerpack,
+	'pdf_version': ExportPdfVersion(e.pdfVersion),
 })
 
 /**
- * Create NewTag from raw json.
+ * Create NewMessage from raw json.
  */
-export const NewTag = (e: any): TdProto.Tag => ({
-    uid: e['uid'],
+export const NewMessage = (e: any): TdProto.Message => ({
+    content: e['content'].map(NewMessageContent),
+    pushText: undef(e['push_text']) ? '' : e['push_text'],
+    from: e['from'],
+    to: e['to'],
+    messageId: e['message_id'],
+    created: e['created'],
+    gentime: e['gentime'],
+    chatType: e['chat_type'],
+    chat: e['chat'],
+    links: undef(e['links']) ? [] : e['links'],
+    important: undef(e['important']) ? false : e['important'],
+    edited: undef(e['edited']) ? '' : e['edited'],
+    received: undef(e['received']) ? false : e['received'],
+    numReceived: undef(e['num_received']) ? 0 : e['num_received'],
+    nopreview: undef(e['nopreview']) ? false : e['nopreview'],
+    hasPreviews: undef(e['has_previews']) ? false : e['has_previews'],
+    prev: undef(e['prev']) ? '' : e['prev'],
+    isFirst: undef(e['is_first']) ? false : e['is_first'],
+    isLast: undef(e['is_last']) ? false : e['is_last'],
+    reactions: undef(e['reactions']) ? [] : e['reactions'].map(NewMessageReaction),
+    replyTo: undef(e['reply_to']) ? null : e['reply_to'].map(NewMessage),
+    linkedMessages: undef(e['linked_messages']) ? [] : e['linked_messages'].map(NewMessage),
+    notice: undef(e['notice']) ? false : e['notice'],
+    silently: undef(e['silently']) ? false : e['silently'],
+    editableUntil: undef(e['editable_until']) ? '' : e['editable_until'],
+    num: undef(e['num']) ? null : e['num'],
+    debug: undef(e['_debug']) ? '' : e['_debug'],
+})
+
+/**
+ * Export Message to json.
+ */
+export const ExportMessage = (e: TdProto.Message|null): any => (e === null ? null : {
+	'content': ExportMessageContent(e.content),
+	'to': e.to,
+	'message_id': e.messageId,
+	'important': e.important,
+	'nopreview': e.nopreview,
+	'reply_to': ExportMessage(e.replyTo),
+	'linked_messages': e.linkedMessages.map(ExportMessage),
+})
+
+/**
+ * Create NewMessageLinkPreview from raw json.
+ */
+export const NewMessageLinkPreview = (e: any): TdProto.MessageLinkPreview => ({
+    title: e['title'],
+    description: undef(e['description']) ? '' : e['description'],
+})
+
+/**
+ * Export MessageLinkPreview to json.
+ */
+export const ExportMessageLinkPreview = (e: TdProto.MessageLinkPreview|null): any => (e === null ? null : {
+	'title': e.title,
+	'description': e.description,
+})
+
+/**
+ * Create NewMessageLink from raw json.
+ */
+export const NewMessageLink = (e: any): TdProto.MessageLink => ({
+    pattern: e['pattern'],
+    url: e['url'],
+    text: e['text'],
+    preview: undef(e['preview']) ? null : e['preview'].map(NewMessageLinkPreview),
+    uploads: undef(e['uploads']) ? [] : e['uploads'].map(NewUpload),
+    noPreview: undef(e['nopreview']) ? false : e['nopreview'],
+    youtubeId: undef(e['youtube_id']) ? '' : e['youtube_id'],
+})
+
+/**
+ * Export MessageLink to json.
+ */
+export const ExportMessageLink = (e: TdProto.MessageLink|null): any => (e === null ? null : {
+	'pattern': e.pattern,
+	'url': e.url,
+	'text': e.text,
+	'preview': ExportMessageLinkPreview(e.preview),
+	'uploads': e.uploads.map(ExportUpload),
+	'nopreview': e.noPreview,
+	'youtube_id': e.youtubeId,
+})
+
+/**
+ * Create NewMessageReaction from raw json.
+ */
+export const NewMessageReaction = (e: any): TdProto.MessageReaction => ({
+    name: e['name'],
+    counter: e['counter'],
+    details: e['details'].map(NewMessageReactionDetail),
+})
+
+/**
+ * Export MessageReaction to json.
+ */
+export const ExportMessageReaction = (e: TdProto.MessageReaction|null): any => (e === null ? null : {
+	'name': e.name,
+	'counter': e.counter,
+	'details': e.details.map(ExportMessageReactionDetail),
+})
+
+/**
+ * Create NewMessageReactionDetail from raw json.
+ */
+export const NewMessageReactionDetail = (e: any): TdProto.MessageReactionDetail => ({
+    created: e['created'],
+    sender: e['sender'],
     name: e['name'],
 })
 
 /**
- * Create NewDeletedTag from raw json.
+ * Export MessageReactionDetail to json.
  */
-export const NewDeletedTag = (e: any): TdProto.DeletedTag => ({
-    uid: e['uid'],
+export const ExportMessageReactionDetail = (e: TdProto.MessageReactionDetail|null): any => (e === null ? null : {
+	'created': e.created,
+	'sender': e.sender,
+	'name': e.name,
+})
+
+/**
+ * Create NewTaskStatus from raw json.
+ */
+export const NewTaskStatus = (e: any): TdProto.TaskStatus => ({
+    uid: undef(e['uid']) ? '' : e['uid'],
+    sortOrdering: e['sort_ordering'],
+    name: e['name'],
+    title: e['title'],
+    isArchive: undef(e['is_archive']) ? false : e['is_archive'],
+})
+
+/**
+ * Export TaskStatus to json.
+ */
+export const ExportTaskStatus = (e: TdProto.TaskStatus|null): any => (e === null ? null : {
+	'uid': e.uid,
+	'sort_ordering': e.sortOrdering,
+	'name': e.name,
+	'title': e.title,
+	'is_archive': e.isArchive,
+})
+
+/**
+ * Create NewTheme from raw json.
+ */
+export const NewTheme = (e: any): TdProto.Theme => ({
+    bgColor: e['BgColor'],
+    bgHoverColor: e['BgHoverColor'],
+    textColor: e['TextColor'],
+    mutedTextColor: e['MutedTextColor'],
+    accentColor: e['AccentColor'],
+    accentHoverColor: e['AccentHoverColor'],
+    textOnAccentHoverColor: e['TextOnAccentHoverColor'],
+    mainAccent: e['MainAccent'],
+    mainAccentHover: e['MainAccentHover'],
+    mainLightAccent: e['MainLightAccent'],
+    mainLink: e['MainLink'],
+    appAccentColor: e['AppAccentColor'],
+    appPrimaryColor: e['AppPrimaryColor'],
+})
+
+/**
+ * Export Theme to json.
+ */
+export const ExportTheme = (e: TdProto.Theme|null): any => (e === null ? null : {
+	'BgColor': e.bgColor,
+	'BgHoverColor': e.bgHoverColor,
+	'TextColor': e.textColor,
+	'MutedTextColor': e.mutedTextColor,
+	'AccentColor': e.accentColor,
+	'AccentHoverColor': e.accentHoverColor,
+	'TextOnAccentHoverColor': e.textOnAccentHoverColor,
+	'MainAccent': e.mainAccent,
+	'MainAccentHover': e.mainAccentHover,
+	'MainLightAccent': e.mainLightAccent,
+	'MainLink': e.mainLink,
+	'AppAccentColor': e.appAccentColor,
+	'AppPrimaryColor': e.appPrimaryColor,
 })
 
 /**
@@ -2970,6 +3069,65 @@ export const NewContact = (e: any): TdProto.Contact => ({
 })
 
 /**
+ * Export Contact to json.
+ */
+export const ExportContact = (e: TdProto.Contact|null): any => (e === null ? null : {
+	'jid': e.jid,
+	'display_name': e.displayName,
+	'short_name': e.shortName,
+	'contact_email': e.contactEmail,
+	'contact_phone': e.contactPhone,
+	'icons': ExportIconData(e.icons),
+	'role': e.role,
+	'mood': e.mood,
+	'status': e.teamStatus,
+	'last_activity': e.lastActivity,
+	'add_to_team_rights': e.addToTeamRights,
+	'is_archive': e.isArchive,
+	'botname': e.botname,
+	'sections': e.sections,
+	'can_send_message': e.canSendMessage,
+	'cant_send_message_reason': e.cantSendMessageReason,
+	'can_call': e.canCall,
+	'can_create_task': e.canCreateTask,
+	'can_add_to_group': e.canAddToGroup,
+	'can_delete': e.canDelete,
+	'changeable_fields': e.changeableFields,
+	'family_name': e.familyName,
+	'given_name': e.givenName,
+	'patronymic': e.patronymic,
+	'default_lang': e.defaultLang,
+	'debug_show_activity': e.debugShowActivity,
+	'dropall_enabled': e.dropallEnabled,
+	'alt_send': e.altSend,
+	'always_send_pushes': e.alwaysSendPushes,
+	'timezone': e.timezone,
+	'quiet_time_start': e.quietTimeStart,
+	'quiet_time_finish': e.quietTimeFinish,
+	'group_notifications_enabled': e.groupNotificationsEnabled,
+	'task_notifications_enabled': e.taskNotificationsEnabled,
+	'contact_short_view': e.contactShortView,
+	'group_short_view': e.groupShortView,
+	'task_short_view': e.taskShortView,
+	'contact_mshort_view': e.contactMshortView,
+	'group_mshort_view': e.groupMshortView,
+	'task_mshort_view': e.taskMshortView,
+	'contact_show_archived': e.contactShowArchived,
+	'unread_first': e.unreadFirst,
+	'munread_first': e.mUnreadFirst,
+	'can_add_to_team': e.canAddToTeam,
+	'can_manage_sections': e.canManageSections,
+	'can_manage_tags': e.canManageTags,
+	'can_manage_integrations': e.canManageIntegrations,
+	'can_manage_color_rules': e.canManageColorRules,
+	'can_create_group': e.canCreateGroup,
+	'can_join_public_groups': e.canJoinPublicGroups,
+	'can_join_public_tasks': e.canJoinPublicTasks,
+	'can_delete_any_message': e.canDeleteAnyMessage,
+	'custom_fields': ExportContactCustomFields(e.customFields),
+})
+
+/**
  * Create NewContactCustomFields from raw json.
  */
 export const NewContactCustomFields = (e: any): TdProto.ContactCustomFields => ({
@@ -2977,6 +3135,16 @@ export const NewContactCustomFields = (e: any): TdProto.ContactCustomFields => (
     department: undef(e['department']) ? '' : e['department'],
     title: undef(e['title']) ? '' : e['title'],
     mobilePhone: undef(e['mobile_phone']) ? '' : e['mobile_phone'],
+})
+
+/**
+ * Export ContactCustomFields to json.
+ */
+export const ExportContactCustomFields = (e: TdProto.ContactCustomFields|null): any => (e === null ? null : {
+	'company': e.company,
+	'department': e.department,
+	'title': e.title,
+	'mobile_phone': e.mobilePhone,
 })
 
 /**
@@ -2990,33 +3158,439 @@ export const NewContactShort = (e: any): TdProto.ContactShort => ({
 })
 
 /**
- * Create NewTaskStatus from raw json.
+ * Export ContactShort to json.
  */
-export const NewTaskStatus = (e: any): TdProto.TaskStatus => ({
-    uid: undef(e['uid']) ? '' : e['uid'],
-    sortOrdering: e['sort_ordering'],
-    name: e['name'],
-    title: e['title'],
-    isArchive: undef(e['is_archive']) ? false : e['is_archive'],
+export const ExportContactShort = (e: TdProto.ContactShort|null): any => (e === null ? null : {
+	'jid': e.jid,
+	'display_name': e.displayName,
+	'short_name': e.shortName,
+	'icons': ExportIconData(e.icons),
 })
 
 /**
- * Create NewTheme from raw json.
+ * Create NewTaskColor from raw json.
  */
-export const NewTheme = (e: any): TdProto.Theme => ({
-    bgColor: e['BgColor'],
-    bgHoverColor: e['BgHoverColor'],
-    textColor: e['TextColor'],
-    mutedTextColor: e['MutedTextColor'],
-    accentColor: e['AccentColor'],
-    accentHoverColor: e['AccentHoverColor'],
-    textOnAccentHoverColor: e['TextOnAccentHoverColor'],
-    mainAccent: e['MainAccent'],
-    mainAccentHover: e['MainAccentHover'],
-    mainLightAccent: e['MainLightAccent'],
-    mainLink: e['MainLink'],
-    appAccentColor: e['AppAccentColor'],
-    appPrimaryColor: e['AppPrimaryColor'],
+export const NewTaskColor = (e: any): TdProto.TaskColor => ({
+    regular: e['regular'],
+    dark: e['dark'],
+    light: e['light'],
+})
+
+/**
+ * Export TaskColor to json.
+ */
+export const ExportTaskColor = (e: TdProto.TaskColor|null): any => (e === null ? null : {
+	'regular': e.regular,
+	'dark': e.dark,
+	'light': e.light,
+})
+
+/**
+ * Create NewChatShort from raw json.
+ */
+export const NewChatShort = (e: any): TdProto.ChatShort => ({
+    jid: e['jid'],
+    chatType: e['chat_type'],
+    displayName: e['display_name'],
+    icons: e['icons'].map(NewIconData),
+})
+
+/**
+ * Export ChatShort to json.
+ */
+export const ExportChatShort = (e: TdProto.ChatShort|null): any => (e === null ? null : {
+	'jid': e.jid,
+	'chat_type': e.chatType,
+	'display_name': e.displayName,
+	'icons': ExportIconData(e.icons),
+})
+
+/**
+ * Create NewDeletedChat from raw json.
+ */
+export const NewDeletedChat = (e: any): TdProto.DeletedChat => ({
+    jid: e['jid'],
+    chatType: e['chat_type'],
+    gentime: e['gentime'],
+    isArchive: e['is_archive'],
+})
+
+/**
+ * Export DeletedChat to json.
+ */
+export const ExportDeletedChat = (e: TdProto.DeletedChat|null): any => (e === null ? null : {
+	'jid': e.jid,
+	'chat_type': e.chatType,
+	'gentime': e.gentime,
+	'is_archive': e.isArchive,
+})
+
+/**
+ * Create NewChat from raw json.
+ */
+export const NewChat = (e: any): TdProto.Chat => ({
+    jid: e['jid'],
+    chatType: e['chat_type'],
+    baseGentime: undef(e['base_gentime']) ? 0 : e['base_gentime'],
+    gentime: e['gentime'],
+    created: e['created'],
+    displayName: e['display_name'],
+    icons: e['icons'].map(NewIconData),
+    countersEnabled: undef(e['counters_enabled']) ? false : e['counters_enabled'],
+    canCall: undef(e['can_call']) ? false : e['can_call'],
+    canSendMessage: undef(e['can_send_message']) ? false : e['can_send_message'],
+    cantSendMessageReason: undef(e['cant_send_message_reason']) ? '' : e['cant_send_message_reason'],
+    collapsed: undef(e['collapsed']) ? false : e['collapsed'],
+    draft: undef(e['draft']) ? '' : e['draft'],
+    draftNum: undef(e['draft_num']) ? 0 : e['draft_num'],
+    hidden: undef(e['hidden']) ? false : e['hidden'],
+    notificationsEnabled: undef(e['notifications_enabled']) ? false : e['notifications_enabled'],
+    numImportants: undef(e['num_importants']) ? 0 : e['num_importants'],
+    numUnread: undef(e['num_unread']) ? 0 : e['num_unread'],
+    numUnreadNotices: undef(e['num_unread_notices']) ? 0 : e['num_unread_notices'],
+    lastMessage: undef(e['last_message']) ? null : e['last_message'].map(NewMessage),
+    lastReadMessageId: undef(e['last_read_message_id']) ? '' : e['last_read_message_id'],
+    section: undef(e['section']) ? '' : e['section'],
+    changeableFields: undef(e['changeable_fields']) ? [] : e['changeable_fields'],
+    pinned: undef(e['pinned']) ? false : e['pinned'],
+    pinnedSortOrdering: undef(e['pinned_sort_ordering']) ? 0 : e['pinned_sort_ordering'],
+    numMembers: undef(e['num_members']) ? null : e['num_members'],
+    canDelete: undef(e['can_delete']) ? false : e['can_delete'],
+    description: undef(e['description']) ? '' : e['description'],
+    feed: undef(e['feed']) ? false : e['feed'],
+    pinnedMessage: undef(e['pinned_message']) ? null : e['pinned_message'].map(NewMessage),
+    colorIndex: undef(e['color_index']) ? null : e['color_index'],
+    numItems: undef(e['num_items']) ? null : e['num_items'],
+    numCheckedItems: undef(e['num_checked_items']) ? null : e['num_checked_items'],
+    assignee: undef(e['assignee']) ? null : e['assignee'],
+    num: undef(e['num']) ? 0 : e['num'],
+    observers: undef(e['observers']) ? [] : e['observers'],
+    owner: undef(e['owner']) ? null : e['owner'],
+    taskStatus: undef(e['task_status']) ? '' : e['task_status'],
+    title: undef(e['title']) ? '' : e['title'],
+    done: undef(e['done']) ? '' : e['done'],
+    doneReason: undef(e['done_reason']) ? '' : e['done_reason'],
+    deadline: undef(e['deadline']) ? '' : e['deadline'],
+    deadlineExpired: undef(e['deadline_expired']) ? false : e['deadline_expired'],
+    links: undef(e['links']) ? [] : e['links'],
+    tags: undef(e['tags']) ? [] : e['tags'],
+    importance: undef(e['importance']) ? null : e['importance'],
+    urgency: undef(e['urgency']) ? null : e['urgency'],
+    spentTime: undef(e['spent_time']) ? null : e['spent_time'],
+    complexity: undef(e['complexity']) ? null : e['complexity'],
+    linkedMessages: undef(e['linked_messages']) ? [] : e['linked_messages'],
+    items: undef(e['items']) ? [] : e['items'].map(NewTaskItem),
+    parents: undef(e['parents']) ? [] : e['parents'].map(NewSubtask),
+    tabs: undef(e['tabs']) ? [] : e['tabs'],
+    status: undef(e['status']) ? null : e['status'],
+    members: undef(e['members']) ? [] : e['members'].map(NewGroupMembership),
+    canAddMember: undef(e['can_add_member']) ? false : e['can_add_member'],
+    canRemoveMember: undef(e['can_remove_member']) ? false : e['can_remove_member'],
+    canChangeMemberStatus: undef(e['can_change_member_status']) ? false : e['can_change_member_status'],
+    canChangeSettings: undef(e['can_change_settings']) ? false : e['can_change_settings'],
+    defaultForAll: undef(e['default_for_all']) ? false : e['default_for_all'],
+    readonlyForMembers: undef(e['readonly_for_members']) ? false : e['readonly_for_members'],
+    autocleanupAge: undef(e['autocleanup_age']) ? null : e['autocleanup_age'],
+    public: undef(e['public']) ? false : e['public'],
+    canJoin: undef(e['can_join']) ? false : e['can_join'],
+    canDeleteAnyMessage: undef(e['can_delete_any_message']) ? null : e['can_delete_any_message'],
+    canSetImportantAnyMessage: undef(e['can_set_important_any_message']) ? null : e['can_set_important_any_message'],
+})
+
+/**
+ * Export Chat to json.
+ */
+export const ExportChat = (e: TdProto.Chat|null): any => (e === null ? null : {
+	'jid': e.jid,
+	'chat_type': e.chatType,
+	'base_gentime': e.baseGentime,
+	'gentime': e.gentime,
+	'created': e.created,
+	'display_name': e.displayName,
+	'icons': ExportIconData(e.icons),
+	'counters_enabled': e.countersEnabled,
+	'can_call': e.canCall,
+	'can_send_message': e.canSendMessage,
+	'cant_send_message_reason': e.cantSendMessageReason,
+	'collapsed': e.collapsed,
+	'draft': e.draft,
+	'draft_num': e.draftNum,
+	'hidden': e.hidden,
+	'notifications_enabled': e.notificationsEnabled,
+	'num_importants': e.numImportants,
+	'num_unread': e.numUnread,
+	'num_unread_notices': e.numUnreadNotices,
+	'last_message': ExportMessage(e.lastMessage),
+	'last_read_message_id': e.lastReadMessageId,
+	'section': e.section,
+	'changeable_fields': e.changeableFields,
+	'pinned': e.pinned,
+	'pinned_sort_ordering': e.pinnedSortOrdering,
+	'num_members': e.numMembers,
+	'can_delete': e.canDelete,
+	'description': e.description,
+	'feed': e.feed,
+	'pinned_message': ExportMessage(e.pinnedMessage),
+	'color_index': e.colorIndex,
+	'num_items': e.numItems,
+	'num_checked_items': e.numCheckedItems,
+	'assignee': e.assignee,
+	'num': e.num,
+	'observers': e.observers,
+	'owner': e.owner,
+	'task_status': e.taskStatus,
+	'title': e.title,
+	'done': e.done,
+	'done_reason': e.doneReason,
+	'deadline': e.deadline,
+	'deadline_expired': e.deadlineExpired,
+	'links': e.links,
+	'tags': e.tags,
+	'importance': e.importance,
+	'urgency': e.urgency,
+	'spent_time': e.spentTime,
+	'complexity': e.complexity,
+	'linked_messages': e.linkedMessages,
+	'items': e.items.map(ExportTaskItem),
+	'parents': e.parents.map(ExportSubtask),
+	'tabs': e.tabs,
+	'status': e.status,
+	'members': e.members.map(ExportGroupMembership),
+	'can_add_member': e.canAddMember,
+	'can_remove_member': e.canRemoveMember,
+	'can_change_member_status': e.canChangeMemberStatus,
+	'can_change_settings': e.canChangeSettings,
+	'default_for_all': e.defaultForAll,
+	'readonly_for_members': e.readonlyForMembers,
+	'autocleanup_age': e.autocleanupAge,
+	'public': e.public,
+	'can_join': e.canJoin,
+	'can_delete_any_message': e.canDeleteAnyMessage,
+	'can_set_important_any_message': e.canSetImportantAnyMessage,
+})
+
+/**
+ * Create NewSubtask from raw json.
+ */
+export const NewSubtask = (e: any): TdProto.Subtask => ({
+    jid: e['jid'],
+    assignee: e['assignee'],
+    title: e['title'],
+    num: e['num'],
+    displayName: e['display_name'],
+    public: undef(e['public']) ? false : e['public'],
+})
+
+/**
+ * Export Subtask to json.
+ */
+export const ExportSubtask = (e: TdProto.Subtask|null): any => (e === null ? null : {
+	'jid': e.jid,
+	'assignee': e.assignee,
+	'title': e.title,
+	'num': e.num,
+	'display_name': e.displayName,
+	'public': e.public,
+})
+
+/**
+ * Create NewTaskItem from raw json.
+ */
+export const NewTaskItem = (e: any): TdProto.TaskItem => ({
+    uid: undef(e['uid']) ? '' : e['uid'],
+    sortOrdering: undef(e['sort_ordering']) ? 0 : e['sort_ordering'],
+    text: e['text'],
+    checked: undef(e['checked']) ? false : e['checked'],
+    canToggle: undef(e['can_toggle']) ? false : e['can_toggle'],
+    subtask: undef(e['subtask']) ? null : e['subtask'].map(NewSubtask),
+})
+
+/**
+ * Export TaskItem to json.
+ */
+export const ExportTaskItem = (e: TdProto.TaskItem|null): any => (e === null ? null : {
+	'uid': e.uid,
+	'sort_ordering': e.sortOrdering,
+	'text': e.text,
+	'checked': e.checked,
+	'can_toggle': e.canToggle,
+	'subtask': ExportSubtask(e.subtask),
+})
+
+/**
+ * Create NewGroupMembership from raw json.
+ */
+export const NewGroupMembership = (e: any): TdProto.GroupMembership => ({
+    jid: e['jid'],
+    status: e['status'],
+    canRemove: undef(e['can_remove']) ? false : e['can_remove'],
+})
+
+/**
+ * Export GroupMembership to json.
+ */
+export const ExportGroupMembership = (e: TdProto.GroupMembership|null): any => (e === null ? null : {
+	'jid': e.jid,
+	'status': e.status,
+	'can_remove': e.canRemove,
+})
+
+/**
+ * Create NewRemind from raw json.
+ */
+export const NewRemind = (e: any): TdProto.Remind => ({
+    uid: e['uid'],
+    chat: e['chat'],
+    fireAt: e['fire_at'],
+    comment: undef(e['comment']) ? '' : e['comment'],
+})
+
+/**
+ * Export Remind to json.
+ */
+export const ExportRemind = (e: TdProto.Remind|null): any => (e === null ? null : {
+	'uid': e.uid,
+	'chat': e.chat,
+	'fire_at': e.fireAt,
+	'comment': e.comment,
+})
+
+/**
+ * Create NewDeletedRemind from raw json.
+ */
+export const NewDeletedRemind = (e: any): TdProto.DeletedRemind => ({
+    uid: e['uid'],
+})
+
+/**
+ * Export DeletedRemind to json.
+ */
+export const ExportDeletedRemind = (e: TdProto.DeletedRemind|null): any => (e === null ? null : {
+	'uid': e.uid,
+})
+
+/**
+ * Create NewTeam from raw json.
+ */
+export const NewTeam = (e: any): TdProto.Team => ({
+    uid: e['uid'],
+    isArchive: undef(e['is_archive']) ? false : e['is_archive'],
+    gentime: e['gentime'],
+    name: e['name'],
+    defaultTaskDeadline: undef(e['default_task_deadline']) ? '' : e['default_task_deadline'],
+    maxMessageUpdateAge: e['max_message_update_age'],
+    icons: e['icons'].map(NewIconData),
+    lastActive: e['last_active'],
+    changeableStatuses: undef(e['changeable_statuses']) ? [] : e['changeable_statuses'],
+    badProfile: undef(e['bad_profile']) ? false : e['bad_profile'],
+    needConfirmation: e['need_confirmation'],
+    usePatronymic: undef(e['use_patronymic']) ? false : e['use_patronymic'],
+    userFields: e['user_fields'],
+    displayFamilyNameFirst: undef(e['display_family_name_first']) ? false : e['display_family_name_first'],
+    useTaskImportance: undef(e['use_task_importance']) ? false : e['use_task_importance'],
+    taskImportanceMin: undef(e['task_importance_min']) ? 0 : e['task_importance_min'],
+    taskImportanceMax: undef(e['task_importance_max']) ? 0 : e['task_importance_max'],
+    taskImportanceRev: undef(e['task_importance_rev']) ? false : e['task_importance_rev'],
+    useTaskUrgency: undef(e['use_task_urgency']) ? false : e['use_task_urgency'],
+    useTaskComplexity: undef(e['use_task_complexity']) ? false : e['use_task_complexity'],
+    useTaskSpentTime: undef(e['use_task_spent_time']) ? false : e['use_task_spent_time'],
+    uploadsSize: undef(e['uploads_size']) ? 0 : e['uploads_size'],
+    uploadsSizeLimit: undef(e['uploads_size_limit']) ? 0 : e['uploads_size_limit'],
+    unreads: e['unread'],
+    me: e['me'].map(NewContact),
+    contacts: undef(e['contacts']) ? [] : e['contacts'].map(NewContact),
+    singleGroup: undef(e['single_group']) ? null : e['single_group'],
+    theme: undef(e['theme']) ? null : e['theme'].map(NewTheme),
+    hideArchivedUsers: undef(e['hide_archived_users']) ? false : e['hide_archived_users'],
+})
+
+/**
+ * Export Team to json.
+ */
+export const ExportTeam = (e: TdProto.Team|null): any => (e === null ? null : {
+	'name': e.name,
+	'default_task_deadline': e.defaultTaskDeadline,
+	'max_message_update_age': e.maxMessageUpdateAge,
+	'use_patronymic': e.usePatronymic,
+	'display_family_name_first': e.displayFamilyNameFirst,
+	'use_task_importance': e.useTaskImportance,
+	'task_importance_min': e.taskImportanceMin,
+	'task_importance_max': e.taskImportanceMax,
+	'task_importance_rev': e.taskImportanceRev,
+	'use_task_urgency': e.useTaskUrgency,
+	'use_task_complexity': e.useTaskComplexity,
+	'use_task_spent_time': e.useTaskSpentTime,
+	'hide_archived_users': e.hideArchivedUsers,
+})
+
+/**
+ * Create NewTeamShort from raw json.
+ */
+export const NewTeamShort = (e: any): TdProto.TeamShort => ({
+    uid: e['uid'],
+    name: e['name'],
+    icons: e['icons'].map(NewIconData),
+})
+
+/**
+ * Create NewDeletedTeam from raw json.
+ */
+export const NewDeletedTeam = (e: any): TdProto.DeletedTeam => ({
+    uid: e['uid'],
+    isArchive: e['is_archive'],
+    gentime: e['gentime'],
+})
+
+/**
+ * Create NewUpload from raw json.
+ */
+export const NewUpload = (e: any): TdProto.Upload => ({
+    uid: e['uid'],
+    size: e['size'],
+    duration: undef(e['duration']) ? 0 : e['duration'],
+    name: e['name'],
+    url: e['url'],
+    preview: undef(e['preview']) ? null : e['preview'].map(NewUploadPreview),
+    contentType: e['content_type'],
+    animated: undef(e['animated']) ? false : e['animated'],
+    processing: undef(e['processing']) ? false : e['processing'],
+    pdfVersion: undef(e['pdf_version']) ? null : e['pdf_version'].map(NewPdfVersion),
+})
+
+/**
+ * Export Upload to json.
+ */
+export const ExportUpload = (e: TdProto.Upload|null): any => (e === null ? null : {
+	'uid': e.uid,
+	'size': e.size,
+	'duration': e.duration,
+	'name': e.name,
+	'url': e.url,
+	'preview': ExportUploadPreview(e.preview),
+	'content_type': e.contentType,
+	'animated': e.animated,
+	'processing': e.processing,
+	'pdf_version': ExportPdfVersion(e.pdfVersion),
+})
+
+/**
+ * Create NewUploadPreview from raw json.
+ */
+export const NewUploadPreview = (e: any): TdProto.UploadPreview => ({
+    url: e['url'],
+    url2x: e['url_2x'],
+    width: e['width'],
+    height: e['height'],
+})
+
+/**
+ * Export UploadPreview to json.
+ */
+export const ExportUploadPreview = (e: TdProto.UploadPreview|null): any => (e === null ? null : {
+	'url': e.url,
+	'url_2x': e.url2x,
+	'width': e.width,
+	'height': e.height,
 })
 
 
