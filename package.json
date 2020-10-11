@@ -1,17 +1,27 @@
 {
-  "name": "tdproto",
-  "version": "0.3.0",
-  "description": "tada protocol",
-  "main": "dist/tdproto.umd.js",
-  "module": "dist/tdproto.es5.js",
-  "typings": "dist/types/tdproto.d.ts",
-  "repository": "git://github.com/tada-team/tdproto-ts.git",
+  "name": "tdproto-ts",
+  "version": "0.4.0",
+  "description": "",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
     "build": "tsc"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tada-team/tdproto-ts.git"
+  },
+  "keywords": [],
   "author": "tada.team info@tada.team",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tada-team/tdproto-ts/issues"
+  },
+  "homepage": "https://github.com/tada-team/tdproto-ts#readme",
   "devDependencies": {
-    "typescript": "^2.7.2"
-  }
+    "typescript": "^4.0.3"
+  },
+  "files": [
+    "lib/**/*"
+  ]
 }
