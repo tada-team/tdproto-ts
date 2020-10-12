@@ -63,6 +63,37 @@ type MessageLinks = MessageLink[];
 
 type TeamUnread = Record<ChatType, Unread>
 /**
+ * Custom task status.
+ */
+export interface TaskStatus {
+   /**
+    * Status id.
+    */
+   uid: string;
+
+   /**
+    * Status sort ordering.
+    */
+   sortOrdering: number;
+
+   /**
+    * Status internal name.
+    */
+   name: string;
+
+   /**
+    * Status localized name.
+    */
+   title: string;
+
+   /**
+    * Status not used anymore.
+    */
+   isArchive: boolean;
+
+}
+
+/**
  * Mimimal chat representaion.
  */
 export interface ChatShort {
@@ -544,39 +575,342 @@ export interface GroupMembership {
 }
 
 /**
- * Unread message counters.
+ * Small or large icon.
  */
-export interface Unread {
+export interface SingleIcon {
    /**
-    * Total unread messages.
+    * absolute url to icon.
     */
-   numMessages: number;
+   url: string;
 
    /**
-    * Total unread messages with mentions.
+    * Icon width, in pixels.
     */
-   numNoticeMessages: number;
+   width: number;
 
    /**
-    * Total chats with unread messages.
+    * Icon height, in pixels.
     */
-   numChats: number;
+   height: number;
 
 }
 
 /**
- * Unread message counters.
+ * Icon data. Contains sm+lg (for uploaded image) OR stub+letters+color (for icon generated from display name).
  */
-export interface TeamCounter {
+export interface IconData {
    /**
-    * Team id.
+    * Small icon.
+    */
+   sm: SingleIcon | null;
+
+   /**
+    * Large image.
+    */
+   lg: SingleIcon | null;
+
+   /**
+    * Generated image with 1-2 letters.
+    */
+   stub: string;
+
+   /**
+    * Letters from stub icon.
+    */
+   letters: string;
+
+   /**
+    * Stub icon background color.
+    */
+   color: string;
+
+}
+
+/**
+ * Uploaded media.
+ */
+export interface Upload {
+   /**
+    * Upload id.
     */
    uid: string;
 
    /**
-    * Unread message counters.
+    * Upload size in bytes.
     */
-   unreads: TeamUnread;
+   size: number;
+
+   /**
+    * Mediafile duration (for audio/video only).
+    */
+   duration: number;
+
+   /**
+    * Filename.
+    */
+   name: string;
+
+   /**
+    * Absolute url.
+    */
+   url: string;
+
+   /**
+    * Preview details.
+    */
+   preview: UploadPreview | null;
+
+   /**
+    * Content type.
+    */
+   contentType: string;
+
+   /**
+    * Is animated (images only).
+    */
+   animated: boolean;
+
+   /**
+    * File still processing (video only).
+    */
+   processing: boolean;
+
+   /**
+    * PDF version of file. Experimental.
+    */
+   pdfVersion: PdfVersion | null;
+
+}
+
+/**
+ * Upload preview.
+ */
+export interface UploadPreview {
+   /**
+    * Absolute url to image.
+    */
+   url: string;
+
+   /**
+    * Absolute url to high resolution image (retina).
+    */
+   url2x: string;
+
+   /**
+    * Width in pixels.
+    */
+   width: number;
+
+   /**
+    * Height in pixels.
+    */
+   height: number;
+
+}
+
+/**
+ * Color theme.
+ */
+export interface Theme {
+   /**
+    * BgColor.
+    */
+   bgColor: string;
+
+   /**
+    * BgHoverColor.
+    */
+   bgHoverColor: string;
+
+   /**
+    * TextColor.
+    */
+   textColor: string;
+
+   /**
+    * MutedTextColor.
+    */
+   mutedTextColor: string;
+
+   /**
+    * AccentColor.
+    */
+   accentColor: string;
+
+   /**
+    * AccentHoverColor.
+    */
+   accentHoverColor: string;
+
+   /**
+    * TextOnAccentHoverColor.
+    */
+   textOnAccentHoverColor: string;
+
+   /**
+    * MainAccent.
+    */
+   mainAccent: string;
+
+   /**
+    * MainAccentHover.
+    */
+   mainAccentHover: string;
+
+   /**
+    * MainLightAccent.
+    */
+   mainLightAccent: string;
+
+   /**
+    * MainLink.
+    */
+   mainLink: string;
+
+   /**
+    * AppAccentColor.
+    */
+   appAccentColor: string;
+
+   /**
+    * AppPrimaryColor.
+    */
+   appPrimaryColor: string;
+
+}
+
+/**
+ * Set of rules to apply to tasks for coloring.
+ */
+export interface ColorRule {
+   /**
+    * Uid.
+    */
+   uid: string;
+
+   /**
+    * Priority.
+    */
+   priority: number;
+
+   /**
+    * ColorIndex.
+    */
+   colorIndex: number;
+
+   /**
+    * Section.
+    */
+   section: string;
+
+   /**
+    * Tags.
+    */
+   tags: string[];
+
+   /**
+    * Description.
+    */
+   description: string;
+
+   /**
+    * TaskStatus.
+    */
+   taskStatus: string;
+
+   /**
+    * TaskImportance.
+    */
+   taskImportance: number | null;
+
+   /**
+    * TaskUrgency.
+    */
+   taskUrgency: number | null;
+
+   /**
+    * SectionEnabled.
+    */
+   sectionEnabled: boolean | null;
+
+   /**
+    * TaskImportanceEnabled.
+    */
+   taskImportanceEnabled: boolean | null;
+
+   /**
+    * TaskUrgencyEnabled.
+    */
+   taskUrgencyEnabled: boolean | null;
+
+   /**
+    * TagsEnabled.
+    */
+   tagsEnabled: boolean | null;
+
+}
+
+/**
+ * Remind.
+ */
+export interface Remind {
+   /**
+    * Remind id.
+    */
+   uid: string;
+
+   /**
+    * Chat id.
+    */
+   chat: JID;
+
+   /**
+    * Activation time, iso.
+    */
+   fireAt: string;
+
+   /**
+    * Comment, if any.
+    */
+   comment: string;
+
+}
+
+/**
+ * Remind deleted message.
+ */
+export interface DeletedRemind {
+   /**
+    * Remind id.
+    */
+   uid: string;
+
+}
+
+/**
+ * Task tag.
+ */
+export interface Tag {
+   /**
+    * Tag id.
+    */
+   uid: string;
+
+   /**
+    * Tag name.
+    */
+   name: string;
+
+}
+
+/**
+ * Delete tag message.
+ */
+export interface DeletedTag {
+   /**
+    * Tag id.
+    */
+   uid: string;
 
 }
 
@@ -690,303 +1024,79 @@ export interface IntegrationKind {
 }
 
 /**
- * Team.
+ * Complete integrations data, as received from server.
  */
-export interface Team {
+export interface Integrations {
    /**
-    * Team id. Readonly.
+    * Currently existing integrations.
     */
-   uid: string;
+   integrations: Integration[];
 
    /**
-    * Team deleted. Readonly.
+    * Types of integrations available for setup.
     */
-   isArchive: boolean;
-
-   /**
-    * Object version. Readonly.
-    */
-   gentime: number;
-
-   /**
-    * Team name.
-    */
-   name: string;
-
-   /**
-    * Default task deadline.
-    */
-   defaultTaskDeadline: string;
-
-   /**
-    * Max message update/deletion age, in seconds.
-    */
-   maxMessageUpdateAge: number;
-
-   /**
-    * Team icons. Readonly.
-    */
-   icons: IconData;
-
-   /**
-    * User last activity was in this team. Readonly.
-    */
-   lastActive: boolean;
-
-   /**
-    * What status I can set to other team mebers. Readonly.
-    */
-   changeableStatuses: TeamStatus[];
-
-   /**
-    * My profile in this team isn't full. Readonly.
-    */
-   badProfile: boolean;
-
-   /**
-    * Neet confirmation after invite to this team. Readonly.
-    */
-   needConfirmation: boolean;
-
-   /**
-    * Patronymic in usernames for this team.
-    */
-   usePatronymic: boolean;
-
-   /**
-    * Username fields ordering. Readonly.
-    */
-   userFields: string[];
-
-   /**
-    * Family name should be first in display name.
-    */
-   displayFamilyNameFirst: boolean;
-
-   /**
-    * Use importance field in task.
-    */
-   useTaskImportance: boolean;
-
-   /**
-    * Minimal value of task imporance. Default is 1.
-    */
-   taskImportanceMin: number;
-
-   /**
-    * Maximum value of task imporance. Default is 5.
-    */
-   taskImportanceMax: number;
-
-   /**
-    * Bigger number = bigger importance. Default: lower number = bigger importance.
-    */
-   taskImportanceRev: boolean;
-
-   /**
-    * Use urgency field in task.
-    */
-   useTaskUrgency: boolean;
-
-   /**
-    * Use complexity field in task.
-    */
-   useTaskComplexity: boolean;
-
-   /**
-    * Use spent time field in task.
-    */
-   useTaskSpentTime: boolean;
-
-   /**
-    * Total uploads size, bytes. Readonly.
-    */
-   uploadsSize: number;
-
-   /**
-    * Maximum uploads size, bytes, if any. Readonly.
-    */
-   uploadsSizeLimit: number;
-
-   /**
-    * Unread message counters. Readonly.
-    */
-   unreads: TeamUnread | null;
-
-   /**
-    * My profile in this team. Readonly.
-    */
-   me: Contact;
-
-   /**
-    * Team contacts. Used only for team creation. Readonly.
-    */
-   contacts: Contact[];
-
-   /**
-    * For single group teams, jid of chat. Readonly.
-    */
-   singleGroup: JID | null;
-
-   /**
-    * Color theme, if any. Readonly.
-    */
-   theme: Theme | null;
-
-   /**
-    * Don't show archived users by default.
-    */
-   hideArchivedUsers: boolean;
+   kinds: IntegrationKind[];
 
 }
 
 /**
- * Short team representation. For invites, push notifications, etc. Readonly.
+ * Push message over websockets. Readonly.
  */
-export interface TeamShort {
+export interface MessagePush {
    /**
-    * Team id.
+    * Push title.
     */
-   uid: string;
-
-   /**
-    * Team name.
-    */
-   name: string;
+   title: string;
 
    /**
-    * Team icons.
+    * Push subtitle.
     */
-   icons: IconData;
-
-}
-
-/**
- * Team deletion message. Readonly.
- */
-export interface DeletedTeam {
-   /**
-    * Team id.
-    */
-   uid: string;
+   subtitle: string;
 
    /**
-    * Team deleted.
+    * Push body.
     */
-   isArchive: boolean;
+   message: string;
 
    /**
-    * Object version.
+    * Absolute url to push icon.
     */
-   gentime: number;
-
-}
-
-/**
- * PDF preview of mediafile. Experimental.
- */
-export interface PdfVersion {
-   /**
-    * Absolute url.
-    */
-   url: string;
+   iconUrl: string;
 
    /**
-    * First string of text content.
+    * Url opened on click.
     */
-   textPreview: string;
-
-}
-
-/**
- * Task color rules color.
- */
-export interface TaskColor {
-   /**
-    * Regular.
-    */
-   regular: string;
+   clickAction: string;
 
    /**
-    * Dark.
+    * Push tag (for join pushes).
     */
-   dark: string;
+   tag: string;
 
    /**
-    * Light.
+    * Team uid.
     */
-   light: string;
-
-}
-
-/**
- * Set of rules to apply to tasks for coloring.
- */
-export interface ColorRule {
-   /**
-    * Uid.
-    */
-   uid: string;
+   team: string;
 
    /**
-    * Priority.
+    * Sender contact id.
     */
-   priority: number;
+   sender: JID;
 
    /**
-    * ColorIndex.
+    * Chat id.
     */
-   colorIndex: number;
+   chat: JID;
 
    /**
-    * Section.
+    * Message id.
     */
-   section: string;
+   messageId: string;
 
    /**
-    * Tags.
+    * Message creation iso datetime.
     */
-   tags: string[];
-
-   /**
-    * Description.
-    */
-   description: string;
-
-   /**
-    * TaskStatus.
-    */
-   taskStatus: string;
-
-   /**
-    * TaskImportance.
-    */
-   taskImportance: number | null;
-
-   /**
-    * TaskUrgency.
-    */
-   taskUrgency: number | null;
-
-   /**
-    * SectionEnabled.
-    */
-   sectionEnabled: boolean | null;
-
-   /**
-    * TaskImportanceEnabled.
-    */
-   taskImportanceEnabled: boolean | null;
-
-   /**
-    * TaskUrgencyEnabled.
-    */
-   taskUrgencyEnabled: boolean | null;
-
-   /**
-    * TagsEnabled.
-    */
-   tagsEnabled: boolean | null;
+   created: string;
 
 }
 
@@ -1314,352 +1424,75 @@ export interface ContactShort {
 }
 
 /**
- * Uploaded media.
+ * Audiocall information.
  */
-export interface Upload {
+export interface CallEvent {
    /**
-    * Upload id.
+    * Call start, iso date.
     */
-   uid: string;
+   start: string | null;
 
    /**
-    * Upload size in bytes.
+    * Call finish, iso date.
     */
-   size: number;
+   finish: string | null;
 
    /**
-    * Mediafile duration (for audio/video only).
+    * Call record enabled.
     */
-   duration: number;
+   audiorecord: boolean;
 
    /**
-    * Filename.
+    * Call members.
     */
-   name: string;
-
-   /**
-    * Absolute url.
-    */
-   url: string;
-
-   /**
-    * Preview details.
-    */
-   preview: UploadPreview | null;
-
-   /**
-    * Content type.
-    */
-   contentType: string;
-
-   /**
-    * Is animated (images only).
-    */
-   animated: boolean;
-
-   /**
-    * File still processing (video only).
-    */
-   processing: boolean;
-
-   /**
-    * PDF version of file. Experimental.
-    */
-   pdfVersion: PdfVersion | null;
+   onliners: CallOnliner[];
 
 }
 
 /**
- * Upload preview.
+ * Call participant.
  */
-export interface UploadPreview {
+export interface CallOnliner {
    /**
-    * Absolute url to image.
+    * Contact id.
     */
-   url: string;
+   jid: JID;
 
    /**
-    * Absolute url to high resolution image (retina).
+    * Contact name.
     */
-   url2x: string;
+   displayName: string;
 
    /**
-    * Width in pixels.
+    * Contact icon.
     */
-   width: number;
+   icon: string;
 
    /**
-    * Height in pixels.
+    * Microphone muted. Computed from devices muted states.
     */
-   height: number;
+   muted: boolean;
+
+   /**
+    * Member devices, strictly one for now.
+    */
+   devices: CallDevice[];
 
 }
 
 /**
- * Push message over websockets. Readonly.
+ * Call participant device.
  */
-export interface MessagePush {
+export interface CallDevice {
    /**
-    * Push title.
+    * Device muted.
     */
-   title: string;
-
-   /**
-    * Push subtitle.
-    */
-   subtitle: string;
+   muted: boolean;
 
    /**
-    * Push body.
+    * Device description.
     */
-   message: string;
-
-   /**
-    * Absolute url to push icon.
-    */
-   iconUrl: string;
-
-   /**
-    * Url opened on click.
-    */
-   clickAction: string;
-
-   /**
-    * Push tag (for join pushes).
-    */
-   tag: string;
-
-   /**
-    * Team uid.
-    */
-   team: string;
-
-   /**
-    * Sender contact id.
-    */
-   sender: JID;
-
-   /**
-    * Chat id.
-    */
-   chat: JID;
-
-   /**
-    * Message id.
-    */
-   messageId: string;
-
-   /**
-    * Message creation iso datetime.
-    */
-   created: string;
-
-}
-
-/**
- * Wiki page. Experimental.
- */
-export interface WikiPage {
-   /**
-    * Object version.
-    */
-   gentime: number;
-
-   /**
-    * Update time, iso.
-    */
-   updated: string;
-
-   /**
-    * Last editor contact id.
-    */
-   editor: JID;
-
-   /**
-    * Page text.
-    */
-   text: string;
-
-}
-
-/**
- * Small or large icon.
- */
-export interface SingleIcon {
-   /**
-    * absolute url to icon.
-    */
-   url: string;
-
-   /**
-    * Icon width, in pixels.
-    */
-   width: number;
-
-   /**
-    * Icon height, in pixels.
-    */
-   height: number;
-
-}
-
-/**
- * Icon data. Contains sm+lg (for uploaded image) OR stub+letters+color (for icon generated from display name).
- */
-export interface IconData {
-   /**
-    * Small icon.
-    */
-   sm: SingleIcon | null;
-
-   /**
-    * Large image.
-    */
-   lg: SingleIcon | null;
-
-   /**
-    * Generated image with 1-2 letters.
-    */
-   stub: string;
-
-   /**
-    * Letters from stub icon.
-    */
-   letters: string;
-
-   /**
-    * Stub icon background color.
-    */
-   color: string;
-
-}
-
-/**
- * Custom task status.
- */
-export interface TaskStatus {
-   /**
-    * Status id.
-    */
-   uid: string;
-
-   /**
-    * Status sort ordering.
-    */
-   sortOrdering: number;
-
-   /**
-    * Status internal name.
-    */
-   name: string;
-
-   /**
-    * Status localized name.
-    */
-   title: string;
-
-   /**
-    * Status not used anymore.
-    */
-   isArchive: boolean;
-
-}
-
-/**
- * Task tag.
- */
-export interface Tag {
-   /**
-    * Tag id.
-    */
-   uid: string;
-
-   /**
-    * Tag name.
-    */
-   name: string;
-
-}
-
-/**
- * Delete tag message.
- */
-export interface DeletedTag {
-   /**
-    * Tag id.
-    */
-   uid: string;
-
-}
-
-/**
- * Color theme.
- */
-export interface Theme {
-   /**
-    * BgColor.
-    */
-   bgColor: string;
-
-   /**
-    * BgHoverColor.
-    */
-   bgHoverColor: string;
-
-   /**
-    * TextColor.
-    */
-   textColor: string;
-
-   /**
-    * MutedTextColor.
-    */
-   mutedTextColor: string;
-
-   /**
-    * AccentColor.
-    */
-   accentColor: string;
-
-   /**
-    * AccentHoverColor.
-    */
-   accentHoverColor: string;
-
-   /**
-    * TextOnAccentHoverColor.
-    */
-   textOnAccentHoverColor: string;
-
-   /**
-    * MainAccent.
-    */
-   mainAccent: string;
-
-   /**
-    * MainAccentHover.
-    */
-   mainAccentHover: string;
-
-   /**
-    * MainLightAccent.
-    */
-   mainLightAccent: string;
-
-   /**
-    * MainLink.
-    */
-   mainLink: string;
-
-   /**
-    * AppAccentColor.
-    */
-   appAccentColor: string;
-
-   /**
-    * AppPrimaryColor.
-    */
-   appPrimaryColor: string;
+   useragent: string;
 
 }
 
@@ -2040,75 +1873,295 @@ export interface MessageReactionDetail {
 }
 
 /**
- * Audiocall information.
+ * Team.
  */
-export interface CallEvent {
+export interface Team {
    /**
-    * Call start, iso date.
+    * Team id. Readonly.
     */
-   start: string | null;
+   uid: string;
 
    /**
-    * Call finish, iso date.
+    * Team deleted. Readonly.
     */
-   finish: string | null;
+   isArchive: boolean;
 
    /**
-    * Call record enabled.
+    * Object version. Readonly.
     */
-   audiorecord: boolean;
+   gentime: number;
 
    /**
-    * Call members.
+    * Team name.
     */
-   onliners: CallOnliner[];
+   name: string;
+
+   /**
+    * Default task deadline.
+    */
+   defaultTaskDeadline: string;
+
+   /**
+    * Max message update/deletion age, in seconds.
+    */
+   maxMessageUpdateAge: number;
+
+   /**
+    * Team icons. Readonly.
+    */
+   icons: IconData;
+
+   /**
+    * User last activity was in this team. Readonly.
+    */
+   lastActive: boolean;
+
+   /**
+    * What status I can set to other team mebers. Readonly.
+    */
+   changeableStatuses: TeamStatus[];
+
+   /**
+    * My profile in this team isn't full. Readonly.
+    */
+   badProfile: boolean;
+
+   /**
+    * Neet confirmation after invite to this team. Readonly.
+    */
+   needConfirmation: boolean;
+
+   /**
+    * Patronymic in usernames for this team.
+    */
+   usePatronymic: boolean;
+
+   /**
+    * Username fields ordering. Readonly.
+    */
+   userFields: string[];
+
+   /**
+    * Family name should be first in display name.
+    */
+   displayFamilyNameFirst: boolean;
+
+   /**
+    * Use importance field in task.
+    */
+   useTaskImportance: boolean;
+
+   /**
+    * Minimal value of task imporance. Default is 1.
+    */
+   taskImportanceMin: number;
+
+   /**
+    * Maximum value of task imporance. Default is 5.
+    */
+   taskImportanceMax: number;
+
+   /**
+    * Bigger number = bigger importance. Default: lower number = bigger importance.
+    */
+   taskImportanceRev: boolean;
+
+   /**
+    * Use urgency field in task.
+    */
+   useTaskUrgency: boolean;
+
+   /**
+    * Use complexity field in task.
+    */
+   useTaskComplexity: boolean;
+
+   /**
+    * Use spent time field in task.
+    */
+   useTaskSpentTime: boolean;
+
+   /**
+    * Total uploads size, bytes. Readonly.
+    */
+   uploadsSize: number;
+
+   /**
+    * Maximum uploads size, bytes, if any. Readonly.
+    */
+   uploadsSizeLimit: number;
+
+   /**
+    * Unread message counters. Readonly.
+    */
+   unreads: TeamUnread | null;
+
+   /**
+    * My profile in this team. Readonly.
+    */
+   me: Contact;
+
+   /**
+    * Team contacts. Used only for team creation. Readonly.
+    */
+   contacts: Contact[];
+
+   /**
+    * For single group teams, jid of chat. Readonly.
+    */
+   singleGroup: JID | null;
+
+   /**
+    * Color theme, if any. Readonly.
+    */
+   theme: Theme | null;
+
+   /**
+    * Don't show archived users by default.
+    */
+   hideArchivedUsers: boolean;
 
 }
 
 /**
- * Call participant.
+ * Short team representation. For invites, push notifications, etc. Readonly.
  */
-export interface CallOnliner {
+export interface TeamShort {
    /**
-    * Contact id.
+    * Team id.
     */
-   jid: JID;
+   uid: string;
 
    /**
-    * Contact name.
+    * Team name.
     */
-   displayName: string;
+   name: string;
 
    /**
-    * Contact icon.
+    * Team icons.
     */
-   icon: string;
-
-   /**
-    * Microphone muted. Computed from devices muted states.
-    */
-   muted: boolean;
-
-   /**
-    * Member devices, strictly one for now.
-    */
-   devices: CallDevice[];
+   icons: IconData;
 
 }
 
 /**
- * Call participant device.
+ * Team deletion message. Readonly.
  */
-export interface CallDevice {
+export interface DeletedTeam {
    /**
-    * Device muted.
+    * Team id.
     */
-   muted: boolean;
+   uid: string;
 
    /**
-    * Device description.
+    * Team deleted.
     */
-   useragent: string;
+   isArchive: boolean;
+
+   /**
+    * Object version.
+    */
+   gentime: number;
+
+}
+
+/**
+ * PDF preview of mediafile. Experimental.
+ */
+export interface PdfVersion {
+   /**
+    * Absolute url.
+    */
+   url: string;
+
+   /**
+    * First string of text content.
+    */
+   textPreview: string;
+
+}
+
+/**
+ * Task color rules color.
+ */
+export interface TaskColor {
+   /**
+    * Regular.
+    */
+   regular: string;
+
+   /**
+    * Dark.
+    */
+   dark: string;
+
+   /**
+    * Light.
+    */
+   light: string;
+
+}
+
+/**
+ * Wiki page. Experimental.
+ */
+export interface WikiPage {
+   /**
+    * Object version.
+    */
+   gentime: number;
+
+   /**
+    * Update time, iso.
+    */
+   updated: string;
+
+   /**
+    * Last editor contact id.
+    */
+   editor: JID;
+
+   /**
+    * Page text.
+    */
+   text: string;
+
+}
+
+/**
+ * Unread message counters.
+ */
+export interface Unread {
+   /**
+    * Total unread messages.
+    */
+   numMessages: number;
+
+   /**
+    * Total unread messages with mentions.
+    */
+   numNoticeMessages: number;
+
+   /**
+    * Total chats with unread messages.
+    */
+   numChats: number;
+
+}
+
+/**
+ * Unread message counters.
+ */
+export interface TeamCounter {
+   /**
+    * Team id.
+    */
+   uid: string;
+
+   /**
+    * Unread message counters.
+    */
+   unreads: TeamUnread;
 
 }
 
@@ -2575,46 +2628,31 @@ export interface Terms {
 
 }
 
-/**
- * Remind.
- */
-export interface Remind {
-   /**
-    * Remind id.
-    */
-   uid: string;
-
-   /**
-    * Chat id.
-    */
-   chat: JID;
-
-   /**
-    * Activation time, iso.
-    */
-   fireAt: string;
-
-   /**
-    * Comment, if any.
-    */
-   comment: string;
-
-}
-
-/**
- * Remind deleted message.
- */
-export interface DeletedRemind {
-   /**
-    * Remind id.
-    */
-   uid: string;
-
-}
-
 
 const undef = (v: any): boolean => (typeof v === 'undefined')
 
+
+/**
+ * Create NewTaskStatus from raw json.
+ */
+export const NewTaskStatus = (e: any): TaskStatus => ({
+    uid: undef(e['uid']) ? '' : e['uid'],
+    sortOrdering: e['sort_ordering'],
+    name: e['name'],
+    title: e['title'],
+    isArchive: undef(e['is_archive']) ? false : e['is_archive'],
+})
+
+/**
+ * Export TaskStatus to json.
+ */
+export const ExportTaskStatus = (e: TaskStatus|null): any => (e === null ? null : {
+	'uid': e.uid,
+	'sort_ordering': e.sortOrdering,
+	'name': e.name,
+	'title': e.title,
+	'is_archive': e.isArchive,
+})
 
 /**
  * Create NewChatShort from raw json.
@@ -2867,37 +2905,235 @@ export const ExportGroupMembership = (e: GroupMembership|null): any => (e === nu
 })
 
 /**
- * Create NewUnread from raw json.
+ * Create NewSingleIcon from raw json.
  */
-export const NewUnread = (e: any): Unread => ({
-    numMessages: e['messages'],
-    numNoticeMessages: e['notice_messages'],
-    numChats: e['chats'],
+export const NewSingleIcon = (e: any): SingleIcon => ({
+    url: e['url'],
+    width: e['width'],
+    height: e['height'],
 })
 
 /**
- * Export Unread to json.
+ * Export SingleIcon to json.
  */
-export const ExportUnread = (e: Unread|null): any => (e === null ? null : {
-	'messages': e.numMessages,
-	'notice_messages': e.numNoticeMessages,
-	'chats': e.numChats,
+export const ExportSingleIcon = (e: SingleIcon|null): any => (e === null ? null : {
+	'url': e.url,
+	'width': e.width,
+	'height': e.height,
 })
 
 /**
- * Create NewTeamCounter from raw json.
+ * Create NewIconData from raw json.
  */
-export const NewTeamCounter = (e: any): TeamCounter => ({
+export const NewIconData = (e: any): IconData => ({
+    sm: undef(e['sm']) ? null : e['sm'].map(NewSingleIcon),
+    lg: undef(e['lg']) ? null : e['lg'].map(NewSingleIcon),
+    stub: undef(e['stub']) ? '' : e['stub'],
+    letters: undef(e['letters']) ? '' : e['letters'],
+    color: undef(e['color']) ? '' : e['color'],
+})
+
+/**
+ * Export IconData to json.
+ */
+export const ExportIconData = (e: IconData|null): any => (e === null ? null : {
+	'sm': ExportSingleIcon(e.sm),
+	'lg': ExportSingleIcon(e.lg),
+	'stub': e.stub,
+	'letters': e.letters,
+	'color': e.color,
+})
+
+/**
+ * Create NewUpload from raw json.
+ */
+export const NewUpload = (e: any): Upload => ({
     uid: e['uid'],
-    unreads: e['unread'],
+    size: e['size'],
+    duration: undef(e['duration']) ? 0 : e['duration'],
+    name: e['name'],
+    url: e['url'],
+    preview: undef(e['preview']) ? null : e['preview'].map(NewUploadPreview),
+    contentType: e['content_type'],
+    animated: undef(e['animated']) ? false : e['animated'],
+    processing: undef(e['processing']) ? false : e['processing'],
+    pdfVersion: undef(e['pdf_version']) ? null : e['pdf_version'].map(NewPdfVersion),
 })
 
 /**
- * Export TeamCounter to json.
+ * Export Upload to json.
  */
-export const ExportTeamCounter = (e: TeamCounter|null): any => (e === null ? null : {
+export const ExportUpload = (e: Upload|null): any => (e === null ? null : {
 	'uid': e.uid,
-	'unread': e.unreads,
+	'size': e.size,
+	'duration': e.duration,
+	'name': e.name,
+	'url': e.url,
+	'preview': ExportUploadPreview(e.preview),
+	'content_type': e.contentType,
+	'animated': e.animated,
+	'processing': e.processing,
+	'pdf_version': ExportPdfVersion(e.pdfVersion),
+})
+
+/**
+ * Create NewUploadPreview from raw json.
+ */
+export const NewUploadPreview = (e: any): UploadPreview => ({
+    url: e['url'],
+    url2x: e['url_2x'],
+    width: e['width'],
+    height: e['height'],
+})
+
+/**
+ * Export UploadPreview to json.
+ */
+export const ExportUploadPreview = (e: UploadPreview|null): any => (e === null ? null : {
+	'url': e.url,
+	'url_2x': e.url2x,
+	'width': e.width,
+	'height': e.height,
+})
+
+/**
+ * Create NewTheme from raw json.
+ */
+export const NewTheme = (e: any): Theme => ({
+    bgColor: e['BgColor'],
+    bgHoverColor: e['BgHoverColor'],
+    textColor: e['TextColor'],
+    mutedTextColor: e['MutedTextColor'],
+    accentColor: e['AccentColor'],
+    accentHoverColor: e['AccentHoverColor'],
+    textOnAccentHoverColor: e['TextOnAccentHoverColor'],
+    mainAccent: e['MainAccent'],
+    mainAccentHover: e['MainAccentHover'],
+    mainLightAccent: e['MainLightAccent'],
+    mainLink: e['MainLink'],
+    appAccentColor: e['AppAccentColor'],
+    appPrimaryColor: e['AppPrimaryColor'],
+})
+
+/**
+ * Export Theme to json.
+ */
+export const ExportTheme = (e: Theme|null): any => (e === null ? null : {
+	'BgColor': e.bgColor,
+	'BgHoverColor': e.bgHoverColor,
+	'TextColor': e.textColor,
+	'MutedTextColor': e.mutedTextColor,
+	'AccentColor': e.accentColor,
+	'AccentHoverColor': e.accentHoverColor,
+	'TextOnAccentHoverColor': e.textOnAccentHoverColor,
+	'MainAccent': e.mainAccent,
+	'MainAccentHover': e.mainAccentHover,
+	'MainLightAccent': e.mainLightAccent,
+	'MainLink': e.mainLink,
+	'AppAccentColor': e.appAccentColor,
+	'AppPrimaryColor': e.appPrimaryColor,
+})
+
+/**
+ * Create NewColorRule from raw json.
+ */
+export const NewColorRule = (e: any): ColorRule => ({
+    uid: e['uid'],
+    priority: e['priority'],
+    colorIndex: e['color_index'],
+    section: undef(e['section']) ? '' : e['section'],
+    tags: undef(e['tags']) ? [] : e['tags'],
+    description: undef(e['description']) ? '' : e['description'],
+    taskStatus: undef(e['task_status']) ? '' : e['task_status'],
+    taskImportance: undef(e['task_importance']) ? null : e['task_importance'],
+    taskUrgency: undef(e['task_urgency']) ? null : e['task_urgency'],
+    sectionEnabled: undef(e['section_enabled']) ? null : e['section_enabled'],
+    taskImportanceEnabled: undef(e['task_importance_enabled']) ? null : e['task_importance_enabled'],
+    taskUrgencyEnabled: undef(e['task_urgency_enabled']) ? null : e['task_urgency_enabled'],
+    tagsEnabled: undef(e['tags_enabled']) ? null : e['tags_enabled'],
+})
+
+/**
+ * Export ColorRule to json.
+ */
+export const ExportColorRule = (e: ColorRule|null): any => (e === null ? null : {
+	'uid': e.uid,
+	'priority': e.priority,
+	'color_index': e.colorIndex,
+	'section': e.section,
+	'tags': e.tags,
+	'description': e.description,
+	'task_status': e.taskStatus,
+	'task_importance': e.taskImportance,
+	'task_urgency': e.taskUrgency,
+	'section_enabled': e.sectionEnabled,
+	'task_importance_enabled': e.taskImportanceEnabled,
+	'task_urgency_enabled': e.taskUrgencyEnabled,
+	'tags_enabled': e.tagsEnabled,
+})
+
+/**
+ * Create NewRemind from raw json.
+ */
+export const NewRemind = (e: any): Remind => ({
+    uid: e['uid'],
+    chat: e['chat'],
+    fireAt: e['fire_at'],
+    comment: undef(e['comment']) ? '' : e['comment'],
+})
+
+/**
+ * Export Remind to json.
+ */
+export const ExportRemind = (e: Remind|null): any => (e === null ? null : {
+	'uid': e.uid,
+	'chat': e.chat,
+	'fire_at': e.fireAt,
+	'comment': e.comment,
+})
+
+/**
+ * Create NewDeletedRemind from raw json.
+ */
+export const NewDeletedRemind = (e: any): DeletedRemind => ({
+    uid: e['uid'],
+})
+
+/**
+ * Export DeletedRemind to json.
+ */
+export const ExportDeletedRemind = (e: DeletedRemind|null): any => (e === null ? null : {
+	'uid': e.uid,
+})
+
+/**
+ * Create NewTag from raw json.
+ */
+export const NewTag = (e: any): Tag => ({
+    uid: e['uid'],
+    name: e['name'],
+})
+
+/**
+ * Export Tag to json.
+ */
+export const ExportTag = (e: Tag|null): any => (e === null ? null : {
+	'uid': e.uid,
+	'name': e.name,
+})
+
+/**
+ * Create NewDeletedTag from raw json.
+ */
+export const NewDeletedTag = (e: any): DeletedTag => ({
+    uid: e['uid'],
+})
+
+/**
+ * Export DeletedTag to json.
+ */
+export const ExportDeletedTag = (e: DeletedTag|null): any => (e === null ? null : {
+	'uid': e.uid,
 })
 
 /**
@@ -2983,147 +3219,36 @@ export const ExportIntegrationKind = (e: IntegrationKind|null): any => (e === nu
 })
 
 /**
- * Create NewTeam from raw json.
+ * Create NewIntegrations from raw json.
  */
-export const NewTeam = (e: any): Team => ({
-    uid: e['uid'],
-    isArchive: undef(e['is_archive']) ? false : e['is_archive'],
-    gentime: e['gentime'],
-    name: e['name'],
-    defaultTaskDeadline: undef(e['default_task_deadline']) ? '' : e['default_task_deadline'],
-    maxMessageUpdateAge: e['max_message_update_age'],
-    icons: e['icons'].map(NewIconData),
-    lastActive: e['last_active'],
-    changeableStatuses: undef(e['changeable_statuses']) ? [] : e['changeable_statuses'],
-    badProfile: undef(e['bad_profile']) ? false : e['bad_profile'],
-    needConfirmation: e['need_confirmation'],
-    usePatronymic: undef(e['use_patronymic']) ? false : e['use_patronymic'],
-    userFields: e['user_fields'],
-    displayFamilyNameFirst: undef(e['display_family_name_first']) ? false : e['display_family_name_first'],
-    useTaskImportance: undef(e['use_task_importance']) ? false : e['use_task_importance'],
-    taskImportanceMin: undef(e['task_importance_min']) ? 0 : e['task_importance_min'],
-    taskImportanceMax: undef(e['task_importance_max']) ? 0 : e['task_importance_max'],
-    taskImportanceRev: undef(e['task_importance_rev']) ? false : e['task_importance_rev'],
-    useTaskUrgency: undef(e['use_task_urgency']) ? false : e['use_task_urgency'],
-    useTaskComplexity: undef(e['use_task_complexity']) ? false : e['use_task_complexity'],
-    useTaskSpentTime: undef(e['use_task_spent_time']) ? false : e['use_task_spent_time'],
-    uploadsSize: undef(e['uploads_size']) ? 0 : e['uploads_size'],
-    uploadsSizeLimit: undef(e['uploads_size_limit']) ? 0 : e['uploads_size_limit'],
-    unreads: e['unread'],
-    me: e['me'].map(NewContact),
-    contacts: undef(e['contacts']) ? [] : e['contacts'].map(NewContact),
-    singleGroup: undef(e['single_group']) ? null : e['single_group'],
-    theme: undef(e['theme']) ? null : e['theme'].map(NewTheme),
-    hideArchivedUsers: undef(e['hide_archived_users']) ? false : e['hide_archived_users'],
+export const NewIntegrations = (e: any): Integrations => ({
+    integrations: e['integrations'].map(NewIntegration),
+    kinds: e['kinds'].map(NewIntegrationKind),
 })
 
 /**
- * Export Team to json.
+ * Export Integrations to json.
  */
-export const ExportTeam = (e: Team|null): any => (e === null ? null : {
-	'name': e.name,
-	'default_task_deadline': e.defaultTaskDeadline,
-	'max_message_update_age': e.maxMessageUpdateAge,
-	'use_patronymic': e.usePatronymic,
-	'display_family_name_first': e.displayFamilyNameFirst,
-	'use_task_importance': e.useTaskImportance,
-	'task_importance_min': e.taskImportanceMin,
-	'task_importance_max': e.taskImportanceMax,
-	'task_importance_rev': e.taskImportanceRev,
-	'use_task_urgency': e.useTaskUrgency,
-	'use_task_complexity': e.useTaskComplexity,
-	'use_task_spent_time': e.useTaskSpentTime,
-	'hide_archived_users': e.hideArchivedUsers,
+export const ExportIntegrations = (e: Integrations|null): any => (e === null ? null : {
+	'integrations': e.integrations.map(ExportIntegration),
+	'kinds': e.kinds.map(ExportIntegrationKind),
 })
 
 /**
- * Create NewTeamShort from raw json.
+ * Create NewMessagePush from raw json.
  */
-export const NewTeamShort = (e: any): TeamShort => ({
-    uid: e['uid'],
-    name: e['name'],
-    icons: e['icons'].map(NewIconData),
-})
-
-/**
- * Create NewDeletedTeam from raw json.
- */
-export const NewDeletedTeam = (e: any): DeletedTeam => ({
-    uid: e['uid'],
-    isArchive: e['is_archive'],
-    gentime: e['gentime'],
-})
-
-/**
- * Create NewPdfVersion from raw json.
- */
-export const NewPdfVersion = (e: any): PdfVersion => ({
-    url: e['url'],
-    textPreview: undef(e['text_preview']) ? '' : e['text_preview'],
-})
-
-/**
- * Export PdfVersion to json.
- */
-export const ExportPdfVersion = (e: PdfVersion|null): any => (e === null ? null : {
-	'url': e.url,
-	'text_preview': e.textPreview,
-})
-
-/**
- * Create NewTaskColor from raw json.
- */
-export const NewTaskColor = (e: any): TaskColor => ({
-    regular: e['regular'],
-    dark: e['dark'],
-    light: e['light'],
-})
-
-/**
- * Export TaskColor to json.
- */
-export const ExportTaskColor = (e: TaskColor|null): any => (e === null ? null : {
-	'regular': e.regular,
-	'dark': e.dark,
-	'light': e.light,
-})
-
-/**
- * Create NewColorRule from raw json.
- */
-export const NewColorRule = (e: any): ColorRule => ({
-    uid: e['uid'],
-    priority: e['priority'],
-    colorIndex: e['color_index'],
-    section: undef(e['section']) ? '' : e['section'],
-    tags: undef(e['tags']) ? [] : e['tags'],
-    description: undef(e['description']) ? '' : e['description'],
-    taskStatus: undef(e['task_status']) ? '' : e['task_status'],
-    taskImportance: undef(e['task_importance']) ? null : e['task_importance'],
-    taskUrgency: undef(e['task_urgency']) ? null : e['task_urgency'],
-    sectionEnabled: undef(e['section_enabled']) ? null : e['section_enabled'],
-    taskImportanceEnabled: undef(e['task_importance_enabled']) ? null : e['task_importance_enabled'],
-    taskUrgencyEnabled: undef(e['task_urgency_enabled']) ? null : e['task_urgency_enabled'],
-    tagsEnabled: undef(e['tags_enabled']) ? null : e['tags_enabled'],
-})
-
-/**
- * Export ColorRule to json.
- */
-export const ExportColorRule = (e: ColorRule|null): any => (e === null ? null : {
-	'uid': e.uid,
-	'priority': e.priority,
-	'color_index': e.colorIndex,
-	'section': e.section,
-	'tags': e.tags,
-	'description': e.description,
-	'task_status': e.taskStatus,
-	'task_importance': e.taskImportance,
-	'task_urgency': e.taskUrgency,
-	'section_enabled': e.sectionEnabled,
-	'task_importance_enabled': e.taskImportanceEnabled,
-	'task_urgency_enabled': e.taskUrgencyEnabled,
-	'tags_enabled': e.tagsEnabled,
+export const NewMessagePush = (e: any): MessagePush => ({
+    title: e['title'],
+    subtitle: e['subtitle'],
+    message: e['message'],
+    iconUrl: e['icon_url'],
+    clickAction: e['click_action'],
+    tag: e['tag'],
+    team: e['team'],
+    sender: e['sender'],
+    chat: e['chat'],
+    messageId: e['message_id'],
+    created: e['created'],
 })
 
 /**
@@ -3285,222 +3410,61 @@ export const ExportContactShort = (e: ContactShort|null): any => (e === null ? n
 })
 
 /**
- * Create NewUpload from raw json.
+ * Create NewCallEvent from raw json.
  */
-export const NewUpload = (e: any): Upload => ({
-    uid: e['uid'],
-    size: e['size'],
-    duration: undef(e['duration']) ? 0 : e['duration'],
-    name: e['name'],
-    url: e['url'],
-    preview: undef(e['preview']) ? null : e['preview'].map(NewUploadPreview),
-    contentType: e['content_type'],
-    animated: undef(e['animated']) ? false : e['animated'],
-    processing: undef(e['processing']) ? false : e['processing'],
-    pdfVersion: undef(e['pdf_version']) ? null : e['pdf_version'].map(NewPdfVersion),
+export const NewCallEvent = (e: any): CallEvent => ({
+    start: e['start'],
+    finish: e['finish'],
+    audiorecord: e['audiorecord'],
+    onliners: e['onliners'].map(NewCallOnliner),
 })
 
 /**
- * Export Upload to json.
+ * Export CallEvent to json.
  */
-export const ExportUpload = (e: Upload|null): any => (e === null ? null : {
-	'uid': e.uid,
-	'size': e.size,
-	'duration': e.duration,
-	'name': e.name,
-	'url': e.url,
-	'preview': ExportUploadPreview(e.preview),
-	'content_type': e.contentType,
-	'animated': e.animated,
-	'processing': e.processing,
-	'pdf_version': ExportPdfVersion(e.pdfVersion),
+export const ExportCallEvent = (e: CallEvent|null): any => (e === null ? null : {
+	'start': e.start,
+	'finish': e.finish,
+	'audiorecord': e.audiorecord,
+	'onliners': e.onliners.map(ExportCallOnliner),
 })
 
 /**
- * Create NewUploadPreview from raw json.
+ * Create NewCallOnliner from raw json.
  */
-export const NewUploadPreview = (e: any): UploadPreview => ({
-    url: e['url'],
-    url2x: e['url_2x'],
-    width: e['width'],
-    height: e['height'],
+export const NewCallOnliner = (e: any): CallOnliner => ({
+    jid: e['jid'],
+    displayName: e['display_name'],
+    icon: e['icon'],
+    muted: e['muted'],
+    devices: e['devices'].map(NewCallDevice),
 })
 
 /**
- * Export UploadPreview to json.
+ * Export CallOnliner to json.
  */
-export const ExportUploadPreview = (e: UploadPreview|null): any => (e === null ? null : {
-	'url': e.url,
-	'url_2x': e.url2x,
-	'width': e.width,
-	'height': e.height,
+export const ExportCallOnliner = (e: CallOnliner|null): any => (e === null ? null : {
+	'jid': e.jid,
+	'display_name': e.displayName,
+	'icon': e.icon,
+	'muted': e.muted,
+	'devices': e.devices.map(ExportCallDevice),
 })
 
 /**
- * Create NewMessagePush from raw json.
+ * Create NewCallDevice from raw json.
  */
-export const NewMessagePush = (e: any): MessagePush => ({
-    title: e['title'],
-    subtitle: e['subtitle'],
-    message: e['message'],
-    iconUrl: e['icon_url'],
-    clickAction: e['click_action'],
-    tag: e['tag'],
-    team: e['team'],
-    sender: e['sender'],
-    chat: e['chat'],
-    messageId: e['message_id'],
-    created: e['created'],
+export const NewCallDevice = (e: any): CallDevice => ({
+    muted: e['muted'],
+    useragent: e['useragent'],
 })
 
 /**
- * Create NewWikiPage from raw json.
+ * Export CallDevice to json.
  */
-export const NewWikiPage = (e: any): WikiPage => ({
-    gentime: e['gentime'],
-    updated: e['updated'],
-    editor: e['editor'],
-    text: e['text'],
-})
-
-/**
- * Export WikiPage to json.
- */
-export const ExportWikiPage = (e: WikiPage|null): any => (e === null ? null : {
-	'gentime': e.gentime,
-	'updated': e.updated,
-	'editor': e.editor,
-	'text': e.text,
-})
-
-/**
- * Create NewSingleIcon from raw json.
- */
-export const NewSingleIcon = (e: any): SingleIcon => ({
-    url: e['url'],
-    width: e['width'],
-    height: e['height'],
-})
-
-/**
- * Export SingleIcon to json.
- */
-export const ExportSingleIcon = (e: SingleIcon|null): any => (e === null ? null : {
-	'url': e.url,
-	'width': e.width,
-	'height': e.height,
-})
-
-/**
- * Create NewIconData from raw json.
- */
-export const NewIconData = (e: any): IconData => ({
-    sm: undef(e['sm']) ? null : e['sm'].map(NewSingleIcon),
-    lg: undef(e['lg']) ? null : e['lg'].map(NewSingleIcon),
-    stub: undef(e['stub']) ? '' : e['stub'],
-    letters: undef(e['letters']) ? '' : e['letters'],
-    color: undef(e['color']) ? '' : e['color'],
-})
-
-/**
- * Export IconData to json.
- */
-export const ExportIconData = (e: IconData|null): any => (e === null ? null : {
-	'sm': ExportSingleIcon(e.sm),
-	'lg': ExportSingleIcon(e.lg),
-	'stub': e.stub,
-	'letters': e.letters,
-	'color': e.color,
-})
-
-/**
- * Create NewTaskStatus from raw json.
- */
-export const NewTaskStatus = (e: any): TaskStatus => ({
-    uid: undef(e['uid']) ? '' : e['uid'],
-    sortOrdering: e['sort_ordering'],
-    name: e['name'],
-    title: e['title'],
-    isArchive: undef(e['is_archive']) ? false : e['is_archive'],
-})
-
-/**
- * Export TaskStatus to json.
- */
-export const ExportTaskStatus = (e: TaskStatus|null): any => (e === null ? null : {
-	'uid': e.uid,
-	'sort_ordering': e.sortOrdering,
-	'name': e.name,
-	'title': e.title,
-	'is_archive': e.isArchive,
-})
-
-/**
- * Create NewTag from raw json.
- */
-export const NewTag = (e: any): Tag => ({
-    uid: e['uid'],
-    name: e['name'],
-})
-
-/**
- * Export Tag to json.
- */
-export const ExportTag = (e: Tag|null): any => (e === null ? null : {
-	'uid': e.uid,
-	'name': e.name,
-})
-
-/**
- * Create NewDeletedTag from raw json.
- */
-export const NewDeletedTag = (e: any): DeletedTag => ({
-    uid: e['uid'],
-})
-
-/**
- * Export DeletedTag to json.
- */
-export const ExportDeletedTag = (e: DeletedTag|null): any => (e === null ? null : {
-	'uid': e.uid,
-})
-
-/**
- * Create NewTheme from raw json.
- */
-export const NewTheme = (e: any): Theme => ({
-    bgColor: e['BgColor'],
-    bgHoverColor: e['BgHoverColor'],
-    textColor: e['TextColor'],
-    mutedTextColor: e['MutedTextColor'],
-    accentColor: e['AccentColor'],
-    accentHoverColor: e['AccentHoverColor'],
-    textOnAccentHoverColor: e['TextOnAccentHoverColor'],
-    mainAccent: e['MainAccent'],
-    mainAccentHover: e['MainAccentHover'],
-    mainLightAccent: e['MainLightAccent'],
-    mainLink: e['MainLink'],
-    appAccentColor: e['AppAccentColor'],
-    appPrimaryColor: e['AppPrimaryColor'],
-})
-
-/**
- * Export Theme to json.
- */
-export const ExportTheme = (e: Theme|null): any => (e === null ? null : {
-	'BgColor': e.bgColor,
-	'BgHoverColor': e.bgHoverColor,
-	'TextColor': e.textColor,
-	'MutedTextColor': e.mutedTextColor,
-	'AccentColor': e.accentColor,
-	'AccentHoverColor': e.accentHoverColor,
-	'TextOnAccentHoverColor': e.textOnAccentHoverColor,
-	'MainAccent': e.mainAccent,
-	'MainAccentHover': e.mainAccentHover,
-	'MainLightAccent': e.mainLightAccent,
-	'MainLink': e.mainLink,
-	'AppAccentColor': e.appAccentColor,
-	'AppPrimaryColor': e.appPrimaryColor,
+export const ExportCallDevice = (e: CallDevice|null): any => (e === null ? null : {
+	'muted': e.muted,
+	'useragent': e.useragent,
 })
 
 /**
@@ -3692,61 +3656,163 @@ export const ExportMessageReactionDetail = (e: MessageReactionDetail|null): any 
 })
 
 /**
- * Create NewCallEvent from raw json.
+ * Create NewTeam from raw json.
  */
-export const NewCallEvent = (e: any): CallEvent => ({
-    start: e['start'],
-    finish: e['finish'],
-    audiorecord: e['audiorecord'],
-    onliners: e['onliners'].map(NewCallOnliner),
+export const NewTeam = (e: any): Team => ({
+    uid: e['uid'],
+    isArchive: undef(e['is_archive']) ? false : e['is_archive'],
+    gentime: e['gentime'],
+    name: e['name'],
+    defaultTaskDeadline: undef(e['default_task_deadline']) ? '' : e['default_task_deadline'],
+    maxMessageUpdateAge: e['max_message_update_age'],
+    icons: e['icons'].map(NewIconData),
+    lastActive: e['last_active'],
+    changeableStatuses: undef(e['changeable_statuses']) ? [] : e['changeable_statuses'],
+    badProfile: undef(e['bad_profile']) ? false : e['bad_profile'],
+    needConfirmation: e['need_confirmation'],
+    usePatronymic: undef(e['use_patronymic']) ? false : e['use_patronymic'],
+    userFields: e['user_fields'],
+    displayFamilyNameFirst: undef(e['display_family_name_first']) ? false : e['display_family_name_first'],
+    useTaskImportance: undef(e['use_task_importance']) ? false : e['use_task_importance'],
+    taskImportanceMin: undef(e['task_importance_min']) ? 0 : e['task_importance_min'],
+    taskImportanceMax: undef(e['task_importance_max']) ? 0 : e['task_importance_max'],
+    taskImportanceRev: undef(e['task_importance_rev']) ? false : e['task_importance_rev'],
+    useTaskUrgency: undef(e['use_task_urgency']) ? false : e['use_task_urgency'],
+    useTaskComplexity: undef(e['use_task_complexity']) ? false : e['use_task_complexity'],
+    useTaskSpentTime: undef(e['use_task_spent_time']) ? false : e['use_task_spent_time'],
+    uploadsSize: undef(e['uploads_size']) ? 0 : e['uploads_size'],
+    uploadsSizeLimit: undef(e['uploads_size_limit']) ? 0 : e['uploads_size_limit'],
+    unreads: e['unread'],
+    me: e['me'].map(NewContact),
+    contacts: undef(e['contacts']) ? [] : e['contacts'].map(NewContact),
+    singleGroup: undef(e['single_group']) ? null : e['single_group'],
+    theme: undef(e['theme']) ? null : e['theme'].map(NewTheme),
+    hideArchivedUsers: undef(e['hide_archived_users']) ? false : e['hide_archived_users'],
 })
 
 /**
- * Export CallEvent to json.
+ * Export Team to json.
  */
-export const ExportCallEvent = (e: CallEvent|null): any => (e === null ? null : {
-	'start': e.start,
-	'finish': e.finish,
-	'audiorecord': e.audiorecord,
-	'onliners': e.onliners.map(ExportCallOnliner),
+export const ExportTeam = (e: Team|null): any => (e === null ? null : {
+	'name': e.name,
+	'default_task_deadline': e.defaultTaskDeadline,
+	'max_message_update_age': e.maxMessageUpdateAge,
+	'use_patronymic': e.usePatronymic,
+	'display_family_name_first': e.displayFamilyNameFirst,
+	'use_task_importance': e.useTaskImportance,
+	'task_importance_min': e.taskImportanceMin,
+	'task_importance_max': e.taskImportanceMax,
+	'task_importance_rev': e.taskImportanceRev,
+	'use_task_urgency': e.useTaskUrgency,
+	'use_task_complexity': e.useTaskComplexity,
+	'use_task_spent_time': e.useTaskSpentTime,
+	'hide_archived_users': e.hideArchivedUsers,
 })
 
 /**
- * Create NewCallOnliner from raw json.
+ * Create NewTeamShort from raw json.
  */
-export const NewCallOnliner = (e: any): CallOnliner => ({
-    jid: e['jid'],
-    displayName: e['display_name'],
-    icon: e['icon'],
-    muted: e['muted'],
-    devices: e['devices'].map(NewCallDevice),
+export const NewTeamShort = (e: any): TeamShort => ({
+    uid: e['uid'],
+    name: e['name'],
+    icons: e['icons'].map(NewIconData),
 })
 
 /**
- * Export CallOnliner to json.
+ * Create NewDeletedTeam from raw json.
  */
-export const ExportCallOnliner = (e: CallOnliner|null): any => (e === null ? null : {
-	'jid': e.jid,
-	'display_name': e.displayName,
-	'icon': e.icon,
-	'muted': e.muted,
-	'devices': e.devices.map(ExportCallDevice),
+export const NewDeletedTeam = (e: any): DeletedTeam => ({
+    uid: e['uid'],
+    isArchive: e['is_archive'],
+    gentime: e['gentime'],
 })
 
 /**
- * Create NewCallDevice from raw json.
+ * Create NewPdfVersion from raw json.
  */
-export const NewCallDevice = (e: any): CallDevice => ({
-    muted: e['muted'],
-    useragent: e['useragent'],
+export const NewPdfVersion = (e: any): PdfVersion => ({
+    url: e['url'],
+    textPreview: undef(e['text_preview']) ? '' : e['text_preview'],
 })
 
 /**
- * Export CallDevice to json.
+ * Export PdfVersion to json.
  */
-export const ExportCallDevice = (e: CallDevice|null): any => (e === null ? null : {
-	'muted': e.muted,
-	'useragent': e.useragent,
+export const ExportPdfVersion = (e: PdfVersion|null): any => (e === null ? null : {
+	'url': e.url,
+	'text_preview': e.textPreview,
+})
+
+/**
+ * Create NewTaskColor from raw json.
+ */
+export const NewTaskColor = (e: any): TaskColor => ({
+    regular: e['regular'],
+    dark: e['dark'],
+    light: e['light'],
+})
+
+/**
+ * Export TaskColor to json.
+ */
+export const ExportTaskColor = (e: TaskColor|null): any => (e === null ? null : {
+	'regular': e.regular,
+	'dark': e.dark,
+	'light': e.light,
+})
+
+/**
+ * Create NewWikiPage from raw json.
+ */
+export const NewWikiPage = (e: any): WikiPage => ({
+    gentime: e['gentime'],
+    updated: e['updated'],
+    editor: e['editor'],
+    text: e['text'],
+})
+
+/**
+ * Export WikiPage to json.
+ */
+export const ExportWikiPage = (e: WikiPage|null): any => (e === null ? null : {
+	'gentime': e.gentime,
+	'updated': e.updated,
+	'editor': e.editor,
+	'text': e.text,
+})
+
+/**
+ * Create NewUnread from raw json.
+ */
+export const NewUnread = (e: any): Unread => ({
+    numMessages: e['messages'],
+    numNoticeMessages: e['notice_messages'],
+    numChats: e['chats'],
+})
+
+/**
+ * Export Unread to json.
+ */
+export const ExportUnread = (e: Unread|null): any => (e === null ? null : {
+	'messages': e.numMessages,
+	'notice_messages': e.numNoticeMessages,
+	'chats': e.numChats,
+})
+
+/**
+ * Create NewTeamCounter from raw json.
+ */
+export const NewTeamCounter = (e: any): TeamCounter => ({
+    uid: e['uid'],
+    unreads: e['unread'],
+})
+
+/**
+ * Export TeamCounter to json.
+ */
+export const ExportTeamCounter = (e: TeamCounter|null): any => (e === null ? null : {
+	'uid': e.uid,
+	'unread': e.unreads,
 })
 
 /**
@@ -3854,40 +3920,6 @@ export const NewTerms = (e: any): Terms => ({
     ruTeamT: e['RuTeamT'],
     ruTeamV: e['RuTeamV'],
     ruToTeam: e['RuToTeam'],
-})
-
-/**
- * Create NewRemind from raw json.
- */
-export const NewRemind = (e: any): Remind => ({
-    uid: e['uid'],
-    chat: e['chat'],
-    fireAt: e['fire_at'],
-    comment: undef(e['comment']) ? '' : e['comment'],
-})
-
-/**
- * Export Remind to json.
- */
-export const ExportRemind = (e: Remind|null): any => (e === null ? null : {
-	'uid': e.uid,
-	'chat': e.chat,
-	'fire_at': e.fireAt,
-	'comment': e.comment,
-})
-
-/**
- * Create NewDeletedRemind from raw json.
- */
-export const NewDeletedRemind = (e: any): DeletedRemind => ({
-    uid: e['uid'],
-})
-
-/**
- * Export DeletedRemind to json.
- */
-export const ExportDeletedRemind = (e: DeletedRemind|null): any => (e === null ? null : {
-	'uid': e.uid,
 })
 
 
