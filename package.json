@@ -1,6 +1,6 @@
 {
   "name": "tdproto",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "tada protocol for use in TS projects",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
