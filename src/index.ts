@@ -63,1697 +63,18 @@ type MessageLinks = MessageLink[];
 
 type TeamUnread = Record<ChatType, Unread>
 /**
- * Small or large icon.
+ * Call participant device.
  */
-export interface SingleIcon {
+export interface CallDevice {
    /**
-    * absolute url to icon.
+    * Device muted.
     */
-   url: string;
+   muted: boolean;
 
    /**
-    * Icon width, in pixels.
+    * Device description.
     */
-   width: number;
-
-   /**
-    * Icon height, in pixels.
-    */
-   height: number;
-
-}
-
-/**
- * Icon data. Contains sm+lg (for uploaded image) OR stub+letters+color (for icon generated from display name).
- */
-export interface IconData {
-   /**
-    * Small icon.
-    */
-   sm: SingleIcon | null;
-
-   /**
-    * Large image.
-    */
-   lg: SingleIcon | null;
-
-   /**
-    * Generated image with 1-2 letters.
-    */
-   stub: string;
-
-   /**
-    * Letters from stub icon.
-    */
-   letters: string;
-
-   /**
-    * Stub icon background color.
-    */
-   color: string;
-
-}
-
-/**
- * Task color rules color.
- */
-export interface TaskColor {
-   /**
-    * Regular.
-    */
-   regular: string;
-
-   /**
-    * Dark.
-    */
-   dark: string;
-
-   /**
-    * Light.
-    */
-   light: string;
-
-}
-
-/**
- * Remind.
- */
-export interface Remind {
-   /**
-    * Remind id.
-    */
-   uid: string;
-
-   /**
-    * Chat id.
-    */
-   chat: JID;
-
-   /**
-    * Activation time, iso.
-    */
-   fireAt: string;
-
-   /**
-    * Comment, if any.
-    */
-   comment: string;
-
-}
-
-/**
- * Remind deleted message.
- */
-export interface DeletedRemind {
-   /**
-    * Remind id.
-    */
-   uid: string;
-
-}
-
-/**
- * Unread message counters.
- */
-export interface Unread {
-   /**
-    * Total unread messages.
-    */
-   numMessages: number;
-
-   /**
-    * Total unread messages with mentions.
-    */
-   numNoticeMessages: number;
-
-   /**
-    * Total chats with unread messages.
-    */
-   numChats: number;
-
-}
-
-/**
- * Unread message counters.
- */
-export interface TeamCounter {
-   /**
-    * Team id.
-    */
-   uid: string;
-
-   /**
-    * Unread message counters.
-    */
-   unreads: TeamUnread;
-
-}
-
-/**
- * PDF preview of mediafile. Experimental.
- */
-export interface PdfVersion {
-   /**
-    * Absolute url.
-    */
-   url: string;
-
-   /**
-    * First string of text content.
-    */
-   textPreview: string;
-
-}
-
-/**
- * Integration form field.
- */
-export interface IntegrationField {
-   /**
-    * Label.
-    */
-   label: string;
-
-   /**
-    * Is field readonly.
-    */
-   readonly: boolean;
-
-   /**
-    * Current value.
-    */
-   value: string;
-
-}
-
-/**
- * Integration form.
- */
-export interface IntegrationForm {
-   /**
-    * Api key field, if any.
-    */
-   apiKey: IntegrationField | null;
-
-   /**
-    * Webhook url, if any.
-    */
-   webhookUrl: IntegrationField | null;
-
-   /**
-    * Url, if any.
-    */
-   url: IntegrationField | null;
-
-}
-
-/**
- * Integration for concrete chat.
- */
-export interface Integration {
-   /**
-    * Id.
-    */
-   uid: string;
-
-   /**
-    * Comment, if any.
-    */
-   comment: string;
-
-   /**
-    * Creation datetime, iso.
-    */
-   created: string;
-
-   /**
-    * Integration enabled.
-    */
-   enabled: boolean;
-
-   /**
-    * Integration form.
-    */
-   form: IntegrationForm;
-
-   /**
-    * Chat id.
-    */
-   group: JID;
-
-   /**
-    * Full description.
-    */
-   help: string;
-
-   /**
-    * Unique integration name.
-    */
-   kind: string;
-
-}
-
-/**
- * Integration kind.
- */
-export interface IntegrationKind {
-   /**
-    * Integration unique name.
-    */
-   kind: string;
-
-   /**
-    * Integration title.
-    */
-   title: string;
-
-   /**
-    * Integration template.
-    */
-   template: Integration;
-
-}
-
-/**
- * Complete integrations data, as received from server.
- */
-export interface Integrations {
-   /**
-    * Currently existing integrations.
-    */
-   integrations: Integration[];
-
-   /**
-    * Types of integrations available for setup.
-    */
-   kinds: IntegrationKind[];
-
-}
-
-/**
- * Custom task status.
- */
-export interface TaskStatus {
-   /**
-    * Status id.
-    */
-   uid: string;
-
-   /**
-    * Status sort ordering.
-    */
-   sortOrdering: number;
-
-   /**
-    * Status internal name.
-    */
-   name: string;
-
-   /**
-    * Status localized name.
-    */
-   title: string;
-
-   /**
-    * Status not used anymore.
-    */
-   isArchive: boolean;
-
-}
-
-/**
- * Chat message content.
- */
-export interface MessageContent {
-   /**
-    * Text repesentation of message.
-    */
-   text: string;
-
-   /**
-    * Message type.
-    */
-   type: Mediatype;
-
-   /**
-    * Message subtype, if any.
-    */
-   subtype: Mediasubtype;
-
-   /**
-    * Upload id, if any.
-    */
-   upload: string;
-
-   /**
-    * Upload url, if any.
-    */
-   mediaUrl: string;
-
-   /**
-    * Upload size, if any.
-    */
-   size: number;
-
-   /**
-    * Upload duration, if any.
-    */
-   duration: number | null;
-
-   /**
-    * Upload stil processing, if any.
-    */
-   processing: boolean;
-
-   /**
-    * Upload preview height, in pixels, if any.
-    */
-   previewHeight: number;
-
-   /**
-    * Upload width, in pixels, if any.
-    */
-   previewWidth: number;
-
-   /**
-    * Upload preview absolute url, if any.
-    */
-   previewUrl: string;
-
-   /**
-    * Upload high resolution preview absolute url, if any.
-    */
-   preview2xUrl: string;
-
-   /**
-    * Upload name, if any.
-    */
-   name: string;
-
-   /**
-    * Upload is animated image, if any.
-    */
-   animated: boolean;
-
-   /**
-    * Change title (for "change" mediatype).
-    */
-   title: string;
-
-   /**
-    * Change old value (for "change" mediatype).
-    */
-   old: string | null;
-
-   /**
-    * Change new value (for "change" mediatype).
-    */
-   new: string | null;
-
-   /**
-    * Change actor contact id (for "change" mediatype).
-    */
-   actor: JID | null;
-
-   /**
-    * Comment. For audimessage.
-    */
-   comment: string;
-
-   /**
-    * Given name (for "contact" mediatype).
-    */
-   givenName: string | null;
-
-   /**
-    * Family name (for "contact" mediatype).
-    */
-   familyName: string | null;
-
-   /**
-    * Patronymic name (for "contact" mediatype).
-    */
-   patronymic: string | null;
-
-   /**
-    * Contact phones list (for "contact" mediatype).
-    */
-   phones: string[] | null;
-
-   /**
-    * Emails list (for "contact" mediatype).
-    */
-   emails: string[] | null;
-
-   /**
-    * Stickerpack name (for "sticker" subtype).
-    */
-   stickerpack: string;
-
-   /**
-    * Pdf version, if any.
-    */
-   pdfVersion: PdfVersion | null;
-
-}
-
-/**
- * Chat message.
- */
-export interface Message {
-   /**
-    * Message content struct.
-    */
-   content: MessageContent;
-
-   /**
-    * Simple plaintext message representation. Readonly.
-    */
-   pushText: string;
-
-   /**
-    * Sender contact id. Readonly.
-    */
-   from: JID;
-
-   /**
-    * Recipient id (group, task or contact).
-    */
-   to: JID;
-
-   /**
-    * Message uid.
-    */
-   messageId: string;
-
-   /**
-    * Message creation datetime (set by server side). Readonly.
-    */
-   created: string;
-
-   /**
-    * Object version. Readonly.
-    */
-   gentime: number;
-
-   /**
-    * Chat type. Readonly.
-    */
-   chatType: ChatType;
-
-   /**
-    * Chat id. Readonly.
-    */
-   chat: JID;
-
-   /**
-    * External/internals links. Readonly.
-    */
-   links: MessageLinks;
-
-   /**
-    * Importance flag.
-    */
-   important: boolean;
-
-   /**
-    * Datetime of message modification or deletion. Readonly.
-    */
-   edited: string;
-
-   /**
-    * Message was seen by anybody in chat. True or null. Readonly.
-    */
-   received: boolean;
-
-   /**
-    * Unused yet. Readonly.
-    */
-   numReceived: number;
-
-   /**
-    * Disable link previews. True or null.
-    */
-   nopreview: boolean;
-
-   /**
-    * Has link previews. True or null. Readonly.
-    */
-   hasPreviews: boolean;
-
-   /**
-    * Previous message id in this chat. Uid or null. Readonly.
-    */
-   prev: string;
-
-   /**
-    * This message is first in this chat. True or null. Readonly.
-    */
-   isFirst: boolean;
-
-   /**
-    * This message is first in this chat. True or null. Readonly.
-    */
-   isLast: boolean;
-
-   /**
-    * Message reactions struct. Can be null. Readonly.
-    */
-   reactions: MessageReaction[];
-
-   /**
-    * Message that was replied to, if any.
-    */
-   replyTo: Message | null;
-
-   /**
-    * Forwarded messages. Can be null. Also contains double of ReplyTo for backward compatibility.
-    */
-   linkedMessages: Message[];
-
-   /**
-    * Has mention (@). True or null. Readonly.
-    */
-   notice: boolean;
-
-   /**
-    * Message has no pushes and did not affect any counters. Readonly.
-    */
-   silently: boolean;
-
-   /**
-    * Author can change this message until date. Can be null. Readonly.
-    */
-   editableUntil: string;
-
-   /**
-    * Index number of this message. Starts from 0. Null for deleted messages. Changes when any previous message wad deleted. Readonly.
-    */
-   num: number | null;
-
-   /**
-    * Debug information, if any. Readonly.
-    */
-   debug: string;
-
-}
-
-/**
- * Website title and description.
- */
-export interface MessageLinkPreview {
-   /**
-    * Website title or og:title content.
-    */
-   title: string;
-
-   /**
-    * Website description.
-    */
-   description: string;
-
-}
-
-/**
- * Checked message links. In short: "Click here: {link.Pattern}" => "Click here: <a href='{link.Url}'>{link.Text}</a>".
- */
-export interface MessageLink {
-   /**
-    * Text fragment that should be replaced by link.
-    */
-   pattern: string;
-
-   /**
-    * Internal (tadateam://) or external link.
-    */
-   url: string;
-
-   /**
-    * Text replacement.
-    */
-   text: string;
-
-   /**
-    * Optional preview info, for websites.
-    */
-   preview: MessageLinkPreview | null;
-
-   /**
-    * Optional upload info.
-    */
-   uploads: Upload[];
-
-   /**
-    * Website previews disabled.
-    */
-   noPreview: boolean;
-
-   /**
-    * Optional youtube movie id.
-    */
-   youtubeId: string;
-
-}
-
-/**
- * Message emoji reaction.
- */
-export interface MessageReaction {
-   /**
-    * Emoji.
-    */
-   name: string;
-
-   /**
-    * Number of reactions.
-    */
-   counter: number;
-
-   /**
-    * Details.
-    */
-   details: MessageReactionDetail[];
-
-}
-
-/**
- * Message reaction detail.
- */
-export interface MessageReactionDetail {
-   /**
-    * When reaction added, iso datetime.
-    */
-   created: string;
-
-   /**
-    * Reaction author.
-    */
-   sender: JID;
-
-   /**
-    * Reaction emoji.
-    */
-   name: string;
-
-}
-
-/**
- * Push message over websockets. Readonly.
- */
-export interface MessagePush {
-   /**
-    * Push title.
-    */
-   title: string;
-
-   /**
-    * Push subtitle.
-    */
-   subtitle: string;
-
-   /**
-    * Push body.
-    */
-   message: string;
-
-   /**
-    * Absolute url to push icon.
-    */
-   iconUrl: string;
-
-   /**
-    * Url opened on click.
-    */
-   clickAction: string;
-
-   /**
-    * Push tag (for join pushes).
-    */
-   tag: string;
-
-   /**
-    * Team uid.
-    */
-   team: string;
-
-   /**
-    * Sender contact id.
-    */
-   sender: JID;
-
-   /**
-    * Chat id.
-    */
-   chat: JID;
-
-   /**
-    * Message id.
-    */
-   messageId: string;
-
-   /**
-    * Message creation iso datetime.
-    */
-   created: string;
-
-}
-
-/**
- * Contact.
- */
-export interface Contact {
-   /**
-    * Contact Id.
-    */
-   jid: JID;
-
-   /**
-    * Full name in chats.
-    */
-   displayName: string;
-
-   /**
-    * Short name in chats.
-    */
-   shortName: string;
-
-   /**
-    * Contact email in this team.
-    */
-   contactEmail: string;
-
-   /**
-    * Contact phone in this team.
-    */
-   contactPhone: string;
-
-   /**
-    * Icons data.
-    */
-   icons: IconData | null;
-
-   /**
-    * Role in this team.
-    */
-   role: string;
-
-   /**
-    * Mood in this team.
-    */
-   mood: string;
-
-   /**
-    * Status in this team.
-    */
-   teamStatus: TeamStatus;
-
-   /**
-    * Last activity in this team (iso datetime).
-    */
-   lastActivity: string | null;
-
-   /**
-    * Can contact add users to this team.
-    */
-   addToTeamRights: boolean;
-
-   /**
-    * Contact deleted.
-    */
-   isArchive: boolean;
-
-   /**
-    * Bot name. Empty for users.
-    */
-   botname: string;
-
-   /**
-    * Section ids.
-    */
-   sections: string[];
-
-   /**
-    * Can I send message to this contact.
-    */
-   canSendMessage: boolean | null;
-
-   /**
-    * Why I can't send message to this chat (if can't).
-    */
-   cantSendMessageReason: string;
-
-   /**
-    * Can I call to this contact.
-    */
-   canCall: boolean | null;
-
-   /**
-    * Can I call create task for this contact.
-    */
-   canCreateTask: boolean | null;
-
-   /**
-    * Can I add this contact to group chats.
-    */
-   canAddToGroup: boolean | null;
-
-   /**
-    * Can I remove this contact from team.
-    */
-   canDelete: boolean | null;
-
-   /**
-    * Changeable fields.
-    */
-   changeableFields: string[] | null;
-
-   /**
-    * Family name.
-    */
-   familyName: string | null;
-
-   /**
-    * Given name.
-    */
-   givenName: string | null;
-
-   /**
-    * Patronymic, if any.
-    */
-   patronymic: string | null;
-
-   /**
-    * Default language code.
-    */
-   defaultLang: string | null;
-
-   /**
-    * Enable debug messages in UI.
-    */
-   debugShowActivity: boolean | null;
-
-   /**
-    * Enable remove all messages experimental features.
-    */
-   dropallEnabled: boolean | null;
-
-   /**
-    * Use Ctrl/Cmd + Enter insted Enter.
-    */
-   altSend: boolean | null;
-
-   /**
-    * Send push notifications even contact is online.
-    */
-   alwaysSendPushes: boolean | null;
-
-   /**
-    * Timezone, if any.
-    */
-   timezone: string | null;
-
-   /**
-    * Quiet time start.
-    */
-   quietTimeStart: string | null;
-
-   /**
-    * Quiet time finish.
-    */
-   quietTimeFinish: string | null;
-
-   /**
-    * Push notifications for group chats.
-    */
-   groupNotificationsEnabled: boolean | null;
-
-   /**
-    * Push notifications for task chats.
-    */
-   taskNotificationsEnabled: boolean | null;
-
-   /**
-    * Short view in contact list.
-    */
-   contactShortView: boolean | null;
-
-   /**
-    * Short view in group list.
-    */
-   groupShortView: boolean | null;
-
-   /**
-    * Short view in task list.
-    */
-   taskShortView: boolean | null;
-
-   /**
-    * Short view in contact list in mobile app.
-    */
-   contactMshortView: boolean | null;
-
-   /**
-    * Short view in group list in mobile app.
-    */
-   groupMshortView: boolean | null;
-
-   /**
-    * Short view in task list in mobile app.
-    */
-   taskMshortView: boolean | null;
-
-   /**
-    * Show archived contacts in contact list.
-    */
-   contactShowArchived: boolean | null;
-
-   /**
-    * Show inread chats first in feed.
-    */
-   unreadFirst: boolean | null;
-
-   /**
-    * Show inread chats first in feed in mobile app.
-    */
-   mUnreadFirst: boolean | null;
-
-   /**
-    * Can I add new members to this team.
-    */
-   canAddToTeam: boolean | null;
-
-   /**
-    * Can I manage sections in this team.
-    */
-   canManageSections: boolean | null;
-
-   /**
-    * Can I manage tags in this team.
-    */
-   canManageTags: boolean | null;
-
-   /**
-    * Can I manage integrations in this team.
-    */
-   canManageIntegrations: boolean | null;
-
-   /**
-    * Can I manage color rules in this team.
-    */
-   canManageColorRules: boolean | null;
-
-   /**
-    * Can I create group chats in this team.
-    */
-   canCreateGroup: boolean | null;
-
-   /**
-    * Can I view/join public group in this team.
-    */
-   canJoinPublicGroups: boolean | null;
-
-   /**
-    * Can I view/join public tasks in this team.
-    */
-   canJoinPublicTasks: boolean | null;
-
-   /**
-    * Deprecated: use CanDeleteAnyMessage in chat object.
-    */
-   canDeleteAnyMessage: boolean | null;
-
-   /**
-    * Extra contact fields.
-    */
-   customFields: ContactCustomFields | null;
-
-}
-
-/**
- * Extra contact fields.
- */
-export interface ContactCustomFields {
-   /**
-    * Company.
-    */
-   company: string;
-
-   /**
-    * Department.
-    */
-   department: string;
-
-   /**
-    * Title.
-    */
-   title: string;
-
-   /**
-    * MobilePhone.
-    */
-   mobilePhone: string;
-
-}
-
-/**
- * Short contact representaion.
- */
-export interface ContactShort {
-   /**
-    * Contact Id.
-    */
-   jid: JID;
-
-   /**
-    * Full name in chats.
-    */
-   displayName: string;
-
-   /**
-    * Short name in chats.
-    */
-   shortName: string;
-
-   /**
-    * Icons data.
-    */
-   icons: IconData | null;
-
-}
-
-/**
- * Uploaded media.
- */
-export interface Upload {
-   /**
-    * Upload id.
-    */
-   uid: string;
-
-   /**
-    * Upload size in bytes.
-    */
-   size: number;
-
-   /**
-    * Mediafile duration (for audio/video only).
-    */
-   duration: number;
-
-   /**
-    * Filename.
-    */
-   name: string;
-
-   /**
-    * Absolute url.
-    */
-   url: string;
-
-   /**
-    * Preview details.
-    */
-   preview: UploadPreview | null;
-
-   /**
-    * Content type.
-    */
-   contentType: string;
-
-   /**
-    * Is animated (images only).
-    */
-   animated: boolean;
-
-   /**
-    * File still processing (video only).
-    */
-   processing: boolean;
-
-   /**
-    * PDF version of file. Experimental.
-    */
-   pdfVersion: PdfVersion | null;
-
-}
-
-/**
- * Upload preview.
- */
-export interface UploadPreview {
-   /**
-    * Absolute url to image.
-    */
-   url: string;
-
-   /**
-    * Absolute url to high resolution image (retina).
-    */
-   url2x: string;
-
-   /**
-    * Width in pixels.
-    */
-   width: number;
-
-   /**
-    * Height in pixels.
-    */
-   height: number;
-
-}
-
-/**
- * Server information. Readonly.
- */
-export interface Features {
-   /**
-    * Current host.
-    */
-   host: string;
-
-   /**
-    * Build/revision of server side.
-    */
-   build: string;
-
-   /**
-    * Desktop application version.
-    */
-   desktopVersion: string;
-
-   /**
-    * Webclient version.
-    */
-   frontVersion: string;
-
-   /**
-    * Application title.
-    */
-   appTitle: string;
-
-   /**
-    * Static files server address.
-    */
-   userver: string;
-
-   /**
-    * Link to AppStore.
-    */
-   iOSApp: string;
-
-   /**
-    * Link to Google Play.
-    */
-   androidApp: string;
-
-   /**
-    * Default UI theme.
-    */
-   theme: string;
-
-   /**
-    * Minimal application version required for this server. Used for breaking changes.
-    */
-   minAppVersion: string;
-
-   /**
-    * Free registration allowed.
-    */
-   freeRegistration: boolean;
-
-   /**
-    * Maximum size of user's upload.
-    */
-   maxUploadMb: number;
-
-   /**
-    * Maximum number of forwarded messages.
-    */
-   maxLinkedMessages: number;
-
-   /**
-    * Maximum chars for: family_name, given_name, patronymic if any.
-    */
-   maxUsernamePartLength: number;
-
-   /**
-    * Maximum chars for group chat name.
-    */
-   maxGroupTitleLength: number;
-
-   /**
-    * Maximum chars for role in team.
-    */
-   maxRoleLength: number;
-
-   /**
-    * Maximum chars for mood in team.
-    */
-   maxMoodLength: number;
-
-   /**
-    * Maximum chars for text message.
-    */
-   maxMessageLength: number;
-
-   /**
-    * Maximum length for project and contact's sections names.
-    */
-   maxSectionLength: number;
-
-   /**
-    * Maximum length for tags.
-    */
-   maxTagLength: number;
-
-   /**
-    * Maximum length for task title.
-    */
-   maxTaskTitleLength: number;
-
-   /**
-    * Maximum length for Color Rule.
-    */
-   maxColorRuleDescriptionLength: number;
-
-   /**
-    * Maximum teams for one account.
-    */
-   maxTeams: number;
-
-   /**
-    * Max inactivity seconds.
-    */
-   afkAge: number;
-
-   /**
-    * Password authentication enabled.
-    */
-   authByPassword: boolean;
-
-   /**
-    * QR-code / link authentication enabled.
-    */
-   authByQrCode: boolean;
-
-   /**
-    * SMS authentication enabled.
-    */
-   authBySms: boolean;
-
-   /**
-    * ICE servers for WebRTC.
-    */
-   iCEServers: ICEServer[];
-
-   /**
-    * True for onpremise installation.
-    */
-   customServer: boolean;
-
-   /**
-    * Name of instalation.
-    */
-   installationType: string;
-
-   /**
-    * Testing installation.
-    */
-   isTesting: boolean;
-
-   /**
-    * Yandex metrika counter id.
-    */
-   metrika: string;
-
-   /**
-    * Minimal chars number for starting global search.
-    */
-   minSearchLength: number;
-
-   /**
-    * Resend message in n seconds if no confirmation from server given.
-    */
-   resendTimeout: number;
-
-   /**
-    * Frontent sentry.io settings.
-    */
-   sentryDsnJS: string;
-
-   /**
-    * Message drafts saved on server.
-    */
-   serverDrafts: boolean;
-
-   /**
-    * Firebase application id for web-push notifacations.
-    */
-   firebaseAppId: string;
-
-   /**
-    * Firebase sender id for web-push notifacations.
-    */
-   firebaseSenderId: string;
-
-   /**
-    * Calls functions enabled.
-    */
-   calls: boolean;
-
-   /**
-    * Calls functions enabled for mobile applications.
-    */
-   mobileCalls: boolean;
-
-   /**
-    * Calls record enabled.
-    */
-   callsRecord: boolean;
-
-   /**
-    * Disallow call from multiply devices. Experimental.
-    */
-   onlyOneDevicePerCall: boolean;
-
-   /**
-    * Maximum number of participants per call.
-    */
-   maxParticipantsPerCall: number;
-
-   /**
-    * Safari push id for web-push notifacations.
-    */
-   safariPushId: string;
-
-   /**
-    * Team entity naming. Experimental.
-    */
-   terms: Terms;
-
-   /**
-    * Cross team communication. Experimental.
-    */
-   singleGroupTeams: boolean;
-
-   /**
-    * Wiki pages in chats. Experimental.
-    */
-   wikiPages: boolean;
-
-   /**
-    * Wiki pages in chats. Experimental.
-    */
-   allowAdminMute: boolean;
-
-   /**
-    * Deprecated.
-    */
-   taskChecklist: boolean;
-
-   /**
-    * Deprecated.
-    */
-   readonlyGroups: boolean;
-
-   /**
-    * Deprecated.
-    */
-   taskDashboard: boolean;
-
-   /**
-    * Deprecated.
-    */
-   taskMessages: boolean;
-
-   /**
-    * Deprecated.
-    */
-   taskPublic: boolean;
-
-   /**
-    * Deprecated.
-    */
-   taskTags: boolean;
-
-}
-
-/**
- * Interactive Connectivity Establishment Server for WEB Rtc connection. Readonly.
- */
-export interface ICEServer {
-   /**
-    * URls.
-    */
-   urls: string;
-
-}
-
-/**
- * Exprtimental translation fields for "team" entity renaming. Readonly.
- */
-export interface Terms {
-   /**
-    * EnInTeam.
-    */
-   enInTeam: string;
-
-   /**
-    * EnTeam.
-    */
-   enTeam: string;
-
-   /**
-    * EnTeamAccess.
-    */
-   enTeamAccess: string;
-
-   /**
-    * EnTeamAdmin.
-    */
-   enTeamAdmin: string;
-
-   /**
-    * EnTeamAdmins.
-    */
-   enTeamAdmins: string;
-
-   /**
-    * EnTeamGuest.
-    */
-   enTeamGuest: string;
-
-   /**
-    * EnTeamMember.
-    */
-   enTeamMember: string;
-
-   /**
-    * EnTeamMembers.
-    */
-   enTeamMembers: string;
-
-   /**
-    * EnTeamOwner.
-    */
-   enTeamOwner: string;
-
-   /**
-    * EnTeamSettings.
-    */
-   enTeamSettings: string;
-
-   /**
-    * RuTeamSettings.
-    */
-   ruTeamSettings: string;
-
-   /**
-    * EnTeams.
-    */
-   enTeams: string;
-
-   /**
-    * EnToTeam.
-    */
-   enToTeam: string;
-
-   /**
-    * RuInTeam.
-    */
-   ruInTeam: string;
-
-   /**
-    * RuTeam.
-    */
-   ruTeam: string;
-
-   /**
-    * RuTeamAccess.
-    */
-   ruTeamAccess: string;
-
-   /**
-    * RuTeamAdmin.
-    */
-   ruTeamAdmin: string;
-
-   /**
-    * RuTeamAdmins.
-    */
-   ruTeamAdmins: string;
-
-   /**
-    * RuTeamD.
-    */
-   ruTeamD: string;
-
-   /**
-    * RuTeamGuest.
-    */
-   ruTeamGuest: string;
-
-   /**
-    * RuTeamMember.
-    */
-   ruTeamMember: string;
-
-   /**
-    * RuTeamMembers.
-    */
-   ruTeamMembers: string;
-
-   /**
-    * RuTeamOwner.
-    */
-   ruTeamOwner: string;
-
-   /**
-    * RuTeamP.
-    */
-   ruTeamP: string;
-
-   /**
-    * RuTeamR.
-    */
-   ruTeamR: string;
-
-   /**
-    * RuTeams.
-    */
-   ruTeams: string;
-
-   /**
-    * RuTeamsD.
-    */
-   ruTeamsD: string;
-
-   /**
-    * RuTeamsP.
-    */
-   ruTeamsP: string;
-
-   /**
-    * RuTeamsR.
-    */
-   ruTeamsR: string;
-
-   /**
-    * RuTeamsT.
-    */
-   ruTeamsT: string;
-
-   /**
-    * RuTeamsV.
-    */
-   ruTeamsV: string;
-
-   /**
-    * RuTeamT.
-    */
-   ruTeamT: string;
-
-   /**
-    * RuTeamV.
-    */
-   ruTeamV: string;
-
-   /**
-    * RuToTeam.
-    */
-   ruToTeam: string;
-
-}
-
-/**
- * Set of rules to apply to tasks for coloring.
- */
-export interface ColorRule {
-   /**
-    * Uid.
-    */
-   uid: string;
-
-   /**
-    * Priority.
-    */
-   priority: number;
-
-   /**
-    * ColorIndex.
-    */
-   colorIndex: number;
-
-   /**
-    * Section.
-    */
-   section: string;
-
-   /**
-    * Tags.
-    */
-   tags: string[];
-
-   /**
-    * Description.
-    */
-   description: string;
-
-   /**
-    * TaskStatus.
-    */
-   taskStatus: string;
-
-   /**
-    * TaskImportance.
-    */
-   taskImportance: number | null;
-
-   /**
-    * TaskUrgency.
-    */
-   taskUrgency: number | null;
-
-   /**
-    * SectionEnabled.
-    */
-   sectionEnabled: boolean | null;
-
-   /**
-    * TaskImportanceEnabled.
-    */
-   taskImportanceEnabled: boolean | null;
-
-   /**
-    * TaskUrgencyEnabled.
-    */
-   taskUrgencyEnabled: boolean | null;
-
-   /**
-    * TagsEnabled.
-    */
-   tagsEnabled: boolean | null;
+   useragent: string;
 
 }
 
@@ -1811,74 +132,6 @@ export interface CallOnliner {
     * Member devices, strictly one for now.
     */
    devices: CallDevice[];
-
-}
-
-/**
- * Call participant device.
- */
-export interface CallDevice {
-   /**
-    * Device muted.
-    */
-   muted: boolean;
-
-   /**
-    * Device description.
-    */
-   useragent: string;
-
-}
-
-/**
- * Mimimal chat representaion.
- */
-export interface ChatShort {
-   /**
-    * Group/Task/Contact id.
-    */
-   jid: JID;
-
-   /**
-    * Chat type.
-    */
-   chatType: ChatType;
-
-   /**
-    * Title.
-    */
-   displayName: string;
-
-   /**
-    * Icon data.
-    */
-   icons: IconData | null;
-
-}
-
-/**
- * Mimimal chat representaion for deletion.
- */
-export interface DeletedChat {
-   /**
-    * Group/Task/Contact id.
-    */
-   jid: JID;
-
-   /**
-    * Chat type.
-    */
-   chatType: ChatType;
-
-   /**
-    * Chat fields (related to concrete participan) version.
-    */
-   gentime: number;
-
-   /**
-    * Archive flag. Always true for this structure.
-    */
-   isArchive: boolean;
 
 }
 
@@ -2137,6 +390,11 @@ export interface Chat {
    linkedMessages: any[];
 
    /**
+    * Upload uids for request, upload objects for response.
+    */
+   uploads: Upload[];
+
+   /**
     * Checklist items. Task only.
     */
    items: TaskItem[];
@@ -2219,6 +477,1601 @@ export interface Chat {
 }
 
 /**
+ * Mimimal chat representaion.
+ */
+export interface ChatShort {
+   /**
+    * Group/Task/Contact id.
+    */
+   jid: JID;
+
+   /**
+    * Chat type.
+    */
+   chatType: ChatType;
+
+   /**
+    * Title.
+    */
+   displayName: string;
+
+   /**
+    * Icon data.
+    */
+   icons: IconData | null;
+
+}
+
+/**
+ * Set of rules to apply to tasks for coloring.
+ */
+export interface ColorRule {
+   /**
+    * Uid.
+    */
+   uid: string;
+
+   /**
+    * Priority.
+    */
+   priority: number;
+
+   /**
+    * ColorIndex.
+    */
+   colorIndex: number;
+
+   /**
+    * Section.
+    */
+   section: string;
+
+   /**
+    * Tags.
+    */
+   tags: string[];
+
+   /**
+    * Description.
+    */
+   description: string;
+
+   /**
+    * TaskStatus.
+    */
+   taskStatus: string;
+
+   /**
+    * TaskImportance.
+    */
+   taskImportance: number | null;
+
+   /**
+    * TaskUrgency.
+    */
+   taskUrgency: number | null;
+
+   /**
+    * SectionEnabled.
+    */
+   sectionEnabled: boolean | null;
+
+   /**
+    * TaskImportanceEnabled.
+    */
+   taskImportanceEnabled: boolean | null;
+
+   /**
+    * TaskUrgencyEnabled.
+    */
+   taskUrgencyEnabled: boolean | null;
+
+   /**
+    * TagsEnabled.
+    */
+   tagsEnabled: boolean | null;
+
+}
+
+/**
+ * Contact.
+ */
+export interface Contact {
+   /**
+    * Contact Id.
+    */
+   jid: JID;
+
+   /**
+    * Full name in chats.
+    */
+   displayName: string;
+
+   /**
+    * Short name in chats.
+    */
+   shortName: string;
+
+   /**
+    * Contact email in this team.
+    */
+   contactEmail: string;
+
+   /**
+    * Contact phone in this team.
+    */
+   contactPhone: string;
+
+   /**
+    * Icons data.
+    */
+   icons: IconData | null;
+
+   /**
+    * Role in this team.
+    */
+   role: string;
+
+   /**
+    * Mood in this team.
+    */
+   mood: string;
+
+   /**
+    * Status in this team.
+    */
+   teamStatus: TeamStatus;
+
+   /**
+    * Last activity in this team (iso datetime).
+    */
+   lastActivity: string | null;
+
+   /**
+    * Can contact add users to this team.
+    */
+   addToTeamRights: boolean;
+
+   /**
+    * Contact deleted.
+    */
+   isArchive: boolean;
+
+   /**
+    * Bot name. Empty for users.
+    */
+   botname: string;
+
+   /**
+    * Section ids.
+    */
+   sections: string[];
+
+   /**
+    * Can I send message to this contact.
+    */
+   canSendMessage: boolean | null;
+
+   /**
+    * Why I can't send message to this chat (if can't).
+    */
+   cantSendMessageReason: string;
+
+   /**
+    * Can I call to this contact.
+    */
+   canCall: boolean | null;
+
+   /**
+    * Can I call create task for this contact.
+    */
+   canCreateTask: boolean | null;
+
+   /**
+    * Can I add this contact to group chats.
+    */
+   canAddToGroup: boolean | null;
+
+   /**
+    * Can I remove this contact from team.
+    */
+   canDelete: boolean | null;
+
+   /**
+    * Changeable fields.
+    */
+   changeableFields: string[] | null;
+
+   /**
+    * Family name.
+    */
+   familyName: string | null;
+
+   /**
+    * Given name.
+    */
+   givenName: string | null;
+
+   /**
+    * Patronymic, if any.
+    */
+   patronymic: string | null;
+
+   /**
+    * Default language code.
+    */
+   defaultLang: string | null;
+
+   /**
+    * Enable debug messages in UI.
+    */
+   debugShowActivity: boolean | null;
+
+   /**
+    * Enable remove all messages experimental features.
+    */
+   dropallEnabled: boolean | null;
+
+   /**
+    * Use Ctrl/Cmd + Enter insted Enter.
+    */
+   altSend: boolean | null;
+
+   /**
+    * Use * as @ for mentions.
+    */
+   asteriskMention: boolean | null;
+
+   /**
+    * Send push notifications even contact is online.
+    */
+   alwaysSendPushes: boolean | null;
+
+   /**
+    * Timezone, if any.
+    */
+   timezone: string | null;
+
+   /**
+    * Quiet time start.
+    */
+   quietTimeStart: string | null;
+
+   /**
+    * Quiet time finish.
+    */
+   quietTimeFinish: string | null;
+
+   /**
+    * Push notifications for group chats.
+    */
+   groupNotificationsEnabled: boolean | null;
+
+   /**
+    * Push notifications for task chats.
+    */
+   taskNotificationsEnabled: boolean | null;
+
+   /**
+    * Short view in contact list.
+    */
+   contactShortView: boolean | null;
+
+   /**
+    * Short view in group list.
+    */
+   groupShortView: boolean | null;
+
+   /**
+    * Short view in task list.
+    */
+   taskShortView: boolean | null;
+
+   /**
+    * Short view in contact list in mobile app.
+    */
+   contactMshortView: boolean | null;
+
+   /**
+    * Short view in group list in mobile app.
+    */
+   groupMshortView: boolean | null;
+
+   /**
+    * Short view in task list in mobile app.
+    */
+   taskMshortView: boolean | null;
+
+   /**
+    * Show archived contacts in contact list.
+    */
+   contactShowArchived: boolean | null;
+
+   /**
+    * Show inread chats first in feed.
+    */
+   unreadFirst: boolean | null;
+
+   /**
+    * Show inread chats first in feed in mobile app.
+    */
+   mUnreadFirst: boolean | null;
+
+   /**
+    * Can I add new members to this team.
+    */
+   canAddToTeam: boolean | null;
+
+   /**
+    * Can I manage sections in this team.
+    */
+   canManageSections: boolean | null;
+
+   /**
+    * Can I manage tags in this team.
+    */
+   canManageTags: boolean | null;
+
+   /**
+    * Can I manage integrations in this team.
+    */
+   canManageIntegrations: boolean | null;
+
+   /**
+    * Can I manage color rules in this team.
+    */
+   canManageColorRules: boolean | null;
+
+   /**
+    * Can I create group chats in this team.
+    */
+   canCreateGroup: boolean | null;
+
+   /**
+    * Can I view/join public group in this team.
+    */
+   canJoinPublicGroups: boolean | null;
+
+   /**
+    * Can I view/join public tasks in this team.
+    */
+   canJoinPublicTasks: boolean | null;
+
+   /**
+    * Deprecated: use CanDeleteAnyMessage in chat object.
+    */
+   canDeleteAnyMessage: boolean | null;
+
+   /**
+    * Extra contact fields.
+    */
+   customFields: ContactCustomFields | null;
+
+}
+
+/**
+ * Extra contact fields.
+ */
+export interface ContactCustomFields {
+   /**
+    * Company.
+    */
+   company: string;
+
+   /**
+    * Department.
+    */
+   department: string;
+
+   /**
+    * Title.
+    */
+   title: string;
+
+   /**
+    * MobilePhone.
+    */
+   mobilePhone: string;
+
+   /**
+    * Source.
+    */
+   source: string;
+
+}
+
+/**
+ * Short contact representaion.
+ */
+export interface ContactShort {
+   /**
+    * Contact Id.
+    */
+   jid: JID;
+
+   /**
+    * Full name in chats.
+    */
+   displayName: string;
+
+   /**
+    * Short name in chats.
+    */
+   shortName: string;
+
+   /**
+    * Icons data.
+    */
+   icons: IconData | null;
+
+}
+
+/**
+ * Mimimal chat representaion for deletion.
+ */
+export interface DeletedChat {
+   /**
+    * Group/Task/Contact id.
+    */
+   jid: JID;
+
+   /**
+    * Chat type.
+    */
+   chatType: ChatType;
+
+   /**
+    * Chat fields (related to concrete participan) version.
+    */
+   gentime: number;
+
+   /**
+    * Archive flag. Always true for this structure.
+    */
+   isArchive: boolean;
+
+}
+
+/**
+ * Remind deleted message.
+ */
+export interface DeletedRemind {
+   /**
+    * Remind id.
+    */
+   uid: string;
+
+}
+
+/**
+ * Delete tag message.
+ */
+export interface DeletedTag {
+   /**
+    * Tag id.
+    */
+   uid: string;
+
+}
+
+/**
+ * Team deletion message. Readonly.
+ */
+export interface DeletedTeam {
+   /**
+    * Team id.
+    */
+   uid: string;
+
+   /**
+    * Team deleted.
+    */
+   isArchive: boolean;
+
+   /**
+    * Object version.
+    */
+   gentime: number;
+
+}
+
+/**
+ * Server information. Readonly.
+ */
+export interface Features {
+   /**
+    * Current host.
+    */
+   host: string;
+
+   /**
+    * Build/revision of server side.
+    */
+   build: string;
+
+   /**
+    * Desktop application version.
+    */
+   desktopVersion: string;
+
+   /**
+    * Webclient version.
+    */
+   frontVersion: string;
+
+   /**
+    * Application title.
+    */
+   appTitle: string;
+
+   /**
+    * Static files server address.
+    */
+   userver: string;
+
+   /**
+    * Link to AppStore.
+    */
+   iOSApp: string;
+
+   /**
+    * Link to Google Play.
+    */
+   androidApp: string;
+
+   /**
+    * Default UI theme.
+    */
+   theme: string;
+
+   /**
+    * Minimal application version required for this server. Used for breaking changes.
+    */
+   minAppVersion: string;
+
+   /**
+    * Free registration allowed.
+    */
+   freeRegistration: boolean;
+
+   /**
+    * Maximum size of user's upload.
+    */
+   maxUploadMb: number;
+
+   /**
+    * Maximum number of forwarded messages.
+    */
+   maxLinkedMessages: number;
+
+   /**
+    * Maximum number of message uploads.
+    */
+   maxMessageUploads: number;
+
+   /**
+    * Maximum chars for: family_name, given_name, patronymic if any.
+    */
+   maxUsernamePartLength: number;
+
+   /**
+    * Maximum chars for group chat name.
+    */
+   maxGroupTitleLength: number;
+
+   /**
+    * Maximum chars for role in team.
+    */
+   maxRoleLength: number;
+
+   /**
+    * Maximum chars for mood in team.
+    */
+   maxMoodLength: number;
+
+   /**
+    * Maximum chars for text message.
+    */
+   maxMessageLength: number;
+
+   /**
+    * Maximum length for project and contact's sections names.
+    */
+   maxSectionLength: number;
+
+   /**
+    * Maximum length for tags.
+    */
+   maxTagLength: number;
+
+   /**
+    * Maximum length for task title.
+    */
+   maxTaskTitleLength: number;
+
+   /**
+    * Maximum length for ColorRule description.
+    */
+   maxColorRuleDescriptionLength: number;
+
+   /**
+    * Maximum length for urls.
+    */
+   maxUrlLength: number;
+
+   /**
+    * Maximum length for Integration comment.
+    */
+   maxIntegrationCommentLength: number;
+
+   /**
+    * Maximum teams for one account.
+    */
+   maxTeams: number;
+
+   /**
+    * Max inactivity seconds.
+    */
+   afkAge: number;
+
+   /**
+    * Password authentication enabled.
+    */
+   authByPassword: boolean;
+
+   /**
+    * QR-code / link authentication enabled.
+    */
+   authByQrCode: boolean;
+
+   /**
+    * SMS authentication enabled.
+    */
+   authBySms: boolean;
+
+   /**
+    * ICE servers for WebRTC.
+    */
+   iCEServers: ICEServer[];
+
+   /**
+    * True for onpremise installation.
+    */
+   customServer: boolean;
+
+   /**
+    * Name of instalation.
+    */
+   installationType: string;
+
+   /**
+    * Testing installation.
+    */
+   isTesting: boolean;
+
+   /**
+    * Yandex metrika counter id.
+    */
+   metrika: string;
+
+   /**
+    * Minimal chars number for starting global search.
+    */
+   minSearchLength: number;
+
+   /**
+    * Resend message in n seconds if no confirmation from server given.
+    */
+   resendTimeout: number;
+
+   /**
+    * Frontent sentry.io settings.
+    */
+   sentryDsnJS: string;
+
+   /**
+    * Message drafts saved on server.
+    */
+   serverDrafts: boolean;
+
+   /**
+    * Firebase application id for web-push notifacations.
+    */
+   firebaseAppId: string;
+
+   /**
+    * Firebase sender id for web-push notifacations.
+    */
+   firebaseSenderId: string;
+
+   /**
+    * Calls functions enabled.
+    */
+   calls: boolean;
+
+   /**
+    * Calls functions enabled for mobile applications.
+    */
+   mobileCalls: boolean;
+
+   /**
+    * Calls record enabled.
+    */
+   callsRecord: boolean;
+
+   /**
+    * Disallow call from multiply devices. Experimental.
+    */
+   onlyOneDevicePerCall: boolean;
+
+   /**
+    * Maximum number of participants per call.
+    */
+   maxParticipantsPerCall: number;
+
+   /**
+    * Safari push id for web-push notifacations.
+    */
+   safariPushId: string;
+
+   /**
+    * Multiple message uploads.
+    */
+   messageUploads: boolean;
+
+   /**
+    * Team entity naming. Experimental.
+    */
+   terms: Terms;
+
+   /**
+    * Cross team communication. Experimental.
+    */
+   singleGroupTeams: boolean;
+
+   /**
+    * Wiki pages in chats. Experimental.
+    */
+   wikiPages: boolean;
+
+   /**
+    * Wiki pages in chats. Experimental.
+    */
+   allowAdminMute: boolean;
+
+   /**
+    * Deprecated.
+    */
+   taskChecklist: boolean;
+
+   /**
+    * Deprecated.
+    */
+   readonlyGroups: boolean;
+
+   /**
+    * Deprecated.
+    */
+   taskDashboard: boolean;
+
+   /**
+    * Deprecated.
+    */
+   taskMessages: boolean;
+
+   /**
+    * Deprecated.
+    */
+   taskPublic: boolean;
+
+   /**
+    * Deprecated.
+    */
+   taskTags: boolean;
+
+}
+
+/**
+ * Group chat membership status.
+ */
+export interface GroupMembership {
+   /**
+    * Contact id.
+    */
+   jid: JID;
+
+   /**
+    * Status in group.
+    */
+   status: GroupStatus;
+
+   /**
+    * Can I remove this member.
+    */
+   canRemove: boolean;
+
+}
+
+/**
+ * Interactive Connectivity Establishment Server for WEB Rtc connection. Readonly.
+ */
+export interface ICEServer {
+   /**
+    * URls.
+    */
+   urls: string;
+
+}
+
+/**
+ * Icon data. Contains sm+lg (for uploaded image) OR stub+letters+color (for icon generated from display name).
+ */
+export interface IconData {
+   /**
+    * Small icon.
+    */
+   sm: SingleIcon | null;
+
+   /**
+    * Large image.
+    */
+   lg: SingleIcon | null;
+
+   /**
+    * Generated image with 1-2 letters.
+    */
+   stub: string;
+
+   /**
+    * Letters from stub icon.
+    */
+   letters: string;
+
+   /**
+    * Stub icon background color.
+    */
+   color: string;
+
+}
+
+/**
+ * Integration for concrete chat.
+ */
+export interface Integration {
+   /**
+    * Id.
+    */
+   uid: string;
+
+   /**
+    * Comment, if any.
+    */
+   comment: string;
+
+   /**
+    * Creation datetime, iso.
+    */
+   created: string;
+
+   /**
+    * Integration enabled.
+    */
+   enabled: boolean;
+
+   /**
+    * Integration form.
+    */
+   form: IntegrationForm;
+
+   /**
+    * Chat id.
+    */
+   group: JID;
+
+   /**
+    * Full description.
+    */
+   help: string;
+
+   /**
+    * Unique integration name.
+    */
+   kind: string;
+
+}
+
+/**
+ * Integration form field.
+ */
+export interface IntegrationField {
+   /**
+    * Label.
+    */
+   label: string;
+
+   /**
+    * Is field readonly.
+    */
+   readonly: boolean;
+
+   /**
+    * Current value.
+    */
+   value: string;
+
+}
+
+/**
+ * Integration form.
+ */
+export interface IntegrationForm {
+   /**
+    * Api key field, if any.
+    */
+   apiKey: IntegrationField | null;
+
+   /**
+    * Webhook url, if any.
+    */
+   webhookUrl: IntegrationField | null;
+
+   /**
+    * Url, if any.
+    */
+   url: IntegrationField | null;
+
+}
+
+/**
+ * Integration kind.
+ */
+export interface IntegrationKind {
+   /**
+    * Integration unique name.
+    */
+   kind: string;
+
+   /**
+    * Integration title.
+    */
+   title: string;
+
+   /**
+    * Integration template.
+    */
+   template: Integration;
+
+   /**
+    * Path to icon.
+    */
+   icon: string;
+
+}
+
+/**
+ * Complete integrations data, as received from server.
+ */
+export interface Integrations {
+   /**
+    * Currently existing integrations.
+    */
+   integrations: Integration[];
+
+   /**
+    * Types of integrations available for setup.
+    */
+   kinds: IntegrationKind[];
+
+}
+
+/**
+ * Markup entity. Experimental.
+ */
+export interface MarkupEntity {
+   /**
+    * Open marker offset.
+    */
+   open: number;
+
+   /**
+    * Open marker length.
+    */
+   openLength: number;
+
+   /**
+    * Close marker offset.
+    */
+   close: number;
+
+   /**
+    * Close marker length.
+    */
+   closeLength: number;
+
+   /**
+    * Marker type.
+    */
+   type: string;
+
+   /**
+    * Url, for Link type.
+    */
+   url: string;
+
+   /**
+    * Text replacement.
+    */
+   repl: string;
+
+   /**
+    * Time, for Time type.
+    */
+   time: string;
+
+   /**
+    * List of internal markup entities.
+    */
+   childs: MarkupEntity[];
+
+}
+
+/**
+ * Chat message.
+ */
+export interface Message {
+   /**
+    * Message content struct.
+    */
+   content: MessageContent;
+
+   /**
+    * Simple plaintext message representation. Readonly.
+    */
+   pushText: string;
+
+   /**
+    * Sender contact id. Readonly.
+    */
+   from: JID;
+
+   /**
+    * Recipient id (group, task or contact).
+    */
+   to: JID;
+
+   /**
+    * Message uid.
+    */
+   messageId: string;
+
+   /**
+    * Message creation datetime (set by server side). Readonly.
+    */
+   created: string;
+
+   /**
+    * Object version. Readonly.
+    */
+   gentime: number;
+
+   /**
+    * Chat type. Readonly.
+    */
+   chatType: ChatType;
+
+   /**
+    * Chat id. Readonly.
+    */
+   chat: JID;
+
+   /**
+    * External/internals links. Readonly.
+    */
+   links: MessageLinks;
+
+   /**
+    * Markup entities. Experimental. Readonly.
+    */
+   markup: MarkupEntity[];
+
+   /**
+    * Importance flag.
+    */
+   important: boolean;
+
+   /**
+    * Datetime of message modification or deletion. Readonly.
+    */
+   edited: string;
+
+   /**
+    * Message was seen by anybody in chat. True or null. Readonly.
+    */
+   received: boolean;
+
+   /**
+    * Unused yet. Readonly.
+    */
+   numReceived: number;
+
+   /**
+    * Disable link previews. True or null.
+    */
+   nopreview: boolean;
+
+   /**
+    * Has link previews. True or null. Readonly.
+    */
+   hasPreviews: boolean;
+
+   /**
+    * Previous message id in this chat. Uid or null. Readonly.
+    */
+   prev: string;
+
+   /**
+    * This message is first in this chat. True or null. Readonly.
+    */
+   isFirst: boolean;
+
+   /**
+    * This message is first in this chat. True or null. Readonly.
+    */
+   isLast: boolean;
+
+   /**
+    * Message uploads.
+    */
+   uploads: Upload[];
+
+   /**
+    * Message reactions struct. Can be null. Readonly.
+    */
+   reactions: MessageReaction[];
+
+   /**
+    * Message that was replied to, if any.
+    */
+   replyTo: Message | null;
+
+   /**
+    * Forwarded messages. Can be null. Also contains double of ReplyTo for backward compatibility.
+    */
+   linkedMessages: Message[];
+
+   /**
+    * Has mention (@). True or null. Readonly.
+    */
+   notice: boolean;
+
+   /**
+    * Message has no pushes and did not affect any counters. Readonly.
+    */
+   silently: boolean;
+
+   /**
+    * Author can change this message until date. Can be null. Readonly.
+    */
+   editableUntil: string;
+
+   /**
+    * Index number of this message. Starts from 0. Null for deleted messages. Changes when any previous message wad deleted. Readonly.
+    */
+   num: number | null;
+
+   /**
+    * Debug information, if any. Readonly.
+    */
+   debug: string;
+
+}
+
+/**
+ * Chat message content.
+ */
+export interface MessageContent {
+   /**
+    * Text repesentation of message.
+    */
+   text: string;
+
+   /**
+    * Message type.
+    */
+   type: Mediatype;
+
+   /**
+    * Message subtype, if any.
+    */
+   subtype: Mediasubtype;
+
+   /**
+    * Upload id, if any. Depreacted: use Uploads instead.
+    */
+   upload: string;
+
+   /**
+    * Upload url, if any. Depreacted: use Uploads instead.
+    */
+   mediaUrl: string;
+
+   /**
+    * Upload size, if any. Depreacted: use Uploads instead.
+    */
+   size: number;
+
+   /**
+    * Upload duration, if any. Depreacted: use Uploads instead.
+    */
+   duration: number | null;
+
+   /**
+    * Upload stil processing, if any. Depreacted: use Uploads instead.
+    */
+   processing: boolean;
+
+   /**
+    * Upload preview height, in pixels, if any. Depreacted: use Uploads instead.
+    */
+   previewHeight: number;
+
+   /**
+    * Upload width, in pixels, if any. Depreacted: use Uploads instead.
+    */
+   previewWidth: number;
+
+   /**
+    * Upload preview absolute url, if any. Depreacted: use Uploads instead.
+    */
+   previewUrl: string;
+
+   /**
+    * Upload high resolution preview absolute url, if any. Depreacted: use Uploads instead.
+    */
+   preview2xUrl: string;
+
+   /**
+    * Upload name, if any. Depreacted: use Uploads instead.
+    */
+   name: string;
+
+   /**
+    * Upload is animated image, if any. Depreacted: use Uploads instead.
+    */
+   animated: boolean;
+
+   /**
+    * Change title (for "change" mediatype).
+    */
+   title: string;
+
+   /**
+    * Change old value (for "change" mediatype).
+    */
+   old: string | null;
+
+   /**
+    * Change new value (for "change" mediatype).
+    */
+   new: string | null;
+
+   /**
+    * Change actor contact id (for "change" mediatype).
+    */
+   actor: JID | null;
+
+   /**
+    * Comment. For audimessage.
+    */
+   comment: string;
+
+   /**
+    * Given name (for "contact" mediatype).
+    */
+   givenName: string | null;
+
+   /**
+    * Family name (for "contact" mediatype).
+    */
+   familyName: string | null;
+
+   /**
+    * Patronymic name (for "contact" mediatype).
+    */
+   patronymic: string | null;
+
+   /**
+    * Contact phones list (for "contact" mediatype).
+    */
+   phones: string[] | null;
+
+   /**
+    * Emails list (for "contact" mediatype).
+    */
+   emails: string[] | null;
+
+   /**
+    * Stickerpack name (for "sticker" subtype).
+    */
+   stickerpack: string;
+
+   /**
+    * Pdf version, if any.
+    */
+   pdfVersion: PdfVersion | null;
+
+}
+
+/**
+ * Checked message links. In short: "Click here: {link.Pattern}" => "Click here: <a href='{link.Url}'>{link.Text}</a>".
+ */
+export interface MessageLink {
+   /**
+    * Text fragment that should be replaced by link.
+    */
+   pattern: string;
+
+   /**
+    * Internal (tadateam://) or external link.
+    */
+   url: string;
+
+   /**
+    * Text replacement.
+    */
+   text: string;
+
+   /**
+    * Optional preview info, for websites.
+    */
+   preview: MessageLinkPreview | null;
+
+   /**
+    * Optional upload info.
+    */
+   uploads: Upload[];
+
+   /**
+    * Website previews disabled.
+    */
+   noPreview: boolean;
+
+   /**
+    * Optional youtube movie id.
+    */
+   youtubeId: string;
+
+}
+
+/**
+ * Website title and description.
+ */
+export interface MessageLinkPreview {
+   /**
+    * Website title or og:title content.
+    */
+   title: string;
+
+   /**
+    * Website description.
+    */
+   description: string;
+
+}
+
+/**
+ * Push message over websockets. Readonly.
+ */
+export interface MessagePush {
+   /**
+    * Push title.
+    */
+   title: string;
+
+   /**
+    * Push subtitle.
+    */
+   subtitle: string;
+
+   /**
+    * Push body.
+    */
+   message: string;
+
+   /**
+    * Absolute url to push icon.
+    */
+   iconUrl: string;
+
+   /**
+    * Url opened on click.
+    */
+   clickAction: string;
+
+   /**
+    * Push tag (for join pushes).
+    */
+   tag: string;
+
+   /**
+    * Team uid.
+    */
+   team: string;
+
+   /**
+    * Sender contact id.
+    */
+   sender: JID;
+
+   /**
+    * Chat id.
+    */
+   chat: JID;
+
+   /**
+    * Message id.
+    */
+   messageId: string;
+
+   /**
+    * Message creation iso datetime.
+    */
+   created: string;
+
+}
+
+/**
+ * Message emoji reaction.
+ */
+export interface MessageReaction {
+   /**
+    * Emoji.
+    */
+   name: string;
+
+   /**
+    * Number of reactions.
+    */
+   counter: number;
+
+   /**
+    * Details.
+    */
+   details: MessageReactionDetail[];
+
+}
+
+/**
+ * Message reaction detail.
+ */
+export interface MessageReactionDetail {
+   /**
+    * When reaction added, iso datetime.
+    */
+   created: string;
+
+   /**
+    * Reaction author.
+    */
+   sender: JID;
+
+   /**
+    * Reaction emoji.
+    */
+   name: string;
+
+}
+
+/**
+ * PDF preview of mediafile. Experimental.
+ */
+export interface PdfVersion {
+   /**
+    * Absolute url.
+    */
+   url: string;
+
+   /**
+    * First string of text content.
+    */
+   textPreview: string;
+
+}
+
+/**
+ * Remind.
+ */
+export interface Remind {
+   /**
+    * Remind id.
+    */
+   uid: string;
+
+   /**
+    * Chat id.
+    */
+   chat: JID;
+
+   /**
+    * Activation time, iso.
+    */
+   fireAt: string;
+
+   /**
+    * Comment, if any.
+    */
+   comment: string;
+
+}
+
+/**
+ * Websocket session.
+ */
+export interface Session {
+   /**
+    * Session id.
+    */
+   uid: string;
+
+   /**
+    * Creation datetime.
+    */
+   created: string;
+
+   /**
+    * Language code.
+    */
+   lang: string;
+
+   /**
+    * Team id.
+    */
+   team: string;
+
+   /**
+    * Mobile.
+    */
+   isMobile: boolean;
+
+   /**
+    * Away from keyboard.
+    */
+   afk: boolean;
+
+   /**
+    * User agent.
+    */
+   useragent: string;
+
+   /**
+    * IP address.
+    */
+   addr: string;
+
+}
+
+/**
+ * Small or large icon.
+ */
+export interface SingleIcon {
+   /**
+    * absolute url to icon.
+    */
+   url: string;
+
+   /**
+    * Icon width, in pixels.
+    */
+   width: number;
+
+   /**
+    * Icon height, in pixels.
+    */
+   height: number;
+
+}
+
+/**
  * Link to sub/sup task.
  */
 export interface Subtask {
@@ -2251,6 +2104,43 @@ export interface Subtask {
     * Can other team member see this task/group chat.
     */
    public: boolean;
+
+}
+
+/**
+ * Task tag.
+ */
+export interface Tag {
+   /**
+    * Tag id.
+    */
+   uid: string;
+
+   /**
+    * Tag name.
+    */
+   name: string;
+
+}
+
+/**
+ * Task color rules color.
+ */
+export interface TaskColor {
+   /**
+    * Regular.
+    */
+   regular: string;
+
+   /**
+    * Dark.
+    */
+   dark: string;
+
+   /**
+    * Light.
+    */
+   light: string;
 
 }
 
@@ -2291,50 +2181,33 @@ export interface TaskItem {
 }
 
 /**
- * Group chat membership status.
+ * Custom task status.
  */
-export interface GroupMembership {
+export interface TaskStatus {
    /**
-    * Contact id.
-    */
-   jid: JID;
-
-   /**
-    * Status in group.
-    */
-   status: GroupStatus;
-
-   /**
-    * Can I remove this member.
-    */
-   canRemove: boolean;
-
-}
-
-/**
- * Task tag.
- */
-export interface Tag {
-   /**
-    * Tag id.
+    * Status id.
     */
    uid: string;
 
    /**
-    * Tag name.
+    * Status sort ordering.
+    */
+   sortOrdering: number;
+
+   /**
+    * Status internal name.
     */
    name: string;
 
-}
-
-/**
- * Delete tag message.
- */
-export interface DeletedTag {
    /**
-    * Tag id.
+    * Status localized name.
     */
-   uid: string;
+   title: string;
+
+   /**
+    * Status not used anymore.
+    */
+   isArchive: boolean;
 
 }
 
@@ -2490,6 +2363,22 @@ export interface Team {
 }
 
 /**
+ * Unread message counters.
+ */
+export interface TeamCounter {
+   /**
+    * Team id.
+    */
+   uid: string;
+
+   /**
+    * Unread message counters.
+    */
+   unreads: TeamUnread;
+
+}
+
+/**
  * Short team representation. For invites, push notifications, etc. Readonly.
  */
 export interface TeamShort {
@@ -2511,23 +2400,178 @@ export interface TeamShort {
 }
 
 /**
- * Team deletion message. Readonly.
+ * Exprtimental translation fields for "team" entity renaming. Readonly.
  */
-export interface DeletedTeam {
+export interface Terms {
    /**
-    * Team id.
+    * EnInTeam.
     */
-   uid: string;
+   enInTeam: string;
 
    /**
-    * Team deleted.
+    * EnTeam.
     */
-   isArchive: boolean;
+   enTeam: string;
 
    /**
-    * Object version.
+    * EnTeamAccess.
     */
-   gentime: number;
+   enTeamAccess: string;
+
+   /**
+    * EnTeamAdmin.
+    */
+   enTeamAdmin: string;
+
+   /**
+    * EnTeamAdmins.
+    */
+   enTeamAdmins: string;
+
+   /**
+    * EnTeamGuest.
+    */
+   enTeamGuest: string;
+
+   /**
+    * EnTeamMember.
+    */
+   enTeamMember: string;
+
+   /**
+    * EnTeamMembers.
+    */
+   enTeamMembers: string;
+
+   /**
+    * EnTeamOwner.
+    */
+   enTeamOwner: string;
+
+   /**
+    * EnTeamSettings.
+    */
+   enTeamSettings: string;
+
+   /**
+    * RuTeamSettings.
+    */
+   ruTeamSettings: string;
+
+   /**
+    * EnTeams.
+    */
+   enTeams: string;
+
+   /**
+    * EnToTeam.
+    */
+   enToTeam: string;
+
+   /**
+    * RuInTeam.
+    */
+   ruInTeam: string;
+
+   /**
+    * RuTeam.
+    */
+   ruTeam: string;
+
+   /**
+    * RuTeamAccess.
+    */
+   ruTeamAccess: string;
+
+   /**
+    * RuTeamAdmin.
+    */
+   ruTeamAdmin: string;
+
+   /**
+    * RuTeamAdmins.
+    */
+   ruTeamAdmins: string;
+
+   /**
+    * RuTeamD.
+    */
+   ruTeamD: string;
+
+   /**
+    * RuTeamGuest.
+    */
+   ruTeamGuest: string;
+
+   /**
+    * RuTeamMember.
+    */
+   ruTeamMember: string;
+
+   /**
+    * RuTeamMembers.
+    */
+   ruTeamMembers: string;
+
+   /**
+    * RuTeamOwner.
+    */
+   ruTeamOwner: string;
+
+   /**
+    * RuTeamP.
+    */
+   ruTeamP: string;
+
+   /**
+    * RuTeamR.
+    */
+   ruTeamR: string;
+
+   /**
+    * RuTeams.
+    */
+   ruTeams: string;
+
+   /**
+    * RuTeamsD.
+    */
+   ruTeamsD: string;
+
+   /**
+    * RuTeamsP.
+    */
+   ruTeamsP: string;
+
+   /**
+    * RuTeamsR.
+    */
+   ruTeamsR: string;
+
+   /**
+    * RuTeamsT.
+    */
+   ruTeamsT: string;
+
+   /**
+    * RuTeamsV.
+    */
+   ruTeamsV: string;
+
+   /**
+    * RuTeamT.
+    */
+   ruTeamT: string;
+
+   /**
+    * RuTeamV.
+    */
+   ruTeamV: string;
+
+   /**
+    * RuToTeam.
+    */
+   ruToTeam: string;
 
 }
 
@@ -2603,6 +2647,175 @@ export interface Theme {
 }
 
 /**
+ * Unread message counters.
+ */
+export interface Unread {
+   /**
+    * Total unread messages.
+    */
+   numMessages: number;
+
+   /**
+    * Total unread messages with mentions.
+    */
+   numNoticeMessages: number;
+
+   /**
+    * Total chats with unread messages.
+    */
+   numChats: number;
+
+}
+
+/**
+ * Uploaded media.
+ */
+export interface Upload {
+   /**
+    * Upload id.
+    */
+   uid: string;
+
+   /**
+    * Uploaded at.
+    */
+   created: string;
+
+   /**
+    * Upload size in bytes.
+    */
+   size: number;
+
+   /**
+    * Mediafile duration (for audio/video only).
+    */
+   duration: number;
+
+   /**
+    * Filename.
+    */
+   name: string;
+
+   /**
+    * Absolute url.
+    */
+   url: string;
+
+   /**
+    * Preview details.
+    */
+   preview: UploadPreview | null;
+
+   /**
+    * Content type.
+    */
+   contentType: string;
+
+   /**
+    * Is animated (images only).
+    */
+   animated: boolean;
+
+   /**
+    * File still processing (video only).
+    */
+   processing: boolean;
+
+   /**
+    * PDF version of file. Experimental.
+    */
+   pdfVersion: PdfVersion | null;
+
+}
+
+/**
+ * Upload preview.
+ */
+export interface UploadPreview {
+   /**
+    * Absolute url to image.
+    */
+   url: string;
+
+   /**
+    * Absolute url to high resolution image (retina).
+    */
+   url2x: string;
+
+   /**
+    * Width in pixels.
+    */
+   width: number;
+
+   /**
+    * Height in pixels.
+    */
+   height: number;
+
+}
+
+/**
+ * Account data.
+ */
+export interface User {
+   /**
+    * Phone for login.
+    */
+   phone: string | null;
+
+   /**
+    * Email for login.
+    */
+   email: string | null;
+
+   /**
+    * Default language code.
+    */
+   defaultLang: string | null;
+
+   /**
+    * Use Ctrl/Cmd + Enter instead Enter.
+    */
+   altSend: boolean;
+
+   /**
+    * Use * as @ for mentions.
+    */
+   asteriskMention: boolean;
+
+   /**
+    * Send pushes even user is online.
+    */
+   alwaysSendPushes: boolean;
+
+   /**
+    * Show unread chats in chat list first.
+    */
+   unreadFirst: boolean;
+
+   /**
+    * Show unread chats in chat list first on mobiles.
+    */
+   mUnreadFirst: boolean;
+
+   /**
+    * Timezone.
+    */
+   timezone: string;
+
+   /**
+    * Start silently time (no pushes, no sounds).
+    */
+   quietTimeStart: string | null;
+
+   /**
+    * Finish silently time (no pushes, no sounds).
+    */
+   quietTimeFinish: string | null;
+
+}
+
+/**
  * Wiki page. Experimental.
  */
 export interface WikiPage {
@@ -2633,825 +2846,19 @@ const undef = (v: any): boolean => (typeof v === 'undefined')
 
 
 /**
- * Create NewSingleIcon from raw json.
+ * Create NewCallDevice from raw json.
  */
-export const NewSingleIcon = (e: any): SingleIcon => ({
-    url: e['url'],
-    width: e['width'],
-    height: e['height'],
+export const NewCallDevice = (e: any): CallDevice => ({
+    muted: e['muted'],
+    useragent: e['useragent'],
 })
 
 /**
- * Export SingleIcon to json.
+ * Export CallDevice to json.
  */
-export const ExportSingleIcon = (e: SingleIcon|null): any => (e === null ? null : {
-	'url': e.url,
-	'width': e.width,
-	'height': e.height,
-})
-
-/**
- * Create NewIconData from raw json.
- */
-export const NewIconData = (e: any): IconData => ({
-    sm: undef(e['sm']) ? null : NewSingleIcon(e['sm']),
-    lg: undef(e['lg']) ? null : NewSingleIcon(e['lg']),
-    stub: undef(e['stub']) ? '' : e['stub'],
-    letters: undef(e['letters']) ? '' : e['letters'],
-    color: undef(e['color']) ? '' : e['color'],
-})
-
-/**
- * Export IconData to json.
- */
-export const ExportIconData = (e: IconData|null): any => (e === null ? null : {
-	'sm': ExportSingleIcon(e.sm),
-	'lg': ExportSingleIcon(e.lg),
-	'stub': e.stub,
-	'letters': e.letters,
-	'color': e.color,
-})
-
-/**
- * Create NewTaskColor from raw json.
- */
-export const NewTaskColor = (e: any): TaskColor => ({
-    regular: e['regular'],
-    dark: e['dark'],
-    light: e['light'],
-})
-
-/**
- * Export TaskColor to json.
- */
-export const ExportTaskColor = (e: TaskColor|null): any => (e === null ? null : {
-	'regular': e.regular,
-	'dark': e.dark,
-	'light': e.light,
-})
-
-/**
- * Create NewRemind from raw json.
- */
-export const NewRemind = (e: any): Remind => ({
-    uid: e['uid'],
-    chat: e['chat'],
-    fireAt: e['fire_at'],
-    comment: undef(e['comment']) ? '' : e['comment'],
-})
-
-/**
- * Export Remind to json.
- */
-export const ExportRemind = (e: Remind|null): any => (e === null ? null : {
-	'uid': e.uid,
-	'chat': e.chat,
-	'fire_at': e.fireAt,
-	'comment': e.comment,
-})
-
-/**
- * Create NewDeletedRemind from raw json.
- */
-export const NewDeletedRemind = (e: any): DeletedRemind => ({
-    uid: e['uid'],
-})
-
-/**
- * Export DeletedRemind to json.
- */
-export const ExportDeletedRemind = (e: DeletedRemind|null): any => (e === null ? null : {
-	'uid': e.uid,
-})
-
-/**
- * Create NewUnread from raw json.
- */
-export const NewUnread = (e: any): Unread => ({
-    numMessages: e['messages'],
-    numNoticeMessages: e['notice_messages'],
-    numChats: e['chats'],
-})
-
-/**
- * Export Unread to json.
- */
-export const ExportUnread = (e: Unread|null): any => (e === null ? null : {
-	'messages': e.numMessages,
-	'notice_messages': e.numNoticeMessages,
-	'chats': e.numChats,
-})
-
-/**
- * Create NewTeamCounter from raw json.
- */
-export const NewTeamCounter = (e: any): TeamCounter => ({
-    uid: e['uid'],
-    unreads: e['unread'],
-})
-
-/**
- * Export TeamCounter to json.
- */
-export const ExportTeamCounter = (e: TeamCounter|null): any => (e === null ? null : {
-	'uid': e.uid,
-	'unread': e.unreads,
-})
-
-/**
- * Create NewPdfVersion from raw json.
- */
-export const NewPdfVersion = (e: any): PdfVersion => ({
-    url: e['url'],
-    textPreview: undef(e['text_preview']) ? '' : e['text_preview'],
-})
-
-/**
- * Export PdfVersion to json.
- */
-export const ExportPdfVersion = (e: PdfVersion|null): any => (e === null ? null : {
-	'url': e.url,
-	'text_preview': e.textPreview,
-})
-
-/**
- * Create NewIntegrationField from raw json.
- */
-export const NewIntegrationField = (e: any): IntegrationField => ({
-    label: e['label'],
-    readonly: e['readonly'],
-    value: e['value'],
-})
-
-/**
- * Export IntegrationField to json.
- */
-export const ExportIntegrationField = (e: IntegrationField|null): any => (e === null ? null : {
-	'label': e.label,
-	'readonly': e.readonly,
-	'value': e.value,
-})
-
-/**
- * Create NewIntegrationForm from raw json.
- */
-export const NewIntegrationForm = (e: any): IntegrationForm => ({
-    apiKey: undef(e['api_key']) ? null : NewIntegrationField(e['api_key']),
-    webhookUrl: undef(e['webhook_url']) ? null : NewIntegrationField(e['webhook_url']),
-    url: undef(e['url']) ? null : NewIntegrationField(e['url']),
-})
-
-/**
- * Export IntegrationForm to json.
- */
-export const ExportIntegrationForm = (e: IntegrationForm|null): any => (e === null ? null : {
-	'api_key': ExportIntegrationField(e.apiKey),
-	'webhook_url': ExportIntegrationField(e.webhookUrl),
-	'url': ExportIntegrationField(e.url),
-})
-
-/**
- * Create NewIntegration from raw json.
- */
-export const NewIntegration = (e: any): Integration => ({
-    uid: undef(e['uid']) ? '' : e['uid'],
-    comment: e['comment'],
-    created: undef(e['created']) ? '' : e['created'],
-    enabled: e['enabled'],
-    form: NewIntegrationForm(e['form']),
-    group: e['group'],
-    help: undef(e['help']) ? '' : e['help'],
-    kind: e['kind'],
-})
-
-/**
- * Export Integration to json.
- */
-export const ExportIntegration = (e: Integration|null): any => (e === null ? null : {
-	'uid': e.uid,
-	'comment': e.comment,
-	'created': e.created,
-	'enabled': e.enabled,
-	'form': ExportIntegrationForm(e.form),
-	'group': e.group,
-	'help': e.help,
-	'kind': e.kind,
-})
-
-/**
- * Create NewIntegrationKind from raw json.
- */
-export const NewIntegrationKind = (e: any): IntegrationKind => ({
-    kind: e['kind'],
-    title: e['title'],
-    template: NewIntegration(e['template']),
-})
-
-/**
- * Export IntegrationKind to json.
- */
-export const ExportIntegrationKind = (e: IntegrationKind|null): any => (e === null ? null : {
-	'kind': e.kind,
-	'title': e.title,
-	'template': ExportIntegration(e.template),
-})
-
-/**
- * Create NewIntegrations from raw json.
- */
-export const NewIntegrations = (e: any): Integrations => ({
-    integrations: e['integrations'].map(NewIntegration),
-    kinds: e['kinds'].map(NewIntegrationKind),
-})
-
-/**
- * Export Integrations to json.
- */
-export const ExportIntegrations = (e: Integrations|null): any => (e === null ? null : {
-	'integrations': e.integrations.map(ExportIntegration),
-	'kinds': e.kinds.map(ExportIntegrationKind),
-})
-
-/**
- * Create NewTaskStatus from raw json.
- */
-export const NewTaskStatus = (e: any): TaskStatus => ({
-    uid: undef(e['uid']) ? '' : e['uid'],
-    sortOrdering: e['sort_ordering'],
-    name: e['name'],
-    title: e['title'],
-    isArchive: undef(e['is_archive']) ? false : e['is_archive'],
-})
-
-/**
- * Export TaskStatus to json.
- */
-export const ExportTaskStatus = (e: TaskStatus|null): any => (e === null ? null : {
-	'uid': e.uid,
-	'sort_ordering': e.sortOrdering,
-	'name': e.name,
-	'title': e.title,
-	'is_archive': e.isArchive,
-})
-
-/**
- * Create NewMessageContent from raw json.
- */
-export const NewMessageContent = (e: any): MessageContent => ({
-    text: e['text'],
-    type: e['type'],
-    subtype: undef(e['subtype']) ? '' : e['subtype'],
-    upload: undef(e['upload']) ? '' : e['upload'],
-    mediaUrl: undef(e['mediaURL']) ? '' : e['mediaURL'],
-    size: undef(e['size']) ? 0 : e['size'],
-    duration: undef(e['duration']) ? null : e['duration'],
-    processing: undef(e['processing']) ? false : e['processing'],
-    previewHeight: undef(e['previewHeight']) ? 0 : e['previewHeight'],
-    previewWidth: undef(e['previewWidth']) ? 0 : e['previewWidth'],
-    previewUrl: undef(e['previewURL']) ? '' : e['previewURL'],
-    preview2xUrl: undef(e['preview2xURL']) ? '' : e['preview2xURL'],
-    name: undef(e['name']) ? '' : e['name'],
-    animated: undef(e['animated']) ? false : e['animated'],
-    title: undef(e['title']) ? '' : e['title'],
-    old: undef(e['old']) ? null : e['old'],
-    new: undef(e['new']) ? null : e['new'],
-    actor: undef(e['actor']) ? null : e['actor'],
-    comment: undef(e['comment']) ? '' : e['comment'],
-    givenName: undef(e['given_name']) ? null : e['given_name'],
-    familyName: undef(e['family_name']) ? null : e['family_name'],
-    patronymic: undef(e['patronymic']) ? null : e['patronymic'],
-    phones: undef(e['phones']) ? [] : e['phones'],
-    emails: undef(e['emails']) ? [] : e['emails'],
-    stickerpack: undef(e['stickerpack']) ? '' : e['stickerpack'],
-    pdfVersion: undef(e['pdf_version']) ? null : NewPdfVersion(e['pdf_version']),
-})
-
-/**
- * Export MessageContent to json.
- */
-export const ExportMessageContent = (e: MessageContent|null): any => (e === null ? null : {
-	'text': e.text,
-	'type': e.type,
-	'subtype': e.subtype,
-	'upload': e.upload,
-	'mediaURL': e.mediaUrl,
-	'size': e.size,
-	'duration': e.duration,
-	'processing': e.processing,
-	'previewHeight': e.previewHeight,
-	'previewWidth': e.previewWidth,
-	'previewURL': e.previewUrl,
-	'preview2xURL': e.preview2xUrl,
-	'name': e.name,
-	'animated': e.animated,
-	'title': e.title,
-	'old': e.old,
-	'new': e.new,
-	'actor': e.actor,
-	'comment': e.comment,
-	'given_name': e.givenName,
-	'family_name': e.familyName,
-	'patronymic': e.patronymic,
-	'phones': e.phones,
-	'emails': e.emails,
-	'stickerpack': e.stickerpack,
-	'pdf_version': ExportPdfVersion(e.pdfVersion),
-})
-
-/**
- * Create NewMessage from raw json.
- */
-export const NewMessage = (e: any): Message => ({
-    content: NewMessageContent(e['content']),
-    pushText: undef(e['push_text']) ? '' : e['push_text'],
-    from: e['from'],
-    to: e['to'],
-    messageId: e['message_id'],
-    created: e['created'],
-    gentime: e['gentime'],
-    chatType: e['chat_type'],
-    chat: e['chat'],
-    links: undef(e['links']) ? [] : e['links'],
-    important: undef(e['important']) ? false : e['important'],
-    edited: undef(e['edited']) ? '' : e['edited'],
-    received: undef(e['received']) ? false : e['received'],
-    numReceived: undef(e['num_received']) ? 0 : e['num_received'],
-    nopreview: undef(e['nopreview']) ? false : e['nopreview'],
-    hasPreviews: undef(e['has_previews']) ? false : e['has_previews'],
-    prev: undef(e['prev']) ? '' : e['prev'],
-    isFirst: undef(e['is_first']) ? false : e['is_first'],
-    isLast: undef(e['is_last']) ? false : e['is_last'],
-    reactions: undef(e['reactions']) ? [] : e['reactions'].map(NewMessageReaction),
-    replyTo: undef(e['reply_to']) ? null : NewMessage(e['reply_to']),
-    linkedMessages: undef(e['linked_messages']) ? [] : e['linked_messages'].map(NewMessage),
-    notice: undef(e['notice']) ? false : e['notice'],
-    silently: undef(e['silently']) ? false : e['silently'],
-    editableUntil: undef(e['editable_until']) ? '' : e['editable_until'],
-    num: undef(e['num']) ? null : e['num'],
-    debug: undef(e['_debug']) ? '' : e['_debug'],
-})
-
-/**
- * Export Message to json.
- */
-export const ExportMessage = (e: Message|null): any => (e === null ? null : {
-	'content': ExportMessageContent(e.content),
-	'to': e.to,
-	'message_id': e.messageId,
-	'important': e.important,
-	'nopreview': e.nopreview,
-	'reply_to': ExportMessage(e.replyTo),
-	'linked_messages': e.linkedMessages.map(ExportMessage),
-})
-
-/**
- * Create NewMessageLinkPreview from raw json.
- */
-export const NewMessageLinkPreview = (e: any): MessageLinkPreview => ({
-    title: e['title'],
-    description: undef(e['description']) ? '' : e['description'],
-})
-
-/**
- * Export MessageLinkPreview to json.
- */
-export const ExportMessageLinkPreview = (e: MessageLinkPreview|null): any => (e === null ? null : {
-	'title': e.title,
-	'description': e.description,
-})
-
-/**
- * Create NewMessageLink from raw json.
- */
-export const NewMessageLink = (e: any): MessageLink => ({
-    pattern: e['pattern'],
-    url: e['url'],
-    text: e['text'],
-    preview: undef(e['preview']) ? null : NewMessageLinkPreview(e['preview']),
-    uploads: undef(e['uploads']) ? [] : e['uploads'].map(NewUpload),
-    noPreview: undef(e['nopreview']) ? false : e['nopreview'],
-    youtubeId: undef(e['youtube_id']) ? '' : e['youtube_id'],
-})
-
-/**
- * Export MessageLink to json.
- */
-export const ExportMessageLink = (e: MessageLink|null): any => (e === null ? null : {
-	'pattern': e.pattern,
-	'url': e.url,
-	'text': e.text,
-	'preview': ExportMessageLinkPreview(e.preview),
-	'uploads': e.uploads.map(ExportUpload),
-	'nopreview': e.noPreview,
-	'youtube_id': e.youtubeId,
-})
-
-/**
- * Create NewMessageReaction from raw json.
- */
-export const NewMessageReaction = (e: any): MessageReaction => ({
-    name: e['name'],
-    counter: e['counter'],
-    details: e['details'].map(NewMessageReactionDetail),
-})
-
-/**
- * Export MessageReaction to json.
- */
-export const ExportMessageReaction = (e: MessageReaction|null): any => (e === null ? null : {
-	'name': e.name,
-	'counter': e.counter,
-	'details': e.details.map(ExportMessageReactionDetail),
-})
-
-/**
- * Create NewMessageReactionDetail from raw json.
- */
-export const NewMessageReactionDetail = (e: any): MessageReactionDetail => ({
-    created: e['created'],
-    sender: e['sender'],
-    name: e['name'],
-})
-
-/**
- * Export MessageReactionDetail to json.
- */
-export const ExportMessageReactionDetail = (e: MessageReactionDetail|null): any => (e === null ? null : {
-	'created': e.created,
-	'sender': e.sender,
-	'name': e.name,
-})
-
-/**
- * Create NewMessagePush from raw json.
- */
-export const NewMessagePush = (e: any): MessagePush => ({
-    title: e['title'],
-    subtitle: e['subtitle'],
-    message: e['message'],
-    iconUrl: e['icon_url'],
-    clickAction: e['click_action'],
-    tag: e['tag'],
-    team: e['team'],
-    sender: e['sender'],
-    chat: e['chat'],
-    messageId: e['message_id'],
-    created: e['created'],
-})
-
-/**
- * Create NewContact from raw json.
- */
-export const NewContact = (e: any): Contact => ({
-    jid: e['jid'],
-    displayName: e['display_name'],
-    shortName: e['short_name'],
-    contactEmail: e['contact_email'],
-    contactPhone: e['contact_phone'],
-    icons: NewIconData(e['icons']),
-    role: e['role'],
-    mood: undef(e['mood']) ? '' : e['mood'],
-    teamStatus: e['status'],
-    lastActivity: e['last_activity'],
-    addToTeamRights: undef(e['add_to_team_rights']) ? false : e['add_to_team_rights'],
-    isArchive: undef(e['is_archive']) ? false : e['is_archive'],
-    botname: undef(e['botname']) ? '' : e['botname'],
-    sections: e['sections'],
-    canSendMessage: undef(e['can_send_message']) ? null : e['can_send_message'],
-    cantSendMessageReason: undef(e['cant_send_message_reason']) ? '' : e['cant_send_message_reason'],
-    canCall: undef(e['can_call']) ? null : e['can_call'],
-    canCreateTask: undef(e['can_create_task']) ? null : e['can_create_task'],
-    canAddToGroup: undef(e['can_add_to_group']) ? null : e['can_add_to_group'],
-    canDelete: undef(e['can_delete']) ? null : e['can_delete'],
-    changeableFields: undef(e['changeable_fields']) ? [] : e['changeable_fields'],
-    familyName: undef(e['family_name']) ? null : e['family_name'],
-    givenName: undef(e['given_name']) ? null : e['given_name'],
-    patronymic: undef(e['patronymic']) ? null : e['patronymic'],
-    defaultLang: undef(e['default_lang']) ? null : e['default_lang'],
-    debugShowActivity: undef(e['debug_show_activity']) ? null : e['debug_show_activity'],
-    dropallEnabled: undef(e['dropall_enabled']) ? null : e['dropall_enabled'],
-    altSend: undef(e['alt_send']) ? null : e['alt_send'],
-    alwaysSendPushes: undef(e['always_send_pushes']) ? null : e['always_send_pushes'],
-    timezone: undef(e['timezone']) ? null : e['timezone'],
-    quietTimeStart: undef(e['quiet_time_start']) ? null : e['quiet_time_start'],
-    quietTimeFinish: undef(e['quiet_time_finish']) ? null : e['quiet_time_finish'],
-    groupNotificationsEnabled: undef(e['group_notifications_enabled']) ? null : e['group_notifications_enabled'],
-    taskNotificationsEnabled: undef(e['task_notifications_enabled']) ? null : e['task_notifications_enabled'],
-    contactShortView: undef(e['contact_short_view']) ? null : e['contact_short_view'],
-    groupShortView: undef(e['group_short_view']) ? null : e['group_short_view'],
-    taskShortView: undef(e['task_short_view']) ? null : e['task_short_view'],
-    contactMshortView: undef(e['contact_mshort_view']) ? null : e['contact_mshort_view'],
-    groupMshortView: undef(e['group_mshort_view']) ? null : e['group_mshort_view'],
-    taskMshortView: undef(e['task_mshort_view']) ? null : e['task_mshort_view'],
-    contactShowArchived: undef(e['contact_show_archived']) ? null : e['contact_show_archived'],
-    unreadFirst: undef(e['unread_first']) ? null : e['unread_first'],
-    mUnreadFirst: undef(e['munread_first']) ? null : e['munread_first'],
-    canAddToTeam: undef(e['can_add_to_team']) ? null : e['can_add_to_team'],
-    canManageSections: undef(e['can_manage_sections']) ? null : e['can_manage_sections'],
-    canManageTags: undef(e['can_manage_tags']) ? null : e['can_manage_tags'],
-    canManageIntegrations: undef(e['can_manage_integrations']) ? null : e['can_manage_integrations'],
-    canManageColorRules: undef(e['can_manage_color_rules']) ? null : e['can_manage_color_rules'],
-    canCreateGroup: undef(e['can_create_group']) ? null : e['can_create_group'],
-    canJoinPublicGroups: undef(e['can_join_public_groups']) ? null : e['can_join_public_groups'],
-    canJoinPublicTasks: undef(e['can_join_public_tasks']) ? null : e['can_join_public_tasks'],
-    canDeleteAnyMessage: undef(e['can_delete_any_message']) ? null : e['can_delete_any_message'],
-    customFields: undef(e['custom_fields']) ? null : NewContactCustomFields(e['custom_fields']),
-})
-
-/**
- * Export Contact to json.
- */
-export const ExportContact = (e: Contact|null): any => (e === null ? null : {
-	'jid': e.jid,
-	'display_name': e.displayName,
-	'short_name': e.shortName,
-	'contact_email': e.contactEmail,
-	'contact_phone': e.contactPhone,
-	'icons': ExportIconData(e.icons),
-	'role': e.role,
-	'mood': e.mood,
-	'status': e.teamStatus,
-	'last_activity': e.lastActivity,
-	'add_to_team_rights': e.addToTeamRights,
-	'is_archive': e.isArchive,
-	'botname': e.botname,
-	'sections': e.sections,
-	'can_send_message': e.canSendMessage,
-	'cant_send_message_reason': e.cantSendMessageReason,
-	'can_call': e.canCall,
-	'can_create_task': e.canCreateTask,
-	'can_add_to_group': e.canAddToGroup,
-	'can_delete': e.canDelete,
-	'changeable_fields': e.changeableFields,
-	'family_name': e.familyName,
-	'given_name': e.givenName,
-	'patronymic': e.patronymic,
-	'default_lang': e.defaultLang,
-	'debug_show_activity': e.debugShowActivity,
-	'dropall_enabled': e.dropallEnabled,
-	'alt_send': e.altSend,
-	'always_send_pushes': e.alwaysSendPushes,
-	'timezone': e.timezone,
-	'quiet_time_start': e.quietTimeStart,
-	'quiet_time_finish': e.quietTimeFinish,
-	'group_notifications_enabled': e.groupNotificationsEnabled,
-	'task_notifications_enabled': e.taskNotificationsEnabled,
-	'contact_short_view': e.contactShortView,
-	'group_short_view': e.groupShortView,
-	'task_short_view': e.taskShortView,
-	'contact_mshort_view': e.contactMshortView,
-	'group_mshort_view': e.groupMshortView,
-	'task_mshort_view': e.taskMshortView,
-	'contact_show_archived': e.contactShowArchived,
-	'unread_first': e.unreadFirst,
-	'munread_first': e.mUnreadFirst,
-	'can_add_to_team': e.canAddToTeam,
-	'can_manage_sections': e.canManageSections,
-	'can_manage_tags': e.canManageTags,
-	'can_manage_integrations': e.canManageIntegrations,
-	'can_manage_color_rules': e.canManageColorRules,
-	'can_create_group': e.canCreateGroup,
-	'can_join_public_groups': e.canJoinPublicGroups,
-	'can_join_public_tasks': e.canJoinPublicTasks,
-	'can_delete_any_message': e.canDeleteAnyMessage,
-	'custom_fields': ExportContactCustomFields(e.customFields),
-})
-
-/**
- * Create NewContactCustomFields from raw json.
- */
-export const NewContactCustomFields = (e: any): ContactCustomFields => ({
-    company: undef(e['company']) ? '' : e['company'],
-    department: undef(e['department']) ? '' : e['department'],
-    title: undef(e['title']) ? '' : e['title'],
-    mobilePhone: undef(e['mobile_phone']) ? '' : e['mobile_phone'],
-})
-
-/**
- * Export ContactCustomFields to json.
- */
-export const ExportContactCustomFields = (e: ContactCustomFields|null): any => (e === null ? null : {
-	'company': e.company,
-	'department': e.department,
-	'title': e.title,
-	'mobile_phone': e.mobilePhone,
-})
-
-/**
- * Create NewContactShort from raw json.
- */
-export const NewContactShort = (e: any): ContactShort => ({
-    jid: e['jid'],
-    displayName: e['display_name'],
-    shortName: e['short_name'],
-    icons: NewIconData(e['icons']),
-})
-
-/**
- * Export ContactShort to json.
- */
-export const ExportContactShort = (e: ContactShort|null): any => (e === null ? null : {
-	'jid': e.jid,
-	'display_name': e.displayName,
-	'short_name': e.shortName,
-	'icons': ExportIconData(e.icons),
-})
-
-/**
- * Create NewUpload from raw json.
- */
-export const NewUpload = (e: any): Upload => ({
-    uid: e['uid'],
-    size: e['size'],
-    duration: undef(e['duration']) ? 0 : e['duration'],
-    name: e['name'],
-    url: e['url'],
-    preview: undef(e['preview']) ? null : NewUploadPreview(e['preview']),
-    contentType: e['content_type'],
-    animated: undef(e['animated']) ? false : e['animated'],
-    processing: undef(e['processing']) ? false : e['processing'],
-    pdfVersion: undef(e['pdf_version']) ? null : NewPdfVersion(e['pdf_version']),
-})
-
-/**
- * Export Upload to json.
- */
-export const ExportUpload = (e: Upload|null): any => (e === null ? null : {
-	'uid': e.uid,
-	'size': e.size,
-	'duration': e.duration,
-	'name': e.name,
-	'url': e.url,
-	'preview': ExportUploadPreview(e.preview),
-	'content_type': e.contentType,
-	'animated': e.animated,
-	'processing': e.processing,
-	'pdf_version': ExportPdfVersion(e.pdfVersion),
-})
-
-/**
- * Create NewUploadPreview from raw json.
- */
-export const NewUploadPreview = (e: any): UploadPreview => ({
-    url: e['url'],
-    url2x: e['url_2x'],
-    width: e['width'],
-    height: e['height'],
-})
-
-/**
- * Export UploadPreview to json.
- */
-export const ExportUploadPreview = (e: UploadPreview|null): any => (e === null ? null : {
-	'url': e.url,
-	'url_2x': e.url2x,
-	'width': e.width,
-	'height': e.height,
-})
-
-/**
- * Create NewFeatures from raw json.
- */
-export const NewFeatures = (e: any): Features => ({
-    host: e['host'],
-    build: e['build'],
-    desktopVersion: e['desktop_version'],
-    frontVersion: e['front_version'],
-    appTitle: e['app_title'],
-    userver: e['userver'],
-    iOSApp: e['ios_app'],
-    androidApp: e['android_app'],
-    theme: e['theme'],
-    minAppVersion: e['min_app_version'],
-    freeRegistration: e['free_registration'],
-    maxUploadMb: e['max_upload_mb'],
-    maxLinkedMessages: e['max_linked_messages'],
-    maxUsernamePartLength: e['max_username_part_length'],
-    maxGroupTitleLength: e['max_group_title_length'],
-    maxRoleLength: e['max_role_length'],
-    maxMoodLength: e['max_mood_length'],
-    maxMessageLength: e['max_message_length'],
-    maxSectionLength: e['max_section_length'],
-    maxTagLength: e['max_tag_length'],
-    maxTaskTitleLength: e['max_task_title_length'],
-    maxColorRuleDescriptionLength: e['max_color_rule_description_length'],
-    maxTeams: e['max_teams'],
-    afkAge: e['afk_age'],
-    authByPassword: undef(e['auth_by_password']) ? false : e['auth_by_password'],
-    authByQrCode: undef(e['auth_by_qr_code']) ? false : e['auth_by_qr_code'],
-    authBySms: undef(e['auth_by_sms']) ? false : e['auth_by_sms'],
-    iCEServers: e['ice_servers'].map(NewICEServer),
-    customServer: e['custom_server'],
-    installationType: e['installation_type'],
-    isTesting: e['is_testing'],
-    metrika: e['metrika'],
-    minSearchLength: e['min_search_length'],
-    resendTimeout: e['resend_timeout'],
-    sentryDsnJS: e['sentry_dsn_js'],
-    serverDrafts: e['server_drafts'],
-    firebaseAppId: e['firebase_app_id'],
-    firebaseSenderId: e['firebase_sender_id'],
-    calls: e['calls'],
-    mobileCalls: e['mobile_calls'],
-    callsRecord: e['calls_record'],
-    onlyOneDevicePerCall: undef(e['only_one_device_per_call']) ? false : e['only_one_device_per_call'],
-    maxParticipantsPerCall: undef(e['max_participants_per_call']) ? 0 : e['max_participants_per_call'],
-    safariPushId: e['safari_push_id'],
-    terms: NewTerms(e['terms']),
-    singleGroupTeams: e['single_group_teams'],
-    wikiPages: e['wiki_pages'],
-    allowAdminMute: undef(e['allow_admin_mute']) ? false : e['allow_admin_mute'],
-    taskChecklist: e['task_checklist'],
-    readonlyGroups: e['readonly_groups'],
-    taskDashboard: e['task_dashboard'],
-    taskMessages: e['task_messages'],
-    taskPublic: e['task_public'],
-    taskTags: e['task_tags'],
-})
-
-/**
- * Create NewICEServer from raw json.
- */
-export const NewICEServer = (e: any): ICEServer => ({
-    urls: e['urls'],
-})
-
-/**
- * Create NewTerms from raw json.
- */
-export const NewTerms = (e: any): Terms => ({
-    enInTeam: e['EnInTeam'],
-    enTeam: e['EnTeam'],
-    enTeamAccess: e['EnTeamAccess'],
-    enTeamAdmin: e['EnTeamAdmin'],
-    enTeamAdmins: e['EnTeamAdmins'],
-    enTeamGuest: e['EnTeamGuest'],
-    enTeamMember: e['EnTeamMember'],
-    enTeamMembers: e['EnTeamMembers'],
-    enTeamOwner: e['EnTeamOwner'],
-    enTeamSettings: e['EnTeamSettings'],
-    ruTeamSettings: e['RuTeamSettings'],
-    enTeams: e['EnTeams'],
-    enToTeam: e['EnToTeam'],
-    ruInTeam: e['RuInTeam'],
-    ruTeam: e['RuTeam'],
-    ruTeamAccess: e['RuTeamAccess'],
-    ruTeamAdmin: e['RuTeamAdmin'],
-    ruTeamAdmins: e['RuTeamAdmins'],
-    ruTeamD: e['RuTeamD'],
-    ruTeamGuest: e['RuTeamGuest'],
-    ruTeamMember: e['RuTeamMember'],
-    ruTeamMembers: e['RuTeamMembers'],
-    ruTeamOwner: e['RuTeamOwner'],
-    ruTeamP: e['RuTeamP'],
-    ruTeamR: e['RuTeamR'],
-    ruTeams: e['RuTeams'],
-    ruTeamsD: e['RuTeamsD'],
-    ruTeamsP: e['RuTeamsP'],
-    ruTeamsR: e['RuTeamsR'],
-    ruTeamsT: e['RuTeamsT'],
-    ruTeamsV: e['RuTeamsV'],
-    ruTeamT: e['RuTeamT'],
-    ruTeamV: e['RuTeamV'],
-    ruToTeam: e['RuToTeam'],
-})
-
-/**
- * Create NewColorRule from raw json.
- */
-export const NewColorRule = (e: any): ColorRule => ({
-    uid: e['uid'],
-    priority: e['priority'],
-    colorIndex: e['color_index'],
-    section: undef(e['section']) ? '' : e['section'],
-    tags: undef(e['tags']) ? [] : e['tags'],
-    description: undef(e['description']) ? '' : e['description'],
-    taskStatus: undef(e['task_status']) ? '' : e['task_status'],
-    taskImportance: undef(e['task_importance']) ? null : e['task_importance'],
-    taskUrgency: undef(e['task_urgency']) ? null : e['task_urgency'],
-    sectionEnabled: undef(e['section_enabled']) ? null : e['section_enabled'],
-    taskImportanceEnabled: undef(e['task_importance_enabled']) ? null : e['task_importance_enabled'],
-    taskUrgencyEnabled: undef(e['task_urgency_enabled']) ? null : e['task_urgency_enabled'],
-    tagsEnabled: undef(e['tags_enabled']) ? null : e['tags_enabled'],
-})
-
-/**
- * Export ColorRule to json.
- */
-export const ExportColorRule = (e: ColorRule|null): any => (e === null ? null : {
-	'uid': e.uid,
-	'priority': e.priority,
-	'color_index': e.colorIndex,
-	'section': e.section,
-	'tags': e.tags,
-	'description': e.description,
-	'task_status': e.taskStatus,
-	'task_importance': e.taskImportance,
-	'task_urgency': e.taskUrgency,
-	'section_enabled': e.sectionEnabled,
-	'task_importance_enabled': e.taskImportanceEnabled,
-	'task_urgency_enabled': e.taskUrgencyEnabled,
-	'tags_enabled': e.tagsEnabled,
+export const ExportCallDevice = (e: CallDevice|null): any => (e === null ? null : {
+	'muted': e.muted,
+	'useragent': e.useragent,
 })
 
 /**
@@ -3494,62 +2901,6 @@ export const ExportCallOnliner = (e: CallOnliner|null): any => (e === null ? nul
 	'icon': e.icon,
 	'muted': e.muted,
 	'devices': e.devices.map(ExportCallDevice),
-})
-
-/**
- * Create NewCallDevice from raw json.
- */
-export const NewCallDevice = (e: any): CallDevice => ({
-    muted: e['muted'],
-    useragent: e['useragent'],
-})
-
-/**
- * Export CallDevice to json.
- */
-export const ExportCallDevice = (e: CallDevice|null): any => (e === null ? null : {
-	'muted': e.muted,
-	'useragent': e.useragent,
-})
-
-/**
- * Create NewChatShort from raw json.
- */
-export const NewChatShort = (e: any): ChatShort => ({
-    jid: e['jid'],
-    chatType: e['chat_type'],
-    displayName: e['display_name'],
-    icons: NewIconData(e['icons']),
-})
-
-/**
- * Export ChatShort to json.
- */
-export const ExportChatShort = (e: ChatShort|null): any => (e === null ? null : {
-	'jid': e.jid,
-	'chat_type': e.chatType,
-	'display_name': e.displayName,
-	'icons': ExportIconData(e.icons),
-})
-
-/**
- * Create NewDeletedChat from raw json.
- */
-export const NewDeletedChat = (e: any): DeletedChat => ({
-    jid: e['jid'],
-    chatType: e['chat_type'],
-    gentime: e['gentime'],
-    isArchive: e['is_archive'],
-})
-
-/**
- * Export DeletedChat to json.
- */
-export const ExportDeletedChat = (e: DeletedChat|null): any => (e === null ? null : {
-	'jid': e.jid,
-	'chat_type': e.chatType,
-	'gentime': e.gentime,
-	'is_archive': e.isArchive,
 })
 
 /**
@@ -3606,6 +2957,7 @@ export const NewChat = (e: any): Chat => ({
     spentTime: undef(e['spent_time']) ? null : e['spent_time'],
     complexity: undef(e['complexity']) ? null : e['complexity'],
     linkedMessages: undef(e['linked_messages']) ? [] : e['linked_messages'],
+    uploads: undef(e['uploads']) ? [] : e['uploads'].map(NewUpload),
     items: undef(e['items']) ? [] : e['items'].map(NewTaskItem),
     parents: undef(e['parents']) ? [] : e['parents'].map(NewSubtask),
     tabs: undef(e['tabs']) ? [] : e['tabs'],
@@ -3678,6 +3030,7 @@ export const ExportChat = (e: Chat|null): any => (e === null ? null : {
 	'spent_time': e.spentTime,
 	'complexity': e.complexity,
 	'linked_messages': e.linkedMessages,
+	'uploads': e.uploads.map(ExportUpload),
 	'items': e.items.map(ExportTaskItem),
 	'parents': e.parents.map(ExportSubtask),
 	'tabs': e.tabs,
@@ -3694,6 +3047,814 @@ export const ExportChat = (e: Chat|null): any => (e === null ? null : {
 	'can_join': e.canJoin,
 	'can_delete_any_message': e.canDeleteAnyMessage,
 	'can_set_important_any_message': e.canSetImportantAnyMessage,
+})
+
+/**
+ * Create NewChatShort from raw json.
+ */
+export const NewChatShort = (e: any): ChatShort => ({
+    jid: e['jid'],
+    chatType: e['chat_type'],
+    displayName: e['display_name'],
+    icons: NewIconData(e['icons']),
+})
+
+/**
+ * Export ChatShort to json.
+ */
+export const ExportChatShort = (e: ChatShort|null): any => (e === null ? null : {
+	'jid': e.jid,
+	'chat_type': e.chatType,
+	'display_name': e.displayName,
+	'icons': ExportIconData(e.icons),
+})
+
+/**
+ * Create NewColorRule from raw json.
+ */
+export const NewColorRule = (e: any): ColorRule => ({
+    uid: e['uid'],
+    priority: e['priority'],
+    colorIndex: e['color_index'],
+    section: undef(e['section']) ? '' : e['section'],
+    tags: undef(e['tags']) ? [] : e['tags'],
+    description: undef(e['description']) ? '' : e['description'],
+    taskStatus: undef(e['task_status']) ? '' : e['task_status'],
+    taskImportance: undef(e['task_importance']) ? null : e['task_importance'],
+    taskUrgency: undef(e['task_urgency']) ? null : e['task_urgency'],
+    sectionEnabled: undef(e['section_enabled']) ? null : e['section_enabled'],
+    taskImportanceEnabled: undef(e['task_importance_enabled']) ? null : e['task_importance_enabled'],
+    taskUrgencyEnabled: undef(e['task_urgency_enabled']) ? null : e['task_urgency_enabled'],
+    tagsEnabled: undef(e['tags_enabled']) ? null : e['tags_enabled'],
+})
+
+/**
+ * Export ColorRule to json.
+ */
+export const ExportColorRule = (e: ColorRule|null): any => (e === null ? null : {
+	'uid': e.uid,
+	'priority': e.priority,
+	'color_index': e.colorIndex,
+	'section': e.section,
+	'tags': e.tags,
+	'description': e.description,
+	'task_status': e.taskStatus,
+	'task_importance': e.taskImportance,
+	'task_urgency': e.taskUrgency,
+	'section_enabled': e.sectionEnabled,
+	'task_importance_enabled': e.taskImportanceEnabled,
+	'task_urgency_enabled': e.taskUrgencyEnabled,
+	'tags_enabled': e.tagsEnabled,
+})
+
+/**
+ * Create NewContact from raw json.
+ */
+export const NewContact = (e: any): Contact => ({
+    jid: e['jid'],
+    displayName: e['display_name'],
+    shortName: e['short_name'],
+    contactEmail: e['contact_email'],
+    contactPhone: e['contact_phone'],
+    icons: NewIconData(e['icons']),
+    role: e['role'],
+    mood: undef(e['mood']) ? '' : e['mood'],
+    teamStatus: e['status'],
+    lastActivity: e['last_activity'],
+    addToTeamRights: undef(e['add_to_team_rights']) ? false : e['add_to_team_rights'],
+    isArchive: undef(e['is_archive']) ? false : e['is_archive'],
+    botname: undef(e['botname']) ? '' : e['botname'],
+    sections: e['sections'],
+    canSendMessage: undef(e['can_send_message']) ? null : e['can_send_message'],
+    cantSendMessageReason: undef(e['cant_send_message_reason']) ? '' : e['cant_send_message_reason'],
+    canCall: undef(e['can_call']) ? null : e['can_call'],
+    canCreateTask: undef(e['can_create_task']) ? null : e['can_create_task'],
+    canAddToGroup: undef(e['can_add_to_group']) ? null : e['can_add_to_group'],
+    canDelete: undef(e['can_delete']) ? null : e['can_delete'],
+    changeableFields: undef(e['changeable_fields']) ? [] : e['changeable_fields'],
+    familyName: undef(e['family_name']) ? null : e['family_name'],
+    givenName: undef(e['given_name']) ? null : e['given_name'],
+    patronymic: undef(e['patronymic']) ? null : e['patronymic'],
+    defaultLang: undef(e['default_lang']) ? null : e['default_lang'],
+    debugShowActivity: undef(e['debug_show_activity']) ? null : e['debug_show_activity'],
+    dropallEnabled: undef(e['dropall_enabled']) ? null : e['dropall_enabled'],
+    altSend: undef(e['alt_send']) ? null : e['alt_send'],
+    asteriskMention: e['asterisk_mention'],
+    alwaysSendPushes: undef(e['always_send_pushes']) ? null : e['always_send_pushes'],
+    timezone: undef(e['timezone']) ? null : e['timezone'],
+    quietTimeStart: undef(e['quiet_time_start']) ? null : e['quiet_time_start'],
+    quietTimeFinish: undef(e['quiet_time_finish']) ? null : e['quiet_time_finish'],
+    groupNotificationsEnabled: undef(e['group_notifications_enabled']) ? null : e['group_notifications_enabled'],
+    taskNotificationsEnabled: undef(e['task_notifications_enabled']) ? null : e['task_notifications_enabled'],
+    contactShortView: undef(e['contact_short_view']) ? null : e['contact_short_view'],
+    groupShortView: undef(e['group_short_view']) ? null : e['group_short_view'],
+    taskShortView: undef(e['task_short_view']) ? null : e['task_short_view'],
+    contactMshortView: undef(e['contact_mshort_view']) ? null : e['contact_mshort_view'],
+    groupMshortView: undef(e['group_mshort_view']) ? null : e['group_mshort_view'],
+    taskMshortView: undef(e['task_mshort_view']) ? null : e['task_mshort_view'],
+    contactShowArchived: undef(e['contact_show_archived']) ? null : e['contact_show_archived'],
+    unreadFirst: undef(e['unread_first']) ? null : e['unread_first'],
+    mUnreadFirst: undef(e['munread_first']) ? null : e['munread_first'],
+    canAddToTeam: undef(e['can_add_to_team']) ? null : e['can_add_to_team'],
+    canManageSections: undef(e['can_manage_sections']) ? null : e['can_manage_sections'],
+    canManageTags: undef(e['can_manage_tags']) ? null : e['can_manage_tags'],
+    canManageIntegrations: undef(e['can_manage_integrations']) ? null : e['can_manage_integrations'],
+    canManageColorRules: undef(e['can_manage_color_rules']) ? null : e['can_manage_color_rules'],
+    canCreateGroup: undef(e['can_create_group']) ? null : e['can_create_group'],
+    canJoinPublicGroups: undef(e['can_join_public_groups']) ? null : e['can_join_public_groups'],
+    canJoinPublicTasks: undef(e['can_join_public_tasks']) ? null : e['can_join_public_tasks'],
+    canDeleteAnyMessage: undef(e['can_delete_any_message']) ? null : e['can_delete_any_message'],
+    customFields: undef(e['custom_fields']) ? null : NewContactCustomFields(e['custom_fields']),
+})
+
+/**
+ * Export Contact to json.
+ */
+export const ExportContact = (e: Contact|null): any => (e === null ? null : {
+	'jid': e.jid,
+	'display_name': e.displayName,
+	'short_name': e.shortName,
+	'contact_email': e.contactEmail,
+	'contact_phone': e.contactPhone,
+	'icons': ExportIconData(e.icons),
+	'role': e.role,
+	'mood': e.mood,
+	'status': e.teamStatus,
+	'last_activity': e.lastActivity,
+	'add_to_team_rights': e.addToTeamRights,
+	'is_archive': e.isArchive,
+	'botname': e.botname,
+	'sections': e.sections,
+	'can_send_message': e.canSendMessage,
+	'cant_send_message_reason': e.cantSendMessageReason,
+	'can_call': e.canCall,
+	'can_create_task': e.canCreateTask,
+	'can_add_to_group': e.canAddToGroup,
+	'can_delete': e.canDelete,
+	'changeable_fields': e.changeableFields,
+	'family_name': e.familyName,
+	'given_name': e.givenName,
+	'patronymic': e.patronymic,
+	'default_lang': e.defaultLang,
+	'debug_show_activity': e.debugShowActivity,
+	'dropall_enabled': e.dropallEnabled,
+	'alt_send': e.altSend,
+	'asterisk_mention': e.asteriskMention,
+	'always_send_pushes': e.alwaysSendPushes,
+	'timezone': e.timezone,
+	'quiet_time_start': e.quietTimeStart,
+	'quiet_time_finish': e.quietTimeFinish,
+	'group_notifications_enabled': e.groupNotificationsEnabled,
+	'task_notifications_enabled': e.taskNotificationsEnabled,
+	'contact_short_view': e.contactShortView,
+	'group_short_view': e.groupShortView,
+	'task_short_view': e.taskShortView,
+	'contact_mshort_view': e.contactMshortView,
+	'group_mshort_view': e.groupMshortView,
+	'task_mshort_view': e.taskMshortView,
+	'contact_show_archived': e.contactShowArchived,
+	'unread_first': e.unreadFirst,
+	'munread_first': e.mUnreadFirst,
+	'can_add_to_team': e.canAddToTeam,
+	'can_manage_sections': e.canManageSections,
+	'can_manage_tags': e.canManageTags,
+	'can_manage_integrations': e.canManageIntegrations,
+	'can_manage_color_rules': e.canManageColorRules,
+	'can_create_group': e.canCreateGroup,
+	'can_join_public_groups': e.canJoinPublicGroups,
+	'can_join_public_tasks': e.canJoinPublicTasks,
+	'can_delete_any_message': e.canDeleteAnyMessage,
+	'custom_fields': ExportContactCustomFields(e.customFields),
+})
+
+/**
+ * Create NewContactCustomFields from raw json.
+ */
+export const NewContactCustomFields = (e: any): ContactCustomFields => ({
+    company: undef(e['company']) ? '' : e['company'],
+    department: undef(e['department']) ? '' : e['department'],
+    title: undef(e['title']) ? '' : e['title'],
+    mobilePhone: undef(e['mobile_phone']) ? '' : e['mobile_phone'],
+    source: undef(e['source']) ? '' : e['source'],
+})
+
+/**
+ * Export ContactCustomFields to json.
+ */
+export const ExportContactCustomFields = (e: ContactCustomFields|null): any => (e === null ? null : {
+	'company': e.company,
+	'department': e.department,
+	'title': e.title,
+	'mobile_phone': e.mobilePhone,
+	'source': e.source,
+})
+
+/**
+ * Create NewContactShort from raw json.
+ */
+export const NewContactShort = (e: any): ContactShort => ({
+    jid: e['jid'],
+    displayName: e['display_name'],
+    shortName: e['short_name'],
+    icons: NewIconData(e['icons']),
+})
+
+/**
+ * Export ContactShort to json.
+ */
+export const ExportContactShort = (e: ContactShort|null): any => (e === null ? null : {
+	'jid': e.jid,
+	'display_name': e.displayName,
+	'short_name': e.shortName,
+	'icons': ExportIconData(e.icons),
+})
+
+/**
+ * Create NewDeletedChat from raw json.
+ */
+export const NewDeletedChat = (e: any): DeletedChat => ({
+    jid: e['jid'],
+    chatType: e['chat_type'],
+    gentime: e['gentime'],
+    isArchive: e['is_archive'],
+})
+
+/**
+ * Export DeletedChat to json.
+ */
+export const ExportDeletedChat = (e: DeletedChat|null): any => (e === null ? null : {
+	'jid': e.jid,
+	'chat_type': e.chatType,
+	'gentime': e.gentime,
+	'is_archive': e.isArchive,
+})
+
+/**
+ * Create NewDeletedRemind from raw json.
+ */
+export const NewDeletedRemind = (e: any): DeletedRemind => ({
+    uid: e['uid'],
+})
+
+/**
+ * Export DeletedRemind to json.
+ */
+export const ExportDeletedRemind = (e: DeletedRemind|null): any => (e === null ? null : {
+	'uid': e.uid,
+})
+
+/**
+ * Create NewDeletedTag from raw json.
+ */
+export const NewDeletedTag = (e: any): DeletedTag => ({
+    uid: e['uid'],
+})
+
+/**
+ * Export DeletedTag to json.
+ */
+export const ExportDeletedTag = (e: DeletedTag|null): any => (e === null ? null : {
+	'uid': e.uid,
+})
+
+/**
+ * Create NewDeletedTeam from raw json.
+ */
+export const NewDeletedTeam = (e: any): DeletedTeam => ({
+    uid: e['uid'],
+    isArchive: e['is_archive'],
+    gentime: e['gentime'],
+})
+
+/**
+ * Create NewFeatures from raw json.
+ */
+export const NewFeatures = (e: any): Features => ({
+    host: e['host'],
+    build: e['build'],
+    desktopVersion: e['desktop_version'],
+    frontVersion: e['front_version'],
+    appTitle: e['app_title'],
+    userver: e['userver'],
+    iOSApp: e['ios_app'],
+    androidApp: e['android_app'],
+    theme: e['theme'],
+    minAppVersion: e['min_app_version'],
+    freeRegistration: e['free_registration'],
+    maxUploadMb: e['max_upload_mb'],
+    maxLinkedMessages: e['max_linked_messages'],
+    maxMessageUploads: e['max_message_uploads'],
+    maxUsernamePartLength: e['max_username_part_length'],
+    maxGroupTitleLength: e['max_group_title_length'],
+    maxRoleLength: e['max_role_length'],
+    maxMoodLength: e['max_mood_length'],
+    maxMessageLength: e['max_message_length'],
+    maxSectionLength: e['max_section_length'],
+    maxTagLength: e['max_tag_length'],
+    maxTaskTitleLength: e['max_task_title_length'],
+    maxColorRuleDescriptionLength: e['max_color_rule_description_length'],
+    maxUrlLength: e['max_url_length'],
+    maxIntegrationCommentLength: e['max_integration_comment_length'],
+    maxTeams: e['max_teams'],
+    afkAge: e['afk_age'],
+    authByPassword: undef(e['auth_by_password']) ? false : e['auth_by_password'],
+    authByQrCode: undef(e['auth_by_qr_code']) ? false : e['auth_by_qr_code'],
+    authBySms: undef(e['auth_by_sms']) ? false : e['auth_by_sms'],
+    iCEServers: e['ice_servers'].map(NewICEServer),
+    customServer: e['custom_server'],
+    installationType: e['installation_type'],
+    isTesting: e['is_testing'],
+    metrika: e['metrika'],
+    minSearchLength: e['min_search_length'],
+    resendTimeout: e['resend_timeout'],
+    sentryDsnJS: e['sentry_dsn_js'],
+    serverDrafts: e['server_drafts'],
+    firebaseAppId: e['firebase_app_id'],
+    firebaseSenderId: e['firebase_sender_id'],
+    calls: e['calls'],
+    mobileCalls: e['mobile_calls'],
+    callsRecord: e['calls_record'],
+    onlyOneDevicePerCall: undef(e['only_one_device_per_call']) ? false : e['only_one_device_per_call'],
+    maxParticipantsPerCall: undef(e['max_participants_per_call']) ? 0 : e['max_participants_per_call'],
+    safariPushId: e['safari_push_id'],
+    messageUploads: e['message_uploads'],
+    terms: NewTerms(e['terms']),
+    singleGroupTeams: e['single_group_teams'],
+    wikiPages: e['wiki_pages'],
+    allowAdminMute: undef(e['allow_admin_mute']) ? false : e['allow_admin_mute'],
+    taskChecklist: e['task_checklist'],
+    readonlyGroups: e['readonly_groups'],
+    taskDashboard: e['task_dashboard'],
+    taskMessages: e['task_messages'],
+    taskPublic: e['task_public'],
+    taskTags: e['task_tags'],
+})
+
+/**
+ * Create NewGroupMembership from raw json.
+ */
+export const NewGroupMembership = (e: any): GroupMembership => ({
+    jid: e['jid'],
+    status: e['status'],
+    canRemove: undef(e['can_remove']) ? false : e['can_remove'],
+})
+
+/**
+ * Export GroupMembership to json.
+ */
+export const ExportGroupMembership = (e: GroupMembership|null): any => (e === null ? null : {
+	'jid': e.jid,
+	'status': e.status,
+	'can_remove': e.canRemove,
+})
+
+/**
+ * Create NewICEServer from raw json.
+ */
+export const NewICEServer = (e: any): ICEServer => ({
+    urls: e['urls'],
+})
+
+/**
+ * Create NewIconData from raw json.
+ */
+export const NewIconData = (e: any): IconData => ({
+    sm: undef(e['sm']) ? null : NewSingleIcon(e['sm']),
+    lg: undef(e['lg']) ? null : NewSingleIcon(e['lg']),
+    stub: undef(e['stub']) ? '' : e['stub'],
+    letters: undef(e['letters']) ? '' : e['letters'],
+    color: undef(e['color']) ? '' : e['color'],
+})
+
+/**
+ * Export IconData to json.
+ */
+export const ExportIconData = (e: IconData|null): any => (e === null ? null : {
+	'sm': ExportSingleIcon(e.sm),
+	'lg': ExportSingleIcon(e.lg),
+	'stub': e.stub,
+	'letters': e.letters,
+	'color': e.color,
+})
+
+/**
+ * Create NewIntegration from raw json.
+ */
+export const NewIntegration = (e: any): Integration => ({
+    uid: undef(e['uid']) ? '' : e['uid'],
+    comment: e['comment'],
+    created: undef(e['created']) ? '' : e['created'],
+    enabled: e['enabled'],
+    form: NewIntegrationForm(e['form']),
+    group: e['group'],
+    help: undef(e['help']) ? '' : e['help'],
+    kind: e['kind'],
+})
+
+/**
+ * Export Integration to json.
+ */
+export const ExportIntegration = (e: Integration|null): any => (e === null ? null : {
+	'uid': e.uid,
+	'comment': e.comment,
+	'created': e.created,
+	'enabled': e.enabled,
+	'form': ExportIntegrationForm(e.form),
+	'group': e.group,
+	'help': e.help,
+	'kind': e.kind,
+})
+
+/**
+ * Create NewIntegrationField from raw json.
+ */
+export const NewIntegrationField = (e: any): IntegrationField => ({
+    label: e['label'],
+    readonly: e['readonly'],
+    value: e['value'],
+})
+
+/**
+ * Export IntegrationField to json.
+ */
+export const ExportIntegrationField = (e: IntegrationField|null): any => (e === null ? null : {
+	'label': e.label,
+	'readonly': e.readonly,
+	'value': e.value,
+})
+
+/**
+ * Create NewIntegrationForm from raw json.
+ */
+export const NewIntegrationForm = (e: any): IntegrationForm => ({
+    apiKey: undef(e['api_key']) ? null : NewIntegrationField(e['api_key']),
+    webhookUrl: undef(e['webhook_url']) ? null : NewIntegrationField(e['webhook_url']),
+    url: undef(e['url']) ? null : NewIntegrationField(e['url']),
+})
+
+/**
+ * Export IntegrationForm to json.
+ */
+export const ExportIntegrationForm = (e: IntegrationForm|null): any => (e === null ? null : {
+	'api_key': ExportIntegrationField(e.apiKey),
+	'webhook_url': ExportIntegrationField(e.webhookUrl),
+	'url': ExportIntegrationField(e.url),
+})
+
+/**
+ * Create NewIntegrationKind from raw json.
+ */
+export const NewIntegrationKind = (e: any): IntegrationKind => ({
+    kind: e['kind'],
+    title: e['title'],
+    template: NewIntegration(e['template']),
+    icon: e['icon'],
+})
+
+/**
+ * Export IntegrationKind to json.
+ */
+export const ExportIntegrationKind = (e: IntegrationKind|null): any => (e === null ? null : {
+	'kind': e.kind,
+	'title': e.title,
+	'template': ExportIntegration(e.template),
+	'icon': e.icon,
+})
+
+/**
+ * Create NewIntegrations from raw json.
+ */
+export const NewIntegrations = (e: any): Integrations => ({
+    integrations: e['integrations'].map(NewIntegration),
+    kinds: e['kinds'].map(NewIntegrationKind),
+})
+
+/**
+ * Export Integrations to json.
+ */
+export const ExportIntegrations = (e: Integrations|null): any => (e === null ? null : {
+	'integrations': e.integrations.map(ExportIntegration),
+	'kinds': e.kinds.map(ExportIntegrationKind),
+})
+
+/**
+ * Create NewMarkupEntity from raw json.
+ */
+export const NewMarkupEntity = (e: any): MarkupEntity => ({
+    open: e['op'],
+    openLength: undef(e['oplen']) ? 0 : e['oplen'],
+    close: e['cl'],
+    closeLength: undef(e['cllen']) ? 0 : e['cllen'],
+    type: e['typ'],
+    url: undef(e['url']) ? '' : e['url'],
+    repl: undef(e['repl']) ? '' : e['repl'],
+    time: undef(e['time']) ? '' : e['time'],
+    childs: undef(e['childs']) ? [] : e['childs'].map(NewMarkupEntity),
+})
+
+/**
+ * Export MarkupEntity to json.
+ */
+export const ExportMarkupEntity = (e: MarkupEntity|null): any => (e === null ? null : {
+	'op': e.open,
+	'oplen': e.openLength,
+	'cl': e.close,
+	'cllen': e.closeLength,
+	'typ': e.type,
+	'url': e.url,
+	'repl': e.repl,
+	'time': e.time,
+	'childs': e.childs.map(ExportMarkupEntity),
+})
+
+/**
+ * Create NewMessage from raw json.
+ */
+export const NewMessage = (e: any): Message => ({
+    content: NewMessageContent(e['content']),
+    pushText: undef(e['push_text']) ? '' : e['push_text'],
+    from: e['from'],
+    to: e['to'],
+    messageId: e['message_id'],
+    created: e['created'],
+    gentime: e['gentime'],
+    chatType: e['chat_type'],
+    chat: e['chat'],
+    links: undef(e['links']) ? [] : e['links'],
+    markup: undef(e['markup']) ? [] : e['markup'].map(NewMarkupEntity),
+    important: undef(e['important']) ? false : e['important'],
+    edited: undef(e['edited']) ? '' : e['edited'],
+    received: undef(e['received']) ? false : e['received'],
+    numReceived: undef(e['num_received']) ? 0 : e['num_received'],
+    nopreview: undef(e['nopreview']) ? false : e['nopreview'],
+    hasPreviews: undef(e['has_previews']) ? false : e['has_previews'],
+    prev: undef(e['prev']) ? '' : e['prev'],
+    isFirst: undef(e['is_first']) ? false : e['is_first'],
+    isLast: undef(e['is_last']) ? false : e['is_last'],
+    uploads: undef(e['uploads']) ? [] : e['uploads'].map(NewUpload),
+    reactions: undef(e['reactions']) ? [] : e['reactions'].map(NewMessageReaction),
+    replyTo: undef(e['reply_to']) ? null : NewMessage(e['reply_to']),
+    linkedMessages: undef(e['linked_messages']) ? [] : e['linked_messages'].map(NewMessage),
+    notice: undef(e['notice']) ? false : e['notice'],
+    silently: undef(e['silently']) ? false : e['silently'],
+    editableUntil: undef(e['editable_until']) ? '' : e['editable_until'],
+    num: undef(e['num']) ? null : e['num'],
+    debug: undef(e['_debug']) ? '' : e['_debug'],
+})
+
+/**
+ * Export Message to json.
+ */
+export const ExportMessage = (e: Message|null): any => (e === null ? null : {
+	'content': ExportMessageContent(e.content),
+	'to': e.to,
+	'message_id': e.messageId,
+	'important': e.important,
+	'nopreview': e.nopreview,
+	'uploads': e.uploads.map(ExportUpload),
+	'reply_to': ExportMessage(e.replyTo),
+	'linked_messages': e.linkedMessages.map(ExportMessage),
+})
+
+/**
+ * Create NewMessageContent from raw json.
+ */
+export const NewMessageContent = (e: any): MessageContent => ({
+    text: e['text'],
+    type: e['type'],
+    subtype: undef(e['subtype']) ? '' : e['subtype'],
+    upload: undef(e['upload']) ? '' : e['upload'],
+    mediaUrl: undef(e['mediaURL']) ? '' : e['mediaURL'],
+    size: undef(e['size']) ? 0 : e['size'],
+    duration: undef(e['duration']) ? null : e['duration'],
+    processing: undef(e['processing']) ? false : e['processing'],
+    previewHeight: undef(e['previewHeight']) ? 0 : e['previewHeight'],
+    previewWidth: undef(e['previewWidth']) ? 0 : e['previewWidth'],
+    previewUrl: undef(e['previewURL']) ? '' : e['previewURL'],
+    preview2xUrl: undef(e['preview2xURL']) ? '' : e['preview2xURL'],
+    name: undef(e['name']) ? '' : e['name'],
+    animated: undef(e['animated']) ? false : e['animated'],
+    title: undef(e['title']) ? '' : e['title'],
+    old: undef(e['old']) ? null : e['old'],
+    new: undef(e['new']) ? null : e['new'],
+    actor: undef(e['actor']) ? null : e['actor'],
+    comment: undef(e['comment']) ? '' : e['comment'],
+    givenName: undef(e['given_name']) ? null : e['given_name'],
+    familyName: undef(e['family_name']) ? null : e['family_name'],
+    patronymic: undef(e['patronymic']) ? null : e['patronymic'],
+    phones: undef(e['phones']) ? [] : e['phones'],
+    emails: undef(e['emails']) ? [] : e['emails'],
+    stickerpack: undef(e['stickerpack']) ? '' : e['stickerpack'],
+    pdfVersion: undef(e['pdf_version']) ? null : NewPdfVersion(e['pdf_version']),
+})
+
+/**
+ * Export MessageContent to json.
+ */
+export const ExportMessageContent = (e: MessageContent|null): any => (e === null ? null : {
+	'text': e.text,
+	'type': e.type,
+	'subtype': e.subtype,
+	'upload': e.upload,
+	'mediaURL': e.mediaUrl,
+	'size': e.size,
+	'duration': e.duration,
+	'processing': e.processing,
+	'previewHeight': e.previewHeight,
+	'previewWidth': e.previewWidth,
+	'previewURL': e.previewUrl,
+	'preview2xURL': e.preview2xUrl,
+	'name': e.name,
+	'animated': e.animated,
+	'title': e.title,
+	'old': e.old,
+	'new': e.new,
+	'actor': e.actor,
+	'comment': e.comment,
+	'given_name': e.givenName,
+	'family_name': e.familyName,
+	'patronymic': e.patronymic,
+	'phones': e.phones,
+	'emails': e.emails,
+	'stickerpack': e.stickerpack,
+	'pdf_version': ExportPdfVersion(e.pdfVersion),
+})
+
+/**
+ * Create NewMessageLink from raw json.
+ */
+export const NewMessageLink = (e: any): MessageLink => ({
+    pattern: e['pattern'],
+    url: e['url'],
+    text: e['text'],
+    preview: undef(e['preview']) ? null : NewMessageLinkPreview(e['preview']),
+    uploads: undef(e['uploads']) ? [] : e['uploads'].map(NewUpload),
+    noPreview: undef(e['nopreview']) ? false : e['nopreview'],
+    youtubeId: undef(e['youtube_id']) ? '' : e['youtube_id'],
+})
+
+/**
+ * Export MessageLink to json.
+ */
+export const ExportMessageLink = (e: MessageLink|null): any => (e === null ? null : {
+	'pattern': e.pattern,
+	'url': e.url,
+	'text': e.text,
+	'preview': ExportMessageLinkPreview(e.preview),
+	'uploads': e.uploads.map(ExportUpload),
+	'nopreview': e.noPreview,
+	'youtube_id': e.youtubeId,
+})
+
+/**
+ * Create NewMessageLinkPreview from raw json.
+ */
+export const NewMessageLinkPreview = (e: any): MessageLinkPreview => ({
+    title: e['title'],
+    description: undef(e['description']) ? '' : e['description'],
+})
+
+/**
+ * Export MessageLinkPreview to json.
+ */
+export const ExportMessageLinkPreview = (e: MessageLinkPreview|null): any => (e === null ? null : {
+	'title': e.title,
+	'description': e.description,
+})
+
+/**
+ * Create NewMessagePush from raw json.
+ */
+export const NewMessagePush = (e: any): MessagePush => ({
+    title: e['title'],
+    subtitle: e['subtitle'],
+    message: e['message'],
+    iconUrl: e['icon_url'],
+    clickAction: e['click_action'],
+    tag: e['tag'],
+    team: e['team'],
+    sender: e['sender'],
+    chat: e['chat'],
+    messageId: e['message_id'],
+    created: e['created'],
+})
+
+/**
+ * Create NewMessageReaction from raw json.
+ */
+export const NewMessageReaction = (e: any): MessageReaction => ({
+    name: e['name'],
+    counter: e['counter'],
+    details: e['details'].map(NewMessageReactionDetail),
+})
+
+/**
+ * Export MessageReaction to json.
+ */
+export const ExportMessageReaction = (e: MessageReaction|null): any => (e === null ? null : {
+	'name': e.name,
+	'counter': e.counter,
+	'details': e.details.map(ExportMessageReactionDetail),
+})
+
+/**
+ * Create NewMessageReactionDetail from raw json.
+ */
+export const NewMessageReactionDetail = (e: any): MessageReactionDetail => ({
+    created: e['created'],
+    sender: e['sender'],
+    name: e['name'],
+})
+
+/**
+ * Export MessageReactionDetail to json.
+ */
+export const ExportMessageReactionDetail = (e: MessageReactionDetail|null): any => (e === null ? null : {
+	'created': e.created,
+	'sender': e.sender,
+	'name': e.name,
+})
+
+/**
+ * Create NewPdfVersion from raw json.
+ */
+export const NewPdfVersion = (e: any): PdfVersion => ({
+    url: e['url'],
+    textPreview: undef(e['text_preview']) ? '' : e['text_preview'],
+})
+
+/**
+ * Export PdfVersion to json.
+ */
+export const ExportPdfVersion = (e: PdfVersion|null): any => (e === null ? null : {
+	'url': e.url,
+	'text_preview': e.textPreview,
+})
+
+/**
+ * Create NewRemind from raw json.
+ */
+export const NewRemind = (e: any): Remind => ({
+    uid: e['uid'],
+    chat: e['chat'],
+    fireAt: e['fire_at'],
+    comment: undef(e['comment']) ? '' : e['comment'],
+})
+
+/**
+ * Export Remind to json.
+ */
+export const ExportRemind = (e: Remind|null): any => (e === null ? null : {
+	'uid': e.uid,
+	'chat': e.chat,
+	'fire_at': e.fireAt,
+	'comment': e.comment,
+})
+
+/**
+ * Create NewSession from raw json.
+ */
+export const NewSession = (e: any): Session => ({
+    uid: e['uid'],
+    created: e['created'],
+    lang: undef(e['lang']) ? '' : e['lang'],
+    team: undef(e['team']) ? '' : e['team'],
+    isMobile: undef(e['is_mobile']) ? false : e['is_mobile'],
+    afk: undef(e['afk']) ? false : e['afk'],
+    useragent: undef(e['useragent']) ? '' : e['useragent'],
+    addr: undef(e['addr']) ? '' : e['addr'],
+})
+
+/**
+ * Export Session to json.
+ */
+export const ExportSession = (e: Session|null): any => (e === null ? null : {
+	'uid': e.uid,
+	'created': e.created,
+	'lang': e.lang,
+	'team': e.team,
+	'is_mobile': e.isMobile,
+	'afk': e.afk,
+	'useragent': e.useragent,
+	'addr': e.addr,
+})
+
+/**
+ * Create NewSingleIcon from raw json.
+ */
+export const NewSingleIcon = (e: any): SingleIcon => ({
+    url: e['url'],
+    width: e['width'],
+    height: e['height'],
+})
+
+/**
+ * Export SingleIcon to json.
+ */
+export const ExportSingleIcon = (e: SingleIcon|null): any => (e === null ? null : {
+	'url': e.url,
+	'width': e.width,
+	'height': e.height,
 })
 
 /**
@@ -3721,6 +3882,40 @@ export const ExportSubtask = (e: Subtask|null): any => (e === null ? null : {
 })
 
 /**
+ * Create NewTag from raw json.
+ */
+export const NewTag = (e: any): Tag => ({
+    uid: e['uid'],
+    name: e['name'],
+})
+
+/**
+ * Export Tag to json.
+ */
+export const ExportTag = (e: Tag|null): any => (e === null ? null : {
+	'uid': e.uid,
+	'name': e.name,
+})
+
+/**
+ * Create NewTaskColor from raw json.
+ */
+export const NewTaskColor = (e: any): TaskColor => ({
+    regular: e['regular'],
+    dark: e['dark'],
+    light: e['light'],
+})
+
+/**
+ * Export TaskColor to json.
+ */
+export const ExportTaskColor = (e: TaskColor|null): any => (e === null ? null : {
+	'regular': e.regular,
+	'dark': e.dark,
+	'light': e.light,
+})
+
+/**
  * Create NewTaskItem from raw json.
  */
 export const NewTaskItem = (e: any): TaskItem => ({
@@ -3745,51 +3940,25 @@ export const ExportTaskItem = (e: TaskItem|null): any => (e === null ? null : {
 })
 
 /**
- * Create NewGroupMembership from raw json.
+ * Create NewTaskStatus from raw json.
  */
-export const NewGroupMembership = (e: any): GroupMembership => ({
-    jid: e['jid'],
-    status: e['status'],
-    canRemove: undef(e['can_remove']) ? false : e['can_remove'],
-})
-
-/**
- * Export GroupMembership to json.
- */
-export const ExportGroupMembership = (e: GroupMembership|null): any => (e === null ? null : {
-	'jid': e.jid,
-	'status': e.status,
-	'can_remove': e.canRemove,
-})
-
-/**
- * Create NewTag from raw json.
- */
-export const NewTag = (e: any): Tag => ({
-    uid: e['uid'],
+export const NewTaskStatus = (e: any): TaskStatus => ({
+    uid: undef(e['uid']) ? '' : e['uid'],
+    sortOrdering: e['sort_ordering'],
     name: e['name'],
+    title: e['title'],
+    isArchive: undef(e['is_archive']) ? false : e['is_archive'],
 })
 
 /**
- * Export Tag to json.
+ * Export TaskStatus to json.
  */
-export const ExportTag = (e: Tag|null): any => (e === null ? null : {
+export const ExportTaskStatus = (e: TaskStatus|null): any => (e === null ? null : {
 	'uid': e.uid,
+	'sort_ordering': e.sortOrdering,
 	'name': e.name,
-})
-
-/**
- * Create NewDeletedTag from raw json.
- */
-export const NewDeletedTag = (e: any): DeletedTag => ({
-    uid: e['uid'],
-})
-
-/**
- * Export DeletedTag to json.
- */
-export const ExportDeletedTag = (e: DeletedTag|null): any => (e === null ? null : {
-	'uid': e.uid,
+	'title': e.title,
+	'is_archive': e.isArchive,
 })
 
 /**
@@ -3847,6 +4016,22 @@ export const ExportTeam = (e: Team|null): any => (e === null ? null : {
 })
 
 /**
+ * Create NewTeamCounter from raw json.
+ */
+export const NewTeamCounter = (e: any): TeamCounter => ({
+    uid: e['uid'],
+    unreads: e['unread'],
+})
+
+/**
+ * Export TeamCounter to json.
+ */
+export const ExportTeamCounter = (e: TeamCounter|null): any => (e === null ? null : {
+	'uid': e.uid,
+	'unread': e.unreads,
+})
+
+/**
  * Create NewTeamShort from raw json.
  */
 export const NewTeamShort = (e: any): TeamShort => ({
@@ -3856,12 +4041,43 @@ export const NewTeamShort = (e: any): TeamShort => ({
 })
 
 /**
- * Create NewDeletedTeam from raw json.
+ * Create NewTerms from raw json.
  */
-export const NewDeletedTeam = (e: any): DeletedTeam => ({
-    uid: e['uid'],
-    isArchive: e['is_archive'],
-    gentime: e['gentime'],
+export const NewTerms = (e: any): Terms => ({
+    enInTeam: e['EnInTeam'],
+    enTeam: e['EnTeam'],
+    enTeamAccess: e['EnTeamAccess'],
+    enTeamAdmin: e['EnTeamAdmin'],
+    enTeamAdmins: e['EnTeamAdmins'],
+    enTeamGuest: e['EnTeamGuest'],
+    enTeamMember: e['EnTeamMember'],
+    enTeamMembers: e['EnTeamMembers'],
+    enTeamOwner: e['EnTeamOwner'],
+    enTeamSettings: e['EnTeamSettings'],
+    ruTeamSettings: e['RuTeamSettings'],
+    enTeams: e['EnTeams'],
+    enToTeam: e['EnToTeam'],
+    ruInTeam: e['RuInTeam'],
+    ruTeam: e['RuTeam'],
+    ruTeamAccess: e['RuTeamAccess'],
+    ruTeamAdmin: e['RuTeamAdmin'],
+    ruTeamAdmins: e['RuTeamAdmins'],
+    ruTeamD: e['RuTeamD'],
+    ruTeamGuest: e['RuTeamGuest'],
+    ruTeamMember: e['RuTeamMember'],
+    ruTeamMembers: e['RuTeamMembers'],
+    ruTeamOwner: e['RuTeamOwner'],
+    ruTeamP: e['RuTeamP'],
+    ruTeamR: e['RuTeamR'],
+    ruTeams: e['RuTeams'],
+    ruTeamsD: e['RuTeamsD'],
+    ruTeamsP: e['RuTeamsP'],
+    ruTeamsR: e['RuTeamsR'],
+    ruTeamsT: e['RuTeamsT'],
+    ruTeamsV: e['RuTeamsV'],
+    ruTeamT: e['RuTeamT'],
+    ruTeamV: e['RuTeamV'],
+    ruToTeam: e['RuToTeam'],
 })
 
 /**
@@ -3900,6 +4116,112 @@ export const ExportTheme = (e: Theme|null): any => (e === null ? null : {
 	'MainLink': e.mainLink,
 	'AppAccentColor': e.appAccentColor,
 	'AppPrimaryColor': e.appPrimaryColor,
+})
+
+/**
+ * Create NewUnread from raw json.
+ */
+export const NewUnread = (e: any): Unread => ({
+    numMessages: e['messages'],
+    numNoticeMessages: e['notice_messages'],
+    numChats: e['chats'],
+})
+
+/**
+ * Export Unread to json.
+ */
+export const ExportUnread = (e: Unread|null): any => (e === null ? null : {
+	'messages': e.numMessages,
+	'notice_messages': e.numNoticeMessages,
+	'chats': e.numChats,
+})
+
+/**
+ * Create NewUpload from raw json.
+ */
+export const NewUpload = (e: any): Upload => ({
+    uid: e['uid'],
+    created: undef(e['created']) ? '' : e['created'],
+    size: e['size'],
+    duration: undef(e['duration']) ? 0 : e['duration'],
+    name: e['name'],
+    url: e['url'],
+    preview: undef(e['preview']) ? null : NewUploadPreview(e['preview']),
+    contentType: e['content_type'],
+    animated: undef(e['animated']) ? false : e['animated'],
+    processing: undef(e['processing']) ? false : e['processing'],
+    pdfVersion: undef(e['pdf_version']) ? null : NewPdfVersion(e['pdf_version']),
+})
+
+/**
+ * Export Upload to json.
+ */
+export const ExportUpload = (e: Upload|null): any => (e === null ? null : {
+	'uid': e.uid,
+	'created': e.created,
+	'size': e.size,
+	'duration': e.duration,
+	'name': e.name,
+	'url': e.url,
+	'preview': ExportUploadPreview(e.preview),
+	'content_type': e.contentType,
+	'animated': e.animated,
+	'processing': e.processing,
+	'pdf_version': ExportPdfVersion(e.pdfVersion),
+})
+
+/**
+ * Create NewUploadPreview from raw json.
+ */
+export const NewUploadPreview = (e: any): UploadPreview => ({
+    url: e['url'],
+    url2x: e['url_2x'],
+    width: e['width'],
+    height: e['height'],
+})
+
+/**
+ * Export UploadPreview to json.
+ */
+export const ExportUploadPreview = (e: UploadPreview|null): any => (e === null ? null : {
+	'url': e.url,
+	'url_2x': e.url2x,
+	'width': e.width,
+	'height': e.height,
+})
+
+/**
+ * Create NewUser from raw json.
+ */
+export const NewUser = (e: any): User => ({
+    phone: e['phone'],
+    email: e['email'],
+    defaultLang: e['default_lang'],
+    altSend: e['alt_send'],
+    asteriskMention: e['asterisk_mention'],
+    alwaysSendPushes: e['always_send_pushes'],
+    unreadFirst: e['unread_first'],
+    mUnreadFirst: e['munread_first'],
+    timezone: e['timezone'],
+    quietTimeStart: e['quiet_time_start'],
+    quietTimeFinish: e['quiet_time_finish'],
+})
+
+/**
+ * Export User to json.
+ */
+export const ExportUser = (e: User|null): any => (e === null ? null : {
+	'phone': e.phone,
+	'email': e.email,
+	'default_lang': e.defaultLang,
+	'alt_send': e.altSend,
+	'asterisk_mention': e.asteriskMention,
+	'always_send_pushes': e.alwaysSendPushes,
+	'unread_first': e.unreadFirst,
+	'munread_first': e.mUnreadFirst,
+	'timezone': e.timezone,
+	'quiet_time_start': e.quietTimeStart,
+	'quiet_time_finish': e.quietTimeFinish,
 })
 
 /**
