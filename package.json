@@ -1,17 +1,23 @@
 {
-  "name": "tdproto",
-  "version": "0.4.5",
-  "description": "tada protocol for use in TS projects",
+  "name": "@tada-team/tdproto-ts",
+  "version": "0.5.0-beta.0",
+  "description": "Tada messenger protocol for use in TS projects",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "lint": "eslint"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tada-team/tdproto-ts.git"
   },
-  "keywords": [],
+  "keywords": [
+    "Tada",
+    "protocol",
+    "proto",
+    "TypeScript"
+  ],
   "author": "tada.team info@tada.team",
   "license": "MIT",
   "bugs": {
@@ -19,7 +25,14 @@
   },
   "homepage": "https://github.com/tada-team/tdproto-ts#readme",
   "devDependencies": {
-    "typescript": "^4.0.3"
+    "@typescript-eslint/eslint-plugin": "^4.20.0",
+    "@typescript-eslint/parser": "^4.20.0",
+    "eslint": "^7.23.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.3.1",
+    "typescript": "^4.2.3"
   },
   "files": [
     "lib/**/*"
