@@ -6,7 +6,7 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "check-types": "tsc",
-    "build": "babel src -d lib --extensions '.ts'",
+    "build": "babel src -d lib --extensions '.ts' --source-maps",
     "lint": "eslint"
   },
   "repository": {
