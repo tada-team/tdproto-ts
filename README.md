@@ -1,6 +1,6 @@
 # tdproto-ts
-Tada protocol in TypeScript
+Tada messenger protocol for use in JS/TS projects
 
 ```bash
-npm install tdproto
+npm i @tada-team/tdproto-ts
 ```
