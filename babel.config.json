@@ -1,13 +1,13 @@
 {
   "presets": [
-    "@babel/preset-typescript",
     [
       "@babel/env",
       {
         "useBuiltIns": "usage",
         "corejs": "3.10.0"
       }
-    ]
+    ],
+    "@babel/preset-typescript"
   ],
   "plugins": [
     [
