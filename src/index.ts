@@ -9,13 +9,6 @@ interface TDProtoClass<T> {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type UiSettings = Record<string, any>
 
-type UploadMediaType =
-   | 'file'
-   | 'image'
-   | 'video'
-   | 'audio'
-   | 'imagefile'
-
 type MarkupType =
    | 'bold'
    | 'italic'
@@ -27,6 +20,21 @@ type MarkupType =
    | 'link'
    | 'time'
    | 'unsafe'
+
+type TeamStatus =
+   | 'owner'
+   | 'admin'
+   | 'member'
+   | 'guest'
+
+type GroupStatus =
+   | 'admin'
+   | 'member'
+
+type ChatType =
+   | 'direct'
+   | 'group'
+   | 'task'
 
 type Mediatype =
    | 'plain'
@@ -43,22 +51,14 @@ type Mediasubtype =
    | 'sticker'
    | 'newtask'
 
-type ChatType =
-   | 'direct'
-   | 'group'
-   | 'task'
+type UploadMediaType =
+   | 'file'
+   | 'image'
+   | 'video'
+   | 'audio'
+   | 'imagefile'
 
-type TeamStatus =
-   | 'owner'
-   | 'admin'
-   | 'member'
-   | 'guest'
-
-type GroupStatus =
-   | 'admin'
-   | 'member'
-
-type ISODateTimeString = string
+type PushDeviceType = number
 
 type TaskFilterKey = string
 
@@ -66,7 +66,7 @@ type TaskSortKey = string
 
 type TaskTabKey = string
 
-type PushDeviceType = number
+type ISODateTimeString = string
 
 type JID = string
 
@@ -118,255 +118,51 @@ export class TeamUnread implements TDProtoClass<TeamUnread> {
   }
 }
 
-export interface ServerCallBuzzParamsJSON {
-  /* eslint-disable camelcase */
-  actor: ContactShortJSON;
-  buzz_timeout: number;
-  chat: ChatShortJSON;
-  display_name: string;
-  icons: IconDataJSON;
-  jid: JID;
-  team: string;
-  teaminfo: TeamShortJSON;
-  uid: string;
-  /* eslint-enable camelcase */
-}
-
-export class ServerCallBuzzParams implements TDProtoClass<ServerCallBuzzParams> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param actorShort Short call creator information
-   * @param buzzTimeout Number of seconds for stop buzzing
-   * @param chatShort Short chat information
-   * @param displayName Chat title
-   * @param icons Chat icons
-   * @param jid Chat or contact id
-   * @param team Deprecated
-   * @param teamShort Short team information
-   * @param uid Call id
-   */
-  constructor (
-    public actorShort: ContactShort,
-    public buzzTimeout: number,
-    public chatShort: ChatShort,
-    public displayName: string,
-    public icons: IconData,
-    public jid: JID,
-    public team: string,
-    public teamShort: TeamShort,
-    public uid: string,
-  ) {}
-
-  public static fromJSON (raw: ServerCallBuzzParamsJSON): ServerCallBuzzParams {
-    return new ServerCallBuzzParams(
-      ContactShort.fromJSON(raw.actor),
-      raw.buzz_timeout,
-      ChatShort.fromJSON(raw.chat),
-      raw.display_name,
-      IconData.fromJSON(raw.icons),
-      raw.jid,
-      raw.team,
-      TeamShort.fromJSON(raw.teaminfo),
-      raw.uid,
-    )
-  }
-
-  public mappableFields = [
-    'actorShort',
-    'buzzTimeout',
-    'chatShort',
-    'displayName',
-    'icons',
-    'jid',
-    'team',
-    'teamShort',
-    'uid',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    actorShort: () => ({ actor: this.actorShort.toJSON() }),
-    buzzTimeout: () => ({ buzz_timeout: this.buzzTimeout }),
-    chatShort: () => ({ chat: this.chatShort.toJSON() }),
-    displayName: () => ({ display_name: this.displayName }),
-    icons: () => ({ icons: this.icons.toJSON() }),
-    jid: () => ({ jid: this.jid }),
-    team: () => ({ team: this.team }),
-    teamShort: () => ({ teaminfo: this.teamShort.toJSON() }),
-    uid: () => ({ uid: this.uid }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerCallBuzzParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallBuzzParamsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface DeletedTeamJSON {
-  /* eslint-disable camelcase */
-  gentime: number;
-  is_archive: boolean;
-  uid: string;
-  /* eslint-enable camelcase */
-}
-
-export class DeletedTeam implements TDProtoClass<DeletedTeam> {
-  /**
-   * Team deletion message. Readonly
-   * @param gentime Object version
-   * @param isArchive Team deleted
-   * @param uid Team id
-   */
-  constructor (
-    public gentime: number,
-    public isArchive: boolean,
-    public uid: string,
-  ) {}
-
-  public static fromJSON (raw: DeletedTeamJSON): DeletedTeam {
-    return new DeletedTeam(
-      raw.gentime,
-      raw.is_archive,
-      raw.uid,
-    )
-  }
-
-  public mappableFields = [
-    'gentime',
-    'isArchive',
-    'uid',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    gentime: () => ({ gentime: this.gentime }),
-    isArchive: () => ({ is_archive: this.isArchive }),
-    uid: () => ({ uid: this.uid }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): DeletedTeamJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<DeletedTeamJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface PaginatedContactsJSON {
-  /* eslint-disable camelcase */
-  count: number;
-  limit: number;
-  objects: ContactJSON[];
-  offset: number;
-  /* eslint-enable camelcase */
-}
-
-export class PaginatedContacts implements TDProtoClass<PaginatedContacts> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param count DOCUMENTATION MISSING
-   * @param limit DOCUMENTATION MISSING
-   * @param objects DOCUMENTATION MISSING
-   * @param offset DOCUMENTATION MISSING
-   */
-  constructor (
-    public count: number,
-    public limit: number,
-    public objects: Contact[],
-    public offset: number,
-  ) {}
-
-  public static fromJSON (raw: PaginatedContactsJSON): PaginatedContacts {
-    return new PaginatedContacts(
-      raw.count,
-      raw.limit,
-      raw.objects.map(Contact.fromJSON),
-      raw.offset,
-    )
-  }
-
-  public mappableFields = [
-    'count',
-    'limit',
-    'objects',
-    'offset',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    count: () => ({ count: this.count }),
-    limit: () => ({ limit: this.limit }),
-    objects: () => ({ objects: this.objects.map(u => u.toJSON()) }),
-    offset: () => ({ offset: this.offset }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): PaginatedContactsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<PaginatedContactsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerRemindUpdatedJSON {
+export interface ServerSectionUpdatedJSON {
   /* eslint-disable camelcase */
   event: string;
-  params: ServerRemindUpdatedParamsJSON;
+  params: ServerSectionUpdatedParamsJSON;
   confirm_id?: string;
   /* eslint-enable camelcase */
 }
 
-export class ServerRemindUpdated implements TDProtoClass<ServerRemindUpdated> {
+export class ServerSectionUpdated implements TDProtoClass<ServerSectionUpdated> {
   /**
-   * Task/group remind created or changed
-   * @param name DOCUMENTATION MISSING
+   * Contact section or task project created or changed
+   * @param event DOCUMENTATION MISSING
    * @param params DOCUMENTATION MISSING
    * @param confirmId DOCUMENTATION MISSING
    */
   constructor (
-    public name: string,
-    public params: ServerRemindUpdatedParams,
+    public event: string,
+    public params: ServerSectionUpdatedParams,
     public confirmId?: string,
   ) {}
 
-  public static fromJSON (raw: ServerRemindUpdatedJSON): ServerRemindUpdated {
-    return new ServerRemindUpdated(
+  public static fromJSON (raw: ServerSectionUpdatedJSON): ServerSectionUpdated {
+    return new ServerSectionUpdated(
       raw.event,
-      ServerRemindUpdatedParams.fromJSON(raw.params),
+      ServerSectionUpdatedParams.fromJSON(raw.params),
       raw.confirm_id,
     )
   }
 
   public mappableFields = [
-    'name',
+    'event',
     'params',
     'confirmId',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
+    event: () => ({ event: this.event }),
     params: () => ({ params: this.params.toJSON() }),
     confirmId: () => ({ confirm_id: this.confirmId }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): ServerRemindUpdatedJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerRemindUpdatedJSON>
+  public toJSON (): ServerSectionUpdatedJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerSectionUpdatedJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -376,345 +172,51 @@ export class ServerRemindUpdated implements TDProtoClass<ServerRemindUpdated> {
   }
 }
 
-export interface TermsJSON {
-  /* eslint-disable camelcase */
-  EnInTeam: string;
-  EnTeam: string;
-  EnTeamAccess: string;
-  EnTeamAdmin: string;
-  EnTeamAdmins: string;
-  EnTeamGuest: string;
-  EnTeamMember: string;
-  EnTeamMembers: string;
-  EnTeamOwner: string;
-  EnTeamSettings: string;
-  EnTeams: string;
-  EnToTeam: string;
-  RuInTeam: string;
-  RuTeam: string;
-  RuTeamAccess: string;
-  RuTeamAdmin: string;
-  RuTeamAdmins: string;
-  RuTeamD: string;
-  RuTeamGuest: string;
-  RuTeamMember: string;
-  RuTeamMembers: string;
-  RuTeamOwner: string;
-  RuTeamP: string;
-  RuTeamR: string;
-  RuTeamSettings: string;
-  RuTeamT: string;
-  RuTeamV: string;
-  RuTeams: string;
-  RuTeamsD: string;
-  RuTeamsP: string;
-  RuTeamsR: string;
-  RuTeamsT: string;
-  RuTeamsV: string;
-  RuToTeam: string;
-  /* eslint-enable camelcase */
-}
-
-export class Terms implements TDProtoClass<Terms> {
-  /**
-   * Experimental translation fields for "team" entity renaming. Readonly
-   * @param enInTeam DOCUMENTATION MISSING
-   * @param enTeam DOCUMENTATION MISSING
-   * @param enTeamAccess DOCUMENTATION MISSING
-   * @param enTeamAdmin DOCUMENTATION MISSING
-   * @param enTeamAdmins DOCUMENTATION MISSING
-   * @param enTeamGuest DOCUMENTATION MISSING
-   * @param enTeamMember DOCUMENTATION MISSING
-   * @param enTeamMembers DOCUMENTATION MISSING
-   * @param enTeamOwner DOCUMENTATION MISSING
-   * @param enTeamSettings DOCUMENTATION MISSING
-   * @param enTeams DOCUMENTATION MISSING
-   * @param enToTeam DOCUMENTATION MISSING
-   * @param ruInTeam DOCUMENTATION MISSING
-   * @param ruTeam DOCUMENTATION MISSING
-   * @param ruTeamAccess DOCUMENTATION MISSING
-   * @param ruTeamAdmin DOCUMENTATION MISSING
-   * @param ruTeamAdmins DOCUMENTATION MISSING
-   * @param ruTeamD DOCUMENTATION MISSING
-   * @param ruTeamGuest DOCUMENTATION MISSING
-   * @param ruTeamMember DOCUMENTATION MISSING
-   * @param ruTeamMembers DOCUMENTATION MISSING
-   * @param ruTeamOwner DOCUMENTATION MISSING
-   * @param ruTeamP DOCUMENTATION MISSING
-   * @param ruTeamR DOCUMENTATION MISSING
-   * @param ruTeamSettings DOCUMENTATION MISSING
-   * @param ruTeamT DOCUMENTATION MISSING
-   * @param ruTeamV DOCUMENTATION MISSING
-   * @param ruTeams DOCUMENTATION MISSING
-   * @param ruTeamsD DOCUMENTATION MISSING
-   * @param ruTeamsP DOCUMENTATION MISSING
-   * @param ruTeamsR DOCUMENTATION MISSING
-   * @param ruTeamsT DOCUMENTATION MISSING
-   * @param ruTeamsV DOCUMENTATION MISSING
-   * @param ruToTeam DOCUMENTATION MISSING
-   */
-  constructor (
-    public enInTeam: string,
-    public enTeam: string,
-    public enTeamAccess: string,
-    public enTeamAdmin: string,
-    public enTeamAdmins: string,
-    public enTeamGuest: string,
-    public enTeamMember: string,
-    public enTeamMembers: string,
-    public enTeamOwner: string,
-    public enTeamSettings: string,
-    public enTeams: string,
-    public enToTeam: string,
-    public ruInTeam: string,
-    public ruTeam: string,
-    public ruTeamAccess: string,
-    public ruTeamAdmin: string,
-    public ruTeamAdmins: string,
-    public ruTeamD: string,
-    public ruTeamGuest: string,
-    public ruTeamMember: string,
-    public ruTeamMembers: string,
-    public ruTeamOwner: string,
-    public ruTeamP: string,
-    public ruTeamR: string,
-    public ruTeamSettings: string,
-    public ruTeamT: string,
-    public ruTeamV: string,
-    public ruTeams: string,
-    public ruTeamsD: string,
-    public ruTeamsP: string,
-    public ruTeamsR: string,
-    public ruTeamsT: string,
-    public ruTeamsV: string,
-    public ruToTeam: string,
-  ) {}
-
-  public static fromJSON (raw: TermsJSON): Terms {
-    return new Terms(
-      raw.EnInTeam,
-      raw.EnTeam,
-      raw.EnTeamAccess,
-      raw.EnTeamAdmin,
-      raw.EnTeamAdmins,
-      raw.EnTeamGuest,
-      raw.EnTeamMember,
-      raw.EnTeamMembers,
-      raw.EnTeamOwner,
-      raw.EnTeamSettings,
-      raw.EnTeams,
-      raw.EnToTeam,
-      raw.RuInTeam,
-      raw.RuTeam,
-      raw.RuTeamAccess,
-      raw.RuTeamAdmin,
-      raw.RuTeamAdmins,
-      raw.RuTeamD,
-      raw.RuTeamGuest,
-      raw.RuTeamMember,
-      raw.RuTeamMembers,
-      raw.RuTeamOwner,
-      raw.RuTeamP,
-      raw.RuTeamR,
-      raw.RuTeamSettings,
-      raw.RuTeamT,
-      raw.RuTeamV,
-      raw.RuTeams,
-      raw.RuTeamsD,
-      raw.RuTeamsP,
-      raw.RuTeamsR,
-      raw.RuTeamsT,
-      raw.RuTeamsV,
-      raw.RuToTeam,
-    )
-  }
-
-  public mappableFields = [
-    'enInTeam',
-    'enTeam',
-    'enTeamAccess',
-    'enTeamAdmin',
-    'enTeamAdmins',
-    'enTeamGuest',
-    'enTeamMember',
-    'enTeamMembers',
-    'enTeamOwner',
-    'enTeamSettings',
-    'enTeams',
-    'enToTeam',
-    'ruInTeam',
-    'ruTeam',
-    'ruTeamAccess',
-    'ruTeamAdmin',
-    'ruTeamAdmins',
-    'ruTeamD',
-    'ruTeamGuest',
-    'ruTeamMember',
-    'ruTeamMembers',
-    'ruTeamOwner',
-    'ruTeamP',
-    'ruTeamR',
-    'ruTeamSettings',
-    'ruTeamT',
-    'ruTeamV',
-    'ruTeams',
-    'ruTeamsD',
-    'ruTeamsP',
-    'ruTeamsR',
-    'ruTeamsT',
-    'ruTeamsV',
-    'ruToTeam',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    enInTeam: () => ({ EnInTeam: this.enInTeam }),
-    enTeam: () => ({ EnTeam: this.enTeam }),
-    enTeamAccess: () => ({ EnTeamAccess: this.enTeamAccess }),
-    enTeamAdmin: () => ({ EnTeamAdmin: this.enTeamAdmin }),
-    enTeamAdmins: () => ({ EnTeamAdmins: this.enTeamAdmins }),
-    enTeamGuest: () => ({ EnTeamGuest: this.enTeamGuest }),
-    enTeamMember: () => ({ EnTeamMember: this.enTeamMember }),
-    enTeamMembers: () => ({ EnTeamMembers: this.enTeamMembers }),
-    enTeamOwner: () => ({ EnTeamOwner: this.enTeamOwner }),
-    enTeamSettings: () => ({ EnTeamSettings: this.enTeamSettings }),
-    enTeams: () => ({ EnTeams: this.enTeams }),
-    enToTeam: () => ({ EnToTeam: this.enToTeam }),
-    ruInTeam: () => ({ RuInTeam: this.ruInTeam }),
-    ruTeam: () => ({ RuTeam: this.ruTeam }),
-    ruTeamAccess: () => ({ RuTeamAccess: this.ruTeamAccess }),
-    ruTeamAdmin: () => ({ RuTeamAdmin: this.ruTeamAdmin }),
-    ruTeamAdmins: () => ({ RuTeamAdmins: this.ruTeamAdmins }),
-    ruTeamD: () => ({ RuTeamD: this.ruTeamD }),
-    ruTeamGuest: () => ({ RuTeamGuest: this.ruTeamGuest }),
-    ruTeamMember: () => ({ RuTeamMember: this.ruTeamMember }),
-    ruTeamMembers: () => ({ RuTeamMembers: this.ruTeamMembers }),
-    ruTeamOwner: () => ({ RuTeamOwner: this.ruTeamOwner }),
-    ruTeamP: () => ({ RuTeamP: this.ruTeamP }),
-    ruTeamR: () => ({ RuTeamR: this.ruTeamR }),
-    ruTeamSettings: () => ({ RuTeamSettings: this.ruTeamSettings }),
-    ruTeamT: () => ({ RuTeamT: this.ruTeamT }),
-    ruTeamV: () => ({ RuTeamV: this.ruTeamV }),
-    ruTeams: () => ({ RuTeams: this.ruTeams }),
-    ruTeamsD: () => ({ RuTeamsD: this.ruTeamsD }),
-    ruTeamsP: () => ({ RuTeamsP: this.ruTeamsP }),
-    ruTeamsR: () => ({ RuTeamsR: this.ruTeamsR }),
-    ruTeamsT: () => ({ RuTeamsT: this.ruTeamsT }),
-    ruTeamsV: () => ({ RuTeamsV: this.ruTeamsV }),
-    ruToTeam: () => ({ RuToTeam: this.ruToTeam }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): TermsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<TermsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerCallTalkingParamsJSON {
-  /* eslint-disable camelcase */
-  actor: JID;
-  jid: JID;
-  talking: boolean;
-  /* eslint-enable camelcase */
-}
-
-export class ServerCallTalkingParams implements TDProtoClass<ServerCallTalkingParams> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param actor Actor id
-   * @param jid Chat or contact id
-   * @param talking Is talking
-   */
-  constructor (
-    public actor: JID,
-    public jid: JID,
-    public talking: boolean,
-  ) {}
-
-  public static fromJSON (raw: ServerCallTalkingParamsJSON): ServerCallTalkingParams {
-    return new ServerCallTalkingParams(
-      raw.actor,
-      raw.jid,
-      raw.talking,
-    )
-  }
-
-  public mappableFields = [
-    'actor',
-    'jid',
-    'talking',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    actor: () => ({ actor: this.actor }),
-    jid: () => ({ jid: this.jid }),
-    talking: () => ({ talking: this.talking }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerCallTalkingParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallTalkingParamsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerOnlineJSON {
+export interface ServerConfirmJSON {
   /* eslint-disable camelcase */
   event: string;
-  params: ServerOnlineParamsJSON;
+  params: ServerConfirmParamsJSON;
   confirm_id?: string;
   /* eslint-enable camelcase */
 }
 
-export class ServerOnline implements TDProtoClass<ServerOnline> {
+export class ServerConfirm implements TDProtoClass<ServerConfirm> {
   /**
-   * Online team members and current active calls
-   * @param name DOCUMENTATION MISSING
+   * Server confirmed client message
+   * @param event DOCUMENTATION MISSING
    * @param params DOCUMENTATION MISSING
    * @param confirmId DOCUMENTATION MISSING
    */
   constructor (
-    public name: string,
-    public params: ServerOnlineParams,
+    public event: string,
+    public params: ServerConfirmParams,
     public confirmId?: string,
   ) {}
 
-  public static fromJSON (raw: ServerOnlineJSON): ServerOnline {
-    return new ServerOnline(
+  public static fromJSON (raw: ServerConfirmJSON): ServerConfirm {
+    return new ServerConfirm(
       raw.event,
-      ServerOnlineParams.fromJSON(raw.params),
+      ServerConfirmParams.fromJSON(raw.params),
       raw.confirm_id,
     )
   }
 
   public mappableFields = [
-    'name',
+    'event',
     'params',
     'confirmId',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
+    event: () => ({ event: this.event }),
     params: () => ({ params: this.params.toJSON() }),
     confirmId: () => ({ confirm_id: this.confirmId }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): ServerOnlineJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerOnlineJSON>
+  public toJSON (): ServerConfirmJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerConfirmJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -724,45 +226,51 @@ export class ServerOnline implements TDProtoClass<ServerOnline> {
   }
 }
 
-export interface ServerCallSoundParamsJSON {
+export interface ServerLoginJSON {
   /* eslint-disable camelcase */
-  jid: JID;
-  muted: boolean;
+  event: string;
+  params: ServerLoginParamsJSON;
+  confirm_id?: string;
   /* eslint-enable camelcase */
 }
 
-export class ServerCallSoundParams implements TDProtoClass<ServerCallSoundParams> {
+export class ServerLogin implements TDProtoClass<ServerLogin> {
   /**
-   * MISSING CLASS DOCUMENTATION
-   * @param jid Chat or contact id
-   * @param muted Mute state
+   * Login from other device
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
    */
   constructor (
-    public jid: JID,
-    public muted: boolean,
+    public event: string,
+    public params: ServerLoginParams,
+    public confirmId?: string,
   ) {}
 
-  public static fromJSON (raw: ServerCallSoundParamsJSON): ServerCallSoundParams {
-    return new ServerCallSoundParams(
-      raw.jid,
-      raw.muted,
+  public static fromJSON (raw: ServerLoginJSON): ServerLogin {
+    return new ServerLogin(
+      raw.event,
+      ServerLoginParams.fromJSON(raw.params),
+      raw.confirm_id,
     )
   }
 
   public mappableFields = [
-    'jid',
-    'muted',
+    'event',
+    'params',
+    'confirmId',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    jid: () => ({ jid: this.jid }),
-    muted: () => ({ muted: this.muted }),
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): ServerCallSoundParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallSoundParamsJSON>
+  public toJSON (): ServerLoginJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerLoginJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -772,129 +280,15 @@ export class ServerCallSoundParams implements TDProtoClass<ServerCallSoundParams
   }
 }
 
-export interface TaskStatusJSON {
-  /* eslint-disable camelcase */
-  name: string;
-  sort_ordering: number;
-  title: string;
-  is_archive?: boolean;
-  uid?: string;
-  /* eslint-enable camelcase */
-}
-
-export class TaskStatus implements TDProtoClass<TaskStatus> {
-  /**
-   * Custom task status
-   * @param name Status internal name
-   * @param sortOrdering Status sort ordering
-   * @param title Status localized name
-   * @param isArchive Status not used anymore
-   * @param uid Status id
-   */
-  constructor (
-    public name: string,
-    public sortOrdering: number,
-    public title: string,
-    public isArchive?: boolean,
-    public uid?: string,
-  ) {}
-
-  public static fromJSON (raw: TaskStatusJSON): TaskStatus {
-    return new TaskStatus(
-      raw.name,
-      raw.sort_ordering,
-      raw.title,
-      raw.is_archive,
-      raw.uid,
-    )
-  }
-
-  public mappableFields = [
-    'name',
-    'sortOrdering',
-    'title',
-    'isArchive',
-    'uid',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    name: () => ({ name: this.name }),
-    sortOrdering: () => ({ sort_ordering: this.sortOrdering }),
-    title: () => ({ title: this.title }),
-    isArchive: () => ({ is_archive: this.isArchive }),
-    uid: () => ({ uid: this.uid }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): TaskStatusJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<TaskStatusJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ClientCallBuzzParamsJSON {
-  /* eslint-disable camelcase */
-  jid: JID;
-  members: JID[];
-  /* eslint-enable camelcase */
-}
-
-export class ClientCallBuzzParams implements TDProtoClass<ClientCallBuzzParams> {
-  /**
-   * Call buzzing
-   * @param jid Chat or contact id
-   * @param members List of call participants
-   */
-  constructor (
-    public jid: JID,
-    public members: JID[],
-  ) {}
-
-  public static fromJSON (raw: ClientCallBuzzParamsJSON): ClientCallBuzzParams {
-    return new ClientCallBuzzParams(
-      raw.jid,
-      raw.members,
-    )
-  }
-
-  public mappableFields = [
-    'jid',
-    'members',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    jid: () => ({ jid: this.jid }),
-    members: () => ({ members: this.members }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ClientCallBuzzParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientCallBuzzParamsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerChatLastreadParamsJSON {
+export interface ServerChatUpdatedParamsJSON {
   /* eslint-disable camelcase */
   badge: number;
-  chats: ChatCountersJSON[];
+  chats: ChatJSON[];
   team_unread: TeamUnreadJSON;
   /* eslint-enable camelcase */
 }
 
-export class ServerChatLastreadParams implements TDProtoClass<ServerChatLastreadParams> {
+export class ServerChatUpdatedParams implements TDProtoClass<ServerChatUpdatedParams> {
   /**
    * MISSING CLASS DOCUMENTATION
    * @param badge Total number of unreads
@@ -903,14 +297,14 @@ export class ServerChatLastreadParams implements TDProtoClass<ServerChatLastread
    */
   constructor (
     public badge: number,
-    public chats: ChatCounters[],
+    public chats: Chat[],
     public teamUnread: TeamUnread,
   ) {}
 
-  public static fromJSON (raw: ServerChatLastreadParamsJSON): ServerChatLastreadParams {
-    return new ServerChatLastreadParams(
+  public static fromJSON (raw: ServerChatUpdatedParamsJSON): ServerChatUpdatedParams {
+    return new ServerChatUpdatedParams(
       raw.badge,
-      raw.chats.map(ChatCounters.fromJSON),
+      raw.chats.map(Chat.fromJSON),
       TeamUnread.fromJSON(raw.team_unread),
     )
   }
@@ -929,8 +323,8 @@ export class ServerChatLastreadParams implements TDProtoClass<ServerChatLastread
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): ServerChatLastreadParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerChatLastreadParamsJSON>
+  public toJSON (): ServerChatUpdatedParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerChatUpdatedParamsJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -940,57 +334,1793 @@ export class ServerChatLastreadParams implements TDProtoClass<ServerChatLastread
   }
 }
 
-export interface InputColorsJSON {
+export interface ServerPanicParamsJSON {
   /* eslint-disable camelcase */
-  active: string;
-  disable: string;
-  error: string;
-  static: string;
+  code: string;
+  debug?: string;
   /* eslint-enable camelcase */
 }
 
-export class InputColors implements TDProtoClass<InputColors> {
+export class ServerPanicParams implements TDProtoClass<ServerPanicParams> {
   /**
    * MISSING CLASS DOCUMENTATION
-   * @param active DOCUMENTATION MISSING
-   * @param disable DOCUMENTATION MISSING
-   * @param error DOCUMENTATION MISSING
-   * @param isStatic DOCUMENTATION MISSING
+   * @param code Error code
+   * @param debug Debug message
    */
   constructor (
-    public active: string,
-    public disable: string,
-    public error: string,
-    public isStatic: string,
+    public code: string,
+    public debug?: string,
   ) {}
 
-  public static fromJSON (raw: InputColorsJSON): InputColors {
-    return new InputColors(
-      raw.active,
-      raw.disable,
-      raw.error,
-      raw.static,
+  public static fromJSON (raw: ServerPanicParamsJSON): ServerPanicParams {
+    return new ServerPanicParams(
+      raw.code,
+      raw.debug,
     )
   }
 
   public mappableFields = [
-    'active',
-    'disable',
-    'error',
-    'isStatic',
+    'code',
+    'debug',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    active: () => ({ active: this.active }),
-    disable: () => ({ disable: this.disable }),
-    error: () => ({ error: this.error }),
-    isStatic: () => ({ static: this.isStatic }),
+    code: () => ({ code: this.code }),
+    debug: () => ({ debug: this.debug }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): InputColorsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<InputColorsJSON>
+  public toJSON (): ServerPanicParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerPanicParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface OnlineCallJSON {
+  /* eslint-disable camelcase */
+  jid: JID;
+  uid: string;
+  online_count?: number;
+  start?: ISODateTimeString;
+  /* eslint-enable camelcase */
+}
+
+export class OnlineCall implements TDProtoClass<OnlineCall> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param jid Chat or contact id
+   * @param uid Call id
+   * @param onlineCount Number participants in call
+   * @param start Call start
+   */
+  constructor (
+    public jid: JID,
+    public uid: string,
+    public onlineCount?: number,
+    public start?: ISODateTimeString,
+  ) {}
+
+  public static fromJSON (raw: OnlineCallJSON): OnlineCall {
+    return new OnlineCall(
+      raw.jid,
+      raw.uid,
+      raw.online_count,
+      raw.start,
+    )
+  }
+
+  public mappableFields = [
+    'jid',
+    'uid',
+    'onlineCount',
+    'start',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    jid: () => ({ jid: this.jid }),
+    uid: () => ({ uid: this.uid }),
+    onlineCount: () => ({ online_count: this.onlineCount }),
+    start: () => ({ start: this.start }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): OnlineCallJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<OnlineCallJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface DeletedRemindJSON {
+  /* eslint-disable camelcase */
+  uid: string;
+  /* eslint-enable camelcase */
+}
+
+export class DeletedRemind implements TDProtoClass<DeletedRemind> {
+  /**
+   * Remind deleted message
+   * @param uid Remind id
+   */
+  constructor (
+    public uid: string,
+  ) {}
+
+  public static fromJSON (raw: DeletedRemindJSON): DeletedRemind {
+    return new DeletedRemind(
+      raw.uid,
+    )
+  }
+
+  public mappableFields = [
+    'uid',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    uid: () => ({ uid: this.uid }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): DeletedRemindJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<DeletedRemindJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ReceivedMessageJSON {
+  /* eslint-disable camelcase */
+  chat: JID;
+  message_id: string;
+  received: boolean;
+  _debug?: string;
+  num_received?: number;
+  /* eslint-enable camelcase */
+}
+
+export class ReceivedMessage implements TDProtoClass<ReceivedMessage> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param chat Chat or contact id
+   * @param messageId Message id
+   * @param received Is received
+   * @param _debug Debug message, if any
+   * @param numReceived Number of contacts received this message. Experimental
+   */
+  constructor (
+    public chat: JID,
+    public messageId: string,
+    public received: boolean,
+    public _debug?: string,
+    public numReceived?: number,
+  ) {}
+
+  public static fromJSON (raw: ReceivedMessageJSON): ReceivedMessage {
+    return new ReceivedMessage(
+      raw.chat,
+      raw.message_id,
+      raw.received,
+      raw._debug,
+      raw.num_received,
+    )
+  }
+
+  public mappableFields = [
+    'chat',
+    'messageId',
+    'received',
+    '_debug',
+    'numReceived',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    chat: () => ({ chat: this.chat }),
+    messageId: () => ({ message_id: this.messageId }),
+    received: () => ({ received: this.received }),
+    _debug: () => ({ _debug: this._debug }),
+    numReceived: () => ({ num_received: this.numReceived }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ReceivedMessageJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ReceivedMessageJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ClientChatLastreadParamsJSON {
+  /* eslint-disable camelcase */
+  jid: JID;
+  last_read_message_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ClientChatLastreadParams implements TDProtoClass<ClientChatLastreadParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param jid Chat or contact id
+   * @param lastReadMessageId Last read message id. Omitted = last message in chat
+   */
+  constructor (
+    public jid: JID,
+    public lastReadMessageId?: string,
+  ) {}
+
+  public static fromJSON (raw: ClientChatLastreadParamsJSON): ClientChatLastreadParams {
+    return new ClientChatLastreadParams(
+      raw.jid,
+      raw.last_read_message_id,
+    )
+  }
+
+  public mappableFields = [
+    'jid',
+    'lastReadMessageId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    jid: () => ({ jid: this.jid }),
+    lastReadMessageId: () => ({ last_read_message_id: this.lastReadMessageId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ClientChatLastreadParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientChatLastreadParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface IntegrationJSON {
+  /* eslint-disable camelcase */
+  comment: string;
+  enabled: boolean;
+  form: IntegrationFormJSON;
+  group: JID;
+  kind: string;
+  created?: ISODateTimeString;
+  help?: string;
+  uid?: string;
+  /* eslint-enable camelcase */
+}
+
+export class Integration implements TDProtoClass<Integration> {
+  /**
+   * Integration for concrete chat
+   * @param comment Comment, if any
+   * @param enabled Integration enabled
+   * @param form Integration form
+   * @param group Chat id
+   * @param kind Unique integration name
+   * @param created Creation datetime, iso
+   * @param help Full description
+   * @param uid Id
+   */
+  constructor (
+    public comment: string,
+    public enabled: boolean,
+    public form: IntegrationForm,
+    public group: JID,
+    public kind: string,
+    public created?: ISODateTimeString,
+    public help?: string,
+    public uid?: string,
+  ) {}
+
+  public static fromJSON (raw: IntegrationJSON): Integration {
+    return new Integration(
+      raw.comment,
+      raw.enabled,
+      IntegrationForm.fromJSON(raw.form),
+      raw.group,
+      raw.kind,
+      raw.created,
+      raw.help,
+      raw.uid,
+    )
+  }
+
+  public mappableFields = [
+    'comment',
+    'enabled',
+    'form',
+    'group',
+    'kind',
+    'created',
+    'help',
+    'uid',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    comment: () => ({ comment: this.comment }),
+    enabled: () => ({ enabled: this.enabled }),
+    form: () => ({ form: this.form.toJSON() }),
+    group: () => ({ group: this.group }),
+    kind: () => ({ kind: this.kind }),
+    created: () => ({ created: this.created }),
+    help: () => ({ help: this.help }),
+    uid: () => ({ uid: this.uid }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): IntegrationJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<IntegrationJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerCallRestartJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ServerCallRestartParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerCallRestart implements TDProtoClass<ServerCallRestart> {
+  /**
+   * Call restarted
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ServerCallRestartParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ServerCallRestartJSON): ServerCallRestart {
+    return new ServerCallRestart(
+      raw.event,
+      ServerCallRestartParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerCallRestartJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallRestartJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ActiveUserDailyStatJSON {
+  /* eslint-disable camelcase */
+  day: string;
+  user_id: number;
+  call_seconds_total?: number;
+  calls_count?: number;
+  family_name?: string;
+  given_name?: string;
+  messages_count?: number;
+  patronymic?: string;
+  phone?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ActiveUserDailyStat implements TDProtoClass<ActiveUserDailyStat> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param day DOCUMENTATION MISSING
+   * @param userId DOCUMENTATION MISSING
+   * @param callSecondsTotal DOCUMENTATION MISSING
+   * @param callsCount DOCUMENTATION MISSING
+   * @param familyName DOCUMENTATION MISSING
+   * @param givenName DOCUMENTATION MISSING
+   * @param messagesCount DOCUMENTATION MISSING
+   * @param patronymic DOCUMENTATION MISSING
+   * @param phone DOCUMENTATION MISSING
+   */
+  constructor (
+    public day: string,
+    public userId: number,
+    public callSecondsTotal?: number,
+    public callsCount?: number,
+    public familyName?: string,
+    public givenName?: string,
+    public messagesCount?: number,
+    public patronymic?: string,
+    public phone?: string,
+  ) {}
+
+  public static fromJSON (raw: ActiveUserDailyStatJSON): ActiveUserDailyStat {
+    return new ActiveUserDailyStat(
+      raw.day,
+      raw.user_id,
+      raw.call_seconds_total,
+      raw.calls_count,
+      raw.family_name,
+      raw.given_name,
+      raw.messages_count,
+      raw.patronymic,
+      raw.phone,
+    )
+  }
+
+  public mappableFields = [
+    'day',
+    'userId',
+    'callSecondsTotal',
+    'callsCount',
+    'familyName',
+    'givenName',
+    'messagesCount',
+    'patronymic',
+    'phone',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    day: () => ({ day: this.day }),
+    userId: () => ({ user_id: this.userId }),
+    callSecondsTotal: () => ({ call_seconds_total: this.callSecondsTotal }),
+    callsCount: () => ({ calls_count: this.callsCount }),
+    familyName: () => ({ family_name: this.familyName }),
+    givenName: () => ({ given_name: this.givenName }),
+    messagesCount: () => ({ messages_count: this.messagesCount }),
+    patronymic: () => ({ patronymic: this.patronymic }),
+    phone: () => ({ phone: this.phone }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ActiveUserDailyStatJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ActiveUserDailyStatJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerOnlineParamsJSON {
+  /* eslint-disable camelcase */
+  contacts: OnlineContactJSON[];
+  calls?: OnlineCallJSON[];
+  /* eslint-enable camelcase */
+}
+
+export class ServerOnlineParams implements TDProtoClass<ServerOnlineParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param contacts Online team members
+   * @param calls Active calls
+   */
+  constructor (
+    public contacts: OnlineContact[],
+    public calls?: OnlineCall[],
+  ) {}
+
+  public static fromJSON (raw: ServerOnlineParamsJSON): ServerOnlineParams {
+    return new ServerOnlineParams(
+      raw.contacts.map(OnlineContact.fromJSON),
+      raw.calls && raw.calls.map(OnlineCall.fromJSON),
+    )
+  }
+
+  public mappableFields = [
+    'contacts',
+    'calls',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    contacts: () => ({ contacts: this.contacts.map(u => u.toJSON()) }),
+    calls: () => ({ calls: this.calls?.map(u => u.toJSON()) }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerOnlineParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerOnlineParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerMessagePushJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: MessagePushJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerMessagePush implements TDProtoClass<ServerMessagePush> {
+  /**
+   * Push replacement for desktop application
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: MessagePush,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ServerMessagePushJSON): ServerMessagePush {
+    return new ServerMessagePush(
+      raw.event,
+      MessagePush.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerMessagePushJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerMessagePushJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ClientCallTrickleParamsJSON {
+  /* eslint-disable camelcase */
+  candidate: string;
+  jid: JID;
+  sdp_mid: string;
+  sdp_mline_index: number;
+  /* eslint-enable camelcase */
+}
+
+export class ClientCallTrickleParams implements TDProtoClass<ClientCallTrickleParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param candidate Trickle candidate
+   * @param jid Chat or contact id
+   * @param sdpMid SDP mid
+   * @param sdpMlineIndex SDP index
+   */
+  constructor (
+    public candidate: string,
+    public jid: JID,
+    public sdpMid: string,
+    public sdpMlineIndex: number,
+  ) {}
+
+  public static fromJSON (raw: ClientCallTrickleParamsJSON): ClientCallTrickleParams {
+    return new ClientCallTrickleParams(
+      raw.candidate,
+      raw.jid,
+      raw.sdp_mid,
+      raw.sdp_mline_index,
+    )
+  }
+
+  public mappableFields = [
+    'candidate',
+    'jid',
+    'sdpMid',
+    'sdpMlineIndex',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    candidate: () => ({ candidate: this.candidate }),
+    jid: () => ({ jid: this.jid }),
+    sdpMid: () => ({ sdp_mid: this.sdpMid }),
+    sdpMlineIndex: () => ({ sdp_mline_index: this.sdpMlineIndex }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ClientCallTrickleParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientCallTrickleParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ChatShortJSON {
+  /* eslint-disable camelcase */
+  chat_type: ChatType;
+  display_name: string;
+  icons: IconDataJSON;
+  jid: JID;
+  /* eslint-enable camelcase */
+}
+
+export class ChatShort implements TDProtoClass<ChatShort> {
+  /**
+   * Minimal chat representation
+   * @param chatType Chat type
+   * @param displayName Title
+   * @param icons Icon data
+   * @param jid Group/Task/Contact id
+   */
+  constructor (
+    public chatType: ChatType,
+    public displayName: string,
+    public icons: IconData,
+    public jid: JID,
+  ) {}
+
+  public static fromJSON (raw: ChatShortJSON): ChatShort {
+    return new ChatShort(
+      raw.chat_type,
+      raw.display_name,
+      IconData.fromJSON(raw.icons),
+      raw.jid,
+    )
+  }
+
+  public mappableFields = [
+    'chatType',
+    'displayName',
+    'icons',
+    'jid',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    chatType: () => ({ chat_type: this.chatType }),
+    displayName: () => ({ display_name: this.displayName }),
+    icons: () => ({ icons: this.icons.toJSON() }),
+    jid: () => ({ jid: this.jid }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ChatShortJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ChatShortJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface PdfVersionJSON {
+  /* eslint-disable camelcase */
+  url: string;
+  text_preview?: string;
+  /* eslint-enable camelcase */
+}
+
+export class PdfVersion implements TDProtoClass<PdfVersion> {
+  /**
+   * PDF preview of mediafile. Experimental
+   * @param url Absolute url
+   * @param textPreview First string of text content
+   */
+  constructor (
+    public url: string,
+    public textPreview?: string,
+  ) {}
+
+  public static fromJSON (raw: PdfVersionJSON): PdfVersion {
+    return new PdfVersion(
+      raw.url,
+      raw.text_preview,
+    )
+  }
+
+  public mappableFields = [
+    'url',
+    'textPreview',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    url: () => ({ url: this.url }),
+    textPreview: () => ({ text_preview: this.textPreview }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): PdfVersionJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<PdfVersionJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ClientConfirmJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ClientConfirmParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ClientConfirm implements TDProtoClass<ClientConfirm> {
+  /**
+   * Client confirmed server message
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ClientConfirmParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ClientConfirmJSON): ClientConfirm {
+    return new ClientConfirm(
+      raw.event,
+      ClientConfirmParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ClientConfirmJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientConfirmJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface WikiPageJSON {
+  /* eslint-disable camelcase */
+  editor: JID;
+  gentime: number;
+  text: string;
+  updated: ISODateTimeString;
+  /* eslint-enable camelcase */
+}
+
+export class WikiPage implements TDProtoClass<WikiPage> {
+  /**
+   * Wiki page. Experimental
+   * @param editor Last editor contact id
+   * @param gentime Object version
+   * @param text Page text
+   * @param updated Update time
+   */
+  constructor (
+    public editor: JID,
+    public gentime: number,
+    public text: string,
+    public updated: ISODateTimeString,
+  ) {}
+
+  public static fromJSON (raw: WikiPageJSON): WikiPage {
+    return new WikiPage(
+      raw.editor,
+      raw.gentime,
+      raw.text,
+      raw.updated,
+    )
+  }
+
+  public mappableFields = [
+    'editor',
+    'gentime',
+    'text',
+    'updated',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    editor: () => ({ editor: this.editor }),
+    gentime: () => ({ gentime: this.gentime }),
+    text: () => ({ text: this.text }),
+    updated: () => ({ updated: this.updated }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): WikiPageJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<WikiPageJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerRemindUpdatedParamsJSON {
+  /* eslint-disable camelcase */
+  reminds: RemindJSON[];
+  /* eslint-enable camelcase */
+}
+
+export class ServerRemindUpdatedParams implements TDProtoClass<ServerRemindUpdatedParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param reminds Remind information
+   */
+  constructor (
+    public reminds: Remind[],
+  ) {}
+
+  public static fromJSON (raw: ServerRemindUpdatedParamsJSON): ServerRemindUpdatedParams {
+    return new ServerRemindUpdatedParams(
+      raw.reminds.map(Remind.fromJSON),
+    )
+  }
+
+  public mappableFields = [
+    'reminds',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    reminds: () => ({ reminds: this.reminds.map(u => u.toJSON()) }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerRemindUpdatedParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerRemindUpdatedParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ContactPreviewJSON {
+  /* eslint-disable camelcase */
+  family_name: string;
+  given_name: string;
+  phone: string;
+  role: string;
+  section: string;
+  _error?: string;
+  patronymic?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ContactPreview implements TDProtoClass<ContactPreview> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param familyName DOCUMENTATION MISSING
+   * @param givenName DOCUMENTATION MISSING
+   * @param phone DOCUMENTATION MISSING
+   * @param role DOCUMENTATION MISSING
+   * @param section DOCUMENTATION MISSING
+   * @param _error DOCUMENTATION MISSING
+   * @param patronymic DOCUMENTATION MISSING
+   */
+  constructor (
+    public familyName: string,
+    public givenName: string,
+    public phone: string,
+    public role: string,
+    public section: string,
+    public _error?: string,
+    public patronymic?: string,
+  ) {}
+
+  public static fromJSON (raw: ContactPreviewJSON): ContactPreview {
+    return new ContactPreview(
+      raw.family_name,
+      raw.given_name,
+      raw.phone,
+      raw.role,
+      raw.section,
+      raw._error,
+      raw.patronymic,
+    )
+  }
+
+  public mappableFields = [
+    'familyName',
+    'givenName',
+    'phone',
+    'role',
+    'section',
+    '_error',
+    'patronymic',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    familyName: () => ({ family_name: this.familyName }),
+    givenName: () => ({ given_name: this.givenName }),
+    phone: () => ({ phone: this.phone }),
+    role: () => ({ role: this.role }),
+    section: () => ({ section: this.section }),
+    _error: () => ({ _error: this._error }),
+    patronymic: () => ({ patronymic: this.patronymic }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ContactPreviewJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ContactPreviewJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface CountryJSON {
+  /* eslint-disable camelcase */
+  code: string;
+  name: string;
+  default?: boolean;
+  popular?: boolean;
+  /* eslint-enable camelcase */
+}
+
+export class Country implements TDProtoClass<Country> {
+  /**
+   * Country for phone numbers selection on login screen
+   * @param code Country code
+   * @param name Country name
+   * @param isDefault Selected by default
+   * @param popular Is popular, need to cache
+   */
+  constructor (
+    public code: string,
+    public name: string,
+    public isDefault?: boolean,
+    public popular?: boolean,
+  ) {}
+
+  public static fromJSON (raw: CountryJSON): Country {
+    return new Country(
+      raw.code,
+      raw.name,
+      raw.default,
+      raw.popular,
+    )
+  }
+
+  public mappableFields = [
+    'code',
+    'name',
+    'isDefault',
+    'popular',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    code: () => ({ code: this.code }),
+    name: () => ({ name: this.name }),
+    isDefault: () => ({ default: this.isDefault }),
+    popular: () => ({ popular: this.popular }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): CountryJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<CountryJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerWarningParamsJSON {
+  /* eslint-disable camelcase */
+  message: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  orig: any;
+  /* eslint-enable camelcase */
+}
+
+export class ServerWarningParams implements TDProtoClass<ServerWarningParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param message Message
+   * @param orig Debug information
+   */
+  constructor (
+    public message: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    public orig: any,
+  ) {}
+
+  public static fromJSON (raw: ServerWarningParamsJSON): ServerWarningParams {
+    return new ServerWarningParams(
+      raw.message,
+      raw.orig,
+    )
+  }
+
+  public mappableFields = [
+    'message',
+    'orig',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    message: () => ({ message: this.message }),
+    orig: () => ({ orig: this.orig }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerWarningParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerWarningParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface TaskPreviewJSON {
+  /* eslint-disable camelcase */
+  assignee: JID;
+  deadline: string;
+  description: string;
+  public: boolean;
+  items: TaskItemsJSON[];
+  section: string;
+  tags: string[];
+  _error?: string;
+  /* eslint-enable camelcase */
+}
+
+export class TaskPreview implements TDProtoClass<TaskPreview> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param assignee DOCUMENTATION MISSING
+   * @param deadline DOCUMENTATION MISSING
+   * @param description DOCUMENTATION MISSING
+   * @param isPublic DOCUMENTATION MISSING
+   * @param items DOCUMENTATION MISSING
+   * @param section DOCUMENTATION MISSING
+   * @param tags DOCUMENTATION MISSING
+   * @param _error DOCUMENTATION MISSING
+   */
+  constructor (
+    public assignee: JID,
+    public deadline: string,
+    public description: string,
+    public isPublic: boolean,
+    public items: TaskItems[],
+    public section: string,
+    public tags: string[],
+    public _error?: string,
+  ) {}
+
+  public static fromJSON (raw: TaskPreviewJSON): TaskPreview {
+    return new TaskPreview(
+      raw.assignee,
+      raw.deadline,
+      raw.description,
+      raw.public,
+      raw.items.map(TaskItems.fromJSON),
+      raw.section,
+      raw.tags,
+      raw._error,
+    )
+  }
+
+  public mappableFields = [
+    'assignee',
+    'deadline',
+    'description',
+    'isPublic',
+    'items',
+    'section',
+    'tags',
+    '_error',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    assignee: () => ({ assignee: this.assignee }),
+    deadline: () => ({ deadline: this.deadline }),
+    description: () => ({ description: this.description }),
+    isPublic: () => ({ public: this.isPublic }),
+    items: () => ({ items: this.items.map(u => u.toJSON()) }),
+    section: () => ({ section: this.section }),
+    tags: () => ({ tags: this.tags }),
+    _error: () => ({ _error: this._error }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): TaskPreviewJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<TaskPreviewJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface IconDataJSON {
+  /* eslint-disable camelcase */
+  color?: string;
+  letters?: string;
+  lg?: SingleIconJSON;
+  sm?: SingleIconJSON;
+  stub?: string;
+  /* eslint-enable camelcase */
+}
+
+export class IconData implements TDProtoClass<IconData> {
+  /**
+   * Icon data. Contains sm+lg (for uploaded image) OR stub+letters+color (for icon generated from display name)
+   * @param color Stub icon background color
+   * @param letters Letters from stub icon
+   * @param lg Large image
+   * @param sm Small icon
+   * @param stub Generated image with 1-2 letters
+   */
+  constructor (
+    public color?: string,
+    public letters?: string,
+    public lg?: SingleIcon,
+    public sm?: SingleIcon,
+    public stub?: string,
+  ) {}
+
+  public static fromJSON (raw: IconDataJSON): IconData {
+    return new IconData(
+      raw.color,
+      raw.letters,
+      raw.lg && SingleIcon.fromJSON(raw.lg),
+      raw.sm && SingleIcon.fromJSON(raw.sm),
+      raw.stub,
+    )
+  }
+
+  public mappableFields = [
+    'color',
+    'letters',
+    'lg',
+    'sm',
+    'stub',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    color: () => ({ color: this.color }),
+    letters: () => ({ letters: this.letters }),
+    lg: () => ({ lg: this.lg?.toJSON() }),
+    sm: () => ({ sm: this.sm?.toJSON() }),
+    stub: () => ({ stub: this.stub }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): IconDataJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<IconDataJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerTeamDeletedJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ServerTeamDeletedParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerTeamDeleted implements TDProtoClass<ServerTeamDeleted> {
+  /**
+   * Team archived
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ServerTeamDeletedParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ServerTeamDeletedJSON): ServerTeamDeleted {
+    return new ServerTeamDeleted(
+      raw.event,
+      ServerTeamDeletedParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerTeamDeletedJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerTeamDeletedJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerCallBuzzcancelParamsJSON {
+  /* eslint-disable camelcase */
+  jid: JID;
+  team: string;
+  uid: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerCallBuzzcancelParams implements TDProtoClass<ServerCallBuzzcancelParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param jid Chat or contact id
+   * @param team Team id
+   * @param uid Call id
+   */
+  constructor (
+    public jid: JID,
+    public team: string,
+    public uid: string,
+  ) {}
+
+  public static fromJSON (raw: ServerCallBuzzcancelParamsJSON): ServerCallBuzzcancelParams {
+    return new ServerCallBuzzcancelParams(
+      raw.jid,
+      raw.team,
+      raw.uid,
+    )
+  }
+
+  public mappableFields = [
+    'jid',
+    'team',
+    'uid',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    jid: () => ({ jid: this.jid }),
+    team: () => ({ team: this.team }),
+    uid: () => ({ uid: this.uid }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerCallBuzzcancelParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallBuzzcancelParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface TaskCountersJSON {
+  /* eslint-disable camelcase */
+  jid: JID;
+  num_unread?: number;
+  num_unread_notices?: number;
+  /* eslint-enable camelcase */
+}
+
+export class TaskCounters implements TDProtoClass<TaskCounters> {
+  /**
+   * Tasks counters
+   * @param jid Task jid
+   * @param numUnread Unreads counter
+   * @param numUnreadNotices Mentions (@) counter
+   */
+  constructor (
+    public jid: JID,
+    public numUnread?: number,
+    public numUnreadNotices?: number,
+  ) {}
+
+  public static fromJSON (raw: TaskCountersJSON): TaskCounters {
+    return new TaskCounters(
+      raw.jid,
+      raw.num_unread,
+      raw.num_unread_notices,
+    )
+  }
+
+  public mappableFields = [
+    'jid',
+    'numUnread',
+    'numUnreadNotices',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    jid: () => ({ jid: this.jid }),
+    numUnread: () => ({ num_unread: this.numUnread }),
+    numUnreadNotices: () => ({ num_unread_notices: this.numUnreadNotices }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): TaskCountersJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<TaskCountersJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerCallRestartParamsJSON {
+  /* eslint-disable camelcase */
+  jid: JID;
+  team: string;
+  uid: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerCallRestartParams implements TDProtoClass<ServerCallRestartParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param jid Chat or contact id
+   * @param team Team id
+   * @param uid Call id
+   */
+  constructor (
+    public jid: JID,
+    public team: string,
+    public uid: string,
+  ) {}
+
+  public static fromJSON (raw: ServerCallRestartParamsJSON): ServerCallRestartParams {
+    return new ServerCallRestartParams(
+      raw.jid,
+      raw.team,
+      raw.uid,
+    )
+  }
+
+  public mappableFields = [
+    'jid',
+    'team',
+    'uid',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    jid: () => ({ jid: this.jid }),
+    team: () => ({ team: this.team }),
+    uid: () => ({ uid: this.uid }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerCallRestartParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallRestartParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerUploadUpdatedJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ServerUploadUpdatedParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerUploadUpdated implements TDProtoClass<ServerUploadUpdated> {
+  /**
+   * Upload object created or changed
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ServerUploadUpdatedParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ServerUploadUpdatedJSON): ServerUploadUpdated {
+    return new ServerUploadUpdated(
+      raw.event,
+      ServerUploadUpdatedParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerUploadUpdatedJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerUploadUpdatedJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface DeletedChatJSON {
+  /* eslint-disable camelcase */
+  chat_type: ChatType;
+  gentime: number;
+  is_archive: boolean;
+  jid: JID;
+  /* eslint-enable camelcase */
+}
+
+export class DeletedChat implements TDProtoClass<DeletedChat> {
+  /**
+   * Minimal chat representation for deletion
+   * @param chatType Chat type
+   * @param gentime Chat fields (related to concrete participant) version
+   * @param isArchive Archive flag. Always true for this structure
+   * @param jid Group/Task/Contact id
+   */
+  constructor (
+    public chatType: ChatType,
+    public gentime: number,
+    public isArchive: boolean,
+    public jid: JID,
+  ) {}
+
+  public static fromJSON (raw: DeletedChatJSON): DeletedChat {
+    return new DeletedChat(
+      raw.chat_type,
+      raw.gentime,
+      raw.is_archive,
+      raw.jid,
+    )
+  }
+
+  public mappableFields = [
+    'chatType',
+    'gentime',
+    'isArchive',
+    'jid',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    chatType: () => ({ chat_type: this.chatType }),
+    gentime: () => ({ gentime: this.gentime }),
+    isArchive: () => ({ is_archive: this.isArchive }),
+    jid: () => ({ jid: this.jid }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): DeletedChatJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<DeletedChatJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface InvitationJSON {
+  /* eslint-disable camelcase */
+  created: ISODateTimeString;
+  qr: string;
+  token: string;
+  uid: string;
+  /* eslint-enable camelcase */
+}
+
+export class Invitation implements TDProtoClass<Invitation> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param created DOCUMENTATION MISSING
+   * @param qr DOCUMENTATION MISSING
+   * @param token DOCUMENTATION MISSING
+   * @param uid DOCUMENTATION MISSING
+   */
+  constructor (
+    public created: ISODateTimeString,
+    public qr: string,
+    public token: string,
+    public uid: string,
+  ) {}
+
+  public static fromJSON (raw: InvitationJSON): Invitation {
+    return new Invitation(
+      raw.created,
+      raw.qr,
+      raw.token,
+      raw.uid,
+    )
+  }
+
+  public mappableFields = [
+    'created',
+    'qr',
+    'token',
+    'uid',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    created: () => ({ created: this.created }),
+    qr: () => ({ qr: this.qr }),
+    token: () => ({ token: this.token }),
+    uid: () => ({ uid: this.uid }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): InvitationJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<InvitationJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerContactUpdatedJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ServerContactUpdatedParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerContactUpdated implements TDProtoClass<ServerContactUpdated> {
+  /**
+   * Contact created or updated
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ServerContactUpdatedParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ServerContactUpdatedJSON): ServerContactUpdated {
+    return new ServerContactUpdated(
+      raw.event,
+      ServerContactUpdatedParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerContactUpdatedJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerContactUpdatedJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ClientMessageUpdatedParamsJSON {
+  /* eslint-disable camelcase */
+  content: MessageContentJSON;
+  to: JID;
+  comment?: string;
+  important?: boolean;
+  linked_messages?: string[];
+  message_id?: string;
+  nopreview?: boolean;
+  old_style_attachment?: boolean;
+  reply_to?: string;
+  uploads?: string[];
+  /* eslint-enable camelcase */
+}
+
+export class ClientMessageUpdatedParams implements TDProtoClass<ClientMessageUpdatedParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param content Message content. Required
+   * @param to Chat, task or contact jid. Required
+   * @param comment Deprecated
+   * @param important Important flag. Not required. Default: false
+   * @param linkedMessages Forwarded messages (previously was for reply too). Not required
+   * @param messageId Uid created by client. Recommended
+   * @param nopreview Disable links preview generation. Not required. Default: false
+   * @param oldStyleAttachment Backward compatibility mode
+   * @param replyTo Replied to message id. Not required
+   * @param uploads Message attachments
+   */
+  constructor (
+    public content: MessageContent,
+    public to: JID,
+    public comment?: string,
+    public important?: boolean,
+    public linkedMessages?: string[],
+    public messageId?: string,
+    public nopreview?: boolean,
+    public oldStyleAttachment?: boolean,
+    public replyTo?: string,
+    public uploads?: string[],
+  ) {}
+
+  public static fromJSON (raw: ClientMessageUpdatedParamsJSON): ClientMessageUpdatedParams {
+    return new ClientMessageUpdatedParams(
+      MessageContent.fromJSON(raw.content),
+      raw.to,
+      raw.comment,
+      raw.important,
+      raw.linked_messages,
+      raw.message_id,
+      raw.nopreview,
+      raw.old_style_attachment,
+      raw.reply_to,
+      raw.uploads,
+    )
+  }
+
+  public mappableFields = [
+    'content',
+    'to',
+    'comment',
+    'important',
+    'linkedMessages',
+    'messageId',
+    'nopreview',
+    'oldStyleAttachment',
+    'replyTo',
+    'uploads',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    content: () => ({ content: this.content.toJSON() }),
+    to: () => ({ to: this.to }),
+    comment: () => ({ comment: this.comment }),
+    important: () => ({ important: this.important }),
+    linkedMessages: () => ({ linked_messages: this.linkedMessages }),
+    messageId: () => ({ message_id: this.messageId }),
+    nopreview: () => ({ nopreview: this.nopreview }),
+    oldStyleAttachment: () => ({ old_style_attachment: this.oldStyleAttachment }),
+    replyTo: () => ({ reply_to: this.replyTo }),
+    uploads: () => ({ uploads: this.uploads }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ClientMessageUpdatedParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientMessageUpdatedParamsJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -1048,51 +2178,183 @@ export class CallDevice implements TDProtoClass<CallDevice> {
   }
 }
 
-export interface ServerRemindFiredJSON {
+export interface ClientActivityParamsJSON {
+  /* eslint-disable camelcase */
+  afk: boolean;
+  /* eslint-enable camelcase */
+}
+
+export class ClientActivityParams implements TDProtoClass<ClientActivityParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param afk Is away from keyboard
+   */
+  constructor (
+    public afk: boolean,
+  ) {}
+
+  public static fromJSON (raw: ClientActivityParamsJSON): ClientActivityParams {
+    return new ClientActivityParams(
+      raw.afk,
+    )
+  }
+
+  public mappableFields = [
+    'afk',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    afk: () => ({ afk: this.afk }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ClientActivityParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientActivityParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerCallBuzzParamsJSON {
+  /* eslint-disable camelcase */
+  actor: ContactShortJSON;
+  buzz_timeout: number;
+  chat: ChatShortJSON;
+  display_name: string;
+  icons: IconDataJSON;
+  jid: JID;
+  team: string;
+  teaminfo: TeamShortJSON;
+  uid: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerCallBuzzParams implements TDProtoClass<ServerCallBuzzParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param actor Short call creator information
+   * @param buzzTimeout Number of seconds for stop buzzing
+   * @param chat Short chat information
+   * @param displayName Chat title
+   * @param icons Chat icons
+   * @param jid Chat or contact id
+   * @param team Deprecated
+   * @param teaminfo Short team information
+   * @param uid Call id
+   */
+  constructor (
+    public actor: ContactShort,
+    public buzzTimeout: number,
+    public chat: ChatShort,
+    public displayName: string,
+    public icons: IconData,
+    public jid: JID,
+    public team: string,
+    public teaminfo: TeamShort,
+    public uid: string,
+  ) {}
+
+  public static fromJSON (raw: ServerCallBuzzParamsJSON): ServerCallBuzzParams {
+    return new ServerCallBuzzParams(
+      ContactShort.fromJSON(raw.actor),
+      raw.buzz_timeout,
+      ChatShort.fromJSON(raw.chat),
+      raw.display_name,
+      IconData.fromJSON(raw.icons),
+      raw.jid,
+      raw.team,
+      TeamShort.fromJSON(raw.teaminfo),
+      raw.uid,
+    )
+  }
+
+  public mappableFields = [
+    'actor',
+    'buzzTimeout',
+    'chat',
+    'displayName',
+    'icons',
+    'jid',
+    'team',
+    'teaminfo',
+    'uid',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    actor: () => ({ actor: this.actor.toJSON() }),
+    buzzTimeout: () => ({ buzz_timeout: this.buzzTimeout }),
+    chat: () => ({ chat: this.chat.toJSON() }),
+    displayName: () => ({ display_name: this.displayName }),
+    icons: () => ({ icons: this.icons.toJSON() }),
+    jid: () => ({ jid: this.jid }),
+    team: () => ({ team: this.team }),
+    teaminfo: () => ({ teaminfo: this.teaminfo.toJSON() }),
+    uid: () => ({ uid: this.uid }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerCallBuzzParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallBuzzParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerCallLeaveJSON {
   /* eslint-disable camelcase */
   event: string;
-  params: ServerRemindFiredParamsJSON;
+  params: ServerCallLeaveParamsJSON;
   confirm_id?: string;
   /* eslint-enable camelcase */
 }
 
-export class ServerRemindFired implements TDProtoClass<ServerRemindFired> {
+export class ServerCallLeave implements TDProtoClass<ServerCallLeave> {
   /**
-   * Task or group remind fired
-   * @param name DOCUMENTATION MISSING
+   * Participant leave a call
+   * @param event DOCUMENTATION MISSING
    * @param params DOCUMENTATION MISSING
    * @param confirmId DOCUMENTATION MISSING
    */
   constructor (
-    public name: string,
-    public params: ServerRemindFiredParams,
+    public event: string,
+    public params: ServerCallLeaveParams,
     public confirmId?: string,
   ) {}
 
-  public static fromJSON (raw: ServerRemindFiredJSON): ServerRemindFired {
-    return new ServerRemindFired(
+  public static fromJSON (raw: ServerCallLeaveJSON): ServerCallLeave {
+    return new ServerCallLeave(
       raw.event,
-      ServerRemindFiredParams.fromJSON(raw.params),
+      ServerCallLeaveParams.fromJSON(raw.params),
       raw.confirm_id,
     )
   }
 
   public mappableFields = [
-    'name',
+    'event',
     'params',
     'confirmId',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
+    event: () => ({ event: this.event }),
     params: () => ({ params: this.params.toJSON() }),
     confirmId: () => ({ confirm_id: this.confirmId }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): ServerRemindFiredJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerRemindFiredJSON>
+  public toJSON (): ServerCallLeaveJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallLeaveJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -1102,45 +2364,51 @@ export class ServerRemindFired implements TDProtoClass<ServerRemindFired> {
   }
 }
 
-export interface ServerCallLeaveParamsJSON {
+export interface ServerUiSettingsJSON {
   /* eslint-disable camelcase */
-  jid: JID;
-  uid: string;
+  event: string;
+  params: UiSettings;
+  confirm_id?: string;
   /* eslint-enable camelcase */
 }
 
-export class ServerCallLeaveParams implements TDProtoClass<ServerCallLeaveParams> {
+export class ServerUiSettings implements TDProtoClass<ServerUiSettings> {
   /**
-   * MISSING CLASS DOCUMENTATION
-   * @param jid Chat or contact id
-   * @param uid Call uid
+   * Part of UI settings changed
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
    */
   constructor (
-    public jid: JID,
-    public uid: string,
+    public event: string,
+    public params: UiSettings,
+    public confirmId?: string,
   ) {}
 
-  public static fromJSON (raw: ServerCallLeaveParamsJSON): ServerCallLeaveParams {
-    return new ServerCallLeaveParams(
-      raw.jid,
-      raw.uid,
+  public static fromJSON (raw: ServerUiSettingsJSON): ServerUiSettings {
+    return new ServerUiSettings(
+      raw.event,
+      raw.params,
+      raw.confirm_id,
     )
   }
 
   public mappableFields = [
-    'jid',
-    'uid',
+    'event',
+    'params',
+    'confirmId',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    jid: () => ({ jid: this.jid }),
-    uid: () => ({ uid: this.uid }),
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): ServerCallLeaveParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallLeaveParamsJSON>
+  public toJSON (): ServerUiSettingsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerUiSettingsJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -1150,501 +2418,285 @@ export class ServerCallLeaveParams implements TDProtoClass<ServerCallLeaveParams
   }
 }
 
-export interface ContactJSON {
-  /* eslint-disable camelcase */
-  contact_email: string;
-  contact_phone: string;
-  display_name: string;
-  icons: IconDataJSON;
-  jid: JID;
-  last_activity: string;
-  role: string;
-  sections: string[];
-  short_name: string;
-  status: TeamStatus;
-  add_to_team_rights?: boolean;
-  alt_send?: boolean;
-  always_send_pushes?: boolean;
-  asterisk_mention?: boolean;
-  auth_2fa_enabled?: boolean;
-  auth_2fa_status?: string;
-  botname?: string;
-  can_add_to_group?: boolean;
-  can_add_to_team?: boolean;
-  can_call?: boolean;
-  can_create_group?: boolean;
-  can_create_task?: boolean;
-  can_delete?: boolean;
-  can_delete_any_message?: boolean;
-  can_join_public_groups?: boolean;
-  can_join_public_tasks?: boolean;
-  can_manage_color_rules?: boolean;
-  can_manage_integrations?: boolean;
-  can_manage_sections?: boolean;
-  can_manage_tags?: boolean;
-  can_send_message?: boolean;
-  cant_send_message_reason?: string;
-  changeable_fields?: string[];
-  contact_mshort_view?: boolean;
-  contact_short_view?: boolean;
-  contact_show_archived?: boolean;
-  custom_fields?: ContactCustomFieldsJSON;
-  debug_show_activity?: boolean;
-  default_lang?: string;
-  dropall_enabled?: boolean;
-  family_name?: string;
-  given_name?: string;
-  group_mshort_view?: boolean;
-  group_notifications_enabled?: boolean;
-  group_short_view?: boolean;
-  is_archive?: boolean;
-  munread_first?: boolean;
-  mood?: string;
-  patronymic?: string;
-  quiet_time_finish?: string;
-  quiet_time_start?: string;
-  task_mshort_view?: boolean;
-  task_notifications_enabled?: boolean;
-  task_short_view?: boolean;
-  timezone?: string;
-  unread_first?: boolean;
-  /* eslint-enable camelcase */
-}
-
-export class Contact implements TDProtoClass<Contact> {
-  /**
-   * Contact
-   * @param contactEmail Contact email in this team
-   * @param contactPhone Contact phone in this team
-   * @param displayName Full name in chats
-   * @param icons Icons data
-   * @param jid Contact Id
-   * @param lastActivity Last activity in this team (iso datetime)
-   * @param role Role in this team
-   * @param sections Section ids
-   * @param shortName Short name in chats
-   * @param teamStatus Status in this team
-   * @param addToTeamRights Can contact add users to this team
-   * @param altSend Use Ctrl/Cmd + Enter instead Enter
-   * @param alwaysSendPushes Send push notifications even contact is online
-   * @param asteriskMention Use * as @ for mentions
-   * @param auth2faEnabled Two-factor authentication is configured and confirmed
-   * @param auth2faStatus Two-factor authentication status
-   * @param botname Bot name. Empty for users
-   * @param canAddToGroup Can I add this contact to group chats
-   * @param canAddToTeam Can I add new members to this team
-   * @param canCall Can I call to this contact
-   * @param canCreateGroup Can I create group chats in this team
-   * @param canCreateTask Can I call create task for this contact
-   * @param canDelete Can I remove this contact from team
-   * @param canDeleteAnyMessage Deprecated: use CanDeleteAnyMessage in chat object
-   * @param canJoinPublicGroups Can I view/join public group in this team
-   * @param canJoinPublicTasks Can I view/join public tasks in this team
-   * @param canManageColorRules Can I manage color rules in this team
-   * @param canManageIntegrations Can I manage integrations in this team
-   * @param canManageSections Can I manage sections in this team
-   * @param canManageTags Can I manage tags in this team
-   * @param canSendMessage Can I send message to this contact
-   * @param cantSendMessageReason Why I can't send message to this chat (if can't)
-   * @param changeableFields Changeable fields
-   * @param contactMshortView Short view in contact list in mobile app
-   * @param contactShortView Short view in contact list
-   * @param contactShowArchived Show archived contacts in contact list
-   * @param customFields Extra contact fields
-   * @param debugShowActivity Enable debug messages in UI
-   * @param defaultLang Default language code
-   * @param dropallEnabled Enable remove all messages experimental features
-   * @param familyName Family name
-   * @param givenName Given name
-   * @param groupMshortView Short view in group list in mobile app
-   * @param groupNotificationsEnabled Push notifications for group chats
-   * @param groupShortView Short view in group list
-   * @param isArchive Contact deleted
-   * @param mUnreadFirst Show unread chats first in feed in mobile app
-   * @param mood Mood in this team
-   * @param patronymic Patronymic, if any
-   * @param quietTimeFinish Quiet time finish
-   * @param quietTimeStart Quiet time start
-   * @param taskMshortView Short view in task list in mobile app
-   * @param taskNotificationsEnabled Push notifications for task chats
-   * @param taskShortView Short view in task list
-   * @param timezone Timezone, if any
-   * @param unreadFirst Show unread chats first in feed
-   */
-  constructor (
-    public contactEmail: string,
-    public contactPhone: string,
-    public displayName: string,
-    public icons: IconData,
-    public jid: JID,
-    public lastActivity: string,
-    public role: string,
-    public sections: string[],
-    public shortName: string,
-    public teamStatus: TeamStatus,
-    public addToTeamRights?: boolean,
-    public altSend?: boolean,
-    public alwaysSendPushes?: boolean,
-    public asteriskMention?: boolean,
-    public auth2faEnabled?: boolean,
-    public auth2faStatus?: string,
-    public botname?: string,
-    public canAddToGroup?: boolean,
-    public canAddToTeam?: boolean,
-    public canCall?: boolean,
-    public canCreateGroup?: boolean,
-    public canCreateTask?: boolean,
-    public canDelete?: boolean,
-    public canDeleteAnyMessage?: boolean,
-    public canJoinPublicGroups?: boolean,
-    public canJoinPublicTasks?: boolean,
-    public canManageColorRules?: boolean,
-    public canManageIntegrations?: boolean,
-    public canManageSections?: boolean,
-    public canManageTags?: boolean,
-    public canSendMessage?: boolean,
-    public cantSendMessageReason?: string,
-    public changeableFields?: string[],
-    public contactMshortView?: boolean,
-    public contactShortView?: boolean,
-    public contactShowArchived?: boolean,
-    public customFields?: ContactCustomFields,
-    public debugShowActivity?: boolean,
-    public defaultLang?: string,
-    public dropallEnabled?: boolean,
-    public familyName?: string,
-    public givenName?: string,
-    public groupMshortView?: boolean,
-    public groupNotificationsEnabled?: boolean,
-    public groupShortView?: boolean,
-    public isArchive?: boolean,
-    public mUnreadFirst?: boolean,
-    public mood?: string,
-    public patronymic?: string,
-    public quietTimeFinish?: string,
-    public quietTimeStart?: string,
-    public taskMshortView?: boolean,
-    public taskNotificationsEnabled?: boolean,
-    public taskShortView?: boolean,
-    public timezone?: string,
-    public unreadFirst?: boolean,
-  ) {}
-
-  public static fromJSON (raw: ContactJSON): Contact {
-    return new Contact(
-      raw.contact_email,
-      raw.contact_phone,
-      raw.display_name,
-      IconData.fromJSON(raw.icons),
-      raw.jid,
-      raw.last_activity,
-      raw.role,
-      raw.sections,
-      raw.short_name,
-      raw.status,
-      raw.add_to_team_rights,
-      raw.alt_send,
-      raw.always_send_pushes,
-      raw.asterisk_mention,
-      raw.auth_2fa_enabled,
-      raw.auth_2fa_status,
-      raw.botname,
-      raw.can_add_to_group,
-      raw.can_add_to_team,
-      raw.can_call,
-      raw.can_create_group,
-      raw.can_create_task,
-      raw.can_delete,
-      raw.can_delete_any_message,
-      raw.can_join_public_groups,
-      raw.can_join_public_tasks,
-      raw.can_manage_color_rules,
-      raw.can_manage_integrations,
-      raw.can_manage_sections,
-      raw.can_manage_tags,
-      raw.can_send_message,
-      raw.cant_send_message_reason,
-      raw.changeable_fields,
-      raw.contact_mshort_view,
-      raw.contact_short_view,
-      raw.contact_show_archived,
-      raw.custom_fields && ContactCustomFields.fromJSON(raw.custom_fields),
-      raw.debug_show_activity,
-      raw.default_lang,
-      raw.dropall_enabled,
-      raw.family_name,
-      raw.given_name,
-      raw.group_mshort_view,
-      raw.group_notifications_enabled,
-      raw.group_short_view,
-      raw.is_archive,
-      raw.munread_first,
-      raw.mood,
-      raw.patronymic,
-      raw.quiet_time_finish,
-      raw.quiet_time_start,
-      raw.task_mshort_view,
-      raw.task_notifications_enabled,
-      raw.task_short_view,
-      raw.timezone,
-      raw.unread_first,
-    )
-  }
-
-  public mappableFields = [
-    'contactEmail',
-    'contactPhone',
-    'displayName',
-    'icons',
-    'jid',
-    'lastActivity',
-    'role',
-    'sections',
-    'shortName',
-    'teamStatus',
-    'addToTeamRights',
-    'altSend',
-    'alwaysSendPushes',
-    'asteriskMention',
-    'auth2faEnabled',
-    'auth2faStatus',
-    'botname',
-    'canAddToGroup',
-    'canAddToTeam',
-    'canCall',
-    'canCreateGroup',
-    'canCreateTask',
-    'canDelete',
-    'canDeleteAnyMessage',
-    'canJoinPublicGroups',
-    'canJoinPublicTasks',
-    'canManageColorRules',
-    'canManageIntegrations',
-    'canManageSections',
-    'canManageTags',
-    'canSendMessage',
-    'cantSendMessageReason',
-    'changeableFields',
-    'contactMshortView',
-    'contactShortView',
-    'contactShowArchived',
-    'customFields',
-    'debugShowActivity',
-    'defaultLang',
-    'dropallEnabled',
-    'familyName',
-    'givenName',
-    'groupMshortView',
-    'groupNotificationsEnabled',
-    'groupShortView',
-    'isArchive',
-    'mUnreadFirst',
-    'mood',
-    'patronymic',
-    'quietTimeFinish',
-    'quietTimeStart',
-    'taskMshortView',
-    'taskNotificationsEnabled',
-    'taskShortView',
-    'timezone',
-    'unreadFirst',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    contactEmail: () => ({ contact_email: this.contactEmail }),
-    contactPhone: () => ({ contact_phone: this.contactPhone }),
-    displayName: () => ({ display_name: this.displayName }),
-    icons: () => ({ icons: this.icons.toJSON() }),
-    jid: () => ({ jid: this.jid }),
-    lastActivity: () => ({ last_activity: this.lastActivity }),
-    role: () => ({ role: this.role }),
-    sections: () => ({ sections: this.sections }),
-    shortName: () => ({ short_name: this.shortName }),
-    teamStatus: () => ({ status: this.teamStatus }),
-    addToTeamRights: () => ({ add_to_team_rights: this.addToTeamRights }),
-    altSend: () => ({ alt_send: this.altSend }),
-    alwaysSendPushes: () => ({ always_send_pushes: this.alwaysSendPushes }),
-    asteriskMention: () => ({ asterisk_mention: this.asteriskMention }),
-    auth2faEnabled: () => ({ auth_2fa_enabled: this.auth2faEnabled }),
-    auth2faStatus: () => ({ auth_2fa_status: this.auth2faStatus }),
-    botname: () => ({ botname: this.botname }),
-    canAddToGroup: () => ({ can_add_to_group: this.canAddToGroup }),
-    canAddToTeam: () => ({ can_add_to_team: this.canAddToTeam }),
-    canCall: () => ({ can_call: this.canCall }),
-    canCreateGroup: () => ({ can_create_group: this.canCreateGroup }),
-    canCreateTask: () => ({ can_create_task: this.canCreateTask }),
-    canDelete: () => ({ can_delete: this.canDelete }),
-    canDeleteAnyMessage: () => ({ can_delete_any_message: this.canDeleteAnyMessage }),
-    canJoinPublicGroups: () => ({ can_join_public_groups: this.canJoinPublicGroups }),
-    canJoinPublicTasks: () => ({ can_join_public_tasks: this.canJoinPublicTasks }),
-    canManageColorRules: () => ({ can_manage_color_rules: this.canManageColorRules }),
-    canManageIntegrations: () => ({ can_manage_integrations: this.canManageIntegrations }),
-    canManageSections: () => ({ can_manage_sections: this.canManageSections }),
-    canManageTags: () => ({ can_manage_tags: this.canManageTags }),
-    canSendMessage: () => ({ can_send_message: this.canSendMessage }),
-    cantSendMessageReason: () => ({ cant_send_message_reason: this.cantSendMessageReason }),
-    changeableFields: () => ({ changeable_fields: this.changeableFields }),
-    contactMshortView: () => ({ contact_mshort_view: this.contactMshortView }),
-    contactShortView: () => ({ contact_short_view: this.contactShortView }),
-    contactShowArchived: () => ({ contact_show_archived: this.contactShowArchived }),
-    customFields: () => ({ custom_fields: this.customFields?.toJSON() }),
-    debugShowActivity: () => ({ debug_show_activity: this.debugShowActivity }),
-    defaultLang: () => ({ default_lang: this.defaultLang }),
-    dropallEnabled: () => ({ dropall_enabled: this.dropallEnabled }),
-    familyName: () => ({ family_name: this.familyName }),
-    givenName: () => ({ given_name: this.givenName }),
-    groupMshortView: () => ({ group_mshort_view: this.groupMshortView }),
-    groupNotificationsEnabled: () => ({ group_notifications_enabled: this.groupNotificationsEnabled }),
-    groupShortView: () => ({ group_short_view: this.groupShortView }),
-    isArchive: () => ({ is_archive: this.isArchive }),
-    mUnreadFirst: () => ({ munread_first: this.mUnreadFirst }),
-    mood: () => ({ mood: this.mood }),
-    patronymic: () => ({ patronymic: this.patronymic }),
-    quietTimeFinish: () => ({ quiet_time_finish: this.quietTimeFinish }),
-    quietTimeStart: () => ({ quiet_time_start: this.quietTimeStart }),
-    taskMshortView: () => ({ task_mshort_view: this.taskMshortView }),
-    taskNotificationsEnabled: () => ({ task_notifications_enabled: this.taskNotificationsEnabled }),
-    taskShortView: () => ({ task_short_view: this.taskShortView }),
-    timezone: () => ({ timezone: this.timezone }),
-    unreadFirst: () => ({ unread_first: this.unreadFirst }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ContactJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ContactJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface IntegrationsJSON {
-  /* eslint-disable camelcase */
-  integrations: IntegrationJSON[];
-  kinds: IntegrationKindJSON[];
-  /* eslint-enable camelcase */
-}
-
-export class Integrations implements TDProtoClass<Integrations> {
-  /**
-   * Complete integrations data, as received from server
-   * @param integrations Currently existing integrations
-   * @param kinds Types of integrations available for setup
-   */
-  constructor (
-    public integrations: Integration[],
-    public kinds: IntegrationKind[],
-  ) {}
-
-  public static fromJSON (raw: IntegrationsJSON): Integrations {
-    return new Integrations(
-      raw.integrations.map(Integration.fromJSON),
-      raw.kinds.map(IntegrationKind.fromJSON),
-    )
-  }
-
-  public mappableFields = [
-    'integrations',
-    'kinds',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    integrations: () => ({ integrations: this.integrations.map(u => u.toJSON()) }),
-    kinds: () => ({ kinds: this.kinds.map(u => u.toJSON()) }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): IntegrationsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<IntegrationsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ShortMessageJSON {
+export interface RemindJSON {
   /* eslint-disable camelcase */
   chat: JID;
-  chat_type: ChatType;
-  created: ISODateTimeString;
-  from: JID;
-  gentime: number;
-  message_id: string;
-  to: JID;
-  is_archive?: boolean;
+  fire_at: ISODateTimeString;
+  uid: string;
+  comment?: string;
   /* eslint-enable camelcase */
 }
 
-export class ShortMessage implements TDProtoClass<ShortMessage> {
+export class Remind implements TDProtoClass<Remind> {
   /**
-   * Short message based on chat message
+   * Remind
    * @param chat Chat id
-   * @param chatType Chat type
-   * @param created Message creation datetime (set by server side) or sending datetime in future for draft messages
-   * @param from Sender contact id
-   * @param gentime Object version
-   * @param messageId Message uid
-   * @param to Recipient id (group, task or contact)
-   * @param isArchive This message is archive. True or null
+   * @param fireAt Activation time, iso
+   * @param uid Remind id
+   * @param comment Comment, if any
    */
   constructor (
-    public readonly chat: JID,
-    public readonly chatType: ChatType,
-    public readonly created: ISODateTimeString,
-    public readonly from: JID,
-    public readonly gentime: number,
-    public messageId: string,
-    public to: JID,
-    public readonly isArchive?: boolean,
+    public chat: JID,
+    public fireAt: ISODateTimeString,
+    public uid: string,
+    public comment?: string,
   ) {}
 
-  public static fromJSON (raw: ShortMessageJSON): ShortMessage {
-    return new ShortMessage(
+  public static fromJSON (raw: RemindJSON): Remind {
+    return new Remind(
       raw.chat,
-      raw.chat_type,
-      raw.created,
-      raw.from,
-      raw.gentime,
-      raw.message_id,
-      raw.to,
-      raw.is_archive,
+      raw.fire_at,
+      raw.uid,
+      raw.comment,
     )
   }
 
   public mappableFields = [
     'chat',
-    'chatType',
-    'created',
-    'from',
-    'gentime',
-    'messageId',
-    'to',
-    'isArchive',
+    'fireAt',
+    'uid',
+    'comment',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
     chat: () => ({ chat: this.chat }),
-    chatType: () => ({ chat_type: this.chatType }),
-    created: () => ({ created: this.created }),
-    from: () => ({ from: this.from }),
-    gentime: () => ({ gentime: this.gentime }),
-    messageId: () => ({ message_id: this.messageId }),
-    to: () => ({ to: this.to }),
-    isArchive: () => ({ is_archive: this.isArchive }),
+    fireAt: () => ({ fire_at: this.fireAt }),
+    uid: () => ({ uid: this.uid }),
+    comment: () => ({ comment: this.comment }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): ShortMessageJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ShortMessageJSON>
+  public toJSON (): RemindJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<RemindJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerCallBuzzcancelJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ServerCallBuzzcancelParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerCallBuzzcancel implements TDProtoClass<ServerCallBuzzcancel> {
+  /**
+   * Call cancelled on buzzing
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ServerCallBuzzcancelParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ServerCallBuzzcancelJSON): ServerCallBuzzcancel {
+    return new ServerCallBuzzcancel(
+      raw.event,
+      ServerCallBuzzcancelParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerCallBuzzcancelJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallBuzzcancelJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ContactCustomFieldsJSON {
+  /* eslint-disable camelcase */
+  company?: string;
+  department?: string;
+  mobile_phone?: string;
+  source?: string;
+  title?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ContactCustomFields implements TDProtoClass<ContactCustomFields> {
+  /**
+   * Extra contact fields
+   * @param company DOCUMENTATION MISSING
+   * @param department DOCUMENTATION MISSING
+   * @param mobilePhone DOCUMENTATION MISSING
+   * @param source DOCUMENTATION MISSING
+   * @param title DOCUMENTATION MISSING
+   */
+  constructor (
+    public company?: string,
+    public department?: string,
+    public mobilePhone?: string,
+    public source?: string,
+    public title?: string,
+  ) {}
+
+  public static fromJSON (raw: ContactCustomFieldsJSON): ContactCustomFields {
+    return new ContactCustomFields(
+      raw.company,
+      raw.department,
+      raw.mobile_phone,
+      raw.source,
+      raw.title,
+    )
+  }
+
+  public mappableFields = [
+    'company',
+    'department',
+    'mobilePhone',
+    'source',
+    'title',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    company: () => ({ company: this.company }),
+    department: () => ({ department: this.department }),
+    mobilePhone: () => ({ mobile_phone: this.mobilePhone }),
+    source: () => ({ source: this.source }),
+    title: () => ({ title: this.title }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ContactCustomFieldsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ContactCustomFieldsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ClientMessageDeletedJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ClientMessageDeletedParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ClientMessageDeleted implements TDProtoClass<ClientMessageDeleted> {
+  /**
+   * Message deleted
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ClientMessageDeletedParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ClientMessageDeletedJSON): ClientMessageDeleted {
+    return new ClientMessageDeleted(
+      raw.event,
+      ClientMessageDeletedParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ClientMessageDeletedJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientMessageDeletedJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerMessageUpdatedJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ServerMessageUpdatedParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerMessageUpdated implements TDProtoClass<ServerMessageUpdated> {
+  /**
+   * Chat message created, updated or deleted
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ServerMessageUpdatedParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ServerMessageUpdatedJSON): ServerMessageUpdated {
+    return new ServerMessageUpdated(
+      raw.event,
+      ServerMessageUpdatedParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerMessageUpdatedJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerMessageUpdatedJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -1708,45 +2760,105 @@ export class TaskColor implements TDProtoClass<TaskColor> {
   }
 }
 
-export interface OAuthServiceJSON {
+export interface ServerTeamUpdatedJSON {
   /* eslint-disable camelcase */
-  name: string;
-  url: string;
+  event: string;
+  params: ServerTeamUpdatedParamsJSON;
+  confirm_id?: string;
   /* eslint-enable camelcase */
 }
 
-export class OAuthService implements TDProtoClass<OAuthService> {
+export class ServerTeamUpdated implements TDProtoClass<ServerTeamUpdated> {
   /**
-   * OAuth service
-   * @param name Integration title
-   * @param url Redirect url
+   * Team created or changed
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
    */
   constructor (
-    public name: string,
-    public url: string,
+    public event: string,
+    public params: ServerTeamUpdatedParams,
+    public confirmId?: string,
   ) {}
 
-  public static fromJSON (raw: OAuthServiceJSON): OAuthService {
-    return new OAuthService(
-      raw.name,
-      raw.url,
+  public static fromJSON (raw: ServerTeamUpdatedJSON): ServerTeamUpdated {
+    return new ServerTeamUpdated(
+      raw.event,
+      ServerTeamUpdatedParams.fromJSON(raw.params),
+      raw.confirm_id,
     )
   }
 
   public mappableFields = [
-    'name',
-    'url',
+    'event',
+    'params',
+    'confirmId',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    name: () => ({ name: this.name }),
-    url: () => ({ url: this.url }),
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): OAuthServiceJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<OAuthServiceJSON>
+  public toJSON (): ServerTeamUpdatedJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerTeamUpdatedJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerSectionDeletedJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ServerSectionDeletedParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerSectionDeleted implements TDProtoClass<ServerSectionDeleted> {
+  /**
+   * Contact section or task project deleted
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ServerSectionDeletedParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ServerSectionDeletedJSON): ServerSectionDeleted {
+    return new ServerSectionDeleted(
+      raw.event,
+      ServerSectionDeletedParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerSectionDeletedJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerSectionDeletedJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -1767,12 +2879,12 @@ export interface ServerCallAnswerJSON {
 export class ServerCallAnswer implements TDProtoClass<ServerCallAnswer> {
   /**
    * Call parameters
-   * @param name DOCUMENTATION MISSING
+   * @param event DOCUMENTATION MISSING
    * @param params DOCUMENTATION MISSING
    * @param confirmId DOCUMENTATION MISSING
    */
   constructor (
-    public name: string,
+    public event: string,
     public params: ServerCallAnswerParams,
     public confirmId?: string,
   ) {}
@@ -1786,14 +2898,14 @@ export class ServerCallAnswer implements TDProtoClass<ServerCallAnswer> {
   }
 
   public mappableFields = [
-    'name',
+    'event',
     'params',
     'confirmId',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
+    event: () => ({ event: this.event }),
     params: () => ({ params: this.params.toJSON() }),
     confirmId: () => ({ confirm_id: this.confirmId }),
     /* eslint-enable camelcase */
@@ -1801,462 +2913,6 @@ export class ServerCallAnswer implements TDProtoClass<ServerCallAnswer> {
 
   public toJSON (): ServerCallAnswerJSON
   public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallAnswerJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ClientCallOfferJSON {
-  /* eslint-disable camelcase */
-  event: string;
-  params: ClientCallOfferParamsJSON;
-  confirm_id?: string;
-  /* eslint-enable camelcase */
-}
-
-export class ClientCallOffer implements TDProtoClass<ClientCallOffer> {
-  /**
-   * Start a call
-   * @param name DOCUMENTATION MISSING
-   * @param params DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
-   */
-  constructor (
-    public name: string,
-    public params: ClientCallOfferParams,
-    public confirmId?: string,
-  ) {}
-
-  public static fromJSON (raw: ClientCallOfferJSON): ClientCallOffer {
-    return new ClientCallOffer(
-      raw.event,
-      ClientCallOfferParams.fromJSON(raw.params),
-      raw.confirm_id,
-    )
-  }
-
-  public mappableFields = [
-    'name',
-    'params',
-    'confirmId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    params: () => ({ params: this.params.toJSON() }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ClientCallOfferJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientCallOfferJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerTeamDeletedParamsJSON {
-  /* eslint-disable camelcase */
-  teams: DeletedTeamJSON[];
-  /* eslint-enable camelcase */
-}
-
-export class ServerTeamDeletedParams implements TDProtoClass<ServerTeamDeletedParams> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param teams Teams info
-   */
-  constructor (
-    public teams: DeletedTeam[],
-  ) {}
-
-  public static fromJSON (raw: ServerTeamDeletedParamsJSON): ServerTeamDeletedParams {
-    return new ServerTeamDeletedParams(
-      raw.teams.map(DeletedTeam.fromJSON),
-    )
-  }
-
-  public mappableFields = [
-    'teams',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    teams: () => ({ teams: this.teams.map(u => u.toJSON()) }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerTeamDeletedParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerTeamDeletedParamsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ThemeJSON {
-  /* eslint-disable camelcase */
-  AccentColor: string;
-  AccentHoverColor: string;
-  AppAccentColor: string;
-  AppPrimaryColor: string;
-  attention: string;
-  attention_light: string;
-  back: string;
-  back_dark: string;
-  back_light: string;
-  background: string;
-  BgColor: string;
-  BgHoverColor: string;
-  brand: string;
-  brand_dark: string;
-  brand_light: string;
-  button: ButtonColorsJSON;
-  chat_input_background: string;
-  error: string;
-  error_light: string;
-  font: FontColorsJSON;
-  ic: IconColorsJSON;
-  input: InputColorsJSON;
-  MainAccent: string;
-  MainAccentHover: string;
-  MainLightAccent: string;
-  MainLink: string;
-  message: MessageColorsJSON;
-  modal_background: string;
-  MutedTextColor: string;
-  substrate_background: string;
-  success: string;
-  success_light: string;
-  switcher: SwitcherColorsJSON;
-  tab_background: string;
-  TextColor: string;
-  TextOnAccentHoverColor: string;
-  title_background: string;
-  /* eslint-enable camelcase */
-}
-
-export class Theme implements TDProtoClass<Theme> {
-  /**
-   * Color theme
-   * @param accentColor DOCUMENTATION MISSING
-   * @param accentHoverColor DOCUMENTATION MISSING
-   * @param appAccentColor Deprecated
-   * @param appPrimaryColor Deprecated
-   * @param attention DOCUMENTATION MISSING
-   * @param attentionLight DOCUMENTATION MISSING
-   * @param back DOCUMENTATION MISSING
-   * @param backDark DOCUMENTATION MISSING
-   * @param backLight DOCUMENTATION MISSING
-   * @param background DOCUMENTATION MISSING
-   * @param bgColor Web colors
-   * @param bgHoverColor DOCUMENTATION MISSING
-   * @param brand App colors
-   * @param brandDark DOCUMENTATION MISSING
-   * @param brandLight DOCUMENTATION MISSING
-   * @param button DOCUMENTATION MISSING
-   * @param chatInputBackground DOCUMENTATION MISSING
-   * @param error DOCUMENTATION MISSING
-   * @param errorLight DOCUMENTATION MISSING
-   * @param font DOCUMENTATION MISSING
-   * @param icon DOCUMENTATION MISSING
-   * @param input DOCUMENTATION MISSING
-   * @param mainAccent DOCUMENTATION MISSING
-   * @param mainAccentHover DOCUMENTATION MISSING
-   * @param mainLightAccent DOCUMENTATION MISSING
-   * @param mainLink DOCUMENTATION MISSING
-   * @param message DOCUMENTATION MISSING
-   * @param modalBackground DOCUMENTATION MISSING
-   * @param mutedTextColor DOCUMENTATION MISSING
-   * @param substrateBackground DOCUMENTATION MISSING
-   * @param success DOCUMENTATION MISSING
-   * @param successLight DOCUMENTATION MISSING
-   * @param switcher DOCUMENTATION MISSING
-   * @param tabBackground DOCUMENTATION MISSING
-   * @param textColor DOCUMENTATION MISSING
-   * @param textOnAccentHoverColor DOCUMENTATION MISSING
-   * @param titleBackground DOCUMENTATION MISSING
-   */
-  constructor (
-    public accentColor: string,
-    public accentHoverColor: string,
-    public appAccentColor: string,
-    public appPrimaryColor: string,
-    public attention: string,
-    public attentionLight: string,
-    public back: string,
-    public backDark: string,
-    public backLight: string,
-    public background: string,
-    public bgColor: string,
-    public bgHoverColor: string,
-    public brand: string,
-    public brandDark: string,
-    public brandLight: string,
-    public button: ButtonColors,
-    public chatInputBackground: string,
-    public error: string,
-    public errorLight: string,
-    public font: FontColors,
-    public icon: IconColors,
-    public input: InputColors,
-    public mainAccent: string,
-    public mainAccentHover: string,
-    public mainLightAccent: string,
-    public mainLink: string,
-    public message: MessageColors,
-    public modalBackground: string,
-    public mutedTextColor: string,
-    public substrateBackground: string,
-    public success: string,
-    public successLight: string,
-    public switcher: SwitcherColors,
-    public tabBackground: string,
-    public textColor: string,
-    public textOnAccentHoverColor: string,
-    public titleBackground: string,
-  ) {}
-
-  public static fromJSON (raw: ThemeJSON): Theme {
-    return new Theme(
-      raw.AccentColor,
-      raw.AccentHoverColor,
-      raw.AppAccentColor,
-      raw.AppPrimaryColor,
-      raw.attention,
-      raw.attention_light,
-      raw.back,
-      raw.back_dark,
-      raw.back_light,
-      raw.background,
-      raw.BgColor,
-      raw.BgHoverColor,
-      raw.brand,
-      raw.brand_dark,
-      raw.brand_light,
-      ButtonColors.fromJSON(raw.button),
-      raw.chat_input_background,
-      raw.error,
-      raw.error_light,
-      FontColors.fromJSON(raw.font),
-      IconColors.fromJSON(raw.ic),
-      InputColors.fromJSON(raw.input),
-      raw.MainAccent,
-      raw.MainAccentHover,
-      raw.MainLightAccent,
-      raw.MainLink,
-      MessageColors.fromJSON(raw.message),
-      raw.modal_background,
-      raw.MutedTextColor,
-      raw.substrate_background,
-      raw.success,
-      raw.success_light,
-      SwitcherColors.fromJSON(raw.switcher),
-      raw.tab_background,
-      raw.TextColor,
-      raw.TextOnAccentHoverColor,
-      raw.title_background,
-    )
-  }
-
-  public mappableFields = [
-    'accentColor',
-    'accentHoverColor',
-    'appAccentColor',
-    'appPrimaryColor',
-    'attention',
-    'attentionLight',
-    'back',
-    'backDark',
-    'backLight',
-    'background',
-    'bgColor',
-    'bgHoverColor',
-    'brand',
-    'brandDark',
-    'brandLight',
-    'button',
-    'chatInputBackground',
-    'error',
-    'errorLight',
-    'font',
-    'icon',
-    'input',
-    'mainAccent',
-    'mainAccentHover',
-    'mainLightAccent',
-    'mainLink',
-    'message',
-    'modalBackground',
-    'mutedTextColor',
-    'substrateBackground',
-    'success',
-    'successLight',
-    'switcher',
-    'tabBackground',
-    'textColor',
-    'textOnAccentHoverColor',
-    'titleBackground',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    accentColor: () => ({ AccentColor: this.accentColor }),
-    accentHoverColor: () => ({ AccentHoverColor: this.accentHoverColor }),
-    appAccentColor: () => ({ AppAccentColor: this.appAccentColor }),
-    appPrimaryColor: () => ({ AppPrimaryColor: this.appPrimaryColor }),
-    attention: () => ({ attention: this.attention }),
-    attentionLight: () => ({ attention_light: this.attentionLight }),
-    back: () => ({ back: this.back }),
-    backDark: () => ({ back_dark: this.backDark }),
-    backLight: () => ({ back_light: this.backLight }),
-    background: () => ({ background: this.background }),
-    bgColor: () => ({ BgColor: this.bgColor }),
-    bgHoverColor: () => ({ BgHoverColor: this.bgHoverColor }),
-    brand: () => ({ brand: this.brand }),
-    brandDark: () => ({ brand_dark: this.brandDark }),
-    brandLight: () => ({ brand_light: this.brandLight }),
-    button: () => ({ button: this.button.toJSON() }),
-    chatInputBackground: () => ({ chat_input_background: this.chatInputBackground }),
-    error: () => ({ error: this.error }),
-    errorLight: () => ({ error_light: this.errorLight }),
-    font: () => ({ font: this.font.toJSON() }),
-    icon: () => ({ ic: this.icon.toJSON() }),
-    input: () => ({ input: this.input.toJSON() }),
-    mainAccent: () => ({ MainAccent: this.mainAccent }),
-    mainAccentHover: () => ({ MainAccentHover: this.mainAccentHover }),
-    mainLightAccent: () => ({ MainLightAccent: this.mainLightAccent }),
-    mainLink: () => ({ MainLink: this.mainLink }),
-    message: () => ({ message: this.message.toJSON() }),
-    modalBackground: () => ({ modal_background: this.modalBackground }),
-    mutedTextColor: () => ({ MutedTextColor: this.mutedTextColor }),
-    substrateBackground: () => ({ substrate_background: this.substrateBackground }),
-    success: () => ({ success: this.success }),
-    successLight: () => ({ success_light: this.successLight }),
-    switcher: () => ({ switcher: this.switcher.toJSON() }),
-    tabBackground: () => ({ tab_background: this.tabBackground }),
-    textColor: () => ({ TextColor: this.textColor }),
-    textOnAccentHoverColor: () => ({ TextOnAccentHoverColor: this.textOnAccentHoverColor }),
-    titleBackground: () => ({ title_background: this.titleBackground }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ThemeJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ThemeJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface UnreadJSON {
-  /* eslint-disable camelcase */
-  chats: number;
-  messages: number;
-  notice_messages: number;
-  /* eslint-enable camelcase */
-}
-
-export class Unread implements TDProtoClass<Unread> {
-  /**
-   * Unread message counters
-   * @param numChats Total chats with unread messages
-   * @param numMessages Total unread messages
-   * @param numNoticeMessages Total unread messages with mentions
-   */
-  constructor (
-    public numChats: number,
-    public numMessages: number,
-    public numNoticeMessages: number,
-  ) {}
-
-  public static fromJSON (raw: UnreadJSON): Unread {
-    return new Unread(
-      raw.chats,
-      raw.messages,
-      raw.notice_messages,
-    )
-  }
-
-  public mappableFields = [
-    'numChats',
-    'numMessages',
-    'numNoticeMessages',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    numChats: () => ({ chats: this.numChats }),
-    numMessages: () => ({ messages: this.numMessages }),
-    numNoticeMessages: () => ({ notice_messages: this.numNoticeMessages }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): UnreadJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<UnreadJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerTeamCountersParamsJSON {
-  /* eslint-disable camelcase */
-  badge: number;
-  teams: TeamCounterJSON[];
-  /* eslint-enable camelcase */
-}
-
-export class ServerTeamCountersParams implements TDProtoClass<ServerTeamCountersParams> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param badge Total number of unreads
-   * @param teams Counters
-   */
-  constructor (
-    public badge: number,
-    public teams: TeamCounter[],
-  ) {}
-
-  public static fromJSON (raw: ServerTeamCountersParamsJSON): ServerTeamCountersParams {
-    return new ServerTeamCountersParams(
-      raw.badge,
-      raw.teams.map(TeamCounter.fromJSON),
-    )
-  }
-
-  public mappableFields = [
-    'badge',
-    'teams',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    badge: () => ({ badge: this.badge }),
-    teams: () => ({ teams: this.teams.map(u => u.toJSON()) }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerTeamCountersParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerTeamCountersParamsJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -2338,456 +2994,6 @@ export class TaskItem implements TDProtoClass<TaskItem> {
   }
 }
 
-export interface CallOnlinerJSON {
-  /* eslint-disable camelcase */
-  devices: CallDeviceJSON[];
-  display_name: string;
-  icon: string;
-  jid: JID;
-  muted: boolean;
-  role: string;
-  /* eslint-enable camelcase */
-}
-
-export class CallOnliner implements TDProtoClass<CallOnliner> {
-  /**
-   * Call participant
-   * @param devices Member devices, strictly one for now
-   * @param displayName Contact name
-   * @param icon Contact icon
-   * @param jid Contact id
-   * @param muted Microphone muted. Computed from devices muted states
-   * @param role Contact role
-   */
-  constructor (
-    public devices: CallDevice[],
-    public displayName: string,
-    public icon: string,
-    public jid: JID,
-    public muted: boolean,
-    public role: string,
-  ) {}
-
-  public static fromJSON (raw: CallOnlinerJSON): CallOnliner {
-    return new CallOnliner(
-      raw.devices.map(CallDevice.fromJSON),
-      raw.display_name,
-      raw.icon,
-      raw.jid,
-      raw.muted,
-      raw.role,
-    )
-  }
-
-  public mappableFields = [
-    'devices',
-    'displayName',
-    'icon',
-    'jid',
-    'muted',
-    'role',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    devices: () => ({ devices: this.devices.map(u => u.toJSON()) }),
-    displayName: () => ({ display_name: this.displayName }),
-    icon: () => ({ icon: this.icon }),
-    jid: () => ({ jid: this.jid }),
-    muted: () => ({ muted: this.muted }),
-    role: () => ({ role: this.role }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): CallOnlinerJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<CallOnlinerJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface UserJSON {
-  /* eslint-disable camelcase */
-  alt_send: boolean;
-  always_send_pushes: boolean;
-  asterisk_mention: boolean;
-  munread_first: boolean;
-  quiet_time_finish: string;
-  quiet_time_start: string;
-  timezone: string;
-  unread_first: boolean;
-  default_lang?: string;
-  email?: string;
-  family_name?: string;
-  given_name?: string;
-  patronymic?: string;
-  phone?: string;
-  /* eslint-enable camelcase */
-}
-
-export class User implements TDProtoClass<User> {
-  /**
-   * Account data
-   * @param altSend Use Ctrl/Cmd + Enter instead Enter
-   * @param alwaysSendPushes Send pushes even user is online
-   * @param asteriskMention Use * as @ for mentions
-   * @param mUnreadFirst Show unread chats in chat list first on mobiles
-   * @param quietTimeFinish Finish silently time (no pushes, no sounds)
-   * @param quietTimeStart Start silently time (no pushes, no sounds)
-   * @param timezone Timezone
-   * @param unreadFirst Show unread chats in chat list first
-   * @param defaultLang Default language code
-   * @param email Email for login
-   * @param familyName Family name
-   * @param givenName Given name
-   * @param patronymic Patronymic, if any
-   * @param phone Phone for login
-   */
-  constructor (
-    public altSend: boolean,
-    public alwaysSendPushes: boolean,
-    public asteriskMention: boolean,
-    public mUnreadFirst: boolean,
-    public quietTimeFinish: string,
-    public quietTimeStart: string,
-    public timezone: string,
-    public unreadFirst: boolean,
-    public defaultLang?: string,
-    public email?: string,
-    public familyName?: string,
-    public givenName?: string,
-    public patronymic?: string,
-    public phone?: string,
-  ) {}
-
-  public static fromJSON (raw: UserJSON): User {
-    return new User(
-      raw.alt_send,
-      raw.always_send_pushes,
-      raw.asterisk_mention,
-      raw.munread_first,
-      raw.quiet_time_finish,
-      raw.quiet_time_start,
-      raw.timezone,
-      raw.unread_first,
-      raw.default_lang,
-      raw.email,
-      raw.family_name,
-      raw.given_name,
-      raw.patronymic,
-      raw.phone,
-    )
-  }
-
-  public mappableFields = [
-    'altSend',
-    'alwaysSendPushes',
-    'asteriskMention',
-    'mUnreadFirst',
-    'quietTimeFinish',
-    'quietTimeStart',
-    'timezone',
-    'unreadFirst',
-    'defaultLang',
-    'email',
-    'familyName',
-    'givenName',
-    'patronymic',
-    'phone',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    altSend: () => ({ alt_send: this.altSend }),
-    alwaysSendPushes: () => ({ always_send_pushes: this.alwaysSendPushes }),
-    asteriskMention: () => ({ asterisk_mention: this.asteriskMention }),
-    mUnreadFirst: () => ({ munread_first: this.mUnreadFirst }),
-    quietTimeFinish: () => ({ quiet_time_finish: this.quietTimeFinish }),
-    quietTimeStart: () => ({ quiet_time_start: this.quietTimeStart }),
-    timezone: () => ({ timezone: this.timezone }),
-    unreadFirst: () => ({ unread_first: this.unreadFirst }),
-    defaultLang: () => ({ default_lang: this.defaultLang }),
-    email: () => ({ email: this.email }),
-    familyName: () => ({ family_name: this.familyName }),
-    givenName: () => ({ given_name: this.givenName }),
-    patronymic: () => ({ patronymic: this.patronymic }),
-    phone: () => ({ phone: this.phone }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): UserJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<UserJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ColorRuleJSON {
-  /* eslint-disable camelcase */
-  color_index: number;
-  priority: number;
-  uid: string;
-  description?: string;
-  section?: string;
-  section_enabled?: boolean;
-  tags?: string[];
-  tags_enabled?: boolean;
-  task_importance?: number;
-  task_importance_enabled?: boolean;
-  task_status?: string;
-  task_urgency?: number;
-  task_urgency_enabled?: boolean;
-  /* eslint-enable camelcase */
-}
-
-export class ColorRule implements TDProtoClass<ColorRule> {
-  /**
-   * Set of rules to apply to tasks for coloring
-   * @param colorIndex DOCUMENTATION MISSING
-   * @param priority DOCUMENTATION MISSING
-   * @param uid DOCUMENTATION MISSING
-   * @param description DOCUMENTATION MISSING
-   * @param section DOCUMENTATION MISSING
-   * @param sectionEnabled DOCUMENTATION MISSING
-   * @param tags DOCUMENTATION MISSING
-   * @param tagsEnabled DOCUMENTATION MISSING
-   * @param taskImportance DOCUMENTATION MISSING
-   * @param taskImportanceEnabled DOCUMENTATION MISSING
-   * @param taskStatus DOCUMENTATION MISSING
-   * @param taskUrgency DOCUMENTATION MISSING
-   * @param taskUrgencyEnabled DOCUMENTATION MISSING
-   */
-  constructor (
-    public colorIndex: number,
-    public priority: number,
-    public uid: string,
-    public description?: string,
-    public section?: string,
-    public sectionEnabled?: boolean,
-    public tags?: string[],
-    public tagsEnabled?: boolean,
-    public taskImportance?: number,
-    public taskImportanceEnabled?: boolean,
-    public taskStatus?: string,
-    public taskUrgency?: number,
-    public taskUrgencyEnabled?: boolean,
-  ) {}
-
-  public static fromJSON (raw: ColorRuleJSON): ColorRule {
-    return new ColorRule(
-      raw.color_index,
-      raw.priority,
-      raw.uid,
-      raw.description,
-      raw.section,
-      raw.section_enabled,
-      raw.tags,
-      raw.tags_enabled,
-      raw.task_importance,
-      raw.task_importance_enabled,
-      raw.task_status,
-      raw.task_urgency,
-      raw.task_urgency_enabled,
-    )
-  }
-
-  public mappableFields = [
-    'colorIndex',
-    'priority',
-    'uid',
-    'description',
-    'section',
-    'sectionEnabled',
-    'tags',
-    'tagsEnabled',
-    'taskImportance',
-    'taskImportanceEnabled',
-    'taskStatus',
-    'taskUrgency',
-    'taskUrgencyEnabled',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    colorIndex: () => ({ color_index: this.colorIndex }),
-    priority: () => ({ priority: this.priority }),
-    uid: () => ({ uid: this.uid }),
-    description: () => ({ description: this.description }),
-    section: () => ({ section: this.section }),
-    sectionEnabled: () => ({ section_enabled: this.sectionEnabled }),
-    tags: () => ({ tags: this.tags }),
-    tagsEnabled: () => ({ tags_enabled: this.tagsEnabled }),
-    taskImportance: () => ({ task_importance: this.taskImportance }),
-    taskImportanceEnabled: () => ({ task_importance_enabled: this.taskImportanceEnabled }),
-    taskStatus: () => ({ task_status: this.taskStatus }),
-    taskUrgency: () => ({ task_urgency: this.taskUrgency }),
-    taskUrgencyEnabled: () => ({ task_urgency_enabled: this.taskUrgencyEnabled }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ColorRuleJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ColorRuleJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerRemindFiredParamsJSON {
-  /* eslint-disable camelcase */
-  reminds: RemindJSON[];
-  /* eslint-enable camelcase */
-}
-
-export class ServerRemindFiredParams implements TDProtoClass<ServerRemindFiredParams> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param reminds Remind information
-   */
-  constructor (
-    public reminds: Remind[],
-  ) {}
-
-  public static fromJSON (raw: ServerRemindFiredParamsJSON): ServerRemindFiredParams {
-    return new ServerRemindFiredParams(
-      raw.reminds.map(Remind.fromJSON),
-    )
-  }
-
-  public mappableFields = [
-    'reminds',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    reminds: () => ({ reminds: this.reminds.map(u => u.toJSON()) }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerRemindFiredParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerRemindFiredParamsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerCallAnswerCandidateJSON {
-  /* eslint-disable camelcase */
-  candidate: string;
-  sdpMLineIndex: number;
-  /* eslint-enable camelcase */
-}
-
-export class ServerCallAnswerCandidate implements TDProtoClass<ServerCallAnswerCandidate> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param candidate DOCUMENTATION MISSING
-   * @param sdpMLineIndex DOCUMENTATION MISSING
-   */
-  constructor (
-    public candidate: string,
-    public sdpMLineIndex: number,
-  ) {}
-
-  public static fromJSON (raw: ServerCallAnswerCandidateJSON): ServerCallAnswerCandidate {
-    return new ServerCallAnswerCandidate(
-      raw.candidate,
-      raw.sdpMLineIndex,
-    )
-  }
-
-  public mappableFields = [
-    'candidate',
-    'sdpMLineIndex',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    candidate: () => ({ candidate: this.candidate }),
-    sdpMLineIndex: () => ({ sdpMLineIndex: this.sdpMLineIndex }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerCallAnswerCandidateJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallAnswerCandidateJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerUploadUpdatedJSON {
-  /* eslint-disable camelcase */
-  event: string;
-  params: ServerUploadUpdatedParamsJSON;
-  confirm_id?: string;
-  /* eslint-enable camelcase */
-}
-
-export class ServerUploadUpdated implements TDProtoClass<ServerUploadUpdated> {
-  /**
-   * Upload object created or changed
-   * @param name DOCUMENTATION MISSING
-   * @param params DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
-   */
-  constructor (
-    public name: string,
-    public params: ServerUploadUpdatedParams,
-    public confirmId?: string,
-  ) {}
-
-  public static fromJSON (raw: ServerUploadUpdatedJSON): ServerUploadUpdated {
-    return new ServerUploadUpdated(
-      raw.event,
-      ServerUploadUpdatedParams.fromJSON(raw.params),
-      raw.confirm_id,
-    )
-  }
-
-  public mappableFields = [
-    'name',
-    'params',
-    'confirmId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    params: () => ({ params: this.params.toJSON() }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerUploadUpdatedJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerUploadUpdatedJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
 export interface ServerTeamUpdatedParamsJSON {
   /* eslint-disable camelcase */
   teams: TeamJSON[];
@@ -2821,1188 +3027,6 @@ export class ServerTeamUpdatedParams implements TDProtoClass<ServerTeamUpdatedPa
 
   public toJSON (): ServerTeamUpdatedParamsJSON
   public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerTeamUpdatedParamsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface PushDeviceJSON {
-  /* eslint-disable camelcase */
-  allowed_notifications: boolean;
-  data_badges: boolean;
-  data_pushes: boolean;
-  device_id: string;
-  name: string;
-  notification_token: string;
-  type: string;
-  voip_notification_token: string;
-  /* eslint-enable camelcase */
-}
-
-export class PushDevice implements TDProtoClass<PushDevice> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param allowedNotifications DOCUMENTATION MISSING
-   * @param dataBadges DOCUMENTATION MISSING
-   * @param dataPushes DOCUMENTATION MISSING
-   * @param deviceId DOCUMENTATION MISSING
-   * @param name DOCUMENTATION MISSING
-   * @param notificationToken DOCUMENTATION MISSING
-   * @param type DOCUMENTATION MISSING
-   * @param voipNotificationToken DOCUMENTATION MISSING
-   */
-  constructor (
-    public allowedNotifications: boolean,
-    public dataBadges: boolean,
-    public dataPushes: boolean,
-    public deviceId: string,
-    public name: string,
-    public notificationToken: string,
-    public type: string,
-    public voipNotificationToken: string,
-  ) {}
-
-  public static fromJSON (raw: PushDeviceJSON): PushDevice {
-    return new PushDevice(
-      raw.allowed_notifications,
-      raw.data_badges,
-      raw.data_pushes,
-      raw.device_id,
-      raw.name,
-      raw.notification_token,
-      raw.type,
-      raw.voip_notification_token,
-    )
-  }
-
-  public mappableFields = [
-    'allowedNotifications',
-    'dataBadges',
-    'dataPushes',
-    'deviceId',
-    'name',
-    'notificationToken',
-    'type',
-    'voipNotificationToken',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    allowedNotifications: () => ({ allowed_notifications: this.allowedNotifications }),
-    dataBadges: () => ({ data_badges: this.dataBadges }),
-    dataPushes: () => ({ data_pushes: this.dataPushes }),
-    deviceId: () => ({ device_id: this.deviceId }),
-    name: () => ({ name: this.name }),
-    notificationToken: () => ({ notification_token: this.notificationToken }),
-    type: () => ({ type: this.type }),
-    voipNotificationToken: () => ({ voip_notification_token: this.voipNotificationToken }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): PushDeviceJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<PushDeviceJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerChatComposingParamsJSON {
-  /* eslint-disable camelcase */
-  actor: JID;
-  composing: boolean;
-  jid: JID;
-  is_audio?: boolean;
-  valid_until?: ISODateTimeString;
-  /* eslint-enable camelcase */
-}
-
-export class ServerChatComposingParams implements TDProtoClass<ServerChatComposingParams> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param actor Actor id
-   * @param composing true = start typing / audio recording, false = stop
-   * @param jid Chat or contact id
-   * @param isAudio true = audiomessage, false = text typing
-   * @param validUntil Composing event max lifetime
-   */
-  constructor (
-    public actor: JID,
-    public composing: boolean,
-    public jid: JID,
-    public isAudio?: boolean,
-    public validUntil?: ISODateTimeString,
-  ) {}
-
-  public static fromJSON (raw: ServerChatComposingParamsJSON): ServerChatComposingParams {
-    return new ServerChatComposingParams(
-      raw.actor,
-      raw.composing,
-      raw.jid,
-      raw.is_audio,
-      raw.valid_until,
-    )
-  }
-
-  public mappableFields = [
-    'actor',
-    'composing',
-    'jid',
-    'isAudio',
-    'validUntil',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    actor: () => ({ actor: this.actor }),
-    composing: () => ({ composing: this.composing }),
-    jid: () => ({ jid: this.jid }),
-    isAudio: () => ({ is_audio: this.isAudio }),
-    validUntil: () => ({ valid_until: this.validUntil }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerChatComposingParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerChatComposingParamsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface MessagePushJSON {
-  /* eslint-disable camelcase */
-  chat: JID;
-  click_action: string;
-  created: ISODateTimeString;
-  icon_url: string;
-  message: string;
-  message_id: string;
-  sender: JID;
-  subtitle: string;
-  tag: string;
-  team: string;
-  title: string;
-  /* eslint-enable camelcase */
-}
-
-export class MessagePush implements TDProtoClass<MessagePush> {
-  /**
-   * Push message over websockets. Readonly
-   * @param chat Chat id
-   * @param clickAction Url opened on click
-   * @param created Message creation iso datetime
-   * @param iconUrl Absolute url to push icon
-   * @param message Push body
-   * @param messageId Message id
-   * @param sender Sender contact id
-   * @param subtitle Push subtitle
-   * @param tag Push tag (for join pushes)
-   * @param team Team uid
-   * @param title Push title
-   */
-  constructor (
-    public chat: JID,
-    public clickAction: string,
-    public created: ISODateTimeString,
-    public iconUrl: string,
-    public message: string,
-    public messageId: string,
-    public sender: JID,
-    public subtitle: string,
-    public tag: string,
-    public team: string,
-    public title: string,
-  ) {}
-
-  public static fromJSON (raw: MessagePushJSON): MessagePush {
-    return new MessagePush(
-      raw.chat,
-      raw.click_action,
-      raw.created,
-      raw.icon_url,
-      raw.message,
-      raw.message_id,
-      raw.sender,
-      raw.subtitle,
-      raw.tag,
-      raw.team,
-      raw.title,
-    )
-  }
-
-  public mappableFields = [
-    'chat',
-    'clickAction',
-    'created',
-    'iconUrl',
-    'message',
-    'messageId',
-    'sender',
-    'subtitle',
-    'tag',
-    'team',
-    'title',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    chat: () => ({ chat: this.chat }),
-    clickAction: () => ({ click_action: this.clickAction }),
-    created: () => ({ created: this.created }),
-    iconUrl: () => ({ icon_url: this.iconUrl }),
-    message: () => ({ message: this.message }),
-    messageId: () => ({ message_id: this.messageId }),
-    sender: () => ({ sender: this.sender }),
-    subtitle: () => ({ subtitle: this.subtitle }),
-    tag: () => ({ tag: this.tag }),
-    team: () => ({ team: this.team }),
-    title: () => ({ title: this.title }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): MessagePushJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<MessagePushJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerCallAnswerParamsJSON {
-  /* eslint-disable camelcase */
-  candidates: ServerCallAnswerCandidateJSON[];
-  jsep: JSEPJSON;
-  jid: JID;
-  onliners: CallOnlinerJSON[];
-  uid: string;
-  /* eslint-enable camelcase */
-}
-
-export class ServerCallAnswerParams implements TDProtoClass<ServerCallAnswerParams> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param candidates List of ICE candidates (when trickle = false)
-   * @param jSEP SDP data
-   * @param jid Chat or contact id
-   * @param onliners Current call participants
-   * @param uid Call id
-   */
-  constructor (
-    public candidates: ServerCallAnswerCandidate[],
-    public jSEP: JSEP,
-    public jid: JID,
-    public onliners: CallOnliner[],
-    public uid: string,
-  ) {}
-
-  public static fromJSON (raw: ServerCallAnswerParamsJSON): ServerCallAnswerParams {
-    return new ServerCallAnswerParams(
-      raw.candidates.map(ServerCallAnswerCandidate.fromJSON),
-      JSEP.fromJSON(raw.jsep),
-      raw.jid,
-      raw.onliners.map(CallOnliner.fromJSON),
-      raw.uid,
-    )
-  }
-
-  public mappableFields = [
-    'candidates',
-    'jSEP',
-    'jid',
-    'onliners',
-    'uid',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    candidates: () => ({ candidates: this.candidates.map(u => u.toJSON()) }),
-    jSEP: () => ({ jsep: this.jSEP.toJSON() }),
-    jid: () => ({ jid: this.jid }),
-    onliners: () => ({ onliners: this.onliners.map(u => u.toJSON()) }),
-    uid: () => ({ uid: this.uid }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerCallAnswerParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallAnswerParamsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerCallBuzzcancelJSON {
-  /* eslint-disable camelcase */
-  event: string;
-  params: ServerCallBuzzcancelParamsJSON;
-  confirm_id?: string;
-  /* eslint-enable camelcase */
-}
-
-export class ServerCallBuzzcancel implements TDProtoClass<ServerCallBuzzcancel> {
-  /**
-   * Call cancelled on buzzing
-   * @param name DOCUMENTATION MISSING
-   * @param params DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
-   */
-  constructor (
-    public name: string,
-    public params: ServerCallBuzzcancelParams,
-    public confirmId?: string,
-  ) {}
-
-  public static fromJSON (raw: ServerCallBuzzcancelJSON): ServerCallBuzzcancel {
-    return new ServerCallBuzzcancel(
-      raw.event,
-      ServerCallBuzzcancelParams.fromJSON(raw.params),
-      raw.confirm_id,
-    )
-  }
-
-  public mappableFields = [
-    'name',
-    'params',
-    'confirmId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    params: () => ({ params: this.params.toJSON() }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerCallBuzzcancelJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallBuzzcancelJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface SingleIconJSON {
-  /* eslint-disable camelcase */
-  height: number;
-  url: string;
-  width: number;
-  /* eslint-enable camelcase */
-}
-
-export class SingleIcon implements TDProtoClass<SingleIcon> {
-  /**
-   * Small or large icon
-   * @param height Icon height, in pixels
-   * @param url absolute url to icon
-   * @param width Icon width, in pixels
-   */
-  constructor (
-    public height: number,
-    public url: string,
-    public width: number,
-  ) {}
-
-  public static fromJSON (raw: SingleIconJSON): SingleIcon {
-    return new SingleIcon(
-      raw.height,
-      raw.url,
-      raw.width,
-    )
-  }
-
-  public mappableFields = [
-    'height',
-    'url',
-    'width',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    height: () => ({ height: this.height }),
-    url: () => ({ url: this.url }),
-    width: () => ({ width: this.width }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): SingleIconJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<SingleIconJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerCallMuteallParamsJSON {
-  /* eslint-disable camelcase */
-  jid: JID;
-  muted: boolean;
-  /* eslint-enable camelcase */
-}
-
-export class ServerCallMuteallParams implements TDProtoClass<ServerCallMuteallParams> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param jid Chat or contact id
-   * @param muted Mute state
-   */
-  constructor (
-    public jid: JID,
-    public muted: boolean,
-  ) {}
-
-  public static fromJSON (raw: ServerCallMuteallParamsJSON): ServerCallMuteallParams {
-    return new ServerCallMuteallParams(
-      raw.jid,
-      raw.muted,
-    )
-  }
-
-  public mappableFields = [
-    'jid',
-    'muted',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    jid: () => ({ jid: this.jid }),
-    muted: () => ({ muted: this.muted }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerCallMuteallParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallMuteallParamsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ButtonColorsJSON {
-  /* eslint-disable camelcase */
-  brand_active: string;
-  brand_disable: string;
-  brand_static: string;
-  simple_active: string;
-  simple_disable: string;
-  simple_static: string;
-  /* eslint-enable camelcase */
-}
-
-export class ButtonColors implements TDProtoClass<ButtonColors> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param brandActive DOCUMENTATION MISSING
-   * @param brandDisable DOCUMENTATION MISSING
-   * @param brandStatic DOCUMENTATION MISSING
-   * @param simpleActive DOCUMENTATION MISSING
-   * @param simpleDisable DOCUMENTATION MISSING
-   * @param simpleStatic DOCUMENTATION MISSING
-   */
-  constructor (
-    public brandActive: string,
-    public brandDisable: string,
-    public brandStatic: string,
-    public simpleActive: string,
-    public simpleDisable: string,
-    public simpleStatic: string,
-  ) {}
-
-  public static fromJSON (raw: ButtonColorsJSON): ButtonColors {
-    return new ButtonColors(
-      raw.brand_active,
-      raw.brand_disable,
-      raw.brand_static,
-      raw.simple_active,
-      raw.simple_disable,
-      raw.simple_static,
-    )
-  }
-
-  public mappableFields = [
-    'brandActive',
-    'brandDisable',
-    'brandStatic',
-    'simpleActive',
-    'simpleDisable',
-    'simpleStatic',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    brandActive: () => ({ brand_active: this.brandActive }),
-    brandDisable: () => ({ brand_disable: this.brandDisable }),
-    brandStatic: () => ({ brand_static: this.brandStatic }),
-    simpleActive: () => ({ simple_active: this.simpleActive }),
-    simpleDisable: () => ({ simple_disable: this.simpleDisable }),
-    simpleStatic: () => ({ simple_static: this.simpleStatic }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ButtonColorsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ButtonColorsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerMessageReceivedParamsJSON {
-  /* eslint-disable camelcase */
-  messages: ReceivedMessageJSON[];
-  /* eslint-enable camelcase */
-}
-
-export class ServerMessageReceivedParams implements TDProtoClass<ServerMessageReceivedParams> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param messages received message data
-   */
-  constructor (
-    public messages: ReceivedMessage[],
-  ) {}
-
-  public static fromJSON (raw: ServerMessageReceivedParamsJSON): ServerMessageReceivedParams {
-    return new ServerMessageReceivedParams(
-      raw.messages.map(ReceivedMessage.fromJSON),
-    )
-  }
-
-  public mappableFields = [
-    'messages',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    messages: () => ({ messages: this.messages.map(u => u.toJSON()) }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerMessageReceivedParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerMessageReceivedParamsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ChatMessagesJSON {
-  /* eslint-disable camelcase */
-  messages: MessageJSON[];
-  /* eslint-enable camelcase */
-}
-
-export class ChatMessages implements TDProtoClass<ChatMessages> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param messages DOCUMENTATION MISSING
-   */
-  constructor (
-    public messages: Message[],
-  ) {}
-
-  public static fromJSON (raw: ChatMessagesJSON): ChatMessages {
-    return new ChatMessages(
-      raw.messages.map(Message.fromJSON),
-    )
-  }
-
-  public mappableFields = [
-    'messages',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    messages: () => ({ messages: this.messages.map(u => u.toJSON()) }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ChatMessagesJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ChatMessagesJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerChatLastreadJSON {
-  /* eslint-disable camelcase */
-  event: string;
-  params: ServerChatLastreadParamsJSON;
-  confirm_id?: string;
-  /* eslint-enable camelcase */
-}
-
-export class ServerChatLastread implements TDProtoClass<ServerChatLastread> {
-  /**
-   * Changed last read message in chat
-   * @param name DOCUMENTATION MISSING
-   * @param params DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
-   */
-  constructor (
-    public name: string,
-    public params: ServerChatLastreadParams,
-    public confirmId?: string,
-  ) {}
-
-  public static fromJSON (raw: ServerChatLastreadJSON): ServerChatLastread {
-    return new ServerChatLastread(
-      raw.event,
-      ServerChatLastreadParams.fromJSON(raw.params),
-      raw.confirm_id,
-    )
-  }
-
-  public mappableFields = [
-    'name',
-    'params',
-    'confirmId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    params: () => ({ params: this.params.toJSON() }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerChatLastreadJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerChatLastreadJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ClientMessageDeletedParamsJSON {
-  /* eslint-disable camelcase */
-  message_id?: string;
-  /* eslint-enable camelcase */
-}
-
-export class ClientMessageDeletedParams implements TDProtoClass<ClientMessageDeletedParams> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param messageId Message id
-   */
-  constructor (
-    public messageId?: string,
-  ) {}
-
-  public static fromJSON (raw: ClientMessageDeletedParamsJSON): ClientMessageDeletedParams {
-    return new ClientMessageDeletedParams(
-      raw.message_id,
-    )
-  }
-
-  public mappableFields = [
-    'messageId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    messageId: () => ({ message_id: this.messageId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ClientMessageDeletedParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientMessageDeletedParamsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface CountryJSON {
-  /* eslint-disable camelcase */
-  code: string;
-  name: string;
-  default?: boolean;
-  popular?: boolean;
-  /* eslint-enable camelcase */
-}
-
-export class Country implements TDProtoClass<Country> {
-  /**
-   * Country for phone numbers selection on login screen
-   * @param code Country code
-   * @param name Country name
-   * @param isDefault Selected by default
-   * @param popular Is popular, need to cache
-   */
-  constructor (
-    public code: string,
-    public name: string,
-    public isDefault?: boolean,
-    public popular?: boolean,
-  ) {}
-
-  public static fromJSON (raw: CountryJSON): Country {
-    return new Country(
-      raw.code,
-      raw.name,
-      raw.default,
-      raw.popular,
-    )
-  }
-
-  public mappableFields = [
-    'code',
-    'name',
-    'isDefault',
-    'popular',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    code: () => ({ code: this.code }),
-    name: () => ({ name: this.name }),
-    isDefault: () => ({ default: this.isDefault }),
-    popular: () => ({ popular: this.popular }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): CountryJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<CountryJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface TaskSortJSON {
-  /* eslint-disable camelcase */
-  key: TaskSortKey;
-  title: string;
-  /* eslint-enable camelcase */
-}
-
-export class TaskSort implements TDProtoClass<TaskSort> {
-  /**
-   * Task sort type
-   * @param key Field
-   * @param title Sort title
-   */
-  constructor (
-    public key: TaskSortKey,
-    public title: string,
-  ) {}
-
-  public static fromJSON (raw: TaskSortJSON): TaskSort {
-    return new TaskSort(
-      raw.key,
-      raw.title,
-    )
-  }
-
-  public mappableFields = [
-    'key',
-    'title',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    key: () => ({ key: this.key }),
-    title: () => ({ title: this.title }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): TaskSortJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<TaskSortJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ClientChatLastreadJSON {
-  /* eslint-disable camelcase */
-  event: string;
-  params: ClientChatLastreadParamsJSON;
-  confirm_id?: string;
-  /* eslint-enable camelcase */
-}
-
-export class ClientChatLastread implements TDProtoClass<ClientChatLastread> {
-  /**
-   * Last read message in chat changed
-   * @param name DOCUMENTATION MISSING
-   * @param params DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
-   */
-  constructor (
-    public name: string,
-    public params: ClientChatLastreadParams,
-    public confirmId?: string,
-  ) {}
-
-  public static fromJSON (raw: ClientChatLastreadJSON): ClientChatLastread {
-    return new ClientChatLastread(
-      raw.event,
-      ClientChatLastreadParams.fromJSON(raw.params),
-      raw.confirm_id,
-    )
-  }
-
-  public mappableFields = [
-    'name',
-    'params',
-    'confirmId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    params: () => ({ params: this.params.toJSON() }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ClientChatLastreadJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientChatLastreadJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerMessageReceivedJSON {
-  /* eslint-disable camelcase */
-  event: string;
-  params: ServerMessageReceivedParamsJSON;
-  confirm_id?: string;
-  /* eslint-enable camelcase */
-}
-
-export class ServerMessageReceived implements TDProtoClass<ServerMessageReceived> {
-  /**
-   * Message received by someone in chat
-   * @param name DOCUMENTATION MISSING
-   * @param params DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
-   */
-  constructor (
-    public name: string,
-    public params: ServerMessageReceivedParams,
-    public confirmId?: string,
-  ) {}
-
-  public static fromJSON (raw: ServerMessageReceivedJSON): ServerMessageReceived {
-    return new ServerMessageReceived(
-      raw.event,
-      ServerMessageReceivedParams.fromJSON(raw.params),
-      raw.confirm_id,
-    )
-  }
-
-  public mappableFields = [
-    'name',
-    'params',
-    'confirmId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    params: () => ({ params: this.params.toJSON() }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerMessageReceivedJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerMessageReceivedJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface JSEPJSON {
-  /* eslint-disable camelcase */
-  sdp: string;
-  type: string;
-  /* eslint-enable camelcase */
-}
-
-export class JSEP implements TDProtoClass<JSEP> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param sDP DOCUMENTATION MISSING
-   * @param type DOCUMENTATION MISSING
-   */
-  constructor (
-    public sDP: string,
-    public type: string,
-  ) {}
-
-  public static fromJSON (raw: JSEPJSON): JSEP {
-    return new JSEP(
-      raw.sdp,
-      raw.type,
-    )
-  }
-
-  public mappableFields = [
-    'sDP',
-    'type',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    sDP: () => ({ sdp: this.sDP }),
-    type: () => ({ type: this.type }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): JSEPJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<JSEPJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerCallBuzzJSON {
-  /* eslint-disable camelcase */
-  event: string;
-  params: ServerCallBuzzParamsJSON;
-  confirm_id?: string;
-  /* eslint-enable camelcase */
-}
-
-export class ServerCallBuzz implements TDProtoClass<ServerCallBuzz> {
-  /**
-   * Call buzzing
-   * @param name DOCUMENTATION MISSING
-   * @param params DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
-   */
-  constructor (
-    public name: string,
-    public params: ServerCallBuzzParams,
-    public confirmId?: string,
-  ) {}
-
-  public static fromJSON (raw: ServerCallBuzzJSON): ServerCallBuzz {
-    return new ServerCallBuzz(
-      raw.event,
-      ServerCallBuzzParams.fromJSON(raw.params),
-      raw.confirm_id,
-    )
-  }
-
-  public mappableFields = [
-    'name',
-    'params',
-    'confirmId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    params: () => ({ params: this.params.toJSON() }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerCallBuzzJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallBuzzJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface PaginatedUploadShortMessagesJSON {
-  /* eslint-disable camelcase */
-  count: number;
-  limit: number;
-  objects: UploadShortMessageJSON[];
-  offset: number;
-  /* eslint-enable camelcase */
-}
-
-export class PaginatedUploadShortMessages implements TDProtoClass<PaginatedUploadShortMessages> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param count DOCUMENTATION MISSING
-   * @param limit DOCUMENTATION MISSING
-   * @param objects DOCUMENTATION MISSING
-   * @param offset DOCUMENTATION MISSING
-   */
-  constructor (
-    public count: number,
-    public limit: number,
-    public objects: UploadShortMessage[],
-    public offset: number,
-  ) {}
-
-  public static fromJSON (raw: PaginatedUploadShortMessagesJSON): PaginatedUploadShortMessages {
-    return new PaginatedUploadShortMessages(
-      raw.count,
-      raw.limit,
-      raw.objects.map(UploadShortMessage.fromJSON),
-      raw.offset,
-    )
-  }
-
-  public mappableFields = [
-    'count',
-    'limit',
-    'objects',
-    'offset',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    count: () => ({ count: this.count }),
-    limit: () => ({ limit: this.limit }),
-    objects: () => ({ objects: this.objects.map(u => u.toJSON()) }),
-    offset: () => ({ offset: this.offset }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): PaginatedUploadShortMessagesJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<PaginatedUploadShortMessagesJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ContactPreviewJSON {
-  /* eslint-disable camelcase */
-  family_name: string;
-  given_name: string;
-  phone: string;
-  role: string;
-  section: string;
-  _error?: string;
-  patronymic?: string;
-  /* eslint-enable camelcase */
-}
-
-export class ContactPreview implements TDProtoClass<ContactPreview> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param familyName DOCUMENTATION MISSING
-   * @param givenName DOCUMENTATION MISSING
-   * @param phone DOCUMENTATION MISSING
-   * @param role DOCUMENTATION MISSING
-   * @param section DOCUMENTATION MISSING
-   * @param error DOCUMENTATION MISSING
-   * @param patronymic DOCUMENTATION MISSING
-   */
-  constructor (
-    public familyName: string,
-    public givenName: string,
-    public phone: string,
-    public role: string,
-    public section: string,
-    public error?: string,
-    public patronymic?: string,
-  ) {}
-
-  public static fromJSON (raw: ContactPreviewJSON): ContactPreview {
-    return new ContactPreview(
-      raw.family_name,
-      raw.given_name,
-      raw.phone,
-      raw.role,
-      raw.section,
-      raw._error,
-      raw.patronymic,
-    )
-  }
-
-  public mappableFields = [
-    'familyName',
-    'givenName',
-    'phone',
-    'role',
-    'section',
-    'error',
-    'patronymic',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    familyName: () => ({ family_name: this.familyName }),
-    givenName: () => ({ given_name: this.givenName }),
-    phone: () => ({ phone: this.phone }),
-    role: () => ({ role: this.role }),
-    section: () => ({ section: this.section }),
-    error: () => ({ _error: this.error }),
-    patronymic: () => ({ patronymic: this.patronymic }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ContactPreviewJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ContactPreviewJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -4096,51 +3120,861 @@ export class TaskTab implements TDProtoClass<TaskTab> {
   }
 }
 
-export interface ServerChatDeletedParamsJSON {
+export interface ServerChatComposingJSON {
   /* eslint-disable camelcase */
-  badge: number;
-  chats: DeletedChatJSON[];
-  team_unread: TeamUnreadJSON;
+  event: string;
+  params: ServerChatComposingParamsJSON;
+  confirm_id?: string;
   /* eslint-enable camelcase */
 }
 
-export class ServerChatDeletedParams implements TDProtoClass<ServerChatDeletedParams> {
+export class ServerChatComposing implements TDProtoClass<ServerChatComposing> {
   /**
-   * MISSING CLASS DOCUMENTATION
-   * @param badge Total number of unreads
-   * @param chats List of deleted chats
-   * @param teamUnread Current team counters
+   * Someone typing or recording audiomessage in chat
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
    */
   constructor (
-    public badge: number,
-    public chats: DeletedChat[],
-    public teamUnread: TeamUnread,
+    public event: string,
+    public params: ServerChatComposingParams,
+    public confirmId?: string,
   ) {}
 
-  public static fromJSON (raw: ServerChatDeletedParamsJSON): ServerChatDeletedParams {
-    return new ServerChatDeletedParams(
-      raw.badge,
-      raw.chats.map(DeletedChat.fromJSON),
-      TeamUnread.fromJSON(raw.team_unread),
+  public static fromJSON (raw: ServerChatComposingJSON): ServerChatComposing {
+    return new ServerChatComposing(
+      raw.event,
+      ServerChatComposingParams.fromJSON(raw.params),
+      raw.confirm_id,
     )
   }
 
   public mappableFields = [
-    'badge',
-    'chats',
-    'teamUnread',
+    'event',
+    'params',
+    'confirmId',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    badge: () => ({ badge: this.badge }),
-    chats: () => ({ chats: this.chats.map(u => u.toJSON()) }),
-    teamUnread: () => ({ team_unread: this.teamUnread.toJSON() }),
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): ServerChatDeletedParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerChatDeletedParamsJSON>
+  public toJSON (): ServerChatComposingJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerChatComposingJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface BaseEventJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class BaseEvent implements TDProtoClass<BaseEvent> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param event DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: BaseEventJSON): BaseEvent {
+    return new BaseEvent(
+      raw.event,
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): BaseEventJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<BaseEventJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface MessageContentJSON {
+  /* eslint-disable camelcase */
+  text: string;
+  type: Mediatype;
+  actor?: JID;
+  animated?: boolean;
+  comment?: string;
+  duration?: number;
+  emails?: string[];
+  family_name?: string;
+  given_name?: string;
+  new?: string;
+  mediaURL?: string;
+  name?: string;
+  old?: string;
+  patronymic?: string;
+  pdf_version?: PdfVersionJSON;
+  phones?: string[];
+  preview2xURL?: string;
+  previewHeight?: number;
+  previewURL?: string;
+  previewWidth?: number;
+  processing?: boolean;
+  size?: number;
+  stickerpack?: string;
+  subtype?: Mediasubtype;
+  title?: string;
+  upload?: string;
+  /* eslint-enable camelcase */
+}
+
+export class MessageContent implements TDProtoClass<MessageContent> {
+  /**
+   * Chat message content
+   * @param text Text representation of message
+   * @param type Message type
+   * @param actor Change actor contact id (for "change" mediatype)
+   * @param animated Upload is animated image, if any. Deprecated: use Uploads instead
+   * @param comment Comment (for "audiomsg" mediatype)
+   * @param duration Upload duration, if any. Deprecated: use Uploads instead
+   * @param emails Emails list (for "contact" mediatype)
+   * @param familyName Family name (for "contact" mediatype)
+   * @param givenName Given name (for "contact" mediatype)
+   * @param isNew Change new value (for "change" mediatype)
+   * @param mediaURL Upload url, if any. Deprecated: use Uploads instead
+   * @param name Upload name, if any. Deprecated: use Uploads instead
+   * @param old Change old value (for "change" mediatype)
+   * @param patronymic Patronymic name (for "contact" mediatype)
+   * @param pdfVersion Pdf version, if any
+   * @param phones Contact phones list (for "contact" mediatype)
+   * @param preview2xURL Upload high resolution preview absolute url, if any. Deprecated: use Uploads instead
+   * @param previewHeight Upload preview height, in pixels, if any. Deprecated: use Uploads instead
+   * @param previewURL Upload preview absolute url, if any. Deprecated: use Uploads instead
+   * @param previewWidth Upload width, in pixels, if any. Deprecated: use Uploads instead
+   * @param processing Upload still processing, if any. Deprecated: use Uploads instead
+   * @param size Upload size, if any. Deprecated: use Uploads instead
+   * @param stickerpack Stickerpack name (for "sticker" subtype)
+   * @param subtype Message subtype, if any
+   * @param title Change title (for "change" mediatype)
+   * @param upload Upload id, if any. Deprecated: use Uploads instead
+   */
+  constructor (
+    public text: string,
+    public type: Mediatype,
+    public actor?: JID,
+    public animated?: boolean,
+    public comment?: string,
+    public duration?: number,
+    public emails?: string[],
+    public familyName?: string,
+    public givenName?: string,
+    public isNew?: string,
+    public mediaURL?: string,
+    public name?: string,
+    public old?: string,
+    public patronymic?: string,
+    public pdfVersion?: PdfVersion,
+    public phones?: string[],
+    public preview2xURL?: string,
+    public previewHeight?: number,
+    public previewURL?: string,
+    public previewWidth?: number,
+    public processing?: boolean,
+    public size?: number,
+    public stickerpack?: string,
+    public subtype?: Mediasubtype,
+    public title?: string,
+    public upload?: string,
+  ) {}
+
+  public static fromJSON (raw: MessageContentJSON): MessageContent {
+    return new MessageContent(
+      raw.text,
+      raw.type,
+      raw.actor,
+      raw.animated,
+      raw.comment,
+      raw.duration,
+      raw.emails,
+      raw.family_name,
+      raw.given_name,
+      raw.new,
+      raw.mediaURL,
+      raw.name,
+      raw.old,
+      raw.patronymic,
+      raw.pdf_version && PdfVersion.fromJSON(raw.pdf_version),
+      raw.phones,
+      raw.preview2xURL,
+      raw.previewHeight,
+      raw.previewURL,
+      raw.previewWidth,
+      raw.processing,
+      raw.size,
+      raw.stickerpack,
+      raw.subtype,
+      raw.title,
+      raw.upload,
+    )
+  }
+
+  public mappableFields = [
+    'text',
+    'type',
+    'actor',
+    'animated',
+    'comment',
+    'duration',
+    'emails',
+    'familyName',
+    'givenName',
+    'isNew',
+    'mediaURL',
+    'name',
+    'old',
+    'patronymic',
+    'pdfVersion',
+    'phones',
+    'preview2xURL',
+    'previewHeight',
+    'previewURL',
+    'previewWidth',
+    'processing',
+    'size',
+    'stickerpack',
+    'subtype',
+    'title',
+    'upload',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    text: () => ({ text: this.text }),
+    type: () => ({ type: this.type }),
+    actor: () => ({ actor: this.actor }),
+    animated: () => ({ animated: this.animated }),
+    comment: () => ({ comment: this.comment }),
+    duration: () => ({ duration: this.duration }),
+    emails: () => ({ emails: this.emails }),
+    familyName: () => ({ family_name: this.familyName }),
+    givenName: () => ({ given_name: this.givenName }),
+    isNew: () => ({ new: this.isNew }),
+    mediaURL: () => ({ mediaURL: this.mediaURL }),
+    name: () => ({ name: this.name }),
+    old: () => ({ old: this.old }),
+    patronymic: () => ({ patronymic: this.patronymic }),
+    pdfVersion: () => ({ pdf_version: this.pdfVersion?.toJSON() }),
+    phones: () => ({ phones: this.phones }),
+    preview2xURL: () => ({ preview2xURL: this.preview2xURL }),
+    previewHeight: () => ({ previewHeight: this.previewHeight }),
+    previewURL: () => ({ previewURL: this.previewURL }),
+    previewWidth: () => ({ previewWidth: this.previewWidth }),
+    processing: () => ({ processing: this.processing }),
+    size: () => ({ size: this.size }),
+    stickerpack: () => ({ stickerpack: this.stickerpack }),
+    subtype: () => ({ subtype: this.subtype }),
+    title: () => ({ title: this.title }),
+    upload: () => ({ upload: this.upload }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): MessageContentJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<MessageContentJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerMessageReceivedJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ServerMessageReceivedParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerMessageReceived implements TDProtoClass<ServerMessageReceived> {
+  /**
+   * Message received by someone in chat
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ServerMessageReceivedParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ServerMessageReceivedJSON): ServerMessageReceived {
+    return new ServerMessageReceived(
+      raw.event,
+      ServerMessageReceivedParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerMessageReceivedJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerMessageReceivedJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface StickerpackJSON {
+  /* eslint-disable camelcase */
+  name: string;
+  stickers: StickerJSON[];
+  title: string;
+  uid: string;
+  author?: string;
+  author_link?: string;
+  /* eslint-enable camelcase */
+}
+
+export class Stickerpack implements TDProtoClass<Stickerpack> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param name DOCUMENTATION MISSING
+   * @param stickers DOCUMENTATION MISSING
+   * @param title DOCUMENTATION MISSING
+   * @param uid DOCUMENTATION MISSING
+   * @param author DOCUMENTATION MISSING
+   * @param authorLink DOCUMENTATION MISSING
+   */
+  constructor (
+    public name: string,
+    public stickers: Sticker[],
+    public title: string,
+    public uid: string,
+    public author?: string,
+    public authorLink?: string,
+  ) {}
+
+  public static fromJSON (raw: StickerpackJSON): Stickerpack {
+    return new Stickerpack(
+      raw.name,
+      raw.stickers.map(Sticker.fromJSON),
+      raw.title,
+      raw.uid,
+      raw.author,
+      raw.author_link,
+    )
+  }
+
+  public mappableFields = [
+    'name',
+    'stickers',
+    'title',
+    'uid',
+    'author',
+    'authorLink',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    name: () => ({ name: this.name }),
+    stickers: () => ({ stickers: this.stickers.map(u => u.toJSON()) }),
+    title: () => ({ title: this.title }),
+    uid: () => ({ uid: this.uid }),
+    author: () => ({ author: this.author }),
+    authorLink: () => ({ author_link: this.authorLink }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): StickerpackJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<StickerpackJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerTagDeletedParamsJSON {
+  /* eslint-disable camelcase */
+  tags: DeletedTagJSON[];
+  /* eslint-enable camelcase */
+}
+
+export class ServerTagDeletedParams implements TDProtoClass<ServerTagDeletedParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param tags Tags info
+   */
+  constructor (
+    public tags: DeletedTag[],
+  ) {}
+
+  public static fromJSON (raw: ServerTagDeletedParamsJSON): ServerTagDeletedParams {
+    return new ServerTagDeletedParams(
+      raw.tags.map(DeletedTag.fromJSON),
+    )
+  }
+
+  public mappableFields = [
+    'tags',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    tags: () => ({ tags: this.tags.map(u => u.toJSON()) }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerTagDeletedParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerTagDeletedParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerCallTalkingJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ServerCallTalkingParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerCallTalking implements TDProtoClass<ServerCallTalking> {
+  /**
+   * Someone talks in call
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ServerCallTalkingParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ServerCallTalkingJSON): ServerCallTalking {
+    return new ServerCallTalking(
+      raw.event,
+      ServerCallTalkingParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerCallTalkingJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallTalkingJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface UserJSON {
+  /* eslint-disable camelcase */
+  alt_send: boolean;
+  always_send_pushes: boolean;
+  asterisk_mention: boolean;
+  munread_first: boolean;
+  quiet_time_finish: string;
+  quiet_time_start: string;
+  timezone: string;
+  unread_first: boolean;
+  default_lang?: string;
+  email?: string;
+  family_name?: string;
+  given_name?: string;
+  patronymic?: string;
+  phone?: string;
+  /* eslint-enable camelcase */
+}
+
+export class User implements TDProtoClass<User> {
+  /**
+   * Account data
+   * @param altSend Use Ctrl/Cmd + Enter instead Enter
+   * @param alwaysSendPushes Send pushes even user is online
+   * @param asteriskMention Use * as @ for mentions
+   * @param munreadFirst Show unread chats in chat list first on mobiles
+   * @param quietTimeFinish Finish silently time (no pushes, no sounds)
+   * @param quietTimeStart Start silently time (no pushes, no sounds)
+   * @param timezone Timezone
+   * @param unreadFirst Show unread chats in chat list first
+   * @param defaultLang Default language code
+   * @param email Email for login
+   * @param familyName Family name
+   * @param givenName Given name
+   * @param patronymic Patronymic, if any
+   * @param phone Phone for login
+   */
+  constructor (
+    public altSend: boolean,
+    public alwaysSendPushes: boolean,
+    public asteriskMention: boolean,
+    public munreadFirst: boolean,
+    public quietTimeFinish: string,
+    public quietTimeStart: string,
+    public timezone: string,
+    public unreadFirst: boolean,
+    public defaultLang?: string,
+    public email?: string,
+    public familyName?: string,
+    public givenName?: string,
+    public patronymic?: string,
+    public phone?: string,
+  ) {}
+
+  public static fromJSON (raw: UserJSON): User {
+    return new User(
+      raw.alt_send,
+      raw.always_send_pushes,
+      raw.asterisk_mention,
+      raw.munread_first,
+      raw.quiet_time_finish,
+      raw.quiet_time_start,
+      raw.timezone,
+      raw.unread_first,
+      raw.default_lang,
+      raw.email,
+      raw.family_name,
+      raw.given_name,
+      raw.patronymic,
+      raw.phone,
+    )
+  }
+
+  public mappableFields = [
+    'altSend',
+    'alwaysSendPushes',
+    'asteriskMention',
+    'munreadFirst',
+    'quietTimeFinish',
+    'quietTimeStart',
+    'timezone',
+    'unreadFirst',
+    'defaultLang',
+    'email',
+    'familyName',
+    'givenName',
+    'patronymic',
+    'phone',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    altSend: () => ({ alt_send: this.altSend }),
+    alwaysSendPushes: () => ({ always_send_pushes: this.alwaysSendPushes }),
+    asteriskMention: () => ({ asterisk_mention: this.asteriskMention }),
+    munreadFirst: () => ({ munread_first: this.munreadFirst }),
+    quietTimeFinish: () => ({ quiet_time_finish: this.quietTimeFinish }),
+    quietTimeStart: () => ({ quiet_time_start: this.quietTimeStart }),
+    timezone: () => ({ timezone: this.timezone }),
+    unreadFirst: () => ({ unread_first: this.unreadFirst }),
+    defaultLang: () => ({ default_lang: this.defaultLang }),
+    email: () => ({ email: this.email }),
+    familyName: () => ({ family_name: this.familyName }),
+    givenName: () => ({ given_name: this.givenName }),
+    patronymic: () => ({ patronymic: this.patronymic }),
+    phone: () => ({ phone: this.phone }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): UserJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<UserJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface DeletedTeamJSON {
+  /* eslint-disable camelcase */
+  gentime: number;
+  is_archive: boolean;
+  uid: string;
+  /* eslint-enable camelcase */
+}
+
+export class DeletedTeam implements TDProtoClass<DeletedTeam> {
+  /**
+   * Team deletion message. Readonly
+   * @param gentime Object version
+   * @param isArchive Team deleted
+   * @param uid Team id
+   */
+  constructor (
+    public gentime: number,
+    public isArchive: boolean,
+    public uid: string,
+  ) {}
+
+  public static fromJSON (raw: DeletedTeamJSON): DeletedTeam {
+    return new DeletedTeam(
+      raw.gentime,
+      raw.is_archive,
+      raw.uid,
+    )
+  }
+
+  public mappableFields = [
+    'gentime',
+    'isArchive',
+    'uid',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    gentime: () => ({ gentime: this.gentime }),
+    isArchive: () => ({ is_archive: this.isArchive }),
+    uid: () => ({ uid: this.uid }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): DeletedTeamJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<DeletedTeamJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ShortMessageJSON {
+  /* eslint-disable camelcase */
+  chat: JID;
+  chat_type: ChatType;
+  created: ISODateTimeString;
+  from: JID;
+  gentime: number;
+  message_id: string;
+  to: JID;
+  is_archive?: boolean;
+  /* eslint-enable camelcase */
+}
+
+export class ShortMessage implements TDProtoClass<ShortMessage> {
+  /**
+   * Short message based on chat message
+   * @param chat Chat id
+   * @param chatType Chat type
+   * @param created Message creation datetime (set by server side) or sending datetime in future for draft messages
+   * @param from Sender contact id
+   * @param gentime Object version
+   * @param messageId Message uid
+   * @param to Recipient id (group, task or contact)
+   * @param isArchive This message is archive. True or null
+   */
+  constructor (
+    public readonly chat: JID,
+    public readonly chatType: ChatType,
+    public readonly created: ISODateTimeString,
+    public readonly from: JID,
+    public readonly gentime: number,
+    public messageId: string,
+    public to: JID,
+    public readonly isArchive?: boolean,
+  ) {}
+
+  public static fromJSON (raw: ShortMessageJSON): ShortMessage {
+    return new ShortMessage(
+      raw.chat,
+      raw.chat_type,
+      raw.created,
+      raw.from,
+      raw.gentime,
+      raw.message_id,
+      raw.to,
+      raw.is_archive,
+    )
+  }
+
+  public mappableFields = [
+    'chat',
+    'chatType',
+    'created',
+    'from',
+    'gentime',
+    'messageId',
+    'to',
+    'isArchive',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    chat: () => ({ chat: this.chat }),
+    chatType: () => ({ chat_type: this.chatType }),
+    created: () => ({ created: this.created }),
+    from: () => ({ from: this.from }),
+    gentime: () => ({ gentime: this.gentime }),
+    messageId: () => ({ message_id: this.messageId }),
+    to: () => ({ to: this.to }),
+    isArchive: () => ({ is_archive: this.isArchive }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ShortMessageJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ShortMessageJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerCallMuteallParamsJSON {
+  /* eslint-disable camelcase */
+  jid: JID;
+  muted: boolean;
+  /* eslint-enable camelcase */
+}
+
+export class ServerCallMuteallParams implements TDProtoClass<ServerCallMuteallParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param jid Chat or contact id
+   * @param muted Mute state
+   */
+  constructor (
+    public jid: JID,
+    public muted: boolean,
+  ) {}
+
+  public static fromJSON (raw: ServerCallMuteallParamsJSON): ServerCallMuteallParams {
+    return new ServerCallMuteallParams(
+      raw.jid,
+      raw.muted,
+    )
+  }
+
+  public mappableFields = [
+    'jid',
+    'muted',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    jid: () => ({ jid: this.jid }),
+    muted: () => ({ muted: this.muted }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerCallMuteallParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallMuteallParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerRemindFiredParamsJSON {
+  /* eslint-disable camelcase */
+  reminds: RemindJSON[];
+  /* eslint-enable camelcase */
+}
+
+export class ServerRemindFiredParams implements TDProtoClass<ServerRemindFiredParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param reminds Remind information
+   */
+  constructor (
+    public reminds: Remind[],
+  ) {}
+
+  public static fromJSON (raw: ServerRemindFiredParamsJSON): ServerRemindFiredParams {
+    return new ServerRemindFiredParams(
+      raw.reminds.map(Remind.fromJSON),
+    )
+  }
+
+  public mappableFields = [
+    'reminds',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    reminds: () => ({ reminds: this.reminds.map(u => u.toJSON()) }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerRemindFiredParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerRemindFiredParamsJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -4210,39 +4044,57 @@ export class PaginatedMessages implements TDProtoClass<PaginatedMessages> {
   }
 }
 
-export interface ServerTagUpdatedParamsJSON {
+export interface PaginatedUploadShortMessagesJSON {
   /* eslint-disable camelcase */
-  tags: TagJSON[];
+  count: number;
+  limit: number;
+  objects: UploadShortMessageJSON[];
+  offset: number;
   /* eslint-enable camelcase */
 }
 
-export class ServerTagUpdatedParams implements TDProtoClass<ServerTagUpdatedParams> {
+export class PaginatedUploadShortMessages implements TDProtoClass<PaginatedUploadShortMessages> {
   /**
    * MISSING CLASS DOCUMENTATION
-   * @param tags Tags info
+   * @param count DOCUMENTATION MISSING
+   * @param limit DOCUMENTATION MISSING
+   * @param objects DOCUMENTATION MISSING
+   * @param offset DOCUMENTATION MISSING
    */
   constructor (
-    public tags: Tag[],
+    public count: number,
+    public limit: number,
+    public objects: UploadShortMessage[],
+    public offset: number,
   ) {}
 
-  public static fromJSON (raw: ServerTagUpdatedParamsJSON): ServerTagUpdatedParams {
-    return new ServerTagUpdatedParams(
-      raw.tags.map(Tag.fromJSON),
+  public static fromJSON (raw: PaginatedUploadShortMessagesJSON): PaginatedUploadShortMessages {
+    return new PaginatedUploadShortMessages(
+      raw.count,
+      raw.limit,
+      raw.objects.map(UploadShortMessage.fromJSON),
+      raw.offset,
     )
   }
 
   public mappableFields = [
-    'tags',
+    'count',
+    'limit',
+    'objects',
+    'offset',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    tags: () => ({ tags: this.tags.map(u => u.toJSON()) }),
+    count: () => ({ count: this.count }),
+    limit: () => ({ limit: this.limit }),
+    objects: () => ({ objects: this.objects.map(u => u.toJSON()) }),
+    offset: () => ({ offset: this.offset }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): ServerTagUpdatedParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerTagUpdatedParamsJSON>
+  public toJSON (): PaginatedUploadShortMessagesJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<PaginatedUploadShortMessagesJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -4252,69 +4104,1593 @@ export class ServerTagUpdatedParams implements TDProtoClass<ServerTagUpdatedPara
   }
 }
 
-export interface StickerJSON {
+export interface InputColorsJSON {
   /* eslint-disable camelcase */
-  icon100: string;
-  icon128: string;
-  icon200: string;
-  icon64: string;
-  message_content: MessageContentJSON;
-  uid: string;
+  active: string;
+  disable: string;
+  error: string;
+  static: string;
   /* eslint-enable camelcase */
 }
 
-export class Sticker implements TDProtoClass<Sticker> {
+export class InputColors implements TDProtoClass<InputColors> {
   /**
    * MISSING CLASS DOCUMENTATION
-   * @param icon100 DOCUMENTATION MISSING
-   * @param icon128 DOCUMENTATION MISSING
-   * @param icon200 DOCUMENTATION MISSING
-   * @param icon64 DOCUMENTATION MISSING
-   * @param messageContent DOCUMENTATION MISSING
-   * @param uid DOCUMENTATION MISSING
+   * @param active DOCUMENTATION MISSING
+   * @param disable DOCUMENTATION MISSING
+   * @param error DOCUMENTATION MISSING
+   * @param isStatic DOCUMENTATION MISSING
    */
   constructor (
-    public icon100: string,
-    public icon128: string,
-    public icon200: string,
-    public icon64: string,
-    public messageContent: MessageContent,
-    public uid: string,
+    public active: string,
+    public disable: string,
+    public error: string,
+    public isStatic: string,
   ) {}
 
-  public static fromJSON (raw: StickerJSON): Sticker {
-    return new Sticker(
-      raw.icon100,
-      raw.icon128,
-      raw.icon200,
-      raw.icon64,
-      MessageContent.fromJSON(raw.message_content),
-      raw.uid,
+  public static fromJSON (raw: InputColorsJSON): InputColors {
+    return new InputColors(
+      raw.active,
+      raw.disable,
+      raw.error,
+      raw.static,
     )
   }
 
   public mappableFields = [
-    'icon100',
-    'icon128',
-    'icon200',
-    'icon64',
-    'messageContent',
-    'uid',
+    'active',
+    'disable',
+    'error',
+    'isStatic',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    icon100: () => ({ icon100: this.icon100 }),
-    icon128: () => ({ icon128: this.icon128 }),
-    icon200: () => ({ icon200: this.icon200 }),
-    icon64: () => ({ icon64: this.icon64 }),
-    messageContent: () => ({ message_content: this.messageContent.toJSON() }),
-    uid: () => ({ uid: this.uid }),
+    active: () => ({ active: this.active }),
+    disable: () => ({ disable: this.disable }),
+    error: () => ({ error: this.error }),
+    isStatic: () => ({ static: this.isStatic }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): StickerJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<StickerJSON>
+  public toJSON (): InputColorsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<InputColorsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerRemindFiredJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ServerRemindFiredParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerRemindFired implements TDProtoClass<ServerRemindFired> {
+  /**
+   * Task or group remind fired
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ServerRemindFiredParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ServerRemindFiredJSON): ServerRemindFired {
+    return new ServerRemindFired(
+      raw.event,
+      ServerRemindFiredParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerRemindFiredJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerRemindFiredJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerPanicJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ServerPanicParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerPanic implements TDProtoClass<ServerPanic> {
+  /**
+   * Critical server error
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ServerPanicParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ServerPanicJSON): ServerPanic {
+    return new ServerPanic(
+      raw.event,
+      ServerPanicParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerPanicJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerPanicJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerUploadUpdatedParamsJSON {
+  /* eslint-disable camelcase */
+  uploads: UploadJSON[];
+  /* eslint-enable camelcase */
+}
+
+export class ServerUploadUpdatedParams implements TDProtoClass<ServerUploadUpdatedParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param uploads Uploads data
+   */
+  constructor (
+    public uploads: Upload[],
+  ) {}
+
+  public static fromJSON (raw: ServerUploadUpdatedParamsJSON): ServerUploadUpdatedParams {
+    return new ServerUploadUpdatedParams(
+      raw.uploads.map(Upload.fromJSON),
+    )
+  }
+
+  public mappableFields = [
+    'uploads',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    uploads: () => ({ uploads: this.uploads.map(u => u.toJSON()) }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerUploadUpdatedParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerUploadUpdatedParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ClientPingJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ClientPing implements TDProtoClass<ClientPing> {
+  /**
+   * Empty message for checking server connection
+   * @param event DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ClientPingJSON): ClientPing {
+    return new ClientPing(
+      raw.event,
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ClientPingJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientPingJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ClientChatComposingJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ClientChatComposingParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ClientChatComposing implements TDProtoClass<ClientChatComposing> {
+  /**
+   * Typing or recording audiomessage
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ClientChatComposingParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ClientChatComposingJSON): ClientChatComposing {
+    return new ClientChatComposing(
+      raw.event,
+      ClientChatComposingParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ClientChatComposingJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientChatComposingJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ClientMessageUpdatedJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ClientMessageUpdatedParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ClientMessageUpdated implements TDProtoClass<ClientMessageUpdated> {
+  /**
+   * Message created or changed
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ClientMessageUpdatedParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ClientMessageUpdatedJSON): ClientMessageUpdated {
+    return new ClientMessageUpdated(
+      raw.event,
+      ClientMessageUpdatedParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ClientMessageUpdatedJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientMessageUpdatedJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerTagUpdatedJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ServerTagUpdatedParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerTagUpdated implements TDProtoClass<ServerTagUpdated> {
+  /**
+   * Tag created or changed
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ServerTagUpdatedParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ServerTagUpdatedJSON): ServerTagUpdated {
+    return new ServerTagUpdated(
+      raw.event,
+      ServerTagUpdatedParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerTagUpdatedJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerTagUpdatedJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerCallStateJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ServerCallStateParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerCallState implements TDProtoClass<ServerCallState> {
+  /**
+   * Call participant number or parameters changed
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ServerCallStateParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ServerCallStateJSON): ServerCallState {
+    return new ServerCallState(
+      raw.event,
+      ServerCallStateParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerCallStateJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallStateJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerCallRejectJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ServerCallRejectParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerCallReject implements TDProtoClass<ServerCallReject> {
+  /**
+   * Call rejected
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ServerCallRejectParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ServerCallRejectJSON): ServerCallReject {
+    return new ServerCallReject(
+      raw.event,
+      ServerCallRejectParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerCallRejectJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallRejectJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface TeamCounterJSON {
+  /* eslint-disable camelcase */
+  uid: string;
+  unread: TeamUnreadJSON;
+  /* eslint-enable camelcase */
+}
+
+export class TeamCounter implements TDProtoClass<TeamCounter> {
+  /**
+   * Unread message counters
+   * @param uid Team id
+   * @param unread Unread message counters
+   */
+  constructor (
+    public uid: string,
+    public unread: TeamUnread,
+  ) {}
+
+  public static fromJSON (raw: TeamCounterJSON): TeamCounter {
+    return new TeamCounter(
+      raw.uid,
+      TeamUnread.fromJSON(raw.unread),
+    )
+  }
+
+  public mappableFields = [
+    'uid',
+    'unread',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    uid: () => ({ uid: this.uid }),
+    unread: () => ({ unread: this.unread.toJSON() }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): TeamCounterJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<TeamCounterJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface SubtaskJSON {
+  /* eslint-disable camelcase */
+  assignee: JID;
+  display_name: string;
+  jid: JID;
+  num: number;
+  title: string;
+  public?: boolean;
+  /* eslint-enable camelcase */
+}
+
+export class Subtask implements TDProtoClass<Subtask> {
+  /**
+   * Link to sub/sup task
+   * @param assignee Assignee contact id. Tasks only
+   * @param displayName Title
+   * @param jid Task id
+   * @param num Task number in this team
+   * @param title Task title. Generated from number and description
+   * @param isPublic Can other team member see this task/group chat
+   */
+  constructor (
+    public assignee: JID,
+    public displayName: string,
+    public jid: JID,
+    public num: number,
+    public title: string,
+    public isPublic?: boolean,
+  ) {}
+
+  public static fromJSON (raw: SubtaskJSON): Subtask {
+    return new Subtask(
+      raw.assignee,
+      raw.display_name,
+      raw.jid,
+      raw.num,
+      raw.title,
+      raw.public,
+    )
+  }
+
+  public mappableFields = [
+    'assignee',
+    'displayName',
+    'jid',
+    'num',
+    'title',
+    'isPublic',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    assignee: () => ({ assignee: this.assignee }),
+    displayName: () => ({ display_name: this.displayName }),
+    jid: () => ({ jid: this.jid }),
+    num: () => ({ num: this.num }),
+    title: () => ({ title: this.title }),
+    isPublic: () => ({ public: this.isPublic }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): SubtaskJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<SubtaskJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerCallSoundParamsJSON {
+  /* eslint-disable camelcase */
+  jid: JID;
+  muted: boolean;
+  /* eslint-enable camelcase */
+}
+
+export class ServerCallSoundParams implements TDProtoClass<ServerCallSoundParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param jid Chat or contact id
+   * @param muted Mute state
+   */
+  constructor (
+    public jid: JID,
+    public muted: boolean,
+  ) {}
+
+  public static fromJSON (raw: ServerCallSoundParamsJSON): ServerCallSoundParams {
+    return new ServerCallSoundParams(
+      raw.jid,
+      raw.muted,
+    )
+  }
+
+  public mappableFields = [
+    'jid',
+    'muted',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    jid: () => ({ jid: this.jid }),
+    muted: () => ({ muted: this.muted }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerCallSoundParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallSoundParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface TaskFilterJSON {
+  /* eslint-disable camelcase */
+  field: TaskFilterKey;
+  title: string;
+  /* eslint-enable camelcase */
+}
+
+export class TaskFilter implements TDProtoClass<TaskFilter> {
+  /**
+   * Task filter
+   * @param field Task filter field
+   * @param title Filter title
+   */
+  constructor (
+    public field: TaskFilterKey,
+    public title: string,
+  ) {}
+
+  public static fromJSON (raw: TaskFilterJSON): TaskFilter {
+    return new TaskFilter(
+      raw.field,
+      raw.title,
+    )
+  }
+
+  public mappableFields = [
+    'field',
+    'title',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    field: () => ({ field: this.field }),
+    title: () => ({ title: this.title }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): TaskFilterJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<TaskFilterJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface UploadPreviewJSON {
+  /* eslint-disable camelcase */
+  height: number;
+  url: string;
+  url_2x: string;
+  width: number;
+  /* eslint-enable camelcase */
+}
+
+export class UploadPreview implements TDProtoClass<UploadPreview> {
+  /**
+   * Upload preview
+   * @param height Height in pixels
+   * @param url Absolute url to image
+   * @param url2x Absolute url to high resolution image (retina)
+   * @param width Width in pixels
+   */
+  constructor (
+    public height: number,
+    public url: string,
+    public url2x: string,
+    public width: number,
+  ) {}
+
+  public static fromJSON (raw: UploadPreviewJSON): UploadPreview {
+    return new UploadPreview(
+      raw.height,
+      raw.url,
+      raw.url_2x,
+      raw.width,
+    )
+  }
+
+  public mappableFields = [
+    'height',
+    'url',
+    'url2x',
+    'width',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    height: () => ({ height: this.height }),
+    url: () => ({ url: this.url }),
+    url2x: () => ({ url_2x: this.url2x }),
+    width: () => ({ width: this.width }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): UploadPreviewJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<UploadPreviewJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface MessageJSON {
+  /* eslint-disable camelcase */
+  chat: JID;
+  chat_type: ChatType;
+  content: MessageContentJSON;
+  created: ISODateTimeString;
+  from: JID;
+  gentime: number;
+  message_id: string;
+  to: JID;
+  _debug?: string;
+  drafted?: ISODateTimeString;
+  editable_until?: ISODateTimeString;
+  edited?: ISODateTimeString;
+  has_previews?: boolean;
+  important?: boolean;
+  is_archive?: boolean;
+  is_first?: boolean;
+  is_last?: boolean;
+  linked_messages?: MessageJSON[];
+  links?: MessageLinkJSON[];
+  markup?: MarkupEntityJSON[];
+  nopreview?: boolean;
+  notice?: boolean;
+  num?: number;
+  num_received?: number;
+  prev?: string;
+  push_text?: string;
+  reactions?: MessageReactionJSON[];
+  received?: boolean;
+  reply_to?: MessageJSON;
+  silently?: boolean;
+  uploads?: UploadJSON[];
+  /* eslint-enable camelcase */
+}
+
+export class Message implements TDProtoClass<Message> {
+  /**
+   * Chat message
+   * @param chat Chat id
+   * @param chatType Chat type
+   * @param content Message content struct
+   * @param created Message creation datetime (set by server side) or sending datetime in future for draft messages
+   * @param from Sender contact id
+   * @param gentime Object version
+   * @param messageId Message uid
+   * @param to Recipient id (group, task or contact)
+   * @param _debug Debug information, if any
+   * @param drafted Creation datetime for draft messages
+   * @param editableUntil Author can change this message until date. Can be null
+   * @param edited ISODateTimeString of message modification or deletion
+   * @param hasPreviews Has link previews. True or null
+   * @param important Importance flag
+   * @param isArchive This message is archive. True or null
+   * @param isFirst This message is first in this chat. True or null
+   * @param isLast This message is first in this chat. True or null
+   * @param linkedMessages Forwarded messages. Can be null. Also contains double of ReplyTo for backward compatibility
+   * @param links External/internals links
+   * @param markup Markup entities. Experimental
+   * @param nopreview Disable link previews. True or null
+   * @param notice Has mention (@). True or null
+   * @param num Index number of this message. Starts from 0. Null for deleted messages. Changes when any previous message wad deleted
+   * @param numReceived Unused yet
+   * @param prev Previous message id in this chat. Uid or null
+   * @param pushText Simple plaintext message representation
+   * @param reactions Message reactions struct. Can be null
+   * @param received Message was seen by anybody in chat. True or null
+   * @param replyTo Message that was replied to, if any
+   * @param silently Message has no pushes and did not affect any counters
+   * @param uploads Message uploads
+   */
+  constructor (
+    public readonly chat: JID,
+    public readonly chatType: ChatType,
+    public content: MessageContent,
+    public readonly created: ISODateTimeString,
+    public readonly from: JID,
+    public readonly gentime: number,
+    public messageId: string,
+    public to: JID,
+    public readonly _debug?: string,
+    public readonly drafted?: ISODateTimeString,
+    public readonly editableUntil?: ISODateTimeString,
+    public readonly edited?: ISODateTimeString,
+    public readonly hasPreviews?: boolean,
+    public important?: boolean,
+    public readonly isArchive?: boolean,
+    public readonly isFirst?: boolean,
+    public readonly isLast?: boolean,
+    public linkedMessages?: Message[],
+    public readonly links?: MessageLink[],
+    public readonly markup?: MarkupEntity[],
+    public nopreview?: boolean,
+    public readonly notice?: boolean,
+    public readonly num?: number,
+    public readonly numReceived?: number,
+    public readonly prev?: string,
+    public readonly pushText?: string,
+    public readonly reactions?: MessageReaction[],
+    public readonly received?: boolean,
+    public replyTo?: Message,
+    public readonly silently?: boolean,
+    public uploads?: Upload[],
+  ) {}
+
+  public static fromJSON (raw: MessageJSON): Message {
+    return new Message(
+      raw.chat,
+      raw.chat_type,
+      MessageContent.fromJSON(raw.content),
+      raw.created,
+      raw.from,
+      raw.gentime,
+      raw.message_id,
+      raw.to,
+      raw._debug,
+      raw.drafted,
+      raw.editable_until,
+      raw.edited,
+      raw.has_previews,
+      raw.important,
+      raw.is_archive,
+      raw.is_first,
+      raw.is_last,
+      raw.linked_messages && raw.linked_messages.map(Message.fromJSON),
+      raw.links && raw.links.map(MessageLink.fromJSON),
+      raw.markup && raw.markup.map(MarkupEntity.fromJSON),
+      raw.nopreview,
+      raw.notice,
+      raw.num,
+      raw.num_received,
+      raw.prev,
+      raw.push_text,
+      raw.reactions && raw.reactions.map(MessageReaction.fromJSON),
+      raw.received,
+      raw.reply_to && Message.fromJSON(raw.reply_to),
+      raw.silently,
+      raw.uploads && raw.uploads.map(Upload.fromJSON),
+    )
+  }
+
+  public mappableFields = [
+    'chat',
+    'chatType',
+    'content',
+    'created',
+    'from',
+    'gentime',
+    'messageId',
+    'to',
+    '_debug',
+    'drafted',
+    'editableUntil',
+    'edited',
+    'hasPreviews',
+    'important',
+    'isArchive',
+    'isFirst',
+    'isLast',
+    'linkedMessages',
+    'links',
+    'markup',
+    'nopreview',
+    'notice',
+    'num',
+    'numReceived',
+    'prev',
+    'pushText',
+    'reactions',
+    'received',
+    'replyTo',
+    'silently',
+    'uploads',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    chat: () => ({ chat: this.chat }),
+    chatType: () => ({ chat_type: this.chatType }),
+    content: () => ({ content: this.content.toJSON() }),
+    created: () => ({ created: this.created }),
+    from: () => ({ from: this.from }),
+    gentime: () => ({ gentime: this.gentime }),
+    messageId: () => ({ message_id: this.messageId }),
+    to: () => ({ to: this.to }),
+    _debug: () => ({ _debug: this._debug }),
+    drafted: () => ({ drafted: this.drafted }),
+    editableUntil: () => ({ editable_until: this.editableUntil }),
+    edited: () => ({ edited: this.edited }),
+    hasPreviews: () => ({ has_previews: this.hasPreviews }),
+    important: () => ({ important: this.important }),
+    isArchive: () => ({ is_archive: this.isArchive }),
+    isFirst: () => ({ is_first: this.isFirst }),
+    isLast: () => ({ is_last: this.isLast }),
+    linkedMessages: () => ({ linked_messages: this.linkedMessages?.map(u => u.toJSON()) }),
+    links: () => ({ links: this.links?.map(u => u.toJSON()) }),
+    markup: () => ({ markup: this.markup?.map(u => u.toJSON()) }),
+    nopreview: () => ({ nopreview: this.nopreview }),
+    notice: () => ({ notice: this.notice }),
+    num: () => ({ num: this.num }),
+    numReceived: () => ({ num_received: this.numReceived }),
+    prev: () => ({ prev: this.prev }),
+    pushText: () => ({ push_text: this.pushText }),
+    reactions: () => ({ reactions: this.reactions?.map(u => u.toJSON()) }),
+    received: () => ({ received: this.received }),
+    replyTo: () => ({ reply_to: this.replyTo?.toJSON() }),
+    silently: () => ({ silently: this.silently }),
+    uploads: () => ({ uploads: this.uploads?.map(u => u.toJSON()) }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): MessageJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<MessageJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ClientCallLeaveParamsJSON {
+  /* eslint-disable camelcase */
+  jid: JID;
+  reason: string;
+  /* eslint-enable camelcase */
+}
+
+export class ClientCallLeaveParams implements TDProtoClass<ClientCallLeaveParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param jid Chat or contact id
+   * @param reason Reason, if any
+   */
+  constructor (
+    public jid: JID,
+    public reason: string,
+  ) {}
+
+  public static fromJSON (raw: ClientCallLeaveParamsJSON): ClientCallLeaveParams {
+    return new ClientCallLeaveParams(
+      raw.jid,
+      raw.reason,
+    )
+  }
+
+  public mappableFields = [
+    'jid',
+    'reason',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    jid: () => ({ jid: this.jid }),
+    reason: () => ({ reason: this.reason }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ClientCallLeaveParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientCallLeaveParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface TaskItemsJSON {
+  /* eslint-disable camelcase */
+  checked: boolean;
+  name: string;
+  /* eslint-enable camelcase */
+}
+
+export class TaskItems implements TDProtoClass<TaskItems> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param checked DOCUMENTATION MISSING
+   * @param name DOCUMENTATION MISSING
+   */
+  constructor (
+    public checked: boolean,
+    public name: string,
+  ) {}
+
+  public static fromJSON (raw: TaskItemsJSON): TaskItems {
+    return new TaskItems(
+      raw.checked,
+      raw.name,
+    )
+  }
+
+  public mappableFields = [
+    'checked',
+    'name',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    checked: () => ({ checked: this.checked }),
+    name: () => ({ name: this.name }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): TaskItemsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<TaskItemsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerChatComposingParamsJSON {
+  /* eslint-disable camelcase */
+  actor: JID;
+  composing: boolean;
+  jid: JID;
+  is_audio?: boolean;
+  valid_until?: ISODateTimeString;
+  /* eslint-enable camelcase */
+}
+
+export class ServerChatComposingParams implements TDProtoClass<ServerChatComposingParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param actor Actor id
+   * @param composing true = start typing / audio recording, false = stop
+   * @param jid Chat or contact id
+   * @param isAudio true = audiomessage, false = text typing
+   * @param validUntil Composing event max lifetime
+   */
+  constructor (
+    public actor: JID,
+    public composing: boolean,
+    public jid: JID,
+    public isAudio?: boolean,
+    public validUntil?: ISODateTimeString,
+  ) {}
+
+  public static fromJSON (raw: ServerChatComposingParamsJSON): ServerChatComposingParams {
+    return new ServerChatComposingParams(
+      raw.actor,
+      raw.composing,
+      raw.jid,
+      raw.is_audio,
+      raw.valid_until,
+    )
+  }
+
+  public mappableFields = [
+    'actor',
+    'composing',
+    'jid',
+    'isAudio',
+    'validUntil',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    actor: () => ({ actor: this.actor }),
+    composing: () => ({ composing: this.composing }),
+    jid: () => ({ jid: this.jid }),
+    isAudio: () => ({ is_audio: this.isAudio }),
+    validUntil: () => ({ valid_until: this.validUntil }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerChatComposingParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerChatComposingParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface PushDeviceJSON {
+  /* eslint-disable camelcase */
+  allowed_notifications: boolean;
+  data_badges: boolean;
+  data_pushes: boolean;
+  device_id: string;
+  name: string;
+  notification_token: string;
+  type: string;
+  voip_notification_token: string;
+  /* eslint-enable camelcase */
+}
+
+export class PushDevice implements TDProtoClass<PushDevice> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param allowedNotifications DOCUMENTATION MISSING
+   * @param dataBadges DOCUMENTATION MISSING
+   * @param dataPushes DOCUMENTATION MISSING
+   * @param deviceId DOCUMENTATION MISSING
+   * @param name DOCUMENTATION MISSING
+   * @param notificationToken DOCUMENTATION MISSING
+   * @param type DOCUMENTATION MISSING
+   * @param voipNotificationToken DOCUMENTATION MISSING
+   */
+  constructor (
+    public allowedNotifications: boolean,
+    public dataBadges: boolean,
+    public dataPushes: boolean,
+    public deviceId: string,
+    public name: string,
+    public notificationToken: string,
+    public type: string,
+    public voipNotificationToken: string,
+  ) {}
+
+  public static fromJSON (raw: PushDeviceJSON): PushDevice {
+    return new PushDevice(
+      raw.allowed_notifications,
+      raw.data_badges,
+      raw.data_pushes,
+      raw.device_id,
+      raw.name,
+      raw.notification_token,
+      raw.type,
+      raw.voip_notification_token,
+    )
+  }
+
+  public mappableFields = [
+    'allowedNotifications',
+    'dataBadges',
+    'dataPushes',
+    'deviceId',
+    'name',
+    'notificationToken',
+    'type',
+    'voipNotificationToken',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    allowedNotifications: () => ({ allowed_notifications: this.allowedNotifications }),
+    dataBadges: () => ({ data_badges: this.dataBadges }),
+    dataPushes: () => ({ data_pushes: this.dataPushes }),
+    deviceId: () => ({ device_id: this.deviceId }),
+    name: () => ({ name: this.name }),
+    notificationToken: () => ({ notification_token: this.notificationToken }),
+    type: () => ({ type: this.type }),
+    voipNotificationToken: () => ({ voip_notification_token: this.voipNotificationToken }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): PushDeviceJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<PushDeviceJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ClientMessageDeletedParamsJSON {
+  /* eslint-disable camelcase */
+  message_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ClientMessageDeletedParams implements TDProtoClass<ClientMessageDeletedParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param messageId Message id
+   */
+  constructor (
+    public messageId?: string,
+  ) {}
+
+  public static fromJSON (raw: ClientMessageDeletedParamsJSON): ClientMessageDeletedParams {
+    return new ClientMessageDeletedParams(
+      raw.message_id,
+    )
+  }
+
+  public mappableFields = [
+    'messageId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    messageId: () => ({ message_id: this.messageId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ClientMessageDeletedParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientMessageDeletedParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerCallBuzzJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ServerCallBuzzParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerCallBuzz implements TDProtoClass<ServerCallBuzz> {
+  /**
+   * Call buzzing
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ServerCallBuzzParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ServerCallBuzzJSON): ServerCallBuzz {
+    return new ServerCallBuzz(
+      raw.event,
+      ServerCallBuzzParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerCallBuzzJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallBuzzJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerChatDraftParamsJSON {
+  /* eslint-disable camelcase */
+  draft: string;
+  draft_num: number;
+  jid: JID;
+  /* eslint-enable camelcase */
+}
+
+export class ServerChatDraftParams implements TDProtoClass<ServerChatDraftParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param draft Draft text
+   * @param draftNum Draft version
+   * @param jid Chat or contact id
+   */
+  constructor (
+    public draft: string,
+    public draftNum: number,
+    public jid: JID,
+  ) {}
+
+  public static fromJSON (raw: ServerChatDraftParamsJSON): ServerChatDraftParams {
+    return new ServerChatDraftParams(
+      raw.draft,
+      raw.draft_num,
+      raw.jid,
+    )
+  }
+
+  public mappableFields = [
+    'draft',
+    'draftNum',
+    'jid',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    draft: () => ({ draft: this.draft }),
+    draftNum: () => ({ draft_num: this.draftNum }),
+    jid: () => ({ jid: this.jid }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerChatDraftParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerChatDraftParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface SwitcherColorsJSON {
+  /* eslint-disable camelcase */
+  off: string;
+  on: string;
+  /* eslint-enable camelcase */
+}
+
+export class SwitcherColors implements TDProtoClass<SwitcherColors> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param off DOCUMENTATION MISSING
+   * @param on DOCUMENTATION MISSING
+   */
+  constructor (
+    public off: string,
+    public on: string,
+  ) {}
+
+  public static fromJSON (raw: SwitcherColorsJSON): SwitcherColors {
+    return new SwitcherColors(
+      raw.off,
+      raw.on,
+    )
+  }
+
+  public mappableFields = [
+    'off',
+    'on',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    off: () => ({ off: this.off }),
+    on: () => ({ on: this.on }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): SwitcherColorsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<SwitcherColorsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface PaginatedChatsJSON {
+  /* eslint-disable camelcase */
+  count: number;
+  limit: number;
+  objects: ChatJSON[];
+  offset: number;
+  contacts?: ContactJSON[];
+  /* eslint-enable camelcase */
+}
+
+export class PaginatedChats implements TDProtoClass<PaginatedChats> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param count DOCUMENTATION MISSING
+   * @param limit DOCUMENTATION MISSING
+   * @param objects DOCUMENTATION MISSING
+   * @param offset DOCUMENTATION MISSING
+   * @param contacts DOCUMENTATION MISSING
+   */
+  constructor (
+    public count: number,
+    public limit: number,
+    public objects: Chat[],
+    public offset: number,
+    public contacts?: Contact[],
+  ) {}
+
+  public static fromJSON (raw: PaginatedChatsJSON): PaginatedChats {
+    return new PaginatedChats(
+      raw.count,
+      raw.limit,
+      raw.objects.map(Chat.fromJSON),
+      raw.offset,
+      raw.contacts && raw.contacts.map(Contact.fromJSON),
+    )
+  }
+
+  public mappableFields = [
+    'count',
+    'limit',
+    'objects',
+    'offset',
+    'contacts',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    count: () => ({ count: this.count }),
+    limit: () => ({ limit: this.limit }),
+    objects: () => ({ objects: this.objects.map(u => u.toJSON()) }),
+    offset: () => ({ offset: this.offset }),
+    contacts: () => ({ contacts: this.contacts?.map(u => u.toJSON()) }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): PaginatedChatsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<PaginatedChatsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface PaginatedContactsJSON {
+  /* eslint-disable camelcase */
+  count: number;
+  limit: number;
+  objects: ContactJSON[];
+  offset: number;
+  /* eslint-enable camelcase */
+}
+
+export class PaginatedContacts implements TDProtoClass<PaginatedContacts> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param count DOCUMENTATION MISSING
+   * @param limit DOCUMENTATION MISSING
+   * @param objects DOCUMENTATION MISSING
+   * @param offset DOCUMENTATION MISSING
+   */
+  constructor (
+    public count: number,
+    public limit: number,
+    public objects: Contact[],
+    public offset: number,
+  ) {}
+
+  public static fromJSON (raw: PaginatedContactsJSON): PaginatedContacts {
+    return new PaginatedContacts(
+      raw.count,
+      raw.limit,
+      raw.objects.map(Contact.fromJSON),
+      raw.offset,
+    )
+  }
+
+  public mappableFields = [
+    'count',
+    'limit',
+    'objects',
+    'offset',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    count: () => ({ count: this.count }),
+    limit: () => ({ limit: this.limit }),
+    objects: () => ({ objects: this.objects.map(u => u.toJSON()) }),
+    offset: () => ({ offset: this.offset }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): PaginatedContactsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<PaginatedContactsJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -4366,315 +5742,69 @@ export class ClientConfirmParams implements TDProtoClass<ClientConfirmParams> {
   }
 }
 
-export interface ServerChatUpdatedJSON {
+export interface CallOnlinerJSON {
   /* eslint-disable camelcase */
-  event: string;
-  params: ServerChatUpdatedParamsJSON;
-  confirm_id?: string;
+  devices: CallDeviceJSON[];
+  display_name: string;
+  icon: string;
+  jid: JID;
+  muted: boolean;
+  role: string;
   /* eslint-enable camelcase */
 }
 
-export class ServerChatUpdated implements TDProtoClass<ServerChatUpdated> {
+export class CallOnliner implements TDProtoClass<CallOnliner> {
   /**
-   * Chat created or updated
-   * @param name DOCUMENTATION MISSING
-   * @param params DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
+   * Call participant
+   * @param devices Member devices, strictly one for now
+   * @param displayName Contact name
+   * @param icon Contact icon
+   * @param jid Contact id
+   * @param muted Microphone muted. Computed from devices muted states
+   * @param role Contact role
    */
   constructor (
-    public name: string,
-    public params: ServerChatUpdatedParams,
-    public confirmId?: string,
+    public devices: CallDevice[],
+    public displayName: string,
+    public icon: string,
+    public jid: JID,
+    public muted: boolean,
+    public role: string,
   ) {}
 
-  public static fromJSON (raw: ServerChatUpdatedJSON): ServerChatUpdated {
-    return new ServerChatUpdated(
-      raw.event,
-      ServerChatUpdatedParams.fromJSON(raw.params),
-      raw.confirm_id,
+  public static fromJSON (raw: CallOnlinerJSON): CallOnliner {
+    return new CallOnliner(
+      raw.devices.map(CallDevice.fromJSON),
+      raw.display_name,
+      raw.icon,
+      raw.jid,
+      raw.muted,
+      raw.role,
     )
   }
 
   public mappableFields = [
-    'name',
-    'params',
-    'confirmId',
+    'devices',
+    'displayName',
+    'icon',
+    'jid',
+    'muted',
+    'role',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    params: () => ({ params: this.params.toJSON() }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
+    devices: () => ({ devices: this.devices.map(u => u.toJSON()) }),
+    displayName: () => ({ display_name: this.displayName }),
+    icon: () => ({ icon: this.icon }),
+    jid: () => ({ jid: this.jid }),
+    muted: () => ({ muted: this.muted }),
+    role: () => ({ role: this.role }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): ServerChatUpdatedJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerChatUpdatedJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerConfirmParamsJSON {
-  /* eslint-disable camelcase */
-  confirm_id: string;
-  /* eslint-enable camelcase */
-}
-
-export class ServerConfirmParams implements TDProtoClass<ServerConfirmParams> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param confirmId Unique id generated by server
-   */
-  constructor (
-    public confirmId: string,
-  ) {}
-
-  public static fromJSON (raw: ServerConfirmParamsJSON): ServerConfirmParams {
-    return new ServerConfirmParams(
-      raw.confirm_id,
-    )
-  }
-
-  public mappableFields = [
-    'confirmId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    confirmId: () => ({ confirm_id: this.confirmId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerConfirmParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerConfirmParamsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ICEServerJSON {
-  /* eslint-disable camelcase */
-  urls: string;
-  /* eslint-enable camelcase */
-}
-
-export class ICEServer implements TDProtoClass<ICEServer> {
-  /**
-   * Interactive Connectivity Establishment Server for WEB Rtc connection. Readonly
-   * @param urls URls
-   */
-  constructor (
-    public urls: string,
-  ) {}
-
-  public static fromJSON (raw: ICEServerJSON): ICEServer {
-    return new ICEServer(
-      raw.urls,
-    )
-  }
-
-  public mappableFields = [
-    'urls',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    urls: () => ({ urls: this.urls }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ICEServerJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ICEServerJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface SectionJSON {
-  /* eslint-disable camelcase */
-  gentime: number;
-  name: string;
-  sort_ordering: number;
-  uid: string;
-  description?: string;
-  is_archive?: boolean;
-  /* eslint-enable camelcase */
-}
-
-export class Section implements TDProtoClass<Section> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param gentime Object version
-   * @param name Name
-   * @param sortOrdering Sort ordering
-   * @param uid Section uid
-   * @param description Description, if any
-   * @param isArchive Is deleted
-   */
-  constructor (
-    public gentime: number,
-    public name: string,
-    public sortOrdering: number,
-    public uid: string,
-    public description?: string,
-    public isArchive?: boolean,
-  ) {}
-
-  public static fromJSON (raw: SectionJSON): Section {
-    return new Section(
-      raw.gentime,
-      raw.name,
-      raw.sort_ordering,
-      raw.uid,
-      raw.description,
-      raw.is_archive,
-    )
-  }
-
-  public mappableFields = [
-    'gentime',
-    'name',
-    'sortOrdering',
-    'uid',
-    'description',
-    'isArchive',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    gentime: () => ({ gentime: this.gentime }),
-    name: () => ({ name: this.name }),
-    sortOrdering: () => ({ sort_ordering: this.sortOrdering }),
-    uid: () => ({ uid: this.uid }),
-    description: () => ({ description: this.description }),
-    isArchive: () => ({ is_archive: this.isArchive }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): SectionJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<SectionJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ClientCallBuzzCancelJSON {
-  /* eslint-disable camelcase */
-  event: string;
-  params: ClientCallBuzzCancelParamsJSON;
-  confirm_id?: string;
-  /* eslint-enable camelcase */
-}
-
-export class ClientCallBuzzCancel implements TDProtoClass<ClientCallBuzzCancel> {
-  /**
-   * Call buzzing cancelled
-   * @param name DOCUMENTATION MISSING
-   * @param params DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
-   */
-  constructor (
-    public name: string,
-    public params: ClientCallBuzzCancelParams,
-    public confirmId?: string,
-  ) {}
-
-  public static fromJSON (raw: ClientCallBuzzCancelJSON): ClientCallBuzzCancel {
-    return new ClientCallBuzzCancel(
-      raw.event,
-      ClientCallBuzzCancelParams.fromJSON(raw.params),
-      raw.confirm_id,
-    )
-  }
-
-  public mappableFields = [
-    'name',
-    'params',
-    'confirmId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    params: () => ({ params: this.params.toJSON() }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ClientCallBuzzCancelJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientCallBuzzCancelJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerContactUpdatedJSON {
-  /* eslint-disable camelcase */
-  event: string;
-  params: ServerContactUpdatedParamsJSON;
-  confirm_id?: string;
-  /* eslint-enable camelcase */
-}
-
-export class ServerContactUpdated implements TDProtoClass<ServerContactUpdated> {
-  /**
-   * Contact created or updated
-   * @param name DOCUMENTATION MISSING
-   * @param params DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
-   */
-  constructor (
-    public name: string,
-    public params: ServerContactUpdatedParams,
-    public confirmId?: string,
-  ) {}
-
-  public static fromJSON (raw: ServerContactUpdatedJSON): ServerContactUpdated {
-    return new ServerContactUpdated(
-      raw.event,
-      ServerContactUpdatedParams.fromJSON(raw.params),
-      raw.confirm_id,
-    )
-  }
-
-  public mappableFields = [
-    'name',
-    'params',
-    'confirmId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    params: () => ({ params: this.params.toJSON() }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerContactUpdatedJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerContactUpdatedJSON>
+  public toJSON (): CallOnlinerJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<CallOnlinerJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -4738,51 +5868,51 @@ export class ServerCallRejectParams implements TDProtoClass<ServerCallRejectPara
   }
 }
 
-export interface ClientCallSoundJSON {
+export interface ServerProcessingJSON {
   /* eslint-disable camelcase */
   event: string;
-  params: ClientCallSoundParamsJSON;
+  params: ServerProcessingParamsJSON;
   confirm_id?: string;
   /* eslint-enable camelcase */
 }
 
-export class ClientCallSound implements TDProtoClass<ClientCallSound> {
+export class ServerProcessing implements TDProtoClass<ServerProcessing> {
   /**
-   * Change mute state in call
-   * @param name DOCUMENTATION MISSING
+   * Status of background operation
+   * @param event DOCUMENTATION MISSING
    * @param params DOCUMENTATION MISSING
    * @param confirmId DOCUMENTATION MISSING
    */
   constructor (
-    public name: string,
-    public params: ClientCallSoundParams,
+    public event: string,
+    public params: ServerProcessingParams,
     public confirmId?: string,
   ) {}
 
-  public static fromJSON (raw: ClientCallSoundJSON): ClientCallSound {
-    return new ClientCallSound(
+  public static fromJSON (raw: ServerProcessingJSON): ServerProcessing {
+    return new ServerProcessing(
       raw.event,
-      ClientCallSoundParams.fromJSON(raw.params),
+      ServerProcessingParams.fromJSON(raw.params),
       raw.confirm_id,
     )
   }
 
   public mappableFields = [
-    'name',
+    'event',
     'params',
     'confirmId',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
+    event: () => ({ event: this.event }),
     params: () => ({ params: this.params.toJSON() }),
     confirmId: () => ({ confirm_id: this.confirmId }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): ClientCallSoundJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientCallSoundJSON>
+  public toJSON (): ServerProcessingJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerProcessingJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -4792,45 +5922,51 @@ export class ClientCallSound implements TDProtoClass<ClientCallSound> {
   }
 }
 
-export interface ClientChatLastreadParamsJSON {
+export interface ServerChatDeletedParamsJSON {
   /* eslint-disable camelcase */
-  jid: JID;
-  last_read_message_id?: string;
+  badge: number;
+  chats: DeletedChatJSON[];
+  team_unread: TeamUnreadJSON;
   /* eslint-enable camelcase */
 }
 
-export class ClientChatLastreadParams implements TDProtoClass<ClientChatLastreadParams> {
+export class ServerChatDeletedParams implements TDProtoClass<ServerChatDeletedParams> {
   /**
    * MISSING CLASS DOCUMENTATION
-   * @param jid Chat or contact id
-   * @param lastReadMessageId Last read message id. Omitted = last message in chat
+   * @param badge Total number of unreads
+   * @param chats List of deleted chats
+   * @param teamUnread Current team counters
    */
   constructor (
-    public jid: JID,
-    public lastReadMessageId?: string,
+    public badge: number,
+    public chats: DeletedChat[],
+    public teamUnread: TeamUnread,
   ) {}
 
-  public static fromJSON (raw: ClientChatLastreadParamsJSON): ClientChatLastreadParams {
-    return new ClientChatLastreadParams(
-      raw.jid,
-      raw.last_read_message_id,
+  public static fromJSON (raw: ServerChatDeletedParamsJSON): ServerChatDeletedParams {
+    return new ServerChatDeletedParams(
+      raw.badge,
+      raw.chats.map(DeletedChat.fromJSON),
+      TeamUnread.fromJSON(raw.team_unread),
     )
   }
 
   public mappableFields = [
-    'jid',
-    'lastReadMessageId',
+    'badge',
+    'chats',
+    'teamUnread',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    jid: () => ({ jid: this.jid }),
-    lastReadMessageId: () => ({ last_read_message_id: this.lastReadMessageId }),
+    badge: () => ({ badge: this.badge }),
+    chats: () => ({ chats: this.chats.map(u => u.toJSON()) }),
+    teamUnread: () => ({ team_unread: this.teamUnread.toJSON() }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): ClientChatLastreadParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientChatLastreadParamsJSON>
+  public toJSON (): ServerChatDeletedParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerChatDeletedParamsJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -4840,39 +5976,123 @@ export class ClientChatLastreadParams implements TDProtoClass<ClientChatLastread
   }
 }
 
-export interface DeletedRemindJSON {
+export interface MessageLinkJSON {
   /* eslint-disable camelcase */
+  pattern: string;
+  text: string;
+  url: string;
+  nopreview?: boolean;
+  preview?: MessageLinkPreviewJSON;
+  uploads?: UploadJSON[];
+  youtube_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class MessageLink implements TDProtoClass<MessageLink> {
+  /**
+   * Checked message links. In short: "Click here: {link.Pattern}" => "Click here: <a href='{link.Url}'>{link.Text}</a>"
+   * @param pattern Text fragment that should be replaced by link
+   * @param text Text replacement
+   * @param url Internal or external link
+   * @param nopreview Website previews disabled
+   * @param preview Optional preview info, for websites
+   * @param uploads Optional upload info
+   * @param youtubeId Optional youtube movie id
+   */
+  constructor (
+    public pattern: string,
+    public text: string,
+    public url: string,
+    public nopreview?: boolean,
+    public preview?: MessageLinkPreview,
+    public uploads?: Upload[],
+    public youtubeId?: string,
+  ) {}
+
+  public static fromJSON (raw: MessageLinkJSON): MessageLink {
+    return new MessageLink(
+      raw.pattern,
+      raw.text,
+      raw.url,
+      raw.nopreview,
+      raw.preview && MessageLinkPreview.fromJSON(raw.preview),
+      raw.uploads && raw.uploads.map(Upload.fromJSON),
+      raw.youtube_id,
+    )
+  }
+
+  public mappableFields = [
+    'pattern',
+    'text',
+    'url',
+    'nopreview',
+    'preview',
+    'uploads',
+    'youtubeId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    pattern: () => ({ pattern: this.pattern }),
+    text: () => ({ text: this.text }),
+    url: () => ({ url: this.url }),
+    nopreview: () => ({ nopreview: this.nopreview }),
+    preview: () => ({ preview: this.preview?.toJSON() }),
+    uploads: () => ({ uploads: this.uploads?.map(u => u.toJSON()) }),
+    youtubeId: () => ({ youtube_id: this.youtubeId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): MessageLinkJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<MessageLinkJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface TagJSON {
+  /* eslint-disable camelcase */
+  name: string;
   uid: string;
   /* eslint-enable camelcase */
 }
 
-export class DeletedRemind implements TDProtoClass<DeletedRemind> {
+export class Tag implements TDProtoClass<Tag> {
   /**
-   * Remind deleted message
-   * @param uid Remind id
+   * Task tag
+   * @param name Tag name
+   * @param uid Tag id
    */
   constructor (
+    public name: string,
     public uid: string,
   ) {}
 
-  public static fromJSON (raw: DeletedRemindJSON): DeletedRemind {
-    return new DeletedRemind(
+  public static fromJSON (raw: TagJSON): Tag {
+    return new Tag(
+      raw.name,
       raw.uid,
     )
   }
 
   public mappableFields = [
+    'name',
     'uid',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
+    name: () => ({ name: this.name }),
     uid: () => ({ uid: this.uid }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): DeletedRemindJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<DeletedRemindJSON>
+  public toJSON (): TagJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<TagJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -4882,153 +6102,75 @@ export class DeletedRemind implements TDProtoClass<DeletedRemind> {
   }
 }
 
-export interface ServerContactUpdatedParamsJSON {
-  /* eslint-disable camelcase */
-  contacts: ContactJSON[];
-  /* eslint-enable camelcase */
-}
-
-export class ServerContactUpdatedParams implements TDProtoClass<ServerContactUpdatedParams> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param contacts Contact info
-   */
-  constructor (
-    public contacts: Contact[],
-  ) {}
-
-  public static fromJSON (raw: ServerContactUpdatedParamsJSON): ServerContactUpdatedParams {
-    return new ServerContactUpdatedParams(
-      raw.contacts.map(Contact.fromJSON),
-    )
-  }
-
-  public mappableFields = [
-    'contacts',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    contacts: () => ({ contacts: this.contacts.map(u => u.toJSON()) }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerContactUpdatedParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerContactUpdatedParamsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerWarningJSON {
-  /* eslint-disable camelcase */
-  event: string;
-  params: ServerWarningParamsJSON;
-  confirm_id?: string;
-  /* eslint-enable camelcase */
-}
-
-export class ServerWarning implements TDProtoClass<ServerWarning> {
-  /**
-   * Something went wrong with client message
-   * @param name DOCUMENTATION MISSING
-   * @param params DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
-   */
-  constructor (
-    public name: string,
-    public params: ServerWarningParams,
-    public confirmId?: string,
-  ) {}
-
-  public static fromJSON (raw: ServerWarningJSON): ServerWarning {
-    return new ServerWarning(
-      raw.event,
-      ServerWarningParams.fromJSON(raw.params),
-      raw.confirm_id,
-    )
-  }
-
-  public mappableFields = [
-    'name',
-    'params',
-    'confirmId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    params: () => ({ params: this.params.toJSON() }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerWarningJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerWarningJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface DeletedChatJSON {
+export interface ChatCountersJSON {
   /* eslint-disable camelcase */
   chat_type: ChatType;
   gentime: number;
-  is_archive: boolean;
   jid: JID;
+  last_read_message_id: string;
+  num_unread: number;
+  num_unread_notices: number;
+  last_activity?: ISODateTimeString;
   /* eslint-enable camelcase */
 }
 
-export class DeletedChat implements TDProtoClass<DeletedChat> {
+export class ChatCounters implements TDProtoClass<ChatCounters> {
   /**
-   * Minimal chat representation for deletion
-   * @param chatType Chat type
-   * @param gentime Chat fields (related to concrete participant) version
-   * @param isArchive Archive flag. Always true for this structure
-   * @param jid Group/Task/Contact id
+   * MISSING CLASS DOCUMENTATION
+   * @param chatType DOCUMENTATION MISSING
+   * @param gentime DOCUMENTATION MISSING
+   * @param jid DOCUMENTATION MISSING
+   * @param lastReadMessageId DOCUMENTATION MISSING
+   * @param numUnread DOCUMENTATION MISSING
+   * @param numUnreadNotices DOCUMENTATION MISSING
+   * @param lastActivity DOCUMENTATION MISSING
    */
   constructor (
     public chatType: ChatType,
     public gentime: number,
-    public isArchive: boolean,
     public jid: JID,
+    public lastReadMessageId: string,
+    public numUnread: number,
+    public numUnreadNotices: number,
+    public lastActivity?: ISODateTimeString,
   ) {}
 
-  public static fromJSON (raw: DeletedChatJSON): DeletedChat {
-    return new DeletedChat(
+  public static fromJSON (raw: ChatCountersJSON): ChatCounters {
+    return new ChatCounters(
       raw.chat_type,
       raw.gentime,
-      raw.is_archive,
       raw.jid,
+      raw.last_read_message_id,
+      raw.num_unread,
+      raw.num_unread_notices,
+      raw.last_activity,
     )
   }
 
   public mappableFields = [
     'chatType',
     'gentime',
-    'isArchive',
     'jid',
+    'lastReadMessageId',
+    'numUnread',
+    'numUnreadNotices',
+    'lastActivity',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
     chatType: () => ({ chat_type: this.chatType }),
     gentime: () => ({ gentime: this.gentime }),
-    isArchive: () => ({ is_archive: this.isArchive }),
     jid: () => ({ jid: this.jid }),
+    lastReadMessageId: () => ({ last_read_message_id: this.lastReadMessageId }),
+    numUnread: () => ({ num_unread: this.numUnread }),
+    numUnreadNotices: () => ({ num_unread_notices: this.numUnreadNotices }),
+    lastActivity: () => ({ last_activity: this.lastActivity }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): DeletedChatJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<DeletedChatJSON>
+  public toJSON (): ChatCountersJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ChatCountersJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -5038,111 +6180,51 @@ export class DeletedChat implements TDProtoClass<DeletedChat> {
   }
 }
 
-export interface ClientCallOfferParamsJSON {
-  /* eslint-disable camelcase */
-  jid: JID;
-  muted: boolean;
-  sdp: string;
-  trickle: boolean;
-  /* eslint-enable camelcase */
-}
-
-export class ClientCallOfferParams implements TDProtoClass<ClientCallOfferParams> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param jid Chat or contact id
-   * @param muted Mute state
-   * @param sdp SDP (session description protocol) data
-   * @param trickle Is trickle mode enabled
-   */
-  constructor (
-    public jid: JID,
-    public muted: boolean,
-    public sdp: string,
-    public trickle: boolean,
-  ) {}
-
-  public static fromJSON (raw: ClientCallOfferParamsJSON): ClientCallOfferParams {
-    return new ClientCallOfferParams(
-      raw.jid,
-      raw.muted,
-      raw.sdp,
-      raw.trickle,
-    )
-  }
-
-  public mappableFields = [
-    'jid',
-    'muted',
-    'sdp',
-    'trickle',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    jid: () => ({ jid: this.jid }),
-    muted: () => ({ muted: this.muted }),
-    sdp: () => ({ sdp: this.sdp }),
-    trickle: () => ({ trickle: this.trickle }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ClientCallOfferParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientCallOfferParamsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerSectionUpdatedJSON {
+export interface ServerTimeJSON {
   /* eslint-disable camelcase */
   event: string;
-  params: ServerSectionUpdatedParamsJSON;
+  params: ServerTimeParamsJSON;
   confirm_id?: string;
   /* eslint-enable camelcase */
 }
 
-export class ServerSectionUpdated implements TDProtoClass<ServerSectionUpdated> {
+export class ServerTime implements TDProtoClass<ServerTime> {
   /**
-   * Contact section or task project created or changed
-   * @param name DOCUMENTATION MISSING
+   * Current server time
+   * @param event DOCUMENTATION MISSING
    * @param params DOCUMENTATION MISSING
    * @param confirmId DOCUMENTATION MISSING
    */
   constructor (
-    public name: string,
-    public params: ServerSectionUpdatedParams,
+    public event: string,
+    public params: ServerTimeParams,
     public confirmId?: string,
   ) {}
 
-  public static fromJSON (raw: ServerSectionUpdatedJSON): ServerSectionUpdated {
-    return new ServerSectionUpdated(
+  public static fromJSON (raw: ServerTimeJSON): ServerTime {
+    return new ServerTime(
       raw.event,
-      ServerSectionUpdatedParams.fromJSON(raw.params),
+      ServerTimeParams.fromJSON(raw.params),
       raw.confirm_id,
     )
   }
 
   public mappableFields = [
-    'name',
+    'event',
     'params',
     'confirmId',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
+    event: () => ({ event: this.event }),
     params: () => ({ params: this.params.toJSON() }),
     confirmId: () => ({ confirm_id: this.confirmId }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): ServerSectionUpdatedJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerSectionUpdatedJSON>
+  public toJSON (): ServerTimeJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerTimeJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -5152,51 +6234,789 @@ export class ServerSectionUpdated implements TDProtoClass<ServerSectionUpdated> 
   }
 }
 
-export interface ServerUiSettingsJSON {
+export interface ServerCallStateParamsJSON {
   /* eslint-disable camelcase */
-  event: string;
-  params: UiSettings;
-  confirm_id?: string;
+  audiorecord: boolean;
+  finish: ISODateTimeString;
+  jid: JID;
+  onliners: CallOnlinerJSON[];
+  start: ISODateTimeString;
+  timestamp: number;
+  uid: string;
+  buzz?: boolean;
   /* eslint-enable camelcase */
 }
 
-export class ServerUiSettings implements TDProtoClass<ServerUiSettings> {
+export class ServerCallStateParams implements TDProtoClass<ServerCallStateParams> {
   /**
-   * Part of UI settings changed
-   * @param name DOCUMENTATION MISSING
-   * @param params DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
+   * MISSING CLASS DOCUMENTATION
+   * @param audiorecord Call record enabled
+   * @param finish Call finish, if any
+   * @param jid Chat or contact id
+   * @param onliners Call participants
+   * @param start Call start, if any
+   * @param timestamp Event start. FIXME: why not gentime?
+   * @param uid Call id
+   * @param buzz Call buzzing
+   */
+  constructor (
+    public audiorecord: boolean,
+    public finish: ISODateTimeString,
+    public jid: JID,
+    public onliners: CallOnliner[],
+    public start: ISODateTimeString,
+    public timestamp: number,
+    public uid: string,
+    public buzz?: boolean,
+  ) {}
+
+  public static fromJSON (raw: ServerCallStateParamsJSON): ServerCallStateParams {
+    return new ServerCallStateParams(
+      raw.audiorecord,
+      raw.finish,
+      raw.jid,
+      raw.onliners.map(CallOnliner.fromJSON),
+      raw.start,
+      raw.timestamp,
+      raw.uid,
+      raw.buzz,
+    )
+  }
+
+  public mappableFields = [
+    'audiorecord',
+    'finish',
+    'jid',
+    'onliners',
+    'start',
+    'timestamp',
+    'uid',
+    'buzz',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    audiorecord: () => ({ audiorecord: this.audiorecord }),
+    finish: () => ({ finish: this.finish }),
+    jid: () => ({ jid: this.jid }),
+    onliners: () => ({ onliners: this.onliners.map(u => u.toJSON()) }),
+    start: () => ({ start: this.start }),
+    timestamp: () => ({ timestamp: this.timestamp }),
+    uid: () => ({ uid: this.uid }),
+    buzz: () => ({ buzz: this.buzz }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerCallStateParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallStateParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface CallEventJSON {
+  /* eslint-disable camelcase */
+  audiorecord: boolean;
+  finish: ISODateTimeString;
+  onliners: CallOnlinerJSON[];
+  start: ISODateTimeString;
+  /* eslint-enable camelcase */
+}
+
+export class CallEvent implements TDProtoClass<CallEvent> {
+  /**
+   * Audio call information
+   * @param audiorecord Call record enabled
+   * @param finish Call finish
+   * @param onliners Call participants
+   * @param start Call start
+   */
+  constructor (
+    public audiorecord: boolean,
+    public finish: ISODateTimeString,
+    public onliners: CallOnliner[],
+    public start: ISODateTimeString,
+  ) {}
+
+  public static fromJSON (raw: CallEventJSON): CallEvent {
+    return new CallEvent(
+      raw.audiorecord,
+      raw.finish,
+      raw.onliners.map(CallOnliner.fromJSON),
+      raw.start,
+    )
+  }
+
+  public mappableFields = [
+    'audiorecord',
+    'finish',
+    'onliners',
+    'start',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    audiorecord: () => ({ audiorecord: this.audiorecord }),
+    finish: () => ({ finish: this.finish }),
+    onliners: () => ({ onliners: this.onliners.map(u => u.toJSON()) }),
+    start: () => ({ start: this.start }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): CallEventJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<CallEventJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ClientCallBuzzCancelParamsJSON {
+  /* eslint-disable camelcase */
+  jid: JID;
+  /* eslint-enable camelcase */
+}
+
+export class ClientCallBuzzCancelParams implements TDProtoClass<ClientCallBuzzCancelParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param jid Chat or contact id
+   */
+  constructor (
+    public jid: JID,
+  ) {}
+
+  public static fromJSON (raw: ClientCallBuzzCancelParamsJSON): ClientCallBuzzCancelParams {
+    return new ClientCallBuzzCancelParams(
+      raw.jid,
+    )
+  }
+
+  public mappableFields = [
+    'jid',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    jid: () => ({ jid: this.jid }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ClientCallBuzzCancelParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientCallBuzzCancelParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface UploadShortMessageJSON {
+  /* eslint-disable camelcase */
+  message: ShortMessageJSON;
+  upload: UploadJSON;
+  /* eslint-enable camelcase */
+}
+
+export class UploadShortMessage implements TDProtoClass<UploadShortMessage> {
+  /**
+   * Upload + ShortMessage
+   * @param message DOCUMENTATION MISSING
+   * @param upload DOCUMENTATION MISSING
+   */
+  constructor (
+    public message: ShortMessage,
+    public upload: Upload,
+  ) {}
+
+  public static fromJSON (raw: UploadShortMessageJSON): UploadShortMessage {
+    return new UploadShortMessage(
+      ShortMessage.fromJSON(raw.message),
+      Upload.fromJSON(raw.upload),
+    )
+  }
+
+  public mappableFields = [
+    'message',
+    'upload',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    message: () => ({ message: this.message.toJSON() }),
+    upload: () => ({ upload: this.upload.toJSON() }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): UploadShortMessageJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<UploadShortMessageJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface TaskSortJSON {
+  /* eslint-disable camelcase */
+  key: TaskSortKey;
+  title: string;
+  /* eslint-enable camelcase */
+}
+
+export class TaskSort implements TDProtoClass<TaskSort> {
+  /**
+   * Task sort type
+   * @param key Field
+   * @param title Sort title
+   */
+  constructor (
+    public key: TaskSortKey,
+    public title: string,
+  ) {}
+
+  public static fromJSON (raw: TaskSortJSON): TaskSort {
+    return new TaskSort(
+      raw.key,
+      raw.title,
+    )
+  }
+
+  public mappableFields = [
+    'key',
+    'title',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    key: () => ({ key: this.key }),
+    title: () => ({ title: this.title }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): TaskSortJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<TaskSortJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ChatMessagesJSON {
+  /* eslint-disable camelcase */
+  messages: MessageJSON[];
+  /* eslint-enable camelcase */
+}
+
+export class ChatMessages implements TDProtoClass<ChatMessages> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param messages DOCUMENTATION MISSING
+   */
+  constructor (
+    public messages: Message[],
+  ) {}
+
+  public static fromJSON (raw: ChatMessagesJSON): ChatMessages {
+    return new ChatMessages(
+      raw.messages.map(Message.fromJSON),
+    )
+  }
+
+  public mappableFields = [
+    'messages',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    messages: () => ({ messages: this.messages.map(u => u.toJSON()) }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ChatMessagesJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ChatMessagesJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface UploadJSON {
+  /* eslint-disable camelcase */
+  content_type: string;
+  created: ISODateTimeString;
+  name: string;
+  size: number;
+  type: UploadMediaType;
+  uid: string;
+  url: string;
+  animated?: boolean;
+  duration?: number;
+  pdf_version?: PdfVersionJSON;
+  preview?: UploadPreviewJSON;
+  processing?: boolean;
+  /* eslint-enable camelcase */
+}
+
+export class Upload implements TDProtoClass<Upload> {
+  /**
+   * Uploaded media
+   * @param contentType Content type
+   * @param created Uploaded at
+   * @param name Filename
+   * @param size Upload size in bytes
+   * @param type ?type=file,image,audio,video
+   * @param uid Upload id
+   * @param url Absolute url
+   * @param animated Is animated (images only)
+   * @param duration Mediafile duration (for audio/video only)
+   * @param pdfVersion PDF version of file. Experimental
+   * @param preview Preview details
+   * @param processing File still processing (video only)
+   */
+  constructor (
+    public contentType: string,
+    public created: ISODateTimeString,
+    public name: string,
+    public size: number,
+    public type: UploadMediaType,
+    public uid: string,
+    public url: string,
+    public animated?: boolean,
+    public duration?: number,
+    public pdfVersion?: PdfVersion,
+    public preview?: UploadPreview,
+    public processing?: boolean,
+  ) {}
+
+  public static fromJSON (raw: UploadJSON): Upload {
+    return new Upload(
+      raw.content_type,
+      raw.created,
+      raw.name,
+      raw.size,
+      raw.type,
+      raw.uid,
+      raw.url,
+      raw.animated,
+      raw.duration,
+      raw.pdf_version && PdfVersion.fromJSON(raw.pdf_version),
+      raw.preview && UploadPreview.fromJSON(raw.preview),
+      raw.processing,
+    )
+  }
+
+  public mappableFields = [
+    'contentType',
+    'created',
+    'name',
+    'size',
+    'type',
+    'uid',
+    'url',
+    'animated',
+    'duration',
+    'pdfVersion',
+    'preview',
+    'processing',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    contentType: () => ({ content_type: this.contentType }),
+    created: () => ({ created: this.created }),
+    name: () => ({ name: this.name }),
+    size: () => ({ size: this.size }),
+    type: () => ({ type: this.type }),
+    uid: () => ({ uid: this.uid }),
+    url: () => ({ url: this.url }),
+    animated: () => ({ animated: this.animated }),
+    duration: () => ({ duration: this.duration }),
+    pdfVersion: () => ({ pdf_version: this.pdfVersion?.toJSON() }),
+    preview: () => ({ preview: this.preview?.toJSON() }),
+    processing: () => ({ processing: this.processing }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): UploadJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<UploadJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface OAuthServiceJSON {
+  /* eslint-disable camelcase */
+  name: string;
+  url: string;
+  /* eslint-enable camelcase */
+}
+
+export class OAuthService implements TDProtoClass<OAuthService> {
+  /**
+   * OAuth service
+   * @param name Integration title
+   * @param url Redirect url
    */
   constructor (
     public name: string,
-    public params: UiSettings,
-    public confirmId?: string,
+    public url: string,
   ) {}
 
-  public static fromJSON (raw: ServerUiSettingsJSON): ServerUiSettings {
-    return new ServerUiSettings(
-      raw.event,
-      raw.params,
-      raw.confirm_id,
+  public static fromJSON (raw: OAuthServiceJSON): OAuthService {
+    return new OAuthService(
+      raw.name,
+      raw.url,
     )
   }
 
   public mappableFields = [
     'name',
+    'url',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    name: () => ({ name: this.name }),
+    url: () => ({ url: this.url }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): OAuthServiceJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<OAuthServiceJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerCallAnswerParamsJSON {
+  /* eslint-disable camelcase */
+  candidates: ServerCallAnswerCandidateJSON[];
+  jid: JID;
+  jsep: JSEPJSON;
+  onliners: CallOnlinerJSON[];
+  uid: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerCallAnswerParams implements TDProtoClass<ServerCallAnswerParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param candidates List of ICE candidates (when trickle = false)
+   * @param jid Chat or contact id
+   * @param jsep SDP data
+   * @param onliners Current call participants
+   * @param uid Call id
+   */
+  constructor (
+    public candidates: ServerCallAnswerCandidate[],
+    public jid: JID,
+    public jsep: JSEP,
+    public onliners: CallOnliner[],
+    public uid: string,
+  ) {}
+
+  public static fromJSON (raw: ServerCallAnswerParamsJSON): ServerCallAnswerParams {
+    return new ServerCallAnswerParams(
+      raw.candidates.map(ServerCallAnswerCandidate.fromJSON),
+      raw.jid,
+      JSEP.fromJSON(raw.jsep),
+      raw.onliners.map(CallOnliner.fromJSON),
+      raw.uid,
+    )
+  }
+
+  public mappableFields = [
+    'candidates',
+    'jid',
+    'jsep',
+    'onliners',
+    'uid',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    candidates: () => ({ candidates: this.candidates.map(u => u.toJSON()) }),
+    jid: () => ({ jid: this.jid }),
+    jsep: () => ({ jsep: this.jsep.toJSON() }),
+    onliners: () => ({ onliners: this.onliners.map(u => u.toJSON()) }),
+    uid: () => ({ uid: this.uid }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerCallAnswerParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallAnswerParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface GroupMembershipJSON {
+  /* eslint-disable camelcase */
+  jid: JID;
+  status: GroupStatus;
+  can_remove?: boolean;
+  /* eslint-enable camelcase */
+}
+
+export class GroupMembership implements TDProtoClass<GroupMembership> {
+  /**
+   * Group chat membership status
+   * @param jid Contact id
+   * @param status Status in group
+   * @param canRemove Can I remove this member
+   */
+  constructor (
+    public jid: JID,
+    public status: GroupStatus,
+    public canRemove?: boolean,
+  ) {}
+
+  public static fromJSON (raw: GroupMembershipJSON): GroupMembership {
+    return new GroupMembership(
+      raw.jid,
+      raw.status,
+      raw.can_remove,
+    )
+  }
+
+  public mappableFields = [
+    'jid',
+    'status',
+    'canRemove',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    jid: () => ({ jid: this.jid }),
+    status: () => ({ status: this.status }),
+    canRemove: () => ({ can_remove: this.canRemove }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): GroupMembershipJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<GroupMembershipJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerMessageReceivedParamsJSON {
+  /* eslint-disable camelcase */
+  messages: ReceivedMessageJSON[];
+  /* eslint-enable camelcase */
+}
+
+export class ServerMessageReceivedParams implements TDProtoClass<ServerMessageReceivedParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param messages received message data
+   */
+  constructor (
+    public messages: ReceivedMessage[],
+  ) {}
+
+  public static fromJSON (raw: ServerMessageReceivedParamsJSON): ServerMessageReceivedParams {
+    return new ServerMessageReceivedParams(
+      raw.messages.map(ReceivedMessage.fromJSON),
+    )
+  }
+
+  public mappableFields = [
+    'messages',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    messages: () => ({ messages: this.messages.map(u => u.toJSON()) }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerMessageReceivedParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerMessageReceivedParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerRemindDeletedParamsJSON {
+  /* eslint-disable camelcase */
+  reminds: DeletedRemindJSON[];
+  /* eslint-enable camelcase */
+}
+
+export class ServerRemindDeletedParams implements TDProtoClass<ServerRemindDeletedParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param reminds Remind information
+   */
+  constructor (
+    public reminds: DeletedRemind[],
+  ) {}
+
+  public static fromJSON (raw: ServerRemindDeletedParamsJSON): ServerRemindDeletedParams {
+    return new ServerRemindDeletedParams(
+      raw.reminds.map(DeletedRemind.fromJSON),
+    )
+  }
+
+  public mappableFields = [
+    'reminds',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    reminds: () => ({ reminds: this.reminds.map(u => u.toJSON()) }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerRemindDeletedParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerRemindDeletedParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface SingleIconJSON {
+  /* eslint-disable camelcase */
+  height: number;
+  url: string;
+  width: number;
+  /* eslint-enable camelcase */
+}
+
+export class SingleIcon implements TDProtoClass<SingleIcon> {
+  /**
+   * Small or large icon
+   * @param height Icon height, in pixels
+   * @param url absolute url to icon
+   * @param width Icon width, in pixels
+   */
+  constructor (
+    public height: number,
+    public url: string,
+    public width: number,
+  ) {}
+
+  public static fromJSON (raw: SingleIconJSON): SingleIcon {
+    return new SingleIcon(
+      raw.height,
+      raw.url,
+      raw.width,
+    )
+  }
+
+  public mappableFields = [
+    'height',
+    'url',
+    'width',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    height: () => ({ height: this.height }),
+    url: () => ({ url: this.url }),
+    width: () => ({ width: this.width }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): SingleIconJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<SingleIconJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ClientCallRejectJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ClientCallRejectParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ClientCallReject implements TDProtoClass<ClientCallReject> {
+  /**
+   * Reject the call
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ClientCallRejectParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ClientCallRejectJSON): ClientCallReject {
+    return new ClientCallReject(
+      raw.event,
+      ClientCallRejectParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
     'params',
     'confirmId',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    params: () => ({ params: this.params }),
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
     confirmId: () => ({ confirm_id: this.confirmId }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): ServerUiSettingsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerUiSettingsJSON>
+  public toJSON (): ClientCallRejectJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientCallRejectJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -5206,47 +7026,201 @@ export class ServerUiSettings implements TDProtoClass<ServerUiSettings> {
   }
 }
 
-export interface ServerWarningParamsJSON {
+export interface ServerCallMuteallJSON {
   /* eslint-disable camelcase */
-  message: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  orig: any;
+  event: string;
+  params: ServerCallMuteallParamsJSON;
+  confirm_id?: string;
   /* eslint-enable camelcase */
 }
 
-export class ServerWarningParams implements TDProtoClass<ServerWarningParams> {
+export class ServerCallMuteall implements TDProtoClass<ServerCallMuteall> {
   /**
-   * MISSING CLASS DOCUMENTATION
-   * @param message Message
-   * @param orig Debug information
+   * All participants in call muted
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
    */
   constructor (
-    public message: string,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public orig: any,
+    public event: string,
+    public params: ServerCallMuteallParams,
+    public confirmId?: string,
   ) {}
 
-  public static fromJSON (raw: ServerWarningParamsJSON): ServerWarningParams {
-    return new ServerWarningParams(
-      raw.message,
-      raw.orig,
+  public static fromJSON (raw: ServerCallMuteallJSON): ServerCallMuteall {
+    return new ServerCallMuteall(
+      raw.event,
+      ServerCallMuteallParams.fromJSON(raw.params),
+      raw.confirm_id,
     )
   }
 
   public mappableFields = [
-    'message',
-    'orig',
+    'event',
+    'params',
+    'confirmId',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    message: () => ({ message: this.message }),
-    orig: () => ({ orig: this.orig }),
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): ServerWarningParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerWarningParamsJSON>
+  public toJSON (): ServerCallMuteallJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallMuteallJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ICEServerJSON {
+  /* eslint-disable camelcase */
+  urls: string;
+  /* eslint-enable camelcase */
+}
+
+export class ICEServer implements TDProtoClass<ICEServer> {
+  /**
+   * Interactive Connectivity Establishment Server for WEB Rtc connection. Readonly
+   * @param urls URls
+   */
+  constructor (
+    public urls: string,
+  ) {}
+
+  public static fromJSON (raw: ICEServerJSON): ICEServer {
+    return new ICEServer(
+      raw.urls,
+    )
+  }
+
+  public mappableFields = [
+    'urls',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    urls: () => ({ urls: this.urls }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ICEServerJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ICEServerJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerChatLastreadParamsJSON {
+  /* eslint-disable camelcase */
+  badge: number;
+  chats: ChatCountersJSON[];
+  team_unread: TeamUnreadJSON;
+  /* eslint-enable camelcase */
+}
+
+export class ServerChatLastreadParams implements TDProtoClass<ServerChatLastreadParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param badge Total number of unreads
+   * @param chats Chat counters
+   * @param teamUnread Current team counters
+   */
+  constructor (
+    public badge: number,
+    public chats: ChatCounters[],
+    public teamUnread: TeamUnread,
+  ) {}
+
+  public static fromJSON (raw: ServerChatLastreadParamsJSON): ServerChatLastreadParams {
+    return new ServerChatLastreadParams(
+      raw.badge,
+      raw.chats.map(ChatCounters.fromJSON),
+      TeamUnread.fromJSON(raw.team_unread),
+    )
+  }
+
+  public mappableFields = [
+    'badge',
+    'chats',
+    'teamUnread',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    badge: () => ({ badge: this.badge }),
+    chats: () => ({ chats: this.chats.map(u => u.toJSON()) }),
+    teamUnread: () => ({ team_unread: this.teamUnread.toJSON() }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerChatLastreadParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerChatLastreadParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface WallpaperJSON {
+  /* eslint-disable camelcase */
+  key: string;
+  name: string;
+  url: string;
+  /* eslint-enable camelcase */
+}
+
+export class Wallpaper implements TDProtoClass<Wallpaper> {
+  /**
+   * Chat wallpaper
+   * @param key Unique identifier
+   * @param name Localized description
+   * @param url Url to jpg or png
+   */
+  constructor (
+    public key: string,
+    public name: string,
+    public url: string,
+  ) {}
+
+  public static fromJSON (raw: WallpaperJSON): Wallpaper {
+    return new Wallpaper(
+      raw.key,
+      raw.name,
+      raw.url,
+    )
+  }
+
+  public mappableFields = [
+    'key',
+    'name',
+    'url',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    key: () => ({ key: this.key }),
+    name: () => ({ name: this.name }),
+    url: () => ({ url: this.url }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): WallpaperJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<WallpaperJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -5283,11 +7257,11 @@ export interface ChatJSON {
   color_index?: number;
   complexity?: number;
   counters_enabled?: boolean;
-  deadline?: string;
+  deadline?: ISODateTimeString;
   deadline_expired?: boolean;
   default_for_all?: boolean;
   description?: string;
-  done?: string;
+  done?: ISODateTimeString;
   done_reason?: string;
   draft?: string;
   draft_num?: number;
@@ -5430,11 +7404,11 @@ export class Chat implements TDProtoClass<Chat> {
     public colorIndex?: number,
     public complexity?: number,
     public countersEnabled?: boolean,
-    public deadline?: string,
+    public deadline?: ISODateTimeString,
     public deadlineExpired?: boolean,
     public defaultForAll?: boolean,
     public description?: string,
-    public done?: string,
+    public done?: ISODateTimeString,
     public doneReason?: string,
     public draft?: string,
     public draftNum?: number,
@@ -5708,51 +7682,51 @@ export class Chat implements TDProtoClass<Chat> {
   }
 }
 
-export interface ServerCallMuteallJSON {
+export interface ClientCallSoundJSON {
   /* eslint-disable camelcase */
   event: string;
-  params: ServerCallMuteallParamsJSON;
+  params: ClientCallSoundParamsJSON;
   confirm_id?: string;
   /* eslint-enable camelcase */
 }
 
-export class ServerCallMuteall implements TDProtoClass<ServerCallMuteall> {
+export class ClientCallSound implements TDProtoClass<ClientCallSound> {
   /**
-   * All participants in call muted
-   * @param name DOCUMENTATION MISSING
+   * Change mute state in call
+   * @param event DOCUMENTATION MISSING
    * @param params DOCUMENTATION MISSING
    * @param confirmId DOCUMENTATION MISSING
    */
   constructor (
-    public name: string,
-    public params: ServerCallMuteallParams,
+    public event: string,
+    public params: ClientCallSoundParams,
     public confirmId?: string,
   ) {}
 
-  public static fromJSON (raw: ServerCallMuteallJSON): ServerCallMuteall {
-    return new ServerCallMuteall(
+  public static fromJSON (raw: ClientCallSoundJSON): ClientCallSound {
+    return new ClientCallSound(
       raw.event,
-      ServerCallMuteallParams.fromJSON(raw.params),
+      ClientCallSoundParams.fromJSON(raw.params),
       raw.confirm_id,
     )
   }
 
   public mappableFields = [
-    'name',
+    'event',
     'params',
     'confirmId',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
+    event: () => ({ event: this.event }),
     params: () => ({ params: this.params.toJSON() }),
     confirmId: () => ({ confirm_id: this.confirmId }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): ServerCallMuteallJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallMuteallJSON>
+  public toJSON (): ClientCallSoundJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientCallSoundJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -5762,213 +7736,51 @@ export class ServerCallMuteall implements TDProtoClass<ServerCallMuteall> {
   }
 }
 
-export interface ClientMessageUpdatedJSON {
+export interface ServerCallTalkingParamsJSON {
   /* eslint-disable camelcase */
-  event: string;
-  params: ClientMessageUpdatedParamsJSON;
-  confirm_id?: string;
+  actor: JID;
+  jid: JID;
+  talking: boolean;
   /* eslint-enable camelcase */
 }
 
-export class ClientMessageUpdated implements TDProtoClass<ClientMessageUpdated> {
-  /**
-   * Message created or changed
-   * @param name DOCUMENTATION MISSING
-   * @param params DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
-   */
-  constructor (
-    public name: string,
-    public params: ClientMessageUpdatedParams,
-    public confirmId?: string,
-  ) {}
-
-  public static fromJSON (raw: ClientMessageUpdatedJSON): ClientMessageUpdated {
-    return new ClientMessageUpdated(
-      raw.event,
-      ClientMessageUpdatedParams.fromJSON(raw.params),
-      raw.confirm_id,
-    )
-  }
-
-  public mappableFields = [
-    'name',
-    'params',
-    'confirmId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    params: () => ({ params: this.params.toJSON() }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ClientMessageUpdatedJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientMessageUpdatedJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface WikiPageJSON {
-  /* eslint-disable camelcase */
-  editor: JID;
-  gentime: number;
-  text: string;
-  updated: string;
-  /* eslint-enable camelcase */
-}
-
-export class WikiPage implements TDProtoClass<WikiPage> {
-  /**
-   * Wiki page. Experimental
-   * @param editor Last editor contact id
-   * @param gentime Object version
-   * @param text Page text
-   * @param updated Update time, iso
-   */
-  constructor (
-    public editor: JID,
-    public gentime: number,
-    public text: string,
-    public updated: string,
-  ) {}
-
-  public static fromJSON (raw: WikiPageJSON): WikiPage {
-    return new WikiPage(
-      raw.editor,
-      raw.gentime,
-      raw.text,
-      raw.updated,
-    )
-  }
-
-  public mappableFields = [
-    'editor',
-    'gentime',
-    'text',
-    'updated',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    editor: () => ({ editor: this.editor }),
-    gentime: () => ({ gentime: this.gentime }),
-    text: () => ({ text: this.text }),
-    updated: () => ({ updated: this.updated }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): WikiPageJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<WikiPageJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerPanicJSON {
-  /* eslint-disable camelcase */
-  event: string;
-  params: ServerPanicParamsJSON;
-  confirm_id?: string;
-  /* eslint-enable camelcase */
-}
-
-export class ServerPanic implements TDProtoClass<ServerPanic> {
-  /**
-   * Critical server error
-   * @param name DOCUMENTATION MISSING
-   * @param params DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
-   */
-  constructor (
-    public name: string,
-    public params: ServerPanicParams,
-    public confirmId?: string,
-  ) {}
-
-  public static fromJSON (raw: ServerPanicJSON): ServerPanic {
-    return new ServerPanic(
-      raw.event,
-      ServerPanicParams.fromJSON(raw.params),
-      raw.confirm_id,
-    )
-  }
-
-  public mappableFields = [
-    'name',
-    'params',
-    'confirmId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    params: () => ({ params: this.params.toJSON() }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerPanicJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerPanicJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerPanicParamsJSON {
-  /* eslint-disable camelcase */
-  code: string;
-  debug?: string;
-  /* eslint-enable camelcase */
-}
-
-export class ServerPanicParams implements TDProtoClass<ServerPanicParams> {
+export class ServerCallTalkingParams implements TDProtoClass<ServerCallTalkingParams> {
   /**
    * MISSING CLASS DOCUMENTATION
-   * @param code Error code
-   * @param debug Debug message
+   * @param actor Actor id
+   * @param jid Chat or contact id
+   * @param talking Is talking
    */
   constructor (
-    public code: string,
-    public debug?: string,
+    public actor: JID,
+    public jid: JID,
+    public talking: boolean,
   ) {}
 
-  public static fromJSON (raw: ServerPanicParamsJSON): ServerPanicParams {
-    return new ServerPanicParams(
-      raw.code,
-      raw.debug,
+  public static fromJSON (raw: ServerCallTalkingParamsJSON): ServerCallTalkingParams {
+    return new ServerCallTalkingParams(
+      raw.actor,
+      raw.jid,
+      raw.talking,
     )
   }
 
   public mappableFields = [
-    'code',
-    'debug',
+    'actor',
+    'jid',
+    'talking',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    code: () => ({ code: this.code }),
-    debug: () => ({ debug: this.debug }),
+    actor: () => ({ actor: this.actor }),
+    jid: () => ({ jid: this.jid }),
+    talking: () => ({ talking: this.talking }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): ServerPanicParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerPanicParamsJSON>
+  public toJSON (): ServerCallTalkingParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallTalkingParamsJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -5978,51 +7790,57 @@ export class ServerPanicParams implements TDProtoClass<ServerPanicParams> {
   }
 }
 
-export interface ServerCallCheckFingerprintJSON {
+export interface ContactShortJSON {
   /* eslint-disable camelcase */
-  event: string;
-  params: ServerCallCheckFingerprintParamsJSON;
-  confirm_id?: string;
+  display_name: string;
+  icons: IconDataJSON;
+  jid: JID;
+  short_name: string;
   /* eslint-enable camelcase */
 }
 
-export class ServerCallCheckFingerprint implements TDProtoClass<ServerCallCheckFingerprint> {
+export class ContactShort implements TDProtoClass<ContactShort> {
   /**
-   * Experimental function
-   * @param name DOCUMENTATION MISSING
-   * @param params DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
+   * Short contact representation
+   * @param displayName Full name in chats
+   * @param icons Icons data
+   * @param jid Contact Id
+   * @param shortName Short name in chats
    */
   constructor (
-    public name: string,
-    public params: ServerCallCheckFingerprintParams,
-    public confirmId?: string,
+    public displayName: string,
+    public icons: IconData,
+    public jid: JID,
+    public shortName: string,
   ) {}
 
-  public static fromJSON (raw: ServerCallCheckFingerprintJSON): ServerCallCheckFingerprint {
-    return new ServerCallCheckFingerprint(
-      raw.event,
-      ServerCallCheckFingerprintParams.fromJSON(raw.params),
-      raw.confirm_id,
+  public static fromJSON (raw: ContactShortJSON): ContactShort {
+    return new ContactShort(
+      raw.display_name,
+      IconData.fromJSON(raw.icons),
+      raw.jid,
+      raw.short_name,
     )
   }
 
   public mappableFields = [
-    'name',
-    'params',
-    'confirmId',
+    'displayName',
+    'icons',
+    'jid',
+    'shortName',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    params: () => ({ params: this.params.toJSON() }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
+    displayName: () => ({ display_name: this.displayName }),
+    icons: () => ({ icons: this.icons.toJSON() }),
+    jid: () => ({ jid: this.jid }),
+    shortName: () => ({ short_name: this.shortName }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): ServerCallCheckFingerprintJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallCheckFingerprintJSON>
+  public toJSON (): ContactShortJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ContactShortJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -6032,45 +7850,87 @@ export class ServerCallCheckFingerprint implements TDProtoClass<ServerCallCheckF
   }
 }
 
-export interface DistJSON {
+export interface MarkupEntityJSON {
   /* eslint-disable camelcase */
-  type: string;
-  url: string;
+  cl: number;
+  op: number;
+  typ: MarkupType;
+  childs?: MarkupEntityJSON[];
+  cllen?: number;
+  oplen?: number;
+  repl?: string;
+  time?: string;
+  url?: string;
   /* eslint-enable camelcase */
 }
 
-export class Dist implements TDProtoClass<Dist> {
+export class MarkupEntity implements TDProtoClass<MarkupEntity> {
   /**
-   * MISSING CLASS DOCUMENTATION
-   * @param type DOCUMENTATION MISSING
-   * @param uRL DOCUMENTATION MISSING
+   * Markup entity. Experimental
+   * @param cl Close marker offset
+   * @param op Open marker offset
+   * @param typ Marker type
+   * @param childs List of internal markup entities
+   * @param cllen Close marker length
+   * @param oplen Open marker length
+   * @param repl Text replacement
+   * @param time Time, for Time type
+   * @param url Url, for Link type
    */
   constructor (
-    public type: string,
-    public uRL: string,
+    public cl: number,
+    public op: number,
+    public typ: MarkupType,
+    public childs?: MarkupEntity[],
+    public cllen?: number,
+    public oplen?: number,
+    public repl?: string,
+    public time?: string,
+    public url?: string,
   ) {}
 
-  public static fromJSON (raw: DistJSON): Dist {
-    return new Dist(
-      raw.type,
+  public static fromJSON (raw: MarkupEntityJSON): MarkupEntity {
+    return new MarkupEntity(
+      raw.cl,
+      raw.op,
+      raw.typ,
+      raw.childs && raw.childs.map(MarkupEntity.fromJSON),
+      raw.cllen,
+      raw.oplen,
+      raw.repl,
+      raw.time,
       raw.url,
     )
   }
 
   public mappableFields = [
-    'type',
-    'uRL',
+    'cl',
+    'op',
+    'typ',
+    'childs',
+    'cllen',
+    'oplen',
+    'repl',
+    'time',
+    'url',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    type: () => ({ type: this.type }),
-    uRL: () => ({ url: this.uRL }),
+    cl: () => ({ cl: this.cl }),
+    op: () => ({ op: this.op }),
+    typ: () => ({ typ: this.typ }),
+    childs: () => ({ childs: this.childs?.map(u => u.toJSON()) }),
+    cllen: () => ({ cllen: this.cllen }),
+    oplen: () => ({ oplen: this.oplen }),
+    repl: () => ({ repl: this.repl }),
+    time: () => ({ time: this.time }),
+    url: () => ({ url: this.url }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): DistJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<DistJSON>
+  public toJSON (): MarkupEntityJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<MarkupEntityJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -6080,51 +7940,111 @@ export class Dist implements TDProtoClass<Dist> {
   }
 }
 
-export interface ServerConfirmJSON {
+export interface ColorRuleJSON {
   /* eslint-disable camelcase */
-  event: string;
-  params: ServerConfirmParamsJSON;
-  confirm_id?: string;
+  color_index: number;
+  priority: number;
+  uid: string;
+  description?: string;
+  section?: string;
+  section_enabled?: boolean;
+  tags?: string[];
+  tags_enabled?: boolean;
+  task_importance?: number;
+  task_importance_enabled?: boolean;
+  task_status?: string;
+  task_urgency?: number;
+  task_urgency_enabled?: boolean;
   /* eslint-enable camelcase */
 }
 
-export class ServerConfirm implements TDProtoClass<ServerConfirm> {
+export class ColorRule implements TDProtoClass<ColorRule> {
   /**
-   * Server confirmed client message
-   * @param name DOCUMENTATION MISSING
-   * @param params DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
+   * Set of rules to apply to tasks for coloring
+   * @param colorIndex DOCUMENTATION MISSING
+   * @param priority DOCUMENTATION MISSING
+   * @param uid DOCUMENTATION MISSING
+   * @param description DOCUMENTATION MISSING
+   * @param section DOCUMENTATION MISSING
+   * @param sectionEnabled DOCUMENTATION MISSING
+   * @param tags DOCUMENTATION MISSING
+   * @param tagsEnabled DOCUMENTATION MISSING
+   * @param taskImportance DOCUMENTATION MISSING
+   * @param taskImportanceEnabled DOCUMENTATION MISSING
+   * @param taskStatus DOCUMENTATION MISSING
+   * @param taskUrgency DOCUMENTATION MISSING
+   * @param taskUrgencyEnabled DOCUMENTATION MISSING
    */
   constructor (
-    public name: string,
-    public params: ServerConfirmParams,
-    public confirmId?: string,
+    public colorIndex: number,
+    public priority: number,
+    public uid: string,
+    public description?: string,
+    public section?: string,
+    public sectionEnabled?: boolean,
+    public tags?: string[],
+    public tagsEnabled?: boolean,
+    public taskImportance?: number,
+    public taskImportanceEnabled?: boolean,
+    public taskStatus?: string,
+    public taskUrgency?: number,
+    public taskUrgencyEnabled?: boolean,
   ) {}
 
-  public static fromJSON (raw: ServerConfirmJSON): ServerConfirm {
-    return new ServerConfirm(
-      raw.event,
-      ServerConfirmParams.fromJSON(raw.params),
-      raw.confirm_id,
+  public static fromJSON (raw: ColorRuleJSON): ColorRule {
+    return new ColorRule(
+      raw.color_index,
+      raw.priority,
+      raw.uid,
+      raw.description,
+      raw.section,
+      raw.section_enabled,
+      raw.tags,
+      raw.tags_enabled,
+      raw.task_importance,
+      raw.task_importance_enabled,
+      raw.task_status,
+      raw.task_urgency,
+      raw.task_urgency_enabled,
     )
   }
 
   public mappableFields = [
-    'name',
-    'params',
-    'confirmId',
+    'colorIndex',
+    'priority',
+    'uid',
+    'description',
+    'section',
+    'sectionEnabled',
+    'tags',
+    'tagsEnabled',
+    'taskImportance',
+    'taskImportanceEnabled',
+    'taskStatus',
+    'taskUrgency',
+    'taskUrgencyEnabled',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    params: () => ({ params: this.params.toJSON() }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
+    colorIndex: () => ({ color_index: this.colorIndex }),
+    priority: () => ({ priority: this.priority }),
+    uid: () => ({ uid: this.uid }),
+    description: () => ({ description: this.description }),
+    section: () => ({ section: this.section }),
+    sectionEnabled: () => ({ section_enabled: this.sectionEnabled }),
+    tags: () => ({ tags: this.tags }),
+    tagsEnabled: () => ({ tags_enabled: this.tagsEnabled }),
+    taskImportance: () => ({ task_importance: this.taskImportance }),
+    taskImportanceEnabled: () => ({ task_importance_enabled: this.taskImportanceEnabled }),
+    taskStatus: () => ({ task_status: this.taskStatus }),
+    taskUrgency: () => ({ task_urgency: this.taskUrgency }),
+    taskUrgencyEnabled: () => ({ task_urgency_enabled: this.taskUrgencyEnabled }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): ServerConfirmJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerConfirmJSON>
+  public toJSON (): ColorRuleJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ColorRuleJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -6134,279 +8054,45 @@ export class ServerConfirm implements TDProtoClass<ServerConfirm> {
   }
 }
 
-export interface ClientPingJSON {
-  /* eslint-disable camelcase */
-  event: string;
-  confirm_id?: string;
-  /* eslint-enable camelcase */
-}
-
-export class ClientPing implements TDProtoClass<ClientPing> {
-  /**
-   * Empty message for checking server connection
-   * @param name DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
-   */
-  constructor (
-    public name: string,
-    public confirmId?: string,
-  ) {}
-
-  public static fromJSON (raw: ClientPingJSON): ClientPing {
-    return new ClientPing(
-      raw.event,
-      raw.confirm_id,
-    )
-  }
-
-  public mappableFields = [
-    'name',
-    'confirmId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ClientPingJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientPingJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface CallEventJSON {
-  /* eslint-disable camelcase */
-  audiorecord: boolean;
-  finish: string;
-  onliners: CallOnlinerJSON[];
-  start: string;
-  /* eslint-enable camelcase */
-}
-
-export class CallEvent implements TDProtoClass<CallEvent> {
-  /**
-   * Audio call information
-   * @param audiorecord Call record enabled
-   * @param finish Call finish, iso date
-   * @param onliners Call participants
-   * @param start Call start, iso date
-   */
-  constructor (
-    public audiorecord: boolean,
-    public finish: string,
-    public onliners: CallOnliner[],
-    public start: string,
-  ) {}
-
-  public static fromJSON (raw: CallEventJSON): CallEvent {
-    return new CallEvent(
-      raw.audiorecord,
-      raw.finish,
-      raw.onliners.map(CallOnliner.fromJSON),
-      raw.start,
-    )
-  }
-
-  public mappableFields = [
-    'audiorecord',
-    'finish',
-    'onliners',
-    'start',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    audiorecord: () => ({ audiorecord: this.audiorecord }),
-    finish: () => ({ finish: this.finish }),
-    onliners: () => ({ onliners: this.onliners.map(u => u.toJSON()) }),
-    start: () => ({ start: this.start }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): CallEventJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<CallEventJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerMessagePushJSON {
-  /* eslint-disable camelcase */
-  event: string;
-  params: MessagePushJSON;
-  confirm_id?: string;
-  /* eslint-enable camelcase */
-}
-
-export class ServerMessagePush implements TDProtoClass<ServerMessagePush> {
-  /**
-   * Push replacement for desktop application
-   * @param name DOCUMENTATION MISSING
-   * @param params DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
-   */
-  constructor (
-    public name: string,
-    public params: MessagePush,
-    public confirmId?: string,
-  ) {}
-
-  public static fromJSON (raw: ServerMessagePushJSON): ServerMessagePush {
-    return new ServerMessagePush(
-      raw.event,
-      MessagePush.fromJSON(raw.params),
-      raw.confirm_id,
-    )
-  }
-
-  public mappableFields = [
-    'name',
-    'params',
-    'confirmId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    params: () => ({ params: this.params.toJSON() }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerMessagePushJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerMessagePushJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface SubtaskJSON {
-  /* eslint-disable camelcase */
-  assignee: JID;
-  display_name: string;
-  jid: JID;
-  num: number;
-  title: string;
-  public?: boolean;
-  /* eslint-enable camelcase */
-}
-
-export class Subtask implements TDProtoClass<Subtask> {
-  /**
-   * Link to sub/sup task
-   * @param assignee Assignee contact id. Tasks only
-   * @param displayName Title
-   * @param jid Task id
-   * @param num Task number in this team
-   * @param title Task title. Generated from number and description
-   * @param isPublic Can other team member see this task/group chat
-   */
-  constructor (
-    public assignee: JID,
-    public displayName: string,
-    public jid: JID,
-    public num: number,
-    public title: string,
-    public isPublic?: boolean,
-  ) {}
-
-  public static fromJSON (raw: SubtaskJSON): Subtask {
-    return new Subtask(
-      raw.assignee,
-      raw.display_name,
-      raw.jid,
-      raw.num,
-      raw.title,
-      raw.public,
-    )
-  }
-
-  public mappableFields = [
-    'assignee',
-    'displayName',
-    'jid',
-    'num',
-    'title',
-    'isPublic',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    assignee: () => ({ assignee: this.assignee }),
-    displayName: () => ({ display_name: this.displayName }),
-    jid: () => ({ jid: this.jid }),
-    num: () => ({ num: this.num }),
-    title: () => ({ title: this.title }),
-    isPublic: () => ({ public: this.isPublic }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): SubtaskJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<SubtaskJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ClientCallLeaveParamsJSON {
+export interface ClientCallSoundParamsJSON {
   /* eslint-disable camelcase */
   jid: JID;
-  reason: string;
+  muted: boolean;
   /* eslint-enable camelcase */
 }
 
-export class ClientCallLeaveParams implements TDProtoClass<ClientCallLeaveParams> {
+export class ClientCallSoundParams implements TDProtoClass<ClientCallSoundParams> {
   /**
    * MISSING CLASS DOCUMENTATION
    * @param jid Chat or contact id
-   * @param reason Reason, if any
+   * @param muted Mute state
    */
   constructor (
     public jid: JID,
-    public reason: string,
+    public muted: boolean,
   ) {}
 
-  public static fromJSON (raw: ClientCallLeaveParamsJSON): ClientCallLeaveParams {
-    return new ClientCallLeaveParams(
+  public static fromJSON (raw: ClientCallSoundParamsJSON): ClientCallSoundParams {
+    return new ClientCallSoundParams(
       raw.jid,
-      raw.reason,
+      raw.muted,
     )
   }
 
   public mappableFields = [
     'jid',
-    'reason',
+    'muted',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
     jid: () => ({ jid: this.jid }),
-    reason: () => ({ reason: this.reason }),
+    muted: () => ({ muted: this.muted }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): ClientCallLeaveParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientCallLeaveParamsJSON>
+  public toJSON (): ClientCallSoundParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientCallSoundParamsJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -6416,51 +8102,99 @@ export class ClientCallLeaveParams implements TDProtoClass<ClientCallLeaveParams
   }
 }
 
-export interface ClientConfirmJSON {
+export interface ServerTagDeletedJSON {
   /* eslint-disable camelcase */
   event: string;
-  params: ClientConfirmParamsJSON;
+  params: ServerTagDeletedParamsJSON;
   confirm_id?: string;
   /* eslint-enable camelcase */
 }
 
-export class ClientConfirm implements TDProtoClass<ClientConfirm> {
+export class ServerTagDeleted implements TDProtoClass<ServerTagDeleted> {
   /**
-   * Client confirmed server message
-   * @param name DOCUMENTATION MISSING
+   * Tag deleted
+   * @param event DOCUMENTATION MISSING
    * @param params DOCUMENTATION MISSING
    * @param confirmId DOCUMENTATION MISSING
    */
   constructor (
-    public name: string,
-    public params: ClientConfirmParams,
+    public event: string,
+    public params: ServerTagDeletedParams,
     public confirmId?: string,
   ) {}
 
-  public static fromJSON (raw: ClientConfirmJSON): ClientConfirm {
-    return new ClientConfirm(
+  public static fromJSON (raw: ServerTagDeletedJSON): ServerTagDeleted {
+    return new ServerTagDeleted(
       raw.event,
-      ClientConfirmParams.fromJSON(raw.params),
+      ServerTagDeletedParams.fromJSON(raw.params),
       raw.confirm_id,
     )
   }
 
   public mappableFields = [
-    'name',
+    'event',
     'params',
     'confirmId',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
+    event: () => ({ event: this.event }),
     params: () => ({ params: this.params.toJSON() }),
     confirmId: () => ({ confirm_id: this.confirmId }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): ClientConfirmJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientConfirmJSON>
+  public toJSON (): ServerTagDeletedJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerTagDeletedJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface AnyEventJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class AnyEvent implements TDProtoClass<AnyEvent> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param event DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: AnyEventJSON): AnyEvent {
+    return new AnyEvent(
+      raw.event,
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): AnyEventJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<AnyEventJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -6492,8 +8226,8 @@ export interface FeaturesJSON {
   front_version: string;
   host: string;
   ice_servers: ICEServerJSON[];
-  ios_app: string;
   installation_type: string;
+  ios_app: string;
   is_testing: boolean;
   max_color_rule_description_length: number;
   max_group_title_length: number;
@@ -6565,9 +8299,9 @@ export class Features implements TDProtoClass<Features> {
    * @param freeRegistration Free registration allowed
    * @param frontVersion Webclient version
    * @param host Current host
-   * @param iCEServers ICE servers for WebRTC
-   * @param iOSApp Link to AppStore
+   * @param iceServers ICE servers for WebRTC
    * @param installationType Name of installation
+   * @param iosApp Link to AppStore
    * @param isTesting Testing installation
    * @param maxColorRuleDescriptionLength Maximum length for ColorRule description
    * @param maxGroupTitleLength Maximum chars for group chat name
@@ -6593,7 +8327,7 @@ export class Features implements TDProtoClass<Features> {
    * @param readonlyGroups Deprecated
    * @param resendTimeout Resend message in n seconds if no confirmation from server given
    * @param safariPushId Safari push id for web-push notifications
-   * @param sentryDsnJS Frontend sentry.io settings
+   * @param sentryDsnJs Frontend sentry.io settings
    * @param serverDrafts Message drafts saved on server
    * @param singleGroupTeams Cross team communication. Experimental
    * @param taskChecklist Deprecated
@@ -6612,7 +8346,7 @@ export class Features implements TDProtoClass<Features> {
    * @param authBySms SMS authentication enabled
    * @param defaultWallpaper Default wallpaper url for mobile apps, if any
    * @param maxParticipantsPerCall Maximum number of participants per call
-   * @param oAuthServices External services
+   * @param oauthServices External services
    * @param onlyOneDevicePerCall Disallow call from multiply devices. Experimental
    */
   constructor (
@@ -6635,9 +8369,9 @@ export class Features implements TDProtoClass<Features> {
     public freeRegistration: boolean,
     public frontVersion: string,
     public host: string,
-    public iCEServers: ICEServer[],
-    public iOSApp: string,
+    public iceServers: ICEServer[],
     public installationType: string,
+    public iosApp: string,
     public isTesting: boolean,
     public maxColorRuleDescriptionLength: number,
     public maxGroupTitleLength: number,
@@ -6663,7 +8397,7 @@ export class Features implements TDProtoClass<Features> {
     public readonlyGroups: boolean,
     public resendTimeout: number,
     public safariPushId: string,
-    public sentryDsnJS: string,
+    public sentryDsnJs: string,
     public serverDrafts: boolean,
     public singleGroupTeams: boolean,
     public taskChecklist: boolean,
@@ -6682,7 +8416,7 @@ export class Features implements TDProtoClass<Features> {
     public authBySms?: boolean,
     public defaultWallpaper?: Wallpaper,
     public maxParticipantsPerCall?: number,
-    public oAuthServices?: OAuthService[],
+    public oauthServices?: OAuthService[],
     public onlyOneDevicePerCall?: boolean,
   ) {}
 
@@ -6708,8 +8442,8 @@ export class Features implements TDProtoClass<Features> {
       raw.front_version,
       raw.host,
       raw.ice_servers.map(ICEServer.fromJSON),
-      raw.ios_app,
       raw.installation_type,
+      raw.ios_app,
       raw.is_testing,
       raw.max_color_rule_description_length,
       raw.max_group_title_length,
@@ -6779,9 +8513,9 @@ export class Features implements TDProtoClass<Features> {
     'freeRegistration',
     'frontVersion',
     'host',
-    'iCEServers',
-    'iOSApp',
+    'iceServers',
     'installationType',
+    'iosApp',
     'isTesting',
     'maxColorRuleDescriptionLength',
     'maxGroupTitleLength',
@@ -6807,7 +8541,7 @@ export class Features implements TDProtoClass<Features> {
     'readonlyGroups',
     'resendTimeout',
     'safariPushId',
-    'sentryDsnJS',
+    'sentryDsnJs',
     'serverDrafts',
     'singleGroupTeams',
     'taskChecklist',
@@ -6826,7 +8560,7 @@ export class Features implements TDProtoClass<Features> {
     'authBySms',
     'defaultWallpaper',
     'maxParticipantsPerCall',
-    'oAuthServices',
+    'oauthServices',
     'onlyOneDevicePerCall',
   ] as const
 
@@ -6851,9 +8585,9 @@ export class Features implements TDProtoClass<Features> {
     freeRegistration: () => ({ free_registration: this.freeRegistration }),
     frontVersion: () => ({ front_version: this.frontVersion }),
     host: () => ({ host: this.host }),
-    iCEServers: () => ({ ice_servers: this.iCEServers.map(u => u.toJSON()) }),
-    iOSApp: () => ({ ios_app: this.iOSApp }),
+    iceServers: () => ({ ice_servers: this.iceServers.map(u => u.toJSON()) }),
     installationType: () => ({ installation_type: this.installationType }),
+    iosApp: () => ({ ios_app: this.iosApp }),
     isTesting: () => ({ is_testing: this.isTesting }),
     maxColorRuleDescriptionLength: () => ({ max_color_rule_description_length: this.maxColorRuleDescriptionLength }),
     maxGroupTitleLength: () => ({ max_group_title_length: this.maxGroupTitleLength }),
@@ -6879,7 +8613,7 @@ export class Features implements TDProtoClass<Features> {
     readonlyGroups: () => ({ readonly_groups: this.readonlyGroups }),
     resendTimeout: () => ({ resend_timeout: this.resendTimeout }),
     safariPushId: () => ({ safari_push_id: this.safariPushId }),
-    sentryDsnJS: () => ({ sentry_dsn_js: this.sentryDsnJS }),
+    sentryDsnJs: () => ({ sentry_dsn_js: this.sentryDsnJs }),
     serverDrafts: () => ({ server_drafts: this.serverDrafts }),
     singleGroupTeams: () => ({ single_group_teams: this.singleGroupTeams }),
     taskChecklist: () => ({ task_checklist: this.taskChecklist }),
@@ -6898,7 +8632,7 @@ export class Features implements TDProtoClass<Features> {
     authBySms: () => ({ auth_by_sms: this.authBySms }),
     defaultWallpaper: () => ({ default_wallpaper: this.defaultWallpaper?.toJSON() }),
     maxParticipantsPerCall: () => ({ max_participants_per_call: this.maxParticipantsPerCall }),
-    oAuthServices: () => ({ oauth_services: this.oAuthServices?.map(u => u.toJSON()) }),
+    oauthServices: () => ({ oauth_services: this.oauthServices?.map(u => u.toJSON()) }),
     onlyOneDevicePerCall: () => ({ only_one_device_per_call: this.onlyOneDevicePerCall }),
     /* eslint-enable camelcase */
   }
@@ -6914,273 +8648,51 @@ export class Features implements TDProtoClass<Features> {
   }
 }
 
-export interface IconDataJSON {
-  /* eslint-disable camelcase */
-  color?: string;
-  letters?: string;
-  lg?: SingleIconJSON;
-  sm?: SingleIconJSON;
-  stub?: string;
-  /* eslint-enable camelcase */
-}
-
-export class IconData implements TDProtoClass<IconData> {
-  /**
-   * Icon data. Contains sm+lg (for uploaded image) OR stub+letters+color (for icon generated from display name)
-   * @param color Stub icon background color
-   * @param letters Letters from stub icon
-   * @param lg Large image
-   * @param sm Small icon
-   * @param stub Generated image with 1-2 letters
-   */
-  constructor (
-    public color?: string,
-    public letters?: string,
-    public lg?: SingleIcon,
-    public sm?: SingleIcon,
-    public stub?: string,
-  ) {}
-
-  public static fromJSON (raw: IconDataJSON): IconData {
-    return new IconData(
-      raw.color,
-      raw.letters,
-      raw.lg && SingleIcon.fromJSON(raw.lg),
-      raw.sm && SingleIcon.fromJSON(raw.sm),
-      raw.stub,
-    )
-  }
-
-  public mappableFields = [
-    'color',
-    'letters',
-    'lg',
-    'sm',
-    'stub',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    color: () => ({ color: this.color }),
-    letters: () => ({ letters: this.letters }),
-    lg: () => ({ lg: this.lg?.toJSON() }),
-    sm: () => ({ sm: this.sm?.toJSON() }),
-    stub: () => ({ stub: this.stub }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): IconDataJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<IconDataJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface AnyEventJSON {
+export interface ServerChatDeletedJSON {
   /* eslint-disable camelcase */
   event: string;
+  params: ServerChatDeletedParamsJSON;
   confirm_id?: string;
   /* eslint-enable camelcase */
 }
 
-export class AnyEvent implements TDProtoClass<AnyEvent> {
+export class ServerChatDeleted implements TDProtoClass<ServerChatDeleted> {
   /**
-   * MISSING CLASS DOCUMENTATION
-   * @param name DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
-   */
-  constructor (
-    public name: string,
-    public confirmId?: string,
-  ) {}
-
-  public static fromJSON (raw: AnyEventJSON): AnyEvent {
-    return new AnyEvent(
-      raw.event,
-      raw.confirm_id,
-    )
-  }
-
-  public mappableFields = [
-    'name',
-    'confirmId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): AnyEventJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<AnyEventJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface RemindJSON {
-  /* eslint-disable camelcase */
-  chat: JID;
-  fire_at: string;
-  uid: string;
-  comment?: string;
-  /* eslint-enable camelcase */
-}
-
-export class Remind implements TDProtoClass<Remind> {
-  /**
-   * Remind
-   * @param chat Chat id
-   * @param fireAt Activation time, iso
-   * @param uid Remind id
-   * @param comment Comment, if any
-   */
-  constructor (
-    public chat: JID,
-    public fireAt: string,
-    public uid: string,
-    public comment?: string,
-  ) {}
-
-  public static fromJSON (raw: RemindJSON): Remind {
-    return new Remind(
-      raw.chat,
-      raw.fire_at,
-      raw.uid,
-      raw.comment,
-    )
-  }
-
-  public mappableFields = [
-    'chat',
-    'fireAt',
-    'uid',
-    'comment',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    chat: () => ({ chat: this.chat }),
-    fireAt: () => ({ fire_at: this.fireAt }),
-    uid: () => ({ uid: this.uid }),
-    comment: () => ({ comment: this.comment }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): RemindJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<RemindJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface PdfVersionJSON {
-  /* eslint-disable camelcase */
-  url: string;
-  text_preview?: string;
-  /* eslint-enable camelcase */
-}
-
-export class PdfVersion implements TDProtoClass<PdfVersion> {
-  /**
-   * PDF preview of mediafile. Experimental
-   * @param url Absolute url
-   * @param textPreview First string of text content
-   */
-  constructor (
-    public url: string,
-    public textPreview?: string,
-  ) {}
-
-  public static fromJSON (raw: PdfVersionJSON): PdfVersion {
-    return new PdfVersion(
-      raw.url,
-      raw.text_preview,
-    )
-  }
-
-  public mappableFields = [
-    'url',
-    'textPreview',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    url: () => ({ url: this.url }),
-    textPreview: () => ({ text_preview: this.textPreview }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): PdfVersionJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<PdfVersionJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerTagUpdatedJSON {
-  /* eslint-disable camelcase */
-  event: string;
-  params: ServerTagUpdatedParamsJSON;
-  confirm_id?: string;
-  /* eslint-enable camelcase */
-}
-
-export class ServerTagUpdated implements TDProtoClass<ServerTagUpdated> {
-  /**
-   * Tag created or changed
-   * @param name DOCUMENTATION MISSING
+   * Chat deleted
+   * @param event DOCUMENTATION MISSING
    * @param params DOCUMENTATION MISSING
    * @param confirmId DOCUMENTATION MISSING
    */
   constructor (
-    public name: string,
-    public params: ServerTagUpdatedParams,
+    public event: string,
+    public params: ServerChatDeletedParams,
     public confirmId?: string,
   ) {}
 
-  public static fromJSON (raw: ServerTagUpdatedJSON): ServerTagUpdated {
-    return new ServerTagUpdated(
+  public static fromJSON (raw: ServerChatDeletedJSON): ServerChatDeleted {
+    return new ServerChatDeleted(
       raw.event,
-      ServerTagUpdatedParams.fromJSON(raw.params),
+      ServerChatDeletedParams.fromJSON(raw.params),
       raw.confirm_id,
     )
   }
 
   public mappableFields = [
-    'name',
+    'event',
     'params',
     'confirmId',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
+    event: () => ({ event: this.event }),
     params: () => ({ params: this.params.toJSON() }),
     confirmId: () => ({ confirm_id: this.confirmId }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): ServerTagUpdatedJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerTagUpdatedJSON>
+  public toJSON (): ServerChatDeletedJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerChatDeletedJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -7190,51 +8702,231 @@ export class ServerTagUpdated implements TDProtoClass<ServerTagUpdated> {
   }
 }
 
-export interface ServerChatUpdatedParamsJSON {
+export interface ClientCallLeaveJSON {
   /* eslint-disable camelcase */
-  badge: number;
-  chats: ChatJSON[];
-  team_unread: TeamUnreadJSON;
+  event: string;
+  params: ClientCallLeaveParamsJSON;
+  confirm_id?: string;
   /* eslint-enable camelcase */
 }
 
-export class ServerChatUpdatedParams implements TDProtoClass<ServerChatUpdatedParams> {
+export class ClientCallLeave implements TDProtoClass<ClientCallLeave> {
   /**
-   * MISSING CLASS DOCUMENTATION
-   * @param badge Total number of unreads
-   * @param chats Chat counters
-   * @param teamUnread Current team counters
+   * Leave call
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
    */
   constructor (
-    public badge: number,
-    public chats: Chat[],
-    public teamUnread: TeamUnread,
+    public event: string,
+    public params: ClientCallLeaveParams,
+    public confirmId?: string,
   ) {}
 
-  public static fromJSON (raw: ServerChatUpdatedParamsJSON): ServerChatUpdatedParams {
-    return new ServerChatUpdatedParams(
-      raw.badge,
-      raw.chats.map(Chat.fromJSON),
-      TeamUnread.fromJSON(raw.team_unread),
+  public static fromJSON (raw: ClientCallLeaveJSON): ClientCallLeave {
+    return new ClientCallLeave(
+      raw.event,
+      ClientCallLeaveParams.fromJSON(raw.params),
+      raw.confirm_id,
     )
   }
 
   public mappableFields = [
-    'badge',
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ClientCallLeaveJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientCallLeaveJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface MessageReactionJSON {
+  /* eslint-disable camelcase */
+  counter: number;
+  details: MessageReactionDetailJSON[];
+  name: string;
+  /* eslint-enable camelcase */
+}
+
+export class MessageReaction implements TDProtoClass<MessageReaction> {
+  /**
+   * Message emoji reaction
+   * @param counter Number of reactions
+   * @param details Details
+   * @param name Emoji
+   */
+  constructor (
+    public counter: number,
+    public details: MessageReactionDetail[],
+    public name: string,
+  ) {}
+
+  public static fromJSON (raw: MessageReactionJSON): MessageReaction {
+    return new MessageReaction(
+      raw.counter,
+      raw.details.map(MessageReactionDetail.fromJSON),
+      raw.name,
+    )
+  }
+
+  public mappableFields = [
+    'counter',
+    'details',
+    'name',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    counter: () => ({ counter: this.counter }),
+    details: () => ({ details: this.details.map(u => u.toJSON()) }),
+    name: () => ({ name: this.name }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): MessageReactionJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<MessageReactionJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ButtonColorsJSON {
+  /* eslint-disable camelcase */
+  brand_active: string;
+  brand_disable: string;
+  brand_static: string;
+  simple_active: string;
+  simple_disable: string;
+  simple_static: string;
+  /* eslint-enable camelcase */
+}
+
+export class ButtonColors implements TDProtoClass<ButtonColors> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param brandActive DOCUMENTATION MISSING
+   * @param brandDisable DOCUMENTATION MISSING
+   * @param brandStatic DOCUMENTATION MISSING
+   * @param simpleActive DOCUMENTATION MISSING
+   * @param simpleDisable DOCUMENTATION MISSING
+   * @param simpleStatic DOCUMENTATION MISSING
+   */
+  constructor (
+    public brandActive: string,
+    public brandDisable: string,
+    public brandStatic: string,
+    public simpleActive: string,
+    public simpleDisable: string,
+    public simpleStatic: string,
+  ) {}
+
+  public static fromJSON (raw: ButtonColorsJSON): ButtonColors {
+    return new ButtonColors(
+      raw.brand_active,
+      raw.brand_disable,
+      raw.brand_static,
+      raw.simple_active,
+      raw.simple_disable,
+      raw.simple_static,
+    )
+  }
+
+  public mappableFields = [
+    'brandActive',
+    'brandDisable',
+    'brandStatic',
+    'simpleActive',
+    'simpleDisable',
+    'simpleStatic',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    brandActive: () => ({ brand_active: this.brandActive }),
+    brandDisable: () => ({ brand_disable: this.brandDisable }),
+    brandStatic: () => ({ brand_static: this.brandStatic }),
+    simpleActive: () => ({ simple_active: this.simpleActive }),
+    simpleDisable: () => ({ simple_disable: this.simpleDisable }),
+    simpleStatic: () => ({ simple_static: this.simpleStatic }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ButtonColorsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ButtonColorsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface UnreadJSON {
+  /* eslint-disable camelcase */
+  chats: number;
+  messages: number;
+  notice_messages: number;
+  /* eslint-enable camelcase */
+}
+
+export class Unread implements TDProtoClass<Unread> {
+  /**
+   * Unread message counters
+   * @param chats Total chats with unread messages
+   * @param messages Total unread messages
+   * @param noticeMessages Total unread messages with mentions
+   */
+  constructor (
+    public chats: number,
+    public messages: number,
+    public noticeMessages: number,
+  ) {}
+
+  public static fromJSON (raw: UnreadJSON): Unread {
+    return new Unread(
+      raw.chats,
+      raw.messages,
+      raw.notice_messages,
+    )
+  }
+
+  public mappableFields = [
     'chats',
-    'teamUnread',
+    'messages',
+    'noticeMessages',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    badge: () => ({ badge: this.badge }),
-    chats: () => ({ chats: this.chats.map(u => u.toJSON()) }),
-    teamUnread: () => ({ team_unread: this.teamUnread.toJSON() }),
+    chats: () => ({ chats: this.chats }),
+    messages: () => ({ messages: this.messages }),
+    noticeMessages: () => ({ notice_messages: this.noticeMessages }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): ServerChatUpdatedParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerChatUpdatedParamsJSON>
+  public toJSON (): UnreadJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<UnreadJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -7244,51 +8936,117 @@ export class ServerChatUpdatedParams implements TDProtoClass<ServerChatUpdatedPa
   }
 }
 
-export interface ServerRemindDeletedJSON {
+export interface ServerProcessingParamsJSON {
+  /* eslint-disable camelcase */
+  action: string;
+  has_error: boolean;
+  message: string;
+  num: number;
+  total: number;
+  /* eslint-enable camelcase */
+}
+
+export class ServerProcessingParams implements TDProtoClass<ServerProcessingParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param action Action name
+   * @param hasError Has error
+   * @param message Message
+   * @param num Current processing item
+   * @param total Total processing items
+   */
+  constructor (
+    public action: string,
+    public hasError: boolean,
+    public message: string,
+    public num: number,
+    public total: number,
+  ) {}
+
+  public static fromJSON (raw: ServerProcessingParamsJSON): ServerProcessingParams {
+    return new ServerProcessingParams(
+      raw.action,
+      raw.has_error,
+      raw.message,
+      raw.num,
+      raw.total,
+    )
+  }
+
+  public mappableFields = [
+    'action',
+    'hasError',
+    'message',
+    'num',
+    'total',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    action: () => ({ action: this.action }),
+    hasError: () => ({ has_error: this.hasError }),
+    message: () => ({ message: this.message }),
+    num: () => ({ num: this.num }),
+    total: () => ({ total: this.total }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerProcessingParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerProcessingParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerWarningJSON {
   /* eslint-disable camelcase */
   event: string;
-  params: ServerRemindDeletedParamsJSON;
+  params: ServerWarningParamsJSON;
   confirm_id?: string;
   /* eslint-enable camelcase */
 }
 
-export class ServerRemindDeleted implements TDProtoClass<ServerRemindDeleted> {
+export class ServerWarning implements TDProtoClass<ServerWarning> {
   /**
-   * Task or group remind deleted
-   * @param name DOCUMENTATION MISSING
+   * Something went wrong with client message
+   * @param event DOCUMENTATION MISSING
    * @param params DOCUMENTATION MISSING
    * @param confirmId DOCUMENTATION MISSING
    */
   constructor (
-    public name: string,
-    public params: ServerRemindDeletedParams,
+    public event: string,
+    public params: ServerWarningParams,
     public confirmId?: string,
   ) {}
 
-  public static fromJSON (raw: ServerRemindDeletedJSON): ServerRemindDeleted {
-    return new ServerRemindDeleted(
+  public static fromJSON (raw: ServerWarningJSON): ServerWarning {
+    return new ServerWarning(
       raw.event,
-      ServerRemindDeletedParams.fromJSON(raw.params),
+      ServerWarningParams.fromJSON(raw.params),
       raw.confirm_id,
     )
   }
 
   public mappableFields = [
-    'name',
+    'event',
     'params',
     'confirmId',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
+    event: () => ({ event: this.event }),
     params: () => ({ params: this.params.toJSON() }),
     confirmId: () => ({ confirm_id: this.confirmId }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): ServerRemindDeletedJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerRemindDeletedJSON>
+  public toJSON (): ServerWarningJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerWarningJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -7298,45 +9056,1089 @@ export class ServerRemindDeleted implements TDProtoClass<ServerRemindDeleted> {
   }
 }
 
-export interface UploadShortMessageJSON {
+export interface TermsJSON {
   /* eslint-disable camelcase */
-  message: ShortMessageJSON;
-  upload: UploadJSON;
+  EnInTeam: string;
+  EnTeam: string;
+  EnTeamAccess: string;
+  EnTeamAdmin: string;
+  EnTeamAdmins: string;
+  EnTeamGuest: string;
+  EnTeamMember: string;
+  EnTeamMembers: string;
+  EnTeamOwner: string;
+  EnTeamSettings: string;
+  EnTeams: string;
+  EnToTeam: string;
+  RuInTeam: string;
+  RuTeam: string;
+  RuTeamAccess: string;
+  RuTeamAdmin: string;
+  RuTeamAdmins: string;
+  RuTeamD: string;
+  RuTeamGuest: string;
+  RuTeamMember: string;
+  RuTeamMembers: string;
+  RuTeamOwner: string;
+  RuTeamP: string;
+  RuTeamR: string;
+  RuTeamSettings: string;
+  RuTeamT: string;
+  RuTeamV: string;
+  RuTeams: string;
+  RuTeamsD: string;
+  RuTeamsP: string;
+  RuTeamsR: string;
+  RuTeamsT: string;
+  RuTeamsV: string;
+  RuToTeam: string;
   /* eslint-enable camelcase */
 }
 
-export class UploadShortMessage implements TDProtoClass<UploadShortMessage> {
+export class Terms implements TDProtoClass<Terms> {
   /**
-   * Upload + ShortMessage
-   * @param message DOCUMENTATION MISSING
-   * @param upload DOCUMENTATION MISSING
+   * Experimental translation fields for "team" entity renaming. Readonly
+   * @param EnInTeam DOCUMENTATION MISSING
+   * @param EnTeam DOCUMENTATION MISSING
+   * @param EnTeamAccess DOCUMENTATION MISSING
+   * @param EnTeamAdmin DOCUMENTATION MISSING
+   * @param EnTeamAdmins DOCUMENTATION MISSING
+   * @param EnTeamGuest DOCUMENTATION MISSING
+   * @param EnTeamMember DOCUMENTATION MISSING
+   * @param EnTeamMembers DOCUMENTATION MISSING
+   * @param EnTeamOwner DOCUMENTATION MISSING
+   * @param EnTeamSettings DOCUMENTATION MISSING
+   * @param EnTeams DOCUMENTATION MISSING
+   * @param EnToTeam DOCUMENTATION MISSING
+   * @param RuInTeam DOCUMENTATION MISSING
+   * @param RuTeam DOCUMENTATION MISSING
+   * @param RuTeamAccess DOCUMENTATION MISSING
+   * @param RuTeamAdmin DOCUMENTATION MISSING
+   * @param RuTeamAdmins DOCUMENTATION MISSING
+   * @param RuTeamD DOCUMENTATION MISSING
+   * @param RuTeamGuest DOCUMENTATION MISSING
+   * @param RuTeamMember DOCUMENTATION MISSING
+   * @param RuTeamMembers DOCUMENTATION MISSING
+   * @param RuTeamOwner DOCUMENTATION MISSING
+   * @param RuTeamP DOCUMENTATION MISSING
+   * @param RuTeamR DOCUMENTATION MISSING
+   * @param RuTeamSettings DOCUMENTATION MISSING
+   * @param RuTeamT DOCUMENTATION MISSING
+   * @param RuTeamV DOCUMENTATION MISSING
+   * @param RuTeams DOCUMENTATION MISSING
+   * @param RuTeamsD DOCUMENTATION MISSING
+   * @param RuTeamsP DOCUMENTATION MISSING
+   * @param RuTeamsR DOCUMENTATION MISSING
+   * @param RuTeamsT DOCUMENTATION MISSING
+   * @param RuTeamsV DOCUMENTATION MISSING
+   * @param RuToTeam DOCUMENTATION MISSING
    */
   constructor (
-    public message: ShortMessage,
-    public upload: Upload,
+    public EnInTeam: string,
+    public EnTeam: string,
+    public EnTeamAccess: string,
+    public EnTeamAdmin: string,
+    public EnTeamAdmins: string,
+    public EnTeamGuest: string,
+    public EnTeamMember: string,
+    public EnTeamMembers: string,
+    public EnTeamOwner: string,
+    public EnTeamSettings: string,
+    public EnTeams: string,
+    public EnToTeam: string,
+    public RuInTeam: string,
+    public RuTeam: string,
+    public RuTeamAccess: string,
+    public RuTeamAdmin: string,
+    public RuTeamAdmins: string,
+    public RuTeamD: string,
+    public RuTeamGuest: string,
+    public RuTeamMember: string,
+    public RuTeamMembers: string,
+    public RuTeamOwner: string,
+    public RuTeamP: string,
+    public RuTeamR: string,
+    public RuTeamSettings: string,
+    public RuTeamT: string,
+    public RuTeamV: string,
+    public RuTeams: string,
+    public RuTeamsD: string,
+    public RuTeamsP: string,
+    public RuTeamsR: string,
+    public RuTeamsT: string,
+    public RuTeamsV: string,
+    public RuToTeam: string,
   ) {}
 
-  public static fromJSON (raw: UploadShortMessageJSON): UploadShortMessage {
-    return new UploadShortMessage(
-      ShortMessage.fromJSON(raw.message),
-      Upload.fromJSON(raw.upload),
+  public static fromJSON (raw: TermsJSON): Terms {
+    return new Terms(
+      raw.EnInTeam,
+      raw.EnTeam,
+      raw.EnTeamAccess,
+      raw.EnTeamAdmin,
+      raw.EnTeamAdmins,
+      raw.EnTeamGuest,
+      raw.EnTeamMember,
+      raw.EnTeamMembers,
+      raw.EnTeamOwner,
+      raw.EnTeamSettings,
+      raw.EnTeams,
+      raw.EnToTeam,
+      raw.RuInTeam,
+      raw.RuTeam,
+      raw.RuTeamAccess,
+      raw.RuTeamAdmin,
+      raw.RuTeamAdmins,
+      raw.RuTeamD,
+      raw.RuTeamGuest,
+      raw.RuTeamMember,
+      raw.RuTeamMembers,
+      raw.RuTeamOwner,
+      raw.RuTeamP,
+      raw.RuTeamR,
+      raw.RuTeamSettings,
+      raw.RuTeamT,
+      raw.RuTeamV,
+      raw.RuTeams,
+      raw.RuTeamsD,
+      raw.RuTeamsP,
+      raw.RuTeamsR,
+      raw.RuTeamsT,
+      raw.RuTeamsV,
+      raw.RuToTeam,
     )
   }
 
   public mappableFields = [
-    'message',
-    'upload',
+    'EnInTeam',
+    'EnTeam',
+    'EnTeamAccess',
+    'EnTeamAdmin',
+    'EnTeamAdmins',
+    'EnTeamGuest',
+    'EnTeamMember',
+    'EnTeamMembers',
+    'EnTeamOwner',
+    'EnTeamSettings',
+    'EnTeams',
+    'EnToTeam',
+    'RuInTeam',
+    'RuTeam',
+    'RuTeamAccess',
+    'RuTeamAdmin',
+    'RuTeamAdmins',
+    'RuTeamD',
+    'RuTeamGuest',
+    'RuTeamMember',
+    'RuTeamMembers',
+    'RuTeamOwner',
+    'RuTeamP',
+    'RuTeamR',
+    'RuTeamSettings',
+    'RuTeamT',
+    'RuTeamV',
+    'RuTeams',
+    'RuTeamsD',
+    'RuTeamsP',
+    'RuTeamsR',
+    'RuTeamsT',
+    'RuTeamsV',
+    'RuToTeam',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    message: () => ({ message: this.message.toJSON() }),
-    upload: () => ({ upload: this.upload.toJSON() }),
+    EnInTeam: () => ({ EnInTeam: this.EnInTeam }),
+    EnTeam: () => ({ EnTeam: this.EnTeam }),
+    EnTeamAccess: () => ({ EnTeamAccess: this.EnTeamAccess }),
+    EnTeamAdmin: () => ({ EnTeamAdmin: this.EnTeamAdmin }),
+    EnTeamAdmins: () => ({ EnTeamAdmins: this.EnTeamAdmins }),
+    EnTeamGuest: () => ({ EnTeamGuest: this.EnTeamGuest }),
+    EnTeamMember: () => ({ EnTeamMember: this.EnTeamMember }),
+    EnTeamMembers: () => ({ EnTeamMembers: this.EnTeamMembers }),
+    EnTeamOwner: () => ({ EnTeamOwner: this.EnTeamOwner }),
+    EnTeamSettings: () => ({ EnTeamSettings: this.EnTeamSettings }),
+    EnTeams: () => ({ EnTeams: this.EnTeams }),
+    EnToTeam: () => ({ EnToTeam: this.EnToTeam }),
+    RuInTeam: () => ({ RuInTeam: this.RuInTeam }),
+    RuTeam: () => ({ RuTeam: this.RuTeam }),
+    RuTeamAccess: () => ({ RuTeamAccess: this.RuTeamAccess }),
+    RuTeamAdmin: () => ({ RuTeamAdmin: this.RuTeamAdmin }),
+    RuTeamAdmins: () => ({ RuTeamAdmins: this.RuTeamAdmins }),
+    RuTeamD: () => ({ RuTeamD: this.RuTeamD }),
+    RuTeamGuest: () => ({ RuTeamGuest: this.RuTeamGuest }),
+    RuTeamMember: () => ({ RuTeamMember: this.RuTeamMember }),
+    RuTeamMembers: () => ({ RuTeamMembers: this.RuTeamMembers }),
+    RuTeamOwner: () => ({ RuTeamOwner: this.RuTeamOwner }),
+    RuTeamP: () => ({ RuTeamP: this.RuTeamP }),
+    RuTeamR: () => ({ RuTeamR: this.RuTeamR }),
+    RuTeamSettings: () => ({ RuTeamSettings: this.RuTeamSettings }),
+    RuTeamT: () => ({ RuTeamT: this.RuTeamT }),
+    RuTeamV: () => ({ RuTeamV: this.RuTeamV }),
+    RuTeams: () => ({ RuTeams: this.RuTeams }),
+    RuTeamsD: () => ({ RuTeamsD: this.RuTeamsD }),
+    RuTeamsP: () => ({ RuTeamsP: this.RuTeamsP }),
+    RuTeamsR: () => ({ RuTeamsR: this.RuTeamsR }),
+    RuTeamsT: () => ({ RuTeamsT: this.RuTeamsT }),
+    RuTeamsV: () => ({ RuTeamsV: this.RuTeamsV }),
+    RuToTeam: () => ({ RuToTeam: this.RuToTeam }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): UploadShortMessageJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<UploadShortMessageJSON>
+  public toJSON (): TermsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<TermsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface IntegrationFormJSON {
+  /* eslint-disable camelcase */
+  api_key?: IntegrationFieldJSON;
+  url?: IntegrationFieldJSON;
+  webhook_url?: IntegrationFieldJSON;
+  /* eslint-enable camelcase */
+}
+
+export class IntegrationForm implements TDProtoClass<IntegrationForm> {
+  /**
+   * Integration form
+   * @param apiKey Api key field, if any
+   * @param url Url, if any
+   * @param webhookUrl Webhook url, if any
+   */
+  constructor (
+    public apiKey?: IntegrationField,
+    public url?: IntegrationField,
+    public webhookUrl?: IntegrationField,
+  ) {}
+
+  public static fromJSON (raw: IntegrationFormJSON): IntegrationForm {
+    return new IntegrationForm(
+      raw.api_key && IntegrationField.fromJSON(raw.api_key),
+      raw.url && IntegrationField.fromJSON(raw.url),
+      raw.webhook_url && IntegrationField.fromJSON(raw.webhook_url),
+    )
+  }
+
+  public mappableFields = [
+    'apiKey',
+    'url',
+    'webhookUrl',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    apiKey: () => ({ api_key: this.apiKey?.toJSON() }),
+    url: () => ({ url: this.url?.toJSON() }),
+    webhookUrl: () => ({ webhook_url: this.webhookUrl?.toJSON() }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): IntegrationFormJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<IntegrationFormJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ClientCallRejectParamsJSON {
+  /* eslint-disable camelcase */
+  jid: JID;
+  reason: string;
+  /* eslint-enable camelcase */
+}
+
+export class ClientCallRejectParams implements TDProtoClass<ClientCallRejectParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param jid Chat or contact id
+   * @param reason Reason, if any
+   */
+  constructor (
+    public jid: JID,
+    public reason: string,
+  ) {}
+
+  public static fromJSON (raw: ClientCallRejectParamsJSON): ClientCallRejectParams {
+    return new ClientCallRejectParams(
+      raw.jid,
+      raw.reason,
+    )
+  }
+
+  public mappableFields = [
+    'jid',
+    'reason',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    jid: () => ({ jid: this.jid }),
+    reason: () => ({ reason: this.reason }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ClientCallRejectParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientCallRejectParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface MessageReactionDetailJSON {
+  /* eslint-disable camelcase */
+  created: ISODateTimeString;
+  name: string;
+  sender: JID;
+  /* eslint-enable camelcase */
+}
+
+export class MessageReactionDetail implements TDProtoClass<MessageReactionDetail> {
+  /**
+   * Message reaction detail
+   * @param created When reaction added, iso datetime
+   * @param name Reaction emoji
+   * @param sender Reaction author
+   */
+  constructor (
+    public created: ISODateTimeString,
+    public name: string,
+    public sender: JID,
+  ) {}
+
+  public static fromJSON (raw: MessageReactionDetailJSON): MessageReactionDetail {
+    return new MessageReactionDetail(
+      raw.created,
+      raw.name,
+      raw.sender,
+    )
+  }
+
+  public mappableFields = [
+    'created',
+    'name',
+    'sender',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    created: () => ({ created: this.created }),
+    name: () => ({ name: this.name }),
+    sender: () => ({ sender: this.sender }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): MessageReactionDetailJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<MessageReactionDetailJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerCallCheckFingerprintParamsJSON {
+  /* eslint-disable camelcase */
+  fingerprint: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerCallCheckFingerprintParams implements TDProtoClass<ServerCallCheckFingerprintParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param fingerprint DOCUMENTATION MISSING
+   */
+  constructor (
+    public fingerprint: string,
+  ) {}
+
+  public static fromJSON (raw: ServerCallCheckFingerprintParamsJSON): ServerCallCheckFingerprintParams {
+    return new ServerCallCheckFingerprintParams(
+      raw.fingerprint,
+    )
+  }
+
+  public mappableFields = [
+    'fingerprint',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    fingerprint: () => ({ fingerprint: this.fingerprint }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerCallCheckFingerprintParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallCheckFingerprintParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface DistJSON {
+  /* eslint-disable camelcase */
+  type: string;
+  url: string;
+  /* eslint-enable camelcase */
+}
+
+export class Dist implements TDProtoClass<Dist> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param type DOCUMENTATION MISSING
+   * @param url DOCUMENTATION MISSING
+   */
+  constructor (
+    public type: string,
+    public url: string,
+  ) {}
+
+  public static fromJSON (raw: DistJSON): Dist {
+    return new Dist(
+      raw.type,
+      raw.url,
+    )
+  }
+
+  public mappableFields = [
+    'type',
+    'url',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    type: () => ({ type: this.type }),
+    url: () => ({ url: this.url }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): DistJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<DistJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ClientChatComposingParamsJSON {
+  /* eslint-disable camelcase */
+  jid: JID;
+  composing?: boolean;
+  draft?: string;
+  is_audio?: boolean;
+  /* eslint-enable camelcase */
+}
+
+export class ClientChatComposingParams implements TDProtoClass<ClientChatComposingParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param jid Chat or contact id
+   * @param composing true = start typing / audio recording, false = stop
+   * @param draft Message draft data
+   * @param isAudio true = audiomessage, false = text typing
+   */
+  constructor (
+    public jid: JID,
+    public composing?: boolean,
+    public draft?: string,
+    public isAudio?: boolean,
+  ) {}
+
+  public static fromJSON (raw: ClientChatComposingParamsJSON): ClientChatComposingParams {
+    return new ClientChatComposingParams(
+      raw.jid,
+      raw.composing,
+      raw.draft,
+      raw.is_audio,
+    )
+  }
+
+  public mappableFields = [
+    'jid',
+    'composing',
+    'draft',
+    'isAudio',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    jid: () => ({ jid: this.jid }),
+    composing: () => ({ composing: this.composing }),
+    draft: () => ({ draft: this.draft }),
+    isAudio: () => ({ is_audio: this.isAudio }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ClientChatComposingParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientChatComposingParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ClientCallBuzzCancelJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ClientCallBuzzCancelParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ClientCallBuzzCancel implements TDProtoClass<ClientCallBuzzCancel> {
+  /**
+   * Call buzzing cancelled
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ClientCallBuzzCancelParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ClientCallBuzzCancelJSON): ClientCallBuzzCancel {
+    return new ClientCallBuzzCancel(
+      raw.event,
+      ClientCallBuzzCancelParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ClientCallBuzzCancelJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientCallBuzzCancelJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerLoginParamsJSON {
+  /* eslint-disable camelcase */
+  device_name: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerLoginParams implements TDProtoClass<ServerLoginParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param deviceName Device name
+   */
+  constructor (
+    public deviceName: string,
+  ) {}
+
+  public static fromJSON (raw: ServerLoginParamsJSON): ServerLoginParams {
+    return new ServerLoginParams(
+      raw.device_name,
+    )
+  }
+
+  public mappableFields = [
+    'deviceName',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    deviceName: () => ({ device_name: this.deviceName }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerLoginParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerLoginParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface UserWithMeJSON {
+  /* eslint-disable camelcase */
+  alt_send: boolean;
+  always_send_pushes: boolean;
+  asterisk_mention: boolean;
+  devices: PushDeviceJSON[];
+  munread_first: boolean;
+  quiet_time_finish: string;
+  quiet_time_start: string;
+  teams: TeamJSON[];
+  timezone: string;
+  unread_first: boolean;
+  default_lang?: string;
+  email?: string;
+  family_name?: string;
+  given_name?: string;
+  inviter?: JID;
+  patronymic?: string;
+  phone?: string;
+  /* eslint-enable camelcase */
+}
+
+export class UserWithMe implements TDProtoClass<UserWithMe> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param altSend Use Ctrl/Cmd + Enter instead Enter
+   * @param alwaysSendPushes Send pushes even user is online
+   * @param asteriskMention Use * as @ for mentions
+   * @param devices DOCUMENTATION MISSING
+   * @param munreadFirst Show unread chats in chat list first on mobiles
+   * @param quietTimeFinish Finish silently time (no pushes, no sounds)
+   * @param quietTimeStart Start silently time (no pushes, no sounds)
+   * @param teams DOCUMENTATION MISSING
+   * @param timezone Timezone
+   * @param unreadFirst Show unread chats in chat list first
+   * @param defaultLang Default language code
+   * @param email Email for login
+   * @param familyName Family name
+   * @param givenName Given name
+   * @param inviter DOCUMENTATION MISSING
+   * @param patronymic Patronymic, if any
+   * @param phone Phone for login
+   */
+  constructor (
+    public altSend: boolean,
+    public alwaysSendPushes: boolean,
+    public asteriskMention: boolean,
+    public devices: PushDevice[],
+    public munreadFirst: boolean,
+    public quietTimeFinish: string,
+    public quietTimeStart: string,
+    public teams: Team[],
+    public timezone: string,
+    public unreadFirst: boolean,
+    public defaultLang?: string,
+    public email?: string,
+    public familyName?: string,
+    public givenName?: string,
+    public inviter?: JID,
+    public patronymic?: string,
+    public phone?: string,
+  ) {}
+
+  public static fromJSON (raw: UserWithMeJSON): UserWithMe {
+    return new UserWithMe(
+      raw.alt_send,
+      raw.always_send_pushes,
+      raw.asterisk_mention,
+      raw.devices.map(PushDevice.fromJSON),
+      raw.munread_first,
+      raw.quiet_time_finish,
+      raw.quiet_time_start,
+      raw.teams.map(Team.fromJSON),
+      raw.timezone,
+      raw.unread_first,
+      raw.default_lang,
+      raw.email,
+      raw.family_name,
+      raw.given_name,
+      raw.inviter,
+      raw.patronymic,
+      raw.phone,
+    )
+  }
+
+  public mappableFields = [
+    'altSend',
+    'alwaysSendPushes',
+    'asteriskMention',
+    'devices',
+    'munreadFirst',
+    'quietTimeFinish',
+    'quietTimeStart',
+    'teams',
+    'timezone',
+    'unreadFirst',
+    'defaultLang',
+    'email',
+    'familyName',
+    'givenName',
+    'inviter',
+    'patronymic',
+    'phone',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    altSend: () => ({ alt_send: this.altSend }),
+    alwaysSendPushes: () => ({ always_send_pushes: this.alwaysSendPushes }),
+    asteriskMention: () => ({ asterisk_mention: this.asteriskMention }),
+    devices: () => ({ devices: this.devices.map(u => u.toJSON()) }),
+    munreadFirst: () => ({ munread_first: this.munreadFirst }),
+    quietTimeFinish: () => ({ quiet_time_finish: this.quietTimeFinish }),
+    quietTimeStart: () => ({ quiet_time_start: this.quietTimeStart }),
+    teams: () => ({ teams: this.teams.map(u => u.toJSON()) }),
+    timezone: () => ({ timezone: this.timezone }),
+    unreadFirst: () => ({ unread_first: this.unreadFirst }),
+    defaultLang: () => ({ default_lang: this.defaultLang }),
+    email: () => ({ email: this.email }),
+    familyName: () => ({ family_name: this.familyName }),
+    givenName: () => ({ given_name: this.givenName }),
+    inviter: () => ({ inviter: this.inviter }),
+    patronymic: () => ({ patronymic: this.patronymic }),
+    phone: () => ({ phone: this.phone }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): UserWithMeJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<UserWithMeJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface IntegrationKindJSON {
+  /* eslint-disable camelcase */
+  description: string;
+  icon: string;
+  kind: string;
+  template: IntegrationJSON;
+  title: string;
+  /* eslint-enable camelcase */
+}
+
+export class IntegrationKind implements TDProtoClass<IntegrationKind> {
+  /**
+   * Integration kind
+   * @param description Plugin description
+   * @param icon Path to icon
+   * @param kind Integration unique name
+   * @param template Integration template
+   * @param title Plugin title
+   */
+  constructor (
+    public description: string,
+    public icon: string,
+    public kind: string,
+    public template: Integration,
+    public title: string,
+  ) {}
+
+  public static fromJSON (raw: IntegrationKindJSON): IntegrationKind {
+    return new IntegrationKind(
+      raw.description,
+      raw.icon,
+      raw.kind,
+      Integration.fromJSON(raw.template),
+      raw.title,
+    )
+  }
+
+  public mappableFields = [
+    'description',
+    'icon',
+    'kind',
+    'template',
+    'title',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    description: () => ({ description: this.description }),
+    icon: () => ({ icon: this.icon }),
+    kind: () => ({ kind: this.kind }),
+    template: () => ({ template: this.template.toJSON() }),
+    title: () => ({ title: this.title }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): IntegrationKindJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<IntegrationKindJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface MessageColorsJSON {
+  /* eslint-disable camelcase */
+  allocated: string;
+  bubble_important: string;
+  bubble_received: string;
+  bubble_sent: string;
+  status_bubble: string;
+  status_feed: string;
+  /* eslint-enable camelcase */
+}
+
+export class MessageColors implements TDProtoClass<MessageColors> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param allocated DOCUMENTATION MISSING
+   * @param bubbleImportant DOCUMENTATION MISSING
+   * @param bubbleReceived DOCUMENTATION MISSING
+   * @param bubbleSent DOCUMENTATION MISSING
+   * @param statusBubble DOCUMENTATION MISSING
+   * @param statusFeed DOCUMENTATION MISSING
+   */
+  constructor (
+    public allocated: string,
+    public bubbleImportant: string,
+    public bubbleReceived: string,
+    public bubbleSent: string,
+    public statusBubble: string,
+    public statusFeed: string,
+  ) {}
+
+  public static fromJSON (raw: MessageColorsJSON): MessageColors {
+    return new MessageColors(
+      raw.allocated,
+      raw.bubble_important,
+      raw.bubble_received,
+      raw.bubble_sent,
+      raw.status_bubble,
+      raw.status_feed,
+    )
+  }
+
+  public mappableFields = [
+    'allocated',
+    'bubbleImportant',
+    'bubbleReceived',
+    'bubbleSent',
+    'statusBubble',
+    'statusFeed',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    allocated: () => ({ allocated: this.allocated }),
+    bubbleImportant: () => ({ bubble_important: this.bubbleImportant }),
+    bubbleReceived: () => ({ bubble_received: this.bubbleReceived }),
+    bubbleSent: () => ({ bubble_sent: this.bubbleSent }),
+    statusBubble: () => ({ status_bubble: this.statusBubble }),
+    statusFeed: () => ({ status_feed: this.statusFeed }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): MessageColorsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<MessageColorsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface JSEPJSON {
+  /* eslint-disable camelcase */
+  sdp: string;
+  type: string;
+  /* eslint-enable camelcase */
+}
+
+export class JSEP implements TDProtoClass<JSEP> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param sdp DOCUMENTATION MISSING
+   * @param type DOCUMENTATION MISSING
+   */
+  constructor (
+    public sdp: string,
+    public type: string,
+  ) {}
+
+  public static fromJSON (raw: JSEPJSON): JSEP {
+    return new JSEP(
+      raw.sdp,
+      raw.type,
+    )
+  }
+
+  public mappableFields = [
+    'sdp',
+    'type',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    sdp: () => ({ sdp: this.sdp }),
+    type: () => ({ type: this.type }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): JSEPJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<JSEPJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerTimeParamsJSON {
+  /* eslint-disable camelcase */
+  time: ISODateTimeString;
+  /* eslint-enable camelcase */
+}
+
+export class ServerTimeParams implements TDProtoClass<ServerTimeParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param time Current time
+   */
+  constructor (
+    public time: ISODateTimeString,
+  ) {}
+
+  public static fromJSON (raw: ServerTimeParamsJSON): ServerTimeParams {
+    return new ServerTimeParams(
+      raw.time,
+    )
+  }
+
+  public mappableFields = [
+    'time',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    time: () => ({ time: this.time }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerTimeParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerTimeParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerContactUpdatedParamsJSON {
+  /* eslint-disable camelcase */
+  contacts: ContactJSON[];
+  /* eslint-enable camelcase */
+}
+
+export class ServerContactUpdatedParams implements TDProtoClass<ServerContactUpdatedParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param contacts Contact info
+   */
+  constructor (
+    public contacts: Contact[],
+  ) {}
+
+  public static fromJSON (raw: ServerContactUpdatedParamsJSON): ServerContactUpdatedParams {
+    return new ServerContactUpdatedParams(
+      raw.contacts.map(Contact.fromJSON),
+    )
+  }
+
+  public mappableFields = [
+    'contacts',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    contacts: () => ({ contacts: this.contacts.map(u => u.toJSON()) }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerContactUpdatedParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerContactUpdatedParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerDebugParamsJSON {
+  /* eslint-disable camelcase */
+  text: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerDebugParams implements TDProtoClass<ServerDebugParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param text Debug message
+   */
+  constructor (
+    public text: string,
+  ) {}
+
+  public static fromJSON (raw: ServerDebugParamsJSON): ServerDebugParams {
+    return new ServerDebugParams(
+      raw.text,
+    )
+  }
+
+  public mappableFields = [
+    'text',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    text: () => ({ text: this.text }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerDebugParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerDebugParamsJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -7430,609 +10232,99 @@ export class Session implements TDProtoClass<Session> {
   }
 }
 
-export interface ServerCallLeaveJSON {
+export interface MessagePushJSON {
   /* eslint-disable camelcase */
-  event: string;
-  params: ServerCallLeaveParamsJSON;
-  confirm_id?: string;
-  /* eslint-enable camelcase */
-}
-
-export class ServerCallLeave implements TDProtoClass<ServerCallLeave> {
-  /**
-   * Participant leave a call
-   * @param name DOCUMENTATION MISSING
-   * @param params DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
-   */
-  constructor (
-    public name: string,
-    public params: ServerCallLeaveParams,
-    public confirmId?: string,
-  ) {}
-
-  public static fromJSON (raw: ServerCallLeaveJSON): ServerCallLeave {
-    return new ServerCallLeave(
-      raw.event,
-      ServerCallLeaveParams.fromJSON(raw.params),
-      raw.confirm_id,
-    )
-  }
-
-  public mappableFields = [
-    'name',
-    'params',
-    'confirmId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    params: () => ({ params: this.params.toJSON() }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerCallLeaveJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallLeaveJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerTimeJSON {
-  /* eslint-disable camelcase */
-  event: string;
-  params: ServerTimeParamsJSON;
-  confirm_id?: string;
-  /* eslint-enable camelcase */
-}
-
-export class ServerTime implements TDProtoClass<ServerTime> {
-  /**
-   * Current server time
-   * @param name DOCUMENTATION MISSING
-   * @param params DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
-   */
-  constructor (
-    public name: string,
-    public params: ServerTimeParams,
-    public confirmId?: string,
-  ) {}
-
-  public static fromJSON (raw: ServerTimeJSON): ServerTime {
-    return new ServerTime(
-      raw.event,
-      ServerTimeParams.fromJSON(raw.params),
-      raw.confirm_id,
-    )
-  }
-
-  public mappableFields = [
-    'name',
-    'params',
-    'confirmId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    params: () => ({ params: this.params.toJSON() }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerTimeJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerTimeJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface MessageColorsJSON {
-  /* eslint-disable camelcase */
-  allocated: string;
-  bubble_important: string;
-  bubble_received: string;
-  bubble_sent: string;
-  status_bubble: string;
-  status_feed: string;
-  /* eslint-enable camelcase */
-}
-
-export class MessageColors implements TDProtoClass<MessageColors> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param allocated DOCUMENTATION MISSING
-   * @param bubbleImportant DOCUMENTATION MISSING
-   * @param bubbleReceived DOCUMENTATION MISSING
-   * @param bubbleSent DOCUMENTATION MISSING
-   * @param statusBubble DOCUMENTATION MISSING
-   * @param statusFeed DOCUMENTATION MISSING
-   */
-  constructor (
-    public allocated: string,
-    public bubbleImportant: string,
-    public bubbleReceived: string,
-    public bubbleSent: string,
-    public statusBubble: string,
-    public statusFeed: string,
-  ) {}
-
-  public static fromJSON (raw: MessageColorsJSON): MessageColors {
-    return new MessageColors(
-      raw.allocated,
-      raw.bubble_important,
-      raw.bubble_received,
-      raw.bubble_sent,
-      raw.status_bubble,
-      raw.status_feed,
-    )
-  }
-
-  public mappableFields = [
-    'allocated',
-    'bubbleImportant',
-    'bubbleReceived',
-    'bubbleSent',
-    'statusBubble',
-    'statusFeed',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    allocated: () => ({ allocated: this.allocated }),
-    bubbleImportant: () => ({ bubble_important: this.bubbleImportant }),
-    bubbleReceived: () => ({ bubble_received: this.bubbleReceived }),
-    bubbleSent: () => ({ bubble_sent: this.bubbleSent }),
-    statusBubble: () => ({ status_bubble: this.statusBubble }),
-    statusFeed: () => ({ status_feed: this.statusFeed }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): MessageColorsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<MessageColorsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerRemindDeletedParamsJSON {
-  /* eslint-disable camelcase */
-  reminds: DeletedRemindJSON[];
-  /* eslint-enable camelcase */
-}
-
-export class ServerRemindDeletedParams implements TDProtoClass<ServerRemindDeletedParams> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param remind Remind information
-   */
-  constructor (
-    public remind: DeletedRemind[],
-  ) {}
-
-  public static fromJSON (raw: ServerRemindDeletedParamsJSON): ServerRemindDeletedParams {
-    return new ServerRemindDeletedParams(
-      raw.reminds.map(DeletedRemind.fromJSON),
-    )
-  }
-
-  public mappableFields = [
-    'remind',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    remind: () => ({ reminds: this.remind.map(u => u.toJSON()) }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerRemindDeletedParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerRemindDeletedParamsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface TaskPreviewJSON {
-  /* eslint-disable camelcase */
-  assignee: JID;
-  deadline: string;
-  description: string;
-  public: boolean;
-  items: TaskItemsJSON[];
-  section: string;
-  tags: string[];
-  _error?: string;
-  /* eslint-enable camelcase */
-}
-
-export class TaskPreview implements TDProtoClass<TaskPreview> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param assignee DOCUMENTATION MISSING
-   * @param deadline DOCUMENTATION MISSING
-   * @param description DOCUMENTATION MISSING
-   * @param isPublic DOCUMENTATION MISSING
-   * @param items DOCUMENTATION MISSING
-   * @param section DOCUMENTATION MISSING
-   * @param tags DOCUMENTATION MISSING
-   * @param error DOCUMENTATION MISSING
-   */
-  constructor (
-    public assignee: JID,
-    public deadline: string,
-    public description: string,
-    public isPublic: boolean,
-    public items: TaskItems[],
-    public section: string,
-    public tags: string[],
-    public error?: string,
-  ) {}
-
-  public static fromJSON (raw: TaskPreviewJSON): TaskPreview {
-    return new TaskPreview(
-      raw.assignee,
-      raw.deadline,
-      raw.description,
-      raw.public,
-      raw.items.map(TaskItems.fromJSON),
-      raw.section,
-      raw.tags,
-      raw._error,
-    )
-  }
-
-  public mappableFields = [
-    'assignee',
-    'deadline',
-    'description',
-    'isPublic',
-    'items',
-    'section',
-    'tags',
-    'error',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    assignee: () => ({ assignee: this.assignee }),
-    deadline: () => ({ deadline: this.deadline }),
-    description: () => ({ description: this.description }),
-    isPublic: () => ({ public: this.isPublic }),
-    items: () => ({ items: this.items.map(u => u.toJSON()) }),
-    section: () => ({ section: this.section }),
-    tags: () => ({ tags: this.tags }),
-    error: () => ({ _error: this.error }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): TaskPreviewJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<TaskPreviewJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerProcessingJSON {
-  /* eslint-disable camelcase */
-  event: string;
-  params: ServerProcessingParamsJSON;
-  confirm_id?: string;
-  /* eslint-enable camelcase */
-}
-
-export class ServerProcessing implements TDProtoClass<ServerProcessing> {
-  /**
-   * Status of background operation
-   * @param name DOCUMENTATION MISSING
-   * @param params DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
-   */
-  constructor (
-    public name: string,
-    public params: ServerProcessingParams,
-    public confirmId?: string,
-  ) {}
-
-  public static fromJSON (raw: ServerProcessingJSON): ServerProcessing {
-    return new ServerProcessing(
-      raw.event,
-      ServerProcessingParams.fromJSON(raw.params),
-      raw.confirm_id,
-    )
-  }
-
-  public mappableFields = [
-    'name',
-    'params',
-    'confirmId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    params: () => ({ params: this.params.toJSON() }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerProcessingJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerProcessingJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ChatCountersJSON {
-  /* eslint-disable camelcase */
-  chat_type: ChatType;
-  gentime: number;
-  jid: JID;
-  last_read_message_id: string;
-  num_unread: number;
-  num_unread_notices: number;
-  last_activity?: ISODateTimeString;
-  /* eslint-enable camelcase */
-}
-
-export class ChatCounters implements TDProtoClass<ChatCounters> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param chatType DOCUMENTATION MISSING
-   * @param gentime DOCUMENTATION MISSING
-   * @param jid DOCUMENTATION MISSING
-   * @param lastReadMessageUid DOCUMENTATION MISSING
-   * @param numUnread DOCUMENTATION MISSING
-   * @param numUnreadNotices DOCUMENTATION MISSING
-   * @param lastActivity DOCUMENTATION MISSING
-   */
-  constructor (
-    public chatType: ChatType,
-    public gentime: number,
-    public jid: JID,
-    public lastReadMessageUid: string,
-    public numUnread: number,
-    public numUnreadNotices: number,
-    public lastActivity?: ISODateTimeString,
-  ) {}
-
-  public static fromJSON (raw: ChatCountersJSON): ChatCounters {
-    return new ChatCounters(
-      raw.chat_type,
-      raw.gentime,
-      raw.jid,
-      raw.last_read_message_id,
-      raw.num_unread,
-      raw.num_unread_notices,
-      raw.last_activity,
-    )
-  }
-
-  public mappableFields = [
-    'chatType',
-    'gentime',
-    'jid',
-    'lastReadMessageUid',
-    'numUnread',
-    'numUnreadNotices',
-    'lastActivity',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    chatType: () => ({ chat_type: this.chatType }),
-    gentime: () => ({ gentime: this.gentime }),
-    jid: () => ({ jid: this.jid }),
-    lastReadMessageUid: () => ({ last_read_message_id: this.lastReadMessageUid }),
-    numUnread: () => ({ num_unread: this.numUnread }),
-    numUnreadNotices: () => ({ num_unread_notices: this.numUnreadNotices }),
-    lastActivity: () => ({ last_activity: this.lastActivity }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ChatCountersJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ChatCountersJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ClientCallLeaveJSON {
-  /* eslint-disable camelcase */
-  event: string;
-  params: ClientCallLeaveParamsJSON;
-  confirm_id?: string;
-  /* eslint-enable camelcase */
-}
-
-export class ClientCallLeave implements TDProtoClass<ClientCallLeave> {
-  /**
-   * Leave call
-   * @param name DOCUMENTATION MISSING
-   * @param params DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
-   */
-  constructor (
-    public name: string,
-    public params: ClientCallLeaveParams,
-    public confirmId?: string,
-  ) {}
-
-  public static fromJSON (raw: ClientCallLeaveJSON): ClientCallLeave {
-    return new ClientCallLeave(
-      raw.event,
-      ClientCallLeaveParams.fromJSON(raw.params),
-      raw.confirm_id,
-    )
-  }
-
-  public mappableFields = [
-    'name',
-    'params',
-    'confirmId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    params: () => ({ params: this.params.toJSON() }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ClientCallLeaveJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientCallLeaveJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerCallBuzzcancelParamsJSON {
-  /* eslint-disable camelcase */
-  jid: JID;
+  chat: JID;
+  click_action: string;
+  created: ISODateTimeString;
+  icon_url: string;
+  message: string;
+  message_id: string;
+  sender: JID;
+  subtitle: string;
+  tag: string;
   team: string;
-  uid: string;
+  title: string;
   /* eslint-enable camelcase */
 }
 
-export class ServerCallBuzzcancelParams implements TDProtoClass<ServerCallBuzzcancelParams> {
+export class MessagePush implements TDProtoClass<MessagePush> {
   /**
-   * MISSING CLASS DOCUMENTATION
-   * @param jid Chat or contact id
-   * @param team Team id
-   * @param uid Call id
+   * Push message over websockets. Readonly
+   * @param chat Chat id
+   * @param clickAction Url opened on click
+   * @param created Message creation iso datetime
+   * @param iconUrl Absolute url to push icon
+   * @param message Push body
+   * @param messageId Message id
+   * @param sender Sender contact id
+   * @param subtitle Push subtitle
+   * @param tag Push tag (for join pushes)
+   * @param team Team uid
+   * @param title Push title
    */
   constructor (
-    public jid: JID,
+    public chat: JID,
+    public clickAction: string,
+    public created: ISODateTimeString,
+    public iconUrl: string,
+    public message: string,
+    public messageId: string,
+    public sender: JID,
+    public subtitle: string,
+    public tag: string,
     public team: string,
-    public uid: string,
+    public title: string,
   ) {}
 
-  public static fromJSON (raw: ServerCallBuzzcancelParamsJSON): ServerCallBuzzcancelParams {
-    return new ServerCallBuzzcancelParams(
-      raw.jid,
+  public static fromJSON (raw: MessagePushJSON): MessagePush {
+    return new MessagePush(
+      raw.chat,
+      raw.click_action,
+      raw.created,
+      raw.icon_url,
+      raw.message,
+      raw.message_id,
+      raw.sender,
+      raw.subtitle,
+      raw.tag,
       raw.team,
-      raw.uid,
-    )
-  }
-
-  public mappableFields = [
-    'jid',
-    'team',
-    'uid',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    jid: () => ({ jid: this.jid }),
-    team: () => ({ team: this.team }),
-    uid: () => ({ uid: this.uid }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerCallBuzzcancelParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallBuzzcancelParamsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ContactCustomFieldsJSON {
-  /* eslint-disable camelcase */
-  company?: string;
-  department?: string;
-  mobile_phone?: string;
-  source?: string;
-  title?: string;
-  /* eslint-enable camelcase */
-}
-
-export class ContactCustomFields implements TDProtoClass<ContactCustomFields> {
-  /**
-   * Extra contact fields
-   * @param company DOCUMENTATION MISSING
-   * @param department DOCUMENTATION MISSING
-   * @param mobilePhone DOCUMENTATION MISSING
-   * @param source DOCUMENTATION MISSING
-   * @param title DOCUMENTATION MISSING
-   */
-  constructor (
-    public company?: string,
-    public department?: string,
-    public mobilePhone?: string,
-    public source?: string,
-    public title?: string,
-  ) {}
-
-  public static fromJSON (raw: ContactCustomFieldsJSON): ContactCustomFields {
-    return new ContactCustomFields(
-      raw.company,
-      raw.department,
-      raw.mobile_phone,
-      raw.source,
       raw.title,
     )
   }
 
   public mappableFields = [
-    'company',
-    'department',
-    'mobilePhone',
-    'source',
+    'chat',
+    'clickAction',
+    'created',
+    'iconUrl',
+    'message',
+    'messageId',
+    'sender',
+    'subtitle',
+    'tag',
+    'team',
     'title',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    company: () => ({ company: this.company }),
-    department: () => ({ department: this.department }),
-    mobilePhone: () => ({ mobile_phone: this.mobilePhone }),
-    source: () => ({ source: this.source }),
+    chat: () => ({ chat: this.chat }),
+    clickAction: () => ({ click_action: this.clickAction }),
+    created: () => ({ created: this.created }),
+    iconUrl: () => ({ icon_url: this.iconUrl }),
+    message: () => ({ message: this.message }),
+    messageId: () => ({ message_id: this.messageId }),
+    sender: () => ({ sender: this.sender }),
+    subtitle: () => ({ subtitle: this.subtitle }),
+    tag: () => ({ tag: this.tag }),
+    team: () => ({ team: this.team }),
     title: () => ({ title: this.title }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): ContactCustomFieldsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ContactCustomFieldsJSON>
+  public toJSON (): MessagePushJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<MessagePushJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -8042,51 +10334,1623 @@ export class ContactCustomFields implements TDProtoClass<ContactCustomFields> {
   }
 }
 
-export interface ServerLoginJSON {
+export interface ServerOnlineJSON {
   /* eslint-disable camelcase */
   event: string;
-  params: ServerLoginParamsJSON;
+  params: ServerOnlineParamsJSON;
   confirm_id?: string;
   /* eslint-enable camelcase */
 }
 
-export class ServerLogin implements TDProtoClass<ServerLogin> {
+export class ServerOnline implements TDProtoClass<ServerOnline> {
   /**
-   * Login from other device
-   * @param name DOCUMENTATION MISSING
+   * Online team members and current active calls
+   * @param event DOCUMENTATION MISSING
    * @param params DOCUMENTATION MISSING
    * @param confirmId DOCUMENTATION MISSING
    */
   constructor (
-    public name: string,
-    public params: ServerLoginParams,
+    public event: string,
+    public params: ServerOnlineParams,
     public confirmId?: string,
   ) {}
 
-  public static fromJSON (raw: ServerLoginJSON): ServerLogin {
-    return new ServerLogin(
+  public static fromJSON (raw: ServerOnlineJSON): ServerOnline {
+    return new ServerOnline(
       raw.event,
-      ServerLoginParams.fromJSON(raw.params),
+      ServerOnlineParams.fromJSON(raw.params),
       raw.confirm_id,
     )
   }
 
   public mappableFields = [
-    'name',
+    'event',
     'params',
     'confirmId',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
+    event: () => ({ event: this.event }),
     params: () => ({ params: this.params.toJSON() }),
     confirmId: () => ({ confirm_id: this.confirmId }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): ServerLoginJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerLoginJSON>
+  public toJSON (): ServerOnlineJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerOnlineJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface TeamShortJSON {
+  /* eslint-disable camelcase */
+  icons: IconDataJSON;
+  name: string;
+  uid: string;
+  /* eslint-enable camelcase */
+}
+
+export class TeamShort implements TDProtoClass<TeamShort> {
+  /**
+   * Short team representation. For invites, push notifications, etc. Readonly
+   * @param icons Team icons
+   * @param name Team name
+   * @param uid Team id
+   */
+  constructor (
+    public icons: IconData,
+    public name: string,
+    public uid: string,
+  ) {}
+
+  public static fromJSON (raw: TeamShortJSON): TeamShort {
+    return new TeamShort(
+      IconData.fromJSON(raw.icons),
+      raw.name,
+      raw.uid,
+    )
+  }
+
+  public mappableFields = [
+    'icons',
+    'name',
+    'uid',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    icons: () => ({ icons: this.icons.toJSON() }),
+    name: () => ({ name: this.name }),
+    uid: () => ({ uid: this.uid }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): TeamShortJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<TeamShortJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ClientCallMuteAllJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ClientCallMuteAllParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ClientCallMuteAll implements TDProtoClass<ClientCallMuteAll> {
+  /**
+   * Mute all other call participants
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ClientCallMuteAllParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ClientCallMuteAllJSON): ClientCallMuteAll {
+    return new ClientCallMuteAll(
+      raw.event,
+      ClientCallMuteAllParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ClientCallMuteAllJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientCallMuteAllJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface StickerJSON {
+  /* eslint-disable camelcase */
+  icon100: string;
+  icon128: string;
+  icon200: string;
+  icon64: string;
+  message_content: MessageContentJSON;
+  uid: string;
+  /* eslint-enable camelcase */
+}
+
+export class Sticker implements TDProtoClass<Sticker> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param icon100 DOCUMENTATION MISSING
+   * @param icon128 DOCUMENTATION MISSING
+   * @param icon200 DOCUMENTATION MISSING
+   * @param icon64 DOCUMENTATION MISSING
+   * @param messageContent DOCUMENTATION MISSING
+   * @param uid DOCUMENTATION MISSING
+   */
+  constructor (
+    public icon100: string,
+    public icon128: string,
+    public icon200: string,
+    public icon64: string,
+    public messageContent: MessageContent,
+    public uid: string,
+  ) {}
+
+  public static fromJSON (raw: StickerJSON): Sticker {
+    return new Sticker(
+      raw.icon100,
+      raw.icon128,
+      raw.icon200,
+      raw.icon64,
+      MessageContent.fromJSON(raw.message_content),
+      raw.uid,
+    )
+  }
+
+  public mappableFields = [
+    'icon100',
+    'icon128',
+    'icon200',
+    'icon64',
+    'messageContent',
+    'uid',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    icon100: () => ({ icon100: this.icon100 }),
+    icon128: () => ({ icon128: this.icon128 }),
+    icon200: () => ({ icon200: this.icon200 }),
+    icon64: () => ({ icon64: this.icon64 }),
+    messageContent: () => ({ message_content: this.messageContent.toJSON() }),
+    uid: () => ({ uid: this.uid }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): StickerJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<StickerJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerTeamCountersJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ServerTeamCountersParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerTeamCounters implements TDProtoClass<ServerTeamCounters> {
+  /**
+   * Counters form other teams
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ServerTeamCountersParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ServerTeamCountersJSON): ServerTeamCounters {
+    return new ServerTeamCounters(
+      raw.event,
+      ServerTeamCountersParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerTeamCountersJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerTeamCountersJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerTeamCountersParamsJSON {
+  /* eslint-disable camelcase */
+  badge: number;
+  teams: TeamCounterJSON[];
+  /* eslint-enable camelcase */
+}
+
+export class ServerTeamCountersParams implements TDProtoClass<ServerTeamCountersParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param badge Total number of unreads
+   * @param teams Counters
+   */
+  constructor (
+    public badge: number,
+    public teams: TeamCounter[],
+  ) {}
+
+  public static fromJSON (raw: ServerTeamCountersParamsJSON): ServerTeamCountersParams {
+    return new ServerTeamCountersParams(
+      raw.badge,
+      raw.teams.map(TeamCounter.fromJSON),
+    )
+  }
+
+  public mappableFields = [
+    'badge',
+    'teams',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    badge: () => ({ badge: this.badge }),
+    teams: () => ({ teams: this.teams.map(u => u.toJSON()) }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerTeamCountersParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerTeamCountersParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface OnlineContactJSON {
+  /* eslint-disable camelcase */
+  jid: JID;
+  mobile: boolean;
+  afk?: boolean;
+  /* eslint-enable camelcase */
+}
+
+export class OnlineContact implements TDProtoClass<OnlineContact> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param jid Contact id
+   * @param mobile Is mobile client
+   * @param afk Is away from keyboard
+   */
+  constructor (
+    public jid: JID,
+    public mobile: boolean,
+    public afk?: boolean,
+  ) {}
+
+  public static fromJSON (raw: OnlineContactJSON): OnlineContact {
+    return new OnlineContact(
+      raw.jid,
+      raw.mobile,
+      raw.afk,
+    )
+  }
+
+  public mappableFields = [
+    'jid',
+    'mobile',
+    'afk',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    jid: () => ({ jid: this.jid }),
+    mobile: () => ({ mobile: this.mobile }),
+    afk: () => ({ afk: this.afk }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): OnlineContactJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<OnlineContactJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerTagUpdatedParamsJSON {
+  /* eslint-disable camelcase */
+  tags: TagJSON[];
+  /* eslint-enable camelcase */
+}
+
+export class ServerTagUpdatedParams implements TDProtoClass<ServerTagUpdatedParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param tags Tags info
+   */
+  constructor (
+    public tags: Tag[],
+  ) {}
+
+  public static fromJSON (raw: ServerTagUpdatedParamsJSON): ServerTagUpdatedParams {
+    return new ServerTagUpdatedParams(
+      raw.tags.map(Tag.fromJSON),
+    )
+  }
+
+  public mappableFields = [
+    'tags',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    tags: () => ({ tags: this.tags.map(u => u.toJSON()) }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerTagUpdatedParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerTagUpdatedParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ClientCallTrickleJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ClientCallTrickleParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ClientCallTrickle implements TDProtoClass<ClientCallTrickle> {
+  /**
+   * Send trickle candidate for webrtc connection
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ClientCallTrickleParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ClientCallTrickleJSON): ClientCallTrickle {
+    return new ClientCallTrickle(
+      raw.event,
+      ClientCallTrickleParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ClientCallTrickleJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientCallTrickleJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerConfirmParamsJSON {
+  /* eslint-disable camelcase */
+  confirm_id: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerConfirmParams implements TDProtoClass<ServerConfirmParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param confirmId Unique id generated by server
+   */
+  constructor (
+    public confirmId: string,
+  ) {}
+
+  public static fromJSON (raw: ServerConfirmParamsJSON): ServerConfirmParams {
+    return new ServerConfirmParams(
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerConfirmParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerConfirmParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerChatDraftJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ServerChatDraftParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerChatDraft implements TDProtoClass<ServerChatDraft> {
+  /**
+   * Changed draft message in chan
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ServerChatDraftParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ServerChatDraftJSON): ServerChatDraft {
+    return new ServerChatDraft(
+      raw.event,
+      ServerChatDraftParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerChatDraftJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerChatDraftJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface IconColorsJSON {
+  /* eslint-disable camelcase */
+  brand: string;
+  other: string;
+  title: string;
+  /* eslint-enable camelcase */
+}
+
+export class IconColors implements TDProtoClass<IconColors> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param brand DOCUMENTATION MISSING
+   * @param other DOCUMENTATION MISSING
+   * @param title DOCUMENTATION MISSING
+   */
+  constructor (
+    public brand: string,
+    public other: string,
+    public title: string,
+  ) {}
+
+  public static fromJSON (raw: IconColorsJSON): IconColors {
+    return new IconColors(
+      raw.brand,
+      raw.other,
+      raw.title,
+    )
+  }
+
+  public mappableFields = [
+    'brand',
+    'other',
+    'title',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    brand: () => ({ brand: this.brand }),
+    other: () => ({ other: this.other }),
+    title: () => ({ title: this.title }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): IconColorsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<IconColorsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface DeletedTagJSON {
+  /* eslint-disable camelcase */
+  uid: string;
+  /* eslint-enable camelcase */
+}
+
+export class DeletedTag implements TDProtoClass<DeletedTag> {
+  /**
+   * Delete tag message
+   * @param uid Tag id
+   */
+  constructor (
+    public uid: string,
+  ) {}
+
+  public static fromJSON (raw: DeletedTagJSON): DeletedTag {
+    return new DeletedTag(
+      raw.uid,
+    )
+  }
+
+  public mappableFields = [
+    'uid',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    uid: () => ({ uid: this.uid }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): DeletedTagJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<DeletedTagJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerChatLastreadJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ServerChatLastreadParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerChatLastread implements TDProtoClass<ServerChatLastread> {
+  /**
+   * Changed last read message in chat
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ServerChatLastreadParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ServerChatLastreadJSON): ServerChatLastread {
+    return new ServerChatLastread(
+      raw.event,
+      ServerChatLastreadParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerChatLastreadJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerChatLastreadJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerRemindDeletedJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ServerRemindDeletedParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerRemindDeleted implements TDProtoClass<ServerRemindDeleted> {
+  /**
+   * Task or group remind deleted
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ServerRemindDeletedParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ServerRemindDeletedJSON): ServerRemindDeleted {
+    return new ServerRemindDeleted(
+      raw.event,
+      ServerRemindDeletedParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerRemindDeletedJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerRemindDeletedJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerCallAnswerCandidateJSON {
+  /* eslint-disable camelcase */
+  candidate: string;
+  sdpMLineIndex: number;
+  /* eslint-enable camelcase */
+}
+
+export class ServerCallAnswerCandidate implements TDProtoClass<ServerCallAnswerCandidate> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param candidate DOCUMENTATION MISSING
+   * @param sdpMLineIndex DOCUMENTATION MISSING
+   */
+  constructor (
+    public candidate: string,
+    public sdpMLineIndex: number,
+  ) {}
+
+  public static fromJSON (raw: ServerCallAnswerCandidateJSON): ServerCallAnswerCandidate {
+    return new ServerCallAnswerCandidate(
+      raw.candidate,
+      raw.sdpMLineIndex,
+    )
+  }
+
+  public mappableFields = [
+    'candidate',
+    'sdpMLineIndex',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    candidate: () => ({ candidate: this.candidate }),
+    sdpMLineIndex: () => ({ sdpMLineIndex: this.sdpMLineIndex }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerCallAnswerCandidateJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallAnswerCandidateJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface TeamJSON {
+  /* eslint-disable camelcase */
+  gentime: number;
+  icons: IconDataJSON;
+  last_active: boolean;
+  max_message_update_age: number;
+  me: ContactJSON;
+  name: string;
+  need_confirmation: boolean;
+  uid: string;
+  unread: TeamUnreadJSON;
+  user_fields: string[];
+  bad_profile?: boolean;
+  changeable_statuses?: TeamStatus[];
+  contacts?: ContactJSON[];
+  default_task_deadline?: string;
+  display_family_name_first?: boolean;
+  hide_archived_users?: boolean;
+  is_archive?: boolean;
+  single_group?: JID;
+  task_importance_max?: number;
+  task_importance_min?: number;
+  task_importance_rev?: boolean;
+  theme?: ThemeJSON;
+  uploads_size?: number;
+  uploads_size_limit?: number;
+  use_patronymic?: boolean;
+  use_task_complexity?: boolean;
+  use_task_importance?: boolean;
+  use_task_spent_time?: boolean;
+  use_task_urgency?: boolean;
+  /* eslint-enable camelcase */
+}
+
+export class Team implements TDProtoClass<Team> {
+  /**
+   * Team
+   * @param gentime Object version
+   * @param icons Team icons
+   * @param lastActive User last activity was in this team
+   * @param maxMessageUpdateAge Max message update/deletion age, in seconds
+   * @param me My profile in this team
+   * @param name Team name
+   * @param needConfirmation Need confirmation after invite to this team
+   * @param uid Team id
+   * @param unread Unread message counters
+   * @param userFields Username fields ordering
+   * @param badProfile My profile in this team isn't full
+   * @param changeableStatuses What status I can set to other team members
+   * @param contacts Team contacts. Used only for team creation
+   * @param defaultTaskDeadline Default task deadline
+   * @param displayFamilyNameFirst Family name should be first in display name
+   * @param hideArchivedUsers Don't show archived users by default
+   * @param isArchive Team deleted
+   * @param singleGroup For single group teams, jid of chat
+   * @param taskImportanceMax Maximum value of task importance. Default is 5
+   * @param taskImportanceMin Minimal value of task importance. Default is 1
+   * @param taskImportanceRev Bigger number = bigger importance. Default: lower number = bigger importance
+   * @param theme Color theme, if any
+   * @param uploadsSize Total uploads size, bytes
+   * @param uploadsSizeLimit Maximum uploads size, bytes, if any
+   * @param usePatronymic Patronymic in usernames for this team
+   * @param useTaskComplexity Use complexity field in task
+   * @param useTaskImportance Use importance field in task
+   * @param useTaskSpentTime Use spent time field in task
+   * @param useTaskUrgency Use urgency field in task
+   */
+  constructor (
+    public readonly gentime: number,
+    public readonly icons: IconData,
+    public readonly lastActive: boolean,
+    public maxMessageUpdateAge: number,
+    public readonly me: Contact,
+    public name: string,
+    public readonly needConfirmation: boolean,
+    public readonly uid: string,
+    public readonly unread: TeamUnread,
+    public readonly userFields: string[],
+    public readonly badProfile?: boolean,
+    public readonly changeableStatuses?: TeamStatus[],
+    public readonly contacts?: Contact[],
+    public defaultTaskDeadline?: string,
+    public displayFamilyNameFirst?: boolean,
+    public hideArchivedUsers?: boolean,
+    public readonly isArchive?: boolean,
+    public readonly singleGroup?: JID,
+    public taskImportanceMax?: number,
+    public taskImportanceMin?: number,
+    public taskImportanceRev?: boolean,
+    public readonly theme?: Theme,
+    public readonly uploadsSize?: number,
+    public readonly uploadsSizeLimit?: number,
+    public usePatronymic?: boolean,
+    public useTaskComplexity?: boolean,
+    public useTaskImportance?: boolean,
+    public useTaskSpentTime?: boolean,
+    public useTaskUrgency?: boolean,
+  ) {}
+
+  public static fromJSON (raw: TeamJSON): Team {
+    return new Team(
+      raw.gentime,
+      IconData.fromJSON(raw.icons),
+      raw.last_active,
+      raw.max_message_update_age,
+      Contact.fromJSON(raw.me),
+      raw.name,
+      raw.need_confirmation,
+      raw.uid,
+      TeamUnread.fromJSON(raw.unread),
+      raw.user_fields,
+      raw.bad_profile,
+      raw.changeable_statuses,
+      raw.contacts && raw.contacts.map(Contact.fromJSON),
+      raw.default_task_deadline,
+      raw.display_family_name_first,
+      raw.hide_archived_users,
+      raw.is_archive,
+      raw.single_group,
+      raw.task_importance_max,
+      raw.task_importance_min,
+      raw.task_importance_rev,
+      raw.theme && Theme.fromJSON(raw.theme),
+      raw.uploads_size,
+      raw.uploads_size_limit,
+      raw.use_patronymic,
+      raw.use_task_complexity,
+      raw.use_task_importance,
+      raw.use_task_spent_time,
+      raw.use_task_urgency,
+    )
+  }
+
+  public mappableFields = [
+    'gentime',
+    'icons',
+    'lastActive',
+    'maxMessageUpdateAge',
+    'me',
+    'name',
+    'needConfirmation',
+    'uid',
+    'unread',
+    'userFields',
+    'badProfile',
+    'changeableStatuses',
+    'contacts',
+    'defaultTaskDeadline',
+    'displayFamilyNameFirst',
+    'hideArchivedUsers',
+    'isArchive',
+    'singleGroup',
+    'taskImportanceMax',
+    'taskImportanceMin',
+    'taskImportanceRev',
+    'theme',
+    'uploadsSize',
+    'uploadsSizeLimit',
+    'usePatronymic',
+    'useTaskComplexity',
+    'useTaskImportance',
+    'useTaskSpentTime',
+    'useTaskUrgency',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    gentime: () => ({ gentime: this.gentime }),
+    icons: () => ({ icons: this.icons.toJSON() }),
+    lastActive: () => ({ last_active: this.lastActive }),
+    maxMessageUpdateAge: () => ({ max_message_update_age: this.maxMessageUpdateAge }),
+    me: () => ({ me: this.me.toJSON() }),
+    name: () => ({ name: this.name }),
+    needConfirmation: () => ({ need_confirmation: this.needConfirmation }),
+    uid: () => ({ uid: this.uid }),
+    unread: () => ({ unread: this.unread.toJSON() }),
+    userFields: () => ({ user_fields: this.userFields }),
+    badProfile: () => ({ bad_profile: this.badProfile }),
+    changeableStatuses: () => ({ changeable_statuses: this.changeableStatuses }),
+    contacts: () => ({ contacts: this.contacts?.map(u => u.toJSON()) }),
+    defaultTaskDeadline: () => ({ default_task_deadline: this.defaultTaskDeadline }),
+    displayFamilyNameFirst: () => ({ display_family_name_first: this.displayFamilyNameFirst }),
+    hideArchivedUsers: () => ({ hide_archived_users: this.hideArchivedUsers }),
+    isArchive: () => ({ is_archive: this.isArchive }),
+    singleGroup: () => ({ single_group: this.singleGroup }),
+    taskImportanceMax: () => ({ task_importance_max: this.taskImportanceMax }),
+    taskImportanceMin: () => ({ task_importance_min: this.taskImportanceMin }),
+    taskImportanceRev: () => ({ task_importance_rev: this.taskImportanceRev }),
+    theme: () => ({ theme: this.theme?.toJSON() }),
+    uploadsSize: () => ({ uploads_size: this.uploadsSize }),
+    uploadsSizeLimit: () => ({ uploads_size_limit: this.uploadsSizeLimit }),
+    usePatronymic: () => ({ use_patronymic: this.usePatronymic }),
+    useTaskComplexity: () => ({ use_task_complexity: this.useTaskComplexity }),
+    useTaskImportance: () => ({ use_task_importance: this.useTaskImportance }),
+    useTaskSpentTime: () => ({ use_task_spent_time: this.useTaskSpentTime }),
+    useTaskUrgency: () => ({ use_task_urgency: this.useTaskUrgency }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): TeamJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<TeamJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ClientActivityJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ClientActivityParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ClientActivity implements TDProtoClass<ClientActivity> {
+  /**
+   * Change AFK (away from keyboard) status
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ClientActivityParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ClientActivityJSON): ClientActivity {
+    return new ClientActivity(
+      raw.event,
+      ClientActivityParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ClientActivityJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientActivityJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ContactJSON {
+  /* eslint-disable camelcase */
+  contact_email: string;
+  contact_phone: string;
+  display_name: string;
+  icons: IconDataJSON;
+  jid: JID;
+  role: string;
+  sections: string[];
+  short_name: string;
+  status: TeamStatus;
+  add_to_team_rights?: boolean;
+  alt_send?: boolean;
+  always_send_pushes?: boolean;
+  asterisk_mention?: boolean;
+  auth_2fa_enabled?: boolean;
+  auth_2fa_status?: string;
+  botname?: string;
+  can_add_to_group?: boolean;
+  can_add_to_team?: boolean;
+  can_call?: boolean;
+  can_create_group?: boolean;
+  can_create_task?: boolean;
+  can_delete?: boolean;
+  can_delete_any_message?: boolean;
+  can_join_public_groups?: boolean;
+  can_join_public_tasks?: boolean;
+  can_manage_color_rules?: boolean;
+  can_manage_integrations?: boolean;
+  can_manage_sections?: boolean;
+  can_manage_tags?: boolean;
+  can_send_message?: boolean;
+  cant_send_message_reason?: string;
+  changeable_fields?: string[];
+  contact_mshort_view?: boolean;
+  contact_short_view?: boolean;
+  contact_show_archived?: boolean;
+  custom_fields?: ContactCustomFieldsJSON;
+  debug_show_activity?: boolean;
+  default_lang?: string;
+  dropall_enabled?: boolean;
+  family_name?: string;
+  given_name?: string;
+  group_mshort_view?: boolean;
+  group_notifications_enabled?: boolean;
+  group_short_view?: boolean;
+  is_archive?: boolean;
+  last_activity?: ISODateTimeString;
+  mood?: string;
+  munread_first?: boolean;
+  patronymic?: string;
+  quiet_time_finish?: string;
+  quiet_time_start?: string;
+  task_mshort_view?: boolean;
+  task_notifications_enabled?: boolean;
+  task_short_view?: boolean;
+  timezone?: string;
+  unread_first?: boolean;
+  /* eslint-enable camelcase */
+}
+
+export class Contact implements TDProtoClass<Contact> {
+  /**
+   * Contact
+   * @param contactEmail Contact email in this team
+   * @param contactPhone Contact phone in this team
+   * @param displayName Full name in chats
+   * @param icons Icons data
+   * @param jid Contact Id
+   * @param role Role in this team
+   * @param sections Section ids
+   * @param shortName Short name in chats
+   * @param status Status in this team
+   * @param addToTeamRights Can contact add users to this team
+   * @param altSend Use Ctrl/Cmd + Enter instead Enter
+   * @param alwaysSendPushes Send push notifications even contact is online
+   * @param asteriskMention Use * as @ for mentions
+   * @param auth2faEnabled Two-factor authentication is configured and confirmed
+   * @param auth2faStatus Two-factor authentication status
+   * @param botname Bot name. Empty for users
+   * @param canAddToGroup Can I add this contact to group chats
+   * @param canAddToTeam Can I add new members to this team
+   * @param canCall Can I call to this contact
+   * @param canCreateGroup Can I create group chats in this team
+   * @param canCreateTask Can I call create task for this contact
+   * @param canDelete Can I remove this contact from team
+   * @param canDeleteAnyMessage Deprecated: use CanDeleteAnyMessage in chat object
+   * @param canJoinPublicGroups Can I view/join public group in this team
+   * @param canJoinPublicTasks Can I view/join public tasks in this team
+   * @param canManageColorRules Can I manage color rules in this team
+   * @param canManageIntegrations Can I manage integrations in this team
+   * @param canManageSections Can I manage sections in this team
+   * @param canManageTags Can I manage tags in this team
+   * @param canSendMessage Can I send message to this contact
+   * @param cantSendMessageReason Why I can't send message to this chat (if can't)
+   * @param changeableFields Changeable fields
+   * @param contactMshortView Short view in contact list in mobile app
+   * @param contactShortView Short view in contact list
+   * @param contactShowArchived Show archived contacts in contact list
+   * @param customFields Extra contact fields
+   * @param debugShowActivity Enable debug messages in UI
+   * @param defaultLang Default language code
+   * @param dropallEnabled Enable remove all messages experimental features
+   * @param familyName Family name
+   * @param givenName Given name
+   * @param groupMshortView Short view in group list in mobile app
+   * @param groupNotificationsEnabled Push notifications for group chats
+   * @param groupShortView Short view in group list
+   * @param isArchive Contact deleted
+   * @param lastActivity Last activity in this team (iso datetime)
+   * @param mood Mood in this team
+   * @param munreadFirst Show unread chats first in feed in mobile app
+   * @param patronymic Patronymic, if any
+   * @param quietTimeFinish Quiet time finish
+   * @param quietTimeStart Quiet time start
+   * @param taskMshortView Short view in task list in mobile app
+   * @param taskNotificationsEnabled Push notifications for task chats
+   * @param taskShortView Short view in task list
+   * @param timezone Timezone, if any
+   * @param unreadFirst Show unread chats first in feed
+   */
+  constructor (
+    public contactEmail: string,
+    public contactPhone: string,
+    public displayName: string,
+    public icons: IconData,
+    public jid: JID,
+    public role: string,
+    public sections: string[],
+    public shortName: string,
+    public status: TeamStatus,
+    public addToTeamRights?: boolean,
+    public altSend?: boolean,
+    public alwaysSendPushes?: boolean,
+    public asteriskMention?: boolean,
+    public auth2faEnabled?: boolean,
+    public auth2faStatus?: string,
+    public botname?: string,
+    public canAddToGroup?: boolean,
+    public canAddToTeam?: boolean,
+    public canCall?: boolean,
+    public canCreateGroup?: boolean,
+    public canCreateTask?: boolean,
+    public canDelete?: boolean,
+    public canDeleteAnyMessage?: boolean,
+    public canJoinPublicGroups?: boolean,
+    public canJoinPublicTasks?: boolean,
+    public canManageColorRules?: boolean,
+    public canManageIntegrations?: boolean,
+    public canManageSections?: boolean,
+    public canManageTags?: boolean,
+    public canSendMessage?: boolean,
+    public cantSendMessageReason?: string,
+    public changeableFields?: string[],
+    public contactMshortView?: boolean,
+    public contactShortView?: boolean,
+    public contactShowArchived?: boolean,
+    public customFields?: ContactCustomFields,
+    public debugShowActivity?: boolean,
+    public defaultLang?: string,
+    public dropallEnabled?: boolean,
+    public familyName?: string,
+    public givenName?: string,
+    public groupMshortView?: boolean,
+    public groupNotificationsEnabled?: boolean,
+    public groupShortView?: boolean,
+    public isArchive?: boolean,
+    public lastActivity?: ISODateTimeString,
+    public mood?: string,
+    public munreadFirst?: boolean,
+    public patronymic?: string,
+    public quietTimeFinish?: string,
+    public quietTimeStart?: string,
+    public taskMshortView?: boolean,
+    public taskNotificationsEnabled?: boolean,
+    public taskShortView?: boolean,
+    public timezone?: string,
+    public unreadFirst?: boolean,
+  ) {}
+
+  public static fromJSON (raw: ContactJSON): Contact {
+    return new Contact(
+      raw.contact_email,
+      raw.contact_phone,
+      raw.display_name,
+      IconData.fromJSON(raw.icons),
+      raw.jid,
+      raw.role,
+      raw.sections,
+      raw.short_name,
+      raw.status,
+      raw.add_to_team_rights,
+      raw.alt_send,
+      raw.always_send_pushes,
+      raw.asterisk_mention,
+      raw.auth_2fa_enabled,
+      raw.auth_2fa_status,
+      raw.botname,
+      raw.can_add_to_group,
+      raw.can_add_to_team,
+      raw.can_call,
+      raw.can_create_group,
+      raw.can_create_task,
+      raw.can_delete,
+      raw.can_delete_any_message,
+      raw.can_join_public_groups,
+      raw.can_join_public_tasks,
+      raw.can_manage_color_rules,
+      raw.can_manage_integrations,
+      raw.can_manage_sections,
+      raw.can_manage_tags,
+      raw.can_send_message,
+      raw.cant_send_message_reason,
+      raw.changeable_fields,
+      raw.contact_mshort_view,
+      raw.contact_short_view,
+      raw.contact_show_archived,
+      raw.custom_fields && ContactCustomFields.fromJSON(raw.custom_fields),
+      raw.debug_show_activity,
+      raw.default_lang,
+      raw.dropall_enabled,
+      raw.family_name,
+      raw.given_name,
+      raw.group_mshort_view,
+      raw.group_notifications_enabled,
+      raw.group_short_view,
+      raw.is_archive,
+      raw.last_activity,
+      raw.mood,
+      raw.munread_first,
+      raw.patronymic,
+      raw.quiet_time_finish,
+      raw.quiet_time_start,
+      raw.task_mshort_view,
+      raw.task_notifications_enabled,
+      raw.task_short_view,
+      raw.timezone,
+      raw.unread_first,
+    )
+  }
+
+  public mappableFields = [
+    'contactEmail',
+    'contactPhone',
+    'displayName',
+    'icons',
+    'jid',
+    'role',
+    'sections',
+    'shortName',
+    'status',
+    'addToTeamRights',
+    'altSend',
+    'alwaysSendPushes',
+    'asteriskMention',
+    'auth2faEnabled',
+    'auth2faStatus',
+    'botname',
+    'canAddToGroup',
+    'canAddToTeam',
+    'canCall',
+    'canCreateGroup',
+    'canCreateTask',
+    'canDelete',
+    'canDeleteAnyMessage',
+    'canJoinPublicGroups',
+    'canJoinPublicTasks',
+    'canManageColorRules',
+    'canManageIntegrations',
+    'canManageSections',
+    'canManageTags',
+    'canSendMessage',
+    'cantSendMessageReason',
+    'changeableFields',
+    'contactMshortView',
+    'contactShortView',
+    'contactShowArchived',
+    'customFields',
+    'debugShowActivity',
+    'defaultLang',
+    'dropallEnabled',
+    'familyName',
+    'givenName',
+    'groupMshortView',
+    'groupNotificationsEnabled',
+    'groupShortView',
+    'isArchive',
+    'lastActivity',
+    'mood',
+    'munreadFirst',
+    'patronymic',
+    'quietTimeFinish',
+    'quietTimeStart',
+    'taskMshortView',
+    'taskNotificationsEnabled',
+    'taskShortView',
+    'timezone',
+    'unreadFirst',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    contactEmail: () => ({ contact_email: this.contactEmail }),
+    contactPhone: () => ({ contact_phone: this.contactPhone }),
+    displayName: () => ({ display_name: this.displayName }),
+    icons: () => ({ icons: this.icons.toJSON() }),
+    jid: () => ({ jid: this.jid }),
+    role: () => ({ role: this.role }),
+    sections: () => ({ sections: this.sections }),
+    shortName: () => ({ short_name: this.shortName }),
+    status: () => ({ status: this.status }),
+    addToTeamRights: () => ({ add_to_team_rights: this.addToTeamRights }),
+    altSend: () => ({ alt_send: this.altSend }),
+    alwaysSendPushes: () => ({ always_send_pushes: this.alwaysSendPushes }),
+    asteriskMention: () => ({ asterisk_mention: this.asteriskMention }),
+    auth2faEnabled: () => ({ auth_2fa_enabled: this.auth2faEnabled }),
+    auth2faStatus: () => ({ auth_2fa_status: this.auth2faStatus }),
+    botname: () => ({ botname: this.botname }),
+    canAddToGroup: () => ({ can_add_to_group: this.canAddToGroup }),
+    canAddToTeam: () => ({ can_add_to_team: this.canAddToTeam }),
+    canCall: () => ({ can_call: this.canCall }),
+    canCreateGroup: () => ({ can_create_group: this.canCreateGroup }),
+    canCreateTask: () => ({ can_create_task: this.canCreateTask }),
+    canDelete: () => ({ can_delete: this.canDelete }),
+    canDeleteAnyMessage: () => ({ can_delete_any_message: this.canDeleteAnyMessage }),
+    canJoinPublicGroups: () => ({ can_join_public_groups: this.canJoinPublicGroups }),
+    canJoinPublicTasks: () => ({ can_join_public_tasks: this.canJoinPublicTasks }),
+    canManageColorRules: () => ({ can_manage_color_rules: this.canManageColorRules }),
+    canManageIntegrations: () => ({ can_manage_integrations: this.canManageIntegrations }),
+    canManageSections: () => ({ can_manage_sections: this.canManageSections }),
+    canManageTags: () => ({ can_manage_tags: this.canManageTags }),
+    canSendMessage: () => ({ can_send_message: this.canSendMessage }),
+    cantSendMessageReason: () => ({ cant_send_message_reason: this.cantSendMessageReason }),
+    changeableFields: () => ({ changeable_fields: this.changeableFields }),
+    contactMshortView: () => ({ contact_mshort_view: this.contactMshortView }),
+    contactShortView: () => ({ contact_short_view: this.contactShortView }),
+    contactShowArchived: () => ({ contact_show_archived: this.contactShowArchived }),
+    customFields: () => ({ custom_fields: this.customFields?.toJSON() }),
+    debugShowActivity: () => ({ debug_show_activity: this.debugShowActivity }),
+    defaultLang: () => ({ default_lang: this.defaultLang }),
+    dropallEnabled: () => ({ dropall_enabled: this.dropallEnabled }),
+    familyName: () => ({ family_name: this.familyName }),
+    givenName: () => ({ given_name: this.givenName }),
+    groupMshortView: () => ({ group_mshort_view: this.groupMshortView }),
+    groupNotificationsEnabled: () => ({ group_notifications_enabled: this.groupNotificationsEnabled }),
+    groupShortView: () => ({ group_short_view: this.groupShortView }),
+    isArchive: () => ({ is_archive: this.isArchive }),
+    lastActivity: () => ({ last_activity: this.lastActivity }),
+    mood: () => ({ mood: this.mood }),
+    munreadFirst: () => ({ munread_first: this.munreadFirst }),
+    patronymic: () => ({ patronymic: this.patronymic }),
+    quietTimeFinish: () => ({ quiet_time_finish: this.quietTimeFinish }),
+    quietTimeStart: () => ({ quiet_time_start: this.quietTimeStart }),
+    taskMshortView: () => ({ task_mshort_view: this.taskMshortView }),
+    taskNotificationsEnabled: () => ({ task_notifications_enabled: this.taskNotificationsEnabled }),
+    taskShortView: () => ({ task_short_view: this.taskShortView }),
+    timezone: () => ({ timezone: this.timezone }),
+    unreadFirst: () => ({ unread_first: this.unreadFirst }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ContactJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ContactJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerChatUpdatedJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ServerChatUpdatedParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerChatUpdated implements TDProtoClass<ServerChatUpdated> {
+  /**
+   * Chat created or updated
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ServerChatUpdatedParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ServerChatUpdatedJSON): ServerChatUpdated {
+    return new ServerChatUpdated(
+      raw.event,
+      ServerChatUpdatedParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerChatUpdatedJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerChatUpdatedJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface IntegrationsJSON {
+  /* eslint-disable camelcase */
+  integrations: IntegrationJSON[];
+  kinds: IntegrationKindJSON[];
+  /* eslint-enable camelcase */
+}
+
+export class Integrations implements TDProtoClass<Integrations> {
+  /**
+   * Complete integrations data, as received from server
+   * @param integrations Currently existing integrations
+   * @param kinds Types of integrations available for setup
+   */
+  constructor (
+    public integrations: Integration[],
+    public kinds: IntegrationKind[],
+  ) {}
+
+  public static fromJSON (raw: IntegrationsJSON): Integrations {
+    return new Integrations(
+      raw.integrations.map(Integration.fromJSON),
+      raw.kinds.map(IntegrationKind.fromJSON),
+    )
+  }
+
+  public mappableFields = [
+    'integrations',
+    'kinds',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    integrations: () => ({ integrations: this.integrations.map(u => u.toJSON()) }),
+    kinds: () => ({ kinds: this.kinds.map(u => u.toJSON()) }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): IntegrationsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<IntegrationsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerCallCheckFingerprintJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ServerCallCheckFingerprintParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerCallCheckFingerprint implements TDProtoClass<ServerCallCheckFingerprint> {
+  /**
+   * Experimental function
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ServerCallCheckFingerprintParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ServerCallCheckFingerprintJSON): ServerCallCheckFingerprint {
+    return new ServerCallCheckFingerprint(
+      raw.event,
+      ServerCallCheckFingerprintParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerCallCheckFingerprintJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallCheckFingerprintJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -8162,99 +12026,45 @@ export class ServerMessageUpdatedParams implements TDProtoClass<ServerMessageUpd
   }
 }
 
-export interface ServerTagDeletedParamsJSON {
-  /* eslint-disable camelcase */
-  tags: DeletedTagJSON[];
-  /* eslint-enable camelcase */
-}
-
-export class ServerTagDeletedParams implements TDProtoClass<ServerTagDeletedParams> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param tags Tags info
-   */
-  constructor (
-    public tags: DeletedTag[],
-  ) {}
-
-  public static fromJSON (raw: ServerTagDeletedParamsJSON): ServerTagDeletedParams {
-    return new ServerTagDeletedParams(
-      raw.tags.map(DeletedTag.fromJSON),
-    )
-  }
-
-  public mappableFields = [
-    'tags',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    tags: () => ({ tags: this.tags.map(u => u.toJSON()) }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerTagDeletedParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerTagDeletedParamsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface OnlineCallJSON {
+export interface ServerCallLeaveParamsJSON {
   /* eslint-disable camelcase */
   jid: JID;
   uid: string;
-  online_count?: number;
-  start?: ISODateTimeString;
   /* eslint-enable camelcase */
 }
 
-export class OnlineCall implements TDProtoClass<OnlineCall> {
+export class ServerCallLeaveParams implements TDProtoClass<ServerCallLeaveParams> {
   /**
    * MISSING CLASS DOCUMENTATION
    * @param jid Chat or contact id
-   * @param uid Call id
-   * @param onlineCount Number participants in call
-   * @param start Call start
+   * @param uid Call uid
    */
   constructor (
     public jid: JID,
     public uid: string,
-    public onlineCount?: number,
-    public start?: ISODateTimeString,
   ) {}
 
-  public static fromJSON (raw: OnlineCallJSON): OnlineCall {
-    return new OnlineCall(
+  public static fromJSON (raw: ServerCallLeaveParamsJSON): ServerCallLeaveParams {
+    return new ServerCallLeaveParams(
       raw.jid,
       raw.uid,
-      raw.online_count,
-      raw.start,
     )
   }
 
   public mappableFields = [
     'jid',
     'uid',
-    'onlineCount',
-    'start',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
     jid: () => ({ jid: this.jid }),
     uid: () => ({ uid: this.uid }),
-    onlineCount: () => ({ online_count: this.onlineCount }),
-    start: () => ({ start: this.start }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): OnlineCallJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<OnlineCallJSON>
+  public toJSON (): ServerCallLeaveParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallLeaveParamsJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -8264,1407 +12074,51 @@ export class OnlineCall implements TDProtoClass<OnlineCall> {
   }
 }
 
-export interface UploadJSON {
+export interface GroupAccessRequestJSON {
   /* eslint-disable camelcase */
-  content_type: string;
   created: ISODateTimeString;
-  type: UploadMediaType;
-  name: string;
-  size: number;
+  subject: JID;
   uid: string;
-  url: string;
-  animated?: boolean;
-  duration?: number;
-  pdf_version?: PdfVersionJSON;
-  preview?: UploadPreviewJSON;
-  processing?: boolean;
   /* eslint-enable camelcase */
 }
 
-export class Upload implements TDProtoClass<Upload> {
+export class GroupAccessRequest implements TDProtoClass<GroupAccessRequest> {
   /**
-   * Uploaded media
-   * @param contentType Content type
-   * @param created Uploaded at
-   * @param mediaType ?type=file,image,audio,video
-   * @param name Filename
-   * @param size Upload size in bytes
-   * @param uid Upload id
-   * @param url Absolute url
-   * @param animated Is animated (images only)
-   * @param duration Mediafile duration (for audio/video only)
-   * @param pdfVersion PDF version of file. Experimental
-   * @param preview Preview details
-   * @param processing File still processing (video only)
+   * MISSING CLASS DOCUMENTATION
+   * @param created DOCUMENTATION MISSING
+   * @param subject DOCUMENTATION MISSING
+   * @param uid DOCUMENTATION MISSING
    */
   constructor (
-    public contentType: string,
     public created: ISODateTimeString,
-    public mediaType: UploadMediaType,
-    public name: string,
-    public size: number,
-    public uid: string,
-    public url: string,
-    public animated?: boolean,
-    public duration?: number,
-    public pdfVersion?: PdfVersion,
-    public preview?: UploadPreview,
-    public processing?: boolean,
-  ) {}
-
-  public static fromJSON (raw: UploadJSON): Upload {
-    return new Upload(
-      raw.content_type,
-      raw.created,
-      raw.type,
-      raw.name,
-      raw.size,
-      raw.uid,
-      raw.url,
-      raw.animated,
-      raw.duration,
-      raw.pdf_version && PdfVersion.fromJSON(raw.pdf_version),
-      raw.preview && UploadPreview.fromJSON(raw.preview),
-      raw.processing,
-    )
-  }
-
-  public mappableFields = [
-    'contentType',
-    'created',
-    'mediaType',
-    'name',
-    'size',
-    'uid',
-    'url',
-    'animated',
-    'duration',
-    'pdfVersion',
-    'preview',
-    'processing',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    contentType: () => ({ content_type: this.contentType }),
-    created: () => ({ created: this.created }),
-    mediaType: () => ({ type: this.mediaType }),
-    name: () => ({ name: this.name }),
-    size: () => ({ size: this.size }),
-    uid: () => ({ uid: this.uid }),
-    url: () => ({ url: this.url }),
-    animated: () => ({ animated: this.animated }),
-    duration: () => ({ duration: this.duration }),
-    pdfVersion: () => ({ pdf_version: this.pdfVersion?.toJSON() }),
-    preview: () => ({ preview: this.preview?.toJSON() }),
-    processing: () => ({ processing: this.processing }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): UploadJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<UploadJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface IntegrationFormJSON {
-  /* eslint-disable camelcase */
-  api_key?: IntegrationFieldJSON;
-  url?: IntegrationFieldJSON;
-  webhook_url?: IntegrationFieldJSON;
-  /* eslint-enable camelcase */
-}
-
-export class IntegrationForm implements TDProtoClass<IntegrationForm> {
-  /**
-   * Integration form
-   * @param apiKey Api key field, if any
-   * @param url Url, if any
-   * @param webhookUrl Webhook url, if any
-   */
-  constructor (
-    public apiKey?: IntegrationField,
-    public url?: IntegrationField,
-    public webhookUrl?: IntegrationField,
-  ) {}
-
-  public static fromJSON (raw: IntegrationFormJSON): IntegrationForm {
-    return new IntegrationForm(
-      raw.api_key && IntegrationField.fromJSON(raw.api_key),
-      raw.url && IntegrationField.fromJSON(raw.url),
-      raw.webhook_url && IntegrationField.fromJSON(raw.webhook_url),
-    )
-  }
-
-  public mappableFields = [
-    'apiKey',
-    'url',
-    'webhookUrl',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    apiKey: () => ({ api_key: this.apiKey?.toJSON() }),
-    url: () => ({ url: this.url?.toJSON() }),
-    webhookUrl: () => ({ webhook_url: this.webhookUrl?.toJSON() }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): IntegrationFormJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<IntegrationFormJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface IntegrationKindJSON {
-  /* eslint-disable camelcase */
-  description: string;
-  icon: string;
-  kind: string;
-  template: IntegrationJSON;
-  title: string;
-  /* eslint-enable camelcase */
-}
-
-export class IntegrationKind implements TDProtoClass<IntegrationKind> {
-  /**
-   * Integration kind
-   * @param description Plugin description
-   * @param icon Path to icon
-   * @param kind Integration unique name
-   * @param template Integration template
-   * @param title Plugin title
-   */
-  constructor (
-    public description: string,
-    public icon: string,
-    public kind: string,
-    public template: Integration,
-    public title: string,
-  ) {}
-
-  public static fromJSON (raw: IntegrationKindJSON): IntegrationKind {
-    return new IntegrationKind(
-      raw.description,
-      raw.icon,
-      raw.kind,
-      Integration.fromJSON(raw.template),
-      raw.title,
-    )
-  }
-
-  public mappableFields = [
-    'description',
-    'icon',
-    'kind',
-    'template',
-    'title',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    description: () => ({ description: this.description }),
-    icon: () => ({ icon: this.icon }),
-    kind: () => ({ kind: this.kind }),
-    template: () => ({ template: this.template.toJSON() }),
-    title: () => ({ title: this.title }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): IntegrationKindJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<IntegrationKindJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface DeletedSectionJSON {
-  /* eslint-disable camelcase */
-  gentime: number;
-  uid: string;
-  /* eslint-enable camelcase */
-}
-
-export class DeletedSection implements TDProtoClass<DeletedSection> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param gentime Object version
-   * @param uid Section uid
-   */
-  constructor (
-    public gentime: number,
+    public subject: JID,
     public uid: string,
   ) {}
 
-  public static fromJSON (raw: DeletedSectionJSON): DeletedSection {
-    return new DeletedSection(
-      raw.gentime,
-      raw.uid,
-    )
-  }
-
-  public mappableFields = [
-    'gentime',
-    'uid',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    gentime: () => ({ gentime: this.gentime }),
-    uid: () => ({ uid: this.uid }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): DeletedSectionJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<DeletedSectionJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ActiveUserDailyStatJSON {
-  /* eslint-disable camelcase */
-  day: string;
-  user_id: number;
-  call_seconds_total?: number;
-  calls_count?: number;
-  family_name?: string;
-  given_name?: string;
-  messages_count?: number;
-  patronymic?: string;
-  phone?: string;
-  /* eslint-enable camelcase */
-}
-
-export class ActiveUserDailyStat implements TDProtoClass<ActiveUserDailyStat> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param day DOCUMENTATION MISSING
-   * @param userId DOCUMENTATION MISSING
-   * @param callSecondsTotal DOCUMENTATION MISSING
-   * @param callsCount DOCUMENTATION MISSING
-   * @param familyName DOCUMENTATION MISSING
-   * @param givenName DOCUMENTATION MISSING
-   * @param messagesCount DOCUMENTATION MISSING
-   * @param patronymic DOCUMENTATION MISSING
-   * @param phone DOCUMENTATION MISSING
-   */
-  constructor (
-    public day: string,
-    public userId: number,
-    public callSecondsTotal?: number,
-    public callsCount?: number,
-    public familyName?: string,
-    public givenName?: string,
-    public messagesCount?: number,
-    public patronymic?: string,
-    public phone?: string,
-  ) {}
-
-  public static fromJSON (raw: ActiveUserDailyStatJSON): ActiveUserDailyStat {
-    return new ActiveUserDailyStat(
-      raw.day,
-      raw.user_id,
-      raw.call_seconds_total,
-      raw.calls_count,
-      raw.family_name,
-      raw.given_name,
-      raw.messages_count,
-      raw.patronymic,
-      raw.phone,
-    )
-  }
-
-  public mappableFields = [
-    'day',
-    'userId',
-    'callSecondsTotal',
-    'callsCount',
-    'familyName',
-    'givenName',
-    'messagesCount',
-    'patronymic',
-    'phone',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    day: () => ({ day: this.day }),
-    userId: () => ({ user_id: this.userId }),
-    callSecondsTotal: () => ({ call_seconds_total: this.callSecondsTotal }),
-    callsCount: () => ({ calls_count: this.callsCount }),
-    familyName: () => ({ family_name: this.familyName }),
-    givenName: () => ({ given_name: this.givenName }),
-    messagesCount: () => ({ messages_count: this.messagesCount }),
-    patronymic: () => ({ patronymic: this.patronymic }),
-    phone: () => ({ phone: this.phone }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ActiveUserDailyStatJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ActiveUserDailyStatJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ClientCallRejectJSON {
-  /* eslint-disable camelcase */
-  event: string;
-  params: ClientCallRejectParamsJSON;
-  confirm_id?: string;
-  /* eslint-enable camelcase */
-}
-
-export class ClientCallReject implements TDProtoClass<ClientCallReject> {
-  /**
-   * Reject the call
-   * @param name DOCUMENTATION MISSING
-   * @param params DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
-   */
-  constructor (
-    public name: string,
-    public params: ClientCallRejectParams,
-    public confirmId?: string,
-  ) {}
-
-  public static fromJSON (raw: ClientCallRejectJSON): ClientCallReject {
-    return new ClientCallReject(
-      raw.event,
-      ClientCallRejectParams.fromJSON(raw.params),
-      raw.confirm_id,
-    )
-  }
-
-  public mappableFields = [
-    'name',
-    'params',
-    'confirmId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    params: () => ({ params: this.params.toJSON() }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ClientCallRejectJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientCallRejectJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface MessageJSON {
-  /* eslint-disable camelcase */
-  chat: JID;
-  chat_type: ChatType;
-  content: MessageContentJSON;
-  created: ISODateTimeString;
-  from: JID;
-  gentime: number;
-  message_id: string;
-  to: JID;
-  _debug?: string;
-  drafted?: ISODateTimeString;
-  editable_until?: ISODateTimeString;
-  edited?: ISODateTimeString;
-  has_previews?: boolean;
-  important?: boolean;
-  is_archive?: boolean;
-  is_first?: boolean;
-  is_last?: boolean;
-  linked_messages?: MessageJSON[];
-  links?: MessageLinkJSON[];
-  markup?: MarkupEntityJSON[];
-  nopreview?: boolean;
-  notice?: boolean;
-  num?: number;
-  num_received?: number;
-  prev?: string;
-  push_text?: string;
-  reactions?: MessageReactionJSON[];
-  received?: boolean;
-  reply_to?: MessageJSON;
-  silently?: boolean;
-  uploads?: UploadJSON[];
-  /* eslint-enable camelcase */
-}
-
-export class Message implements TDProtoClass<Message> {
-  /**
-   * Chat message
-   * @param chat Chat id
-   * @param chatType Chat type
-   * @param content Message content struct
-   * @param created Message creation datetime (set by server side) or sending datetime in future for draft messages
-   * @param from Sender contact id
-   * @param gentime Object version
-   * @param messageId Message uid
-   * @param to Recipient id (group, task or contact)
-   * @param debug Debug information, if any
-   * @param drafted Creation datetime for draft messages
-   * @param editableUntil Author can change this message until date. Can be null
-   * @param edited ISODateTimeString of message modification or deletion
-   * @param hasPreviews Has link previews. True or null
-   * @param important Importance flag
-   * @param isArchive This message is archive. True or null
-   * @param isFirst This message is first in this chat. True or null
-   * @param isLast This message is first in this chat. True or null
-   * @param linkedMessages Forwarded messages. Can be null. Also contains double of ReplyTo for backward compatibility
-   * @param links External/internals links
-   * @param markup Markup entities. Experimental
-   * @param nopreview Disable link previews. True or null
-   * @param notice Has mention (@). True or null
-   * @param num Index number of this message. Starts from 0. Null for deleted messages. Changes when any previous message wad deleted
-   * @param numReceived Unused yet
-   * @param prev Previous message id in this chat. Uid or null
-   * @param pushText Simple plaintext message representation
-   * @param reactions Message reactions struct. Can be null
-   * @param received Message was seen by anybody in chat. True or null
-   * @param replyTo Message that was replied to, if any
-   * @param silently Message has no pushes and did not affect any counters
-   * @param uploads Message uploads
-   */
-  constructor (
-    public readonly chat: JID,
-    public readonly chatType: ChatType,
-    public content: MessageContent,
-    public readonly created: ISODateTimeString,
-    public readonly from: JID,
-    public readonly gentime: number,
-    public messageId: string,
-    public to: JID,
-    public readonly debug?: string,
-    public readonly drafted?: ISODateTimeString,
-    public readonly editableUntil?: ISODateTimeString,
-    public readonly edited?: ISODateTimeString,
-    public readonly hasPreviews?: boolean,
-    public important?: boolean,
-    public readonly isArchive?: boolean,
-    public readonly isFirst?: boolean,
-    public readonly isLast?: boolean,
-    public linkedMessages?: Message[],
-    public readonly links?: MessageLink[],
-    public readonly markup?: MarkupEntity[],
-    public nopreview?: boolean,
-    public readonly notice?: boolean,
-    public readonly num?: number,
-    public readonly numReceived?: number,
-    public readonly prev?: string,
-    public readonly pushText?: string,
-    public readonly reactions?: MessageReaction[],
-    public readonly received?: boolean,
-    public replyTo?: Message,
-    public readonly silently?: boolean,
-    public uploads?: Upload[],
-  ) {}
-
-  public static fromJSON (raw: MessageJSON): Message {
-    return new Message(
-      raw.chat,
-      raw.chat_type,
-      MessageContent.fromJSON(raw.content),
+  public static fromJSON (raw: GroupAccessRequestJSON): GroupAccessRequest {
+    return new GroupAccessRequest(
       raw.created,
-      raw.from,
-      raw.gentime,
-      raw.message_id,
-      raw.to,
-      raw._debug,
-      raw.drafted,
-      raw.editable_until,
-      raw.edited,
-      raw.has_previews,
-      raw.important,
-      raw.is_archive,
-      raw.is_first,
-      raw.is_last,
-      raw.linked_messages && raw.linked_messages.map(Message.fromJSON),
-      raw.links && raw.links.map(MessageLink.fromJSON),
-      raw.markup && raw.markup.map(MarkupEntity.fromJSON),
-      raw.nopreview,
-      raw.notice,
-      raw.num,
-      raw.num_received,
-      raw.prev,
-      raw.push_text,
-      raw.reactions && raw.reactions.map(MessageReaction.fromJSON),
-      raw.received,
-      raw.reply_to && Message.fromJSON(raw.reply_to),
-      raw.silently,
-      raw.uploads && raw.uploads.map(Upload.fromJSON),
-    )
-  }
-
-  public mappableFields = [
-    'chat',
-    'chatType',
-    'content',
-    'created',
-    'from',
-    'gentime',
-    'messageId',
-    'to',
-    'debug',
-    'drafted',
-    'editableUntil',
-    'edited',
-    'hasPreviews',
-    'important',
-    'isArchive',
-    'isFirst',
-    'isLast',
-    'linkedMessages',
-    'links',
-    'markup',
-    'nopreview',
-    'notice',
-    'num',
-    'numReceived',
-    'prev',
-    'pushText',
-    'reactions',
-    'received',
-    'replyTo',
-    'silently',
-    'uploads',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    chat: () => ({ chat: this.chat }),
-    chatType: () => ({ chat_type: this.chatType }),
-    content: () => ({ content: this.content.toJSON() }),
-    created: () => ({ created: this.created }),
-    from: () => ({ from: this.from }),
-    gentime: () => ({ gentime: this.gentime }),
-    messageId: () => ({ message_id: this.messageId }),
-    to: () => ({ to: this.to }),
-    debug: () => ({ _debug: this.debug }),
-    drafted: () => ({ drafted: this.drafted }),
-    editableUntil: () => ({ editable_until: this.editableUntil }),
-    edited: () => ({ edited: this.edited }),
-    hasPreviews: () => ({ has_previews: this.hasPreviews }),
-    important: () => ({ important: this.important }),
-    isArchive: () => ({ is_archive: this.isArchive }),
-    isFirst: () => ({ is_first: this.isFirst }),
-    isLast: () => ({ is_last: this.isLast }),
-    linkedMessages: () => ({ linked_messages: this.linkedMessages?.map(u => u.toJSON()) }),
-    links: () => ({ links: this.links?.map(u => u.toJSON()) }),
-    markup: () => ({ markup: this.markup?.map(u => u.toJSON()) }),
-    nopreview: () => ({ nopreview: this.nopreview }),
-    notice: () => ({ notice: this.notice }),
-    num: () => ({ num: this.num }),
-    numReceived: () => ({ num_received: this.numReceived }),
-    prev: () => ({ prev: this.prev }),
-    pushText: () => ({ push_text: this.pushText }),
-    reactions: () => ({ reactions: this.reactions?.map(u => u.toJSON()) }),
-    received: () => ({ received: this.received }),
-    replyTo: () => ({ reply_to: this.replyTo?.toJSON() }),
-    silently: () => ({ silently: this.silently }),
-    uploads: () => ({ uploads: this.uploads?.map(u => u.toJSON()) }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): MessageJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<MessageJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface MessageReactionJSON {
-  /* eslint-disable camelcase */
-  counter: number;
-  details: MessageReactionDetailJSON[];
-  name: string;
-  /* eslint-enable camelcase */
-}
-
-export class MessageReaction implements TDProtoClass<MessageReaction> {
-  /**
-   * Message emoji reaction
-   * @param counter Number of reactions
-   * @param details Details
-   * @param name Emoji
-   */
-  constructor (
-    public counter: number,
-    public details: MessageReactionDetail[],
-    public name: string,
-  ) {}
-
-  public static fromJSON (raw: MessageReactionJSON): MessageReaction {
-    return new MessageReaction(
-      raw.counter,
-      raw.details.map(MessageReactionDetail.fromJSON),
-      raw.name,
-    )
-  }
-
-  public mappableFields = [
-    'counter',
-    'details',
-    'name',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    counter: () => ({ counter: this.counter }),
-    details: () => ({ details: this.details.map(u => u.toJSON()) }),
-    name: () => ({ name: this.name }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): MessageReactionJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<MessageReactionJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerUploadUpdatedParamsJSON {
-  /* eslint-disable camelcase */
-  uploads: UploadJSON[];
-  /* eslint-enable camelcase */
-}
-
-export class ServerUploadUpdatedParams implements TDProtoClass<ServerUploadUpdatedParams> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param uploads Uploads data
-   */
-  constructor (
-    public uploads: Upload[],
-  ) {}
-
-  public static fromJSON (raw: ServerUploadUpdatedParamsJSON): ServerUploadUpdatedParams {
-    return new ServerUploadUpdatedParams(
-      raw.uploads.map(Upload.fromJSON),
-    )
-  }
-
-  public mappableFields = [
-    'uploads',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    uploads: () => ({ uploads: this.uploads.map(u => u.toJSON()) }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerUploadUpdatedParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerUploadUpdatedParamsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerTeamDeletedJSON {
-  /* eslint-disable camelcase */
-  event: string;
-  params: ServerTeamDeletedParamsJSON;
-  confirm_id?: string;
-  /* eslint-enable camelcase */
-}
-
-export class ServerTeamDeleted implements TDProtoClass<ServerTeamDeleted> {
-  /**
-   * Team archived
-   * @param name DOCUMENTATION MISSING
-   * @param params DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
-   */
-  constructor (
-    public name: string,
-    public params: ServerTeamDeletedParams,
-    public confirmId?: string,
-  ) {}
-
-  public static fromJSON (raw: ServerTeamDeletedJSON): ServerTeamDeleted {
-    return new ServerTeamDeleted(
-      raw.event,
-      ServerTeamDeletedParams.fromJSON(raw.params),
-      raw.confirm_id,
-    )
-  }
-
-  public mappableFields = [
-    'name',
-    'params',
-    'confirmId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    params: () => ({ params: this.params.toJSON() }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerTeamDeletedJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerTeamDeletedJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerLoginParamsJSON {
-  /* eslint-disable camelcase */
-  device_name: string;
-  /* eslint-enable camelcase */
-}
-
-export class ServerLoginParams implements TDProtoClass<ServerLoginParams> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param deviceName Device name
-   */
-  constructor (
-    public deviceName: string,
-  ) {}
-
-  public static fromJSON (raw: ServerLoginParamsJSON): ServerLoginParams {
-    return new ServerLoginParams(
-      raw.device_name,
-    )
-  }
-
-  public mappableFields = [
-    'deviceName',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    deviceName: () => ({ device_name: this.deviceName }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerLoginParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerLoginParamsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface TaskItemsJSON {
-  /* eslint-disable camelcase */
-  checked: boolean;
-  name: string;
-  /* eslint-enable camelcase */
-}
-
-export class TaskItems implements TDProtoClass<TaskItems> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param checked DOCUMENTATION MISSING
-   * @param name DOCUMENTATION MISSING
-   */
-  constructor (
-    public checked: boolean,
-    public name: string,
-  ) {}
-
-  public static fromJSON (raw: TaskItemsJSON): TaskItems {
-    return new TaskItems(
-      raw.checked,
-      raw.name,
-    )
-  }
-
-  public mappableFields = [
-    'checked',
-    'name',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    checked: () => ({ checked: this.checked }),
-    name: () => ({ name: this.name }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): TaskItemsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<TaskItemsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface MessageContentJSON {
-  /* eslint-disable camelcase */
-  text: string;
-  type: Mediatype;
-  actor?: JID;
-  animated?: boolean;
-  comment?: string;
-  duration?: number;
-  emails?: string[];
-  family_name?: string;
-  given_name?: string;
-  new?: string;
-  mediaURL?: string;
-  name?: string;
-  old?: string;
-  patronymic?: string;
-  pdf_version?: PdfVersionJSON;
-  phones?: string[];
-  preview2xURL?: string;
-  previewHeight?: number;
-  previewURL?: string;
-  previewWidth?: number;
-  processing?: boolean;
-  size?: number;
-  stickerpack?: string;
-  subtype?: Mediasubtype;
-  title?: string;
-  upload?: string;
-  /* eslint-enable camelcase */
-}
-
-export class MessageContent implements TDProtoClass<MessageContent> {
-  /**
-   * Chat message content
-   * @param text Text representation of message
-   * @param type Message type
-   * @param actor Change actor contact id (for "change" mediatype)
-   * @param animated Upload is animated image, if any. Deprecated: use Uploads instead
-   * @param comment Comment. For audio message
-   * @param duration Upload duration, if any. Deprecated: use Uploads instead
-   * @param emails Emails list (for "contact" mediatype)
-   * @param familyName Family name (for "contact" mediatype)
-   * @param givenName Given name (for "contact" mediatype)
-   * @param isNew Change new value (for "change" mediatype)
-   * @param mediaUrl Upload url, if any. Deprecated: use Uploads instead
-   * @param name Upload name, if any. Deprecated: use Uploads instead
-   * @param old Change old value (for "change" mediatype)
-   * @param patronymic Patronymic name (for "contact" mediatype)
-   * @param pdfVersion Pdf version, if any
-   * @param phones Contact phones list (for "contact" mediatype)
-   * @param preview2xUrl Upload high resolution preview absolute url, if any. Deprecated: use Uploads instead
-   * @param previewHeight Upload preview height, in pixels, if any. Deprecated: use Uploads instead
-   * @param previewUrl Upload preview absolute url, if any. Deprecated: use Uploads instead
-   * @param previewWidth Upload width, in pixels, if any. Deprecated: use Uploads instead
-   * @param processing Upload still processing, if any. Deprecated: use Uploads instead
-   * @param size Upload size, if any. Deprecated: use Uploads instead
-   * @param stickerpack Stickerpack name (for "sticker" subtype)
-   * @param subtype Message subtype, if any
-   * @param title Change title (for "change" mediatype)
-   * @param upload Upload id, if any. Deprecated: use Uploads instead
-   */
-  constructor (
-    public text: string,
-    public type: Mediatype,
-    public actor?: JID,
-    public animated?: boolean,
-    public comment?: string,
-    public duration?: number,
-    public emails?: string[],
-    public familyName?: string,
-    public givenName?: string,
-    public isNew?: string,
-    public mediaUrl?: string,
-    public name?: string,
-    public old?: string,
-    public patronymic?: string,
-    public pdfVersion?: PdfVersion,
-    public phones?: string[],
-    public preview2xUrl?: string,
-    public previewHeight?: number,
-    public previewUrl?: string,
-    public previewWidth?: number,
-    public processing?: boolean,
-    public size?: number,
-    public stickerpack?: string,
-    public subtype?: Mediasubtype,
-    public title?: string,
-    public upload?: string,
-  ) {}
-
-  public static fromJSON (raw: MessageContentJSON): MessageContent {
-    return new MessageContent(
-      raw.text,
-      raw.type,
-      raw.actor,
-      raw.animated,
-      raw.comment,
-      raw.duration,
-      raw.emails,
-      raw.family_name,
-      raw.given_name,
-      raw.new,
-      raw.mediaURL,
-      raw.name,
-      raw.old,
-      raw.patronymic,
-      raw.pdf_version && PdfVersion.fromJSON(raw.pdf_version),
-      raw.phones,
-      raw.preview2xURL,
-      raw.previewHeight,
-      raw.previewURL,
-      raw.previewWidth,
-      raw.processing,
-      raw.size,
-      raw.stickerpack,
-      raw.subtype,
-      raw.title,
-      raw.upload,
-    )
-  }
-
-  public mappableFields = [
-    'text',
-    'type',
-    'actor',
-    'animated',
-    'comment',
-    'duration',
-    'emails',
-    'familyName',
-    'givenName',
-    'isNew',
-    'mediaUrl',
-    'name',
-    'old',
-    'patronymic',
-    'pdfVersion',
-    'phones',
-    'preview2xUrl',
-    'previewHeight',
-    'previewUrl',
-    'previewWidth',
-    'processing',
-    'size',
-    'stickerpack',
-    'subtype',
-    'title',
-    'upload',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    text: () => ({ text: this.text }),
-    type: () => ({ type: this.type }),
-    actor: () => ({ actor: this.actor }),
-    animated: () => ({ animated: this.animated }),
-    comment: () => ({ comment: this.comment }),
-    duration: () => ({ duration: this.duration }),
-    emails: () => ({ emails: this.emails }),
-    familyName: () => ({ family_name: this.familyName }),
-    givenName: () => ({ given_name: this.givenName }),
-    isNew: () => ({ new: this.isNew }),
-    mediaUrl: () => ({ mediaURL: this.mediaUrl }),
-    name: () => ({ name: this.name }),
-    old: () => ({ old: this.old }),
-    patronymic: () => ({ patronymic: this.patronymic }),
-    pdfVersion: () => ({ pdf_version: this.pdfVersion?.toJSON() }),
-    phones: () => ({ phones: this.phones }),
-    preview2xUrl: () => ({ preview2xURL: this.preview2xUrl }),
-    previewHeight: () => ({ previewHeight: this.previewHeight }),
-    previewUrl: () => ({ previewURL: this.previewUrl }),
-    previewWidth: () => ({ previewWidth: this.previewWidth }),
-    processing: () => ({ processing: this.processing }),
-    size: () => ({ size: this.size }),
-    stickerpack: () => ({ stickerpack: this.stickerpack }),
-    subtype: () => ({ subtype: this.subtype }),
-    title: () => ({ title: this.title }),
-    upload: () => ({ upload: this.upload }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): MessageContentJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<MessageContentJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerCallRejectJSON {
-  /* eslint-disable camelcase */
-  event: string;
-  params: ServerCallRejectParamsJSON;
-  confirm_id?: string;
-  /* eslint-enable camelcase */
-}
-
-export class ServerCallReject implements TDProtoClass<ServerCallReject> {
-  /**
-   * Call rejected
-   * @param name DOCUMENTATION MISSING
-   * @param params DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
-   */
-  constructor (
-    public name: string,
-    public params: ServerCallRejectParams,
-    public confirmId?: string,
-  ) {}
-
-  public static fromJSON (raw: ServerCallRejectJSON): ServerCallReject {
-    return new ServerCallReject(
-      raw.event,
-      ServerCallRejectParams.fromJSON(raw.params),
-      raw.confirm_id,
-    )
-  }
-
-  public mappableFields = [
-    'name',
-    'params',
-    'confirmId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    params: () => ({ params: this.params.toJSON() }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerCallRejectJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallRejectJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface GroupMembershipJSON {
-  /* eslint-disable camelcase */
-  jid: JID;
-  status: GroupStatus;
-  can_remove?: boolean;
-  /* eslint-enable camelcase */
-}
-
-export class GroupMembership implements TDProtoClass<GroupMembership> {
-  /**
-   * Group chat membership status
-   * @param jid Contact id
-   * @param status Status in group
-   * @param canRemove Can I remove this member
-   */
-  constructor (
-    public jid: JID,
-    public status: GroupStatus,
-    public canRemove?: boolean,
-  ) {}
-
-  public static fromJSON (raw: GroupMembershipJSON): GroupMembership {
-    return new GroupMembership(
-      raw.jid,
-      raw.status,
-      raw.can_remove,
-    )
-  }
-
-  public mappableFields = [
-    'jid',
-    'status',
-    'canRemove',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    jid: () => ({ jid: this.jid }),
-    status: () => ({ status: this.status }),
-    canRemove: () => ({ can_remove: this.canRemove }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): GroupMembershipJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<GroupMembershipJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface WallpaperJSON {
-  /* eslint-disable camelcase */
-  key: string;
-  name: string;
-  url: string;
-  /* eslint-enable camelcase */
-}
-
-export class Wallpaper implements TDProtoClass<Wallpaper> {
-  /**
-   * Chat wallpaper
-   * @param key Unique identifier
-   * @param name Localized description
-   * @param url Url to jpg or png
-   */
-  constructor (
-    public key: string,
-    public name: string,
-    public url: string,
-  ) {}
-
-  public static fromJSON (raw: WallpaperJSON): Wallpaper {
-    return new Wallpaper(
-      raw.key,
-      raw.name,
-      raw.url,
-    )
-  }
-
-  public mappableFields = [
-    'key',
-    'name',
-    'url',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    key: () => ({ key: this.key }),
-    name: () => ({ name: this.name }),
-    url: () => ({ url: this.url }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): WallpaperJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<WallpaperJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerOnlineParamsJSON {
-  /* eslint-disable camelcase */
-  calls: OnlineCallJSON[];
-  contacts: OnlineContactJSON[];
-  /* eslint-enable camelcase */
-}
-
-export class ServerOnlineParams implements TDProtoClass<ServerOnlineParams> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param calls Active calls
-   * @param contacts Online team members
-   */
-  constructor (
-    public calls: OnlineCall[],
-    public contacts: OnlineContact[],
-  ) {}
-
-  public static fromJSON (raw: ServerOnlineParamsJSON): ServerOnlineParams {
-    return new ServerOnlineParams(
-      raw.calls.map(OnlineCall.fromJSON),
-      raw.contacts.map(OnlineContact.fromJSON),
-    )
-  }
-
-  public mappableFields = [
-    'calls',
-    'contacts',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    calls: () => ({ calls: this.calls.map(u => u.toJSON()) }),
-    contacts: () => ({ contacts: this.contacts.map(u => u.toJSON()) }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerOnlineParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerOnlineParamsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ClientActivityParamsJSON {
-  /* eslint-disable camelcase */
-  afk: boolean;
-  /* eslint-enable camelcase */
-}
-
-export class ClientActivityParams implements TDProtoClass<ClientActivityParams> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param afk Is away from keyboard
-   */
-  constructor (
-    public afk: boolean,
-  ) {}
-
-  public static fromJSON (raw: ClientActivityParamsJSON): ClientActivityParams {
-    return new ClientActivityParams(
-      raw.afk,
-    )
-  }
-
-  public mappableFields = [
-    'afk',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    afk: () => ({ afk: this.afk }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ClientActivityParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientActivityParamsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface IntegrationJSON {
-  /* eslint-disable camelcase */
-  comment: string;
-  enabled: boolean;
-  form: IntegrationFormJSON;
-  group: JID;
-  kind: string;
-  created?: ISODateTimeString;
-  help?: string;
-  uid?: string;
-  /* eslint-enable camelcase */
-}
-
-export class Integration implements TDProtoClass<Integration> {
-  /**
-   * Integration for concrete chat
-   * @param comment Comment, if any
-   * @param enabled Integration enabled
-   * @param form Integration form
-   * @param group Chat id
-   * @param kind Unique integration name
-   * @param created Creation datetime, iso
-   * @param help Full description
-   * @param uid Id
-   */
-  constructor (
-    public comment: string,
-    public enabled: boolean,
-    public form: IntegrationForm,
-    public group: JID,
-    public kind: string,
-    public created?: ISODateTimeString,
-    public help?: string,
-    public uid?: string,
-  ) {}
-
-  public static fromJSON (raw: IntegrationJSON): Integration {
-    return new Integration(
-      raw.comment,
-      raw.enabled,
-      IntegrationForm.fromJSON(raw.form),
-      raw.group,
-      raw.kind,
-      raw.created,
-      raw.help,
+      raw.subject,
       raw.uid,
     )
   }
 
   public mappableFields = [
-    'comment',
-    'enabled',
-    'form',
-    'group',
-    'kind',
     'created',
-    'help',
+    'subject',
     'uid',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    comment: () => ({ comment: this.comment }),
-    enabled: () => ({ enabled: this.enabled }),
-    form: () => ({ form: this.form.toJSON() }),
-    group: () => ({ group: this.group }),
-    kind: () => ({ kind: this.kind }),
     created: () => ({ created: this.created }),
-    help: () => ({ help: this.help }),
+    subject: () => ({ subject: this.subject }),
     uid: () => ({ uid: this.uid }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): IntegrationJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<IntegrationJSON>
+  public toJSON (): GroupAccessRequestJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<GroupAccessRequestJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -9674,363 +12128,51 @@ export class Integration implements TDProtoClass<Integration> {
   }
 }
 
-export interface ReceivedMessageJSON {
-  /* eslint-disable camelcase */
-  chat: JID;
-  message_id: string;
-  received: boolean;
-  _debug?: string;
-  num_received?: number;
-  /* eslint-enable camelcase */
-}
-
-export class ReceivedMessage implements TDProtoClass<ReceivedMessage> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param chat Chat or contact id
-   * @param messageId Message id
-   * @param received Is received
-   * @param debug Debug message, if any
-   * @param numReceived Number of contacts received this message. Experimental
-   */
-  constructor (
-    public chat: JID,
-    public messageId: string,
-    public received: boolean,
-    public debug?: string,
-    public numReceived?: number,
-  ) {}
-
-  public static fromJSON (raw: ReceivedMessageJSON): ReceivedMessage {
-    return new ReceivedMessage(
-      raw.chat,
-      raw.message_id,
-      raw.received,
-      raw._debug,
-      raw.num_received,
-    )
-  }
-
-  public mappableFields = [
-    'chat',
-    'messageId',
-    'received',
-    'debug',
-    'numReceived',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    chat: () => ({ chat: this.chat }),
-    messageId: () => ({ message_id: this.messageId }),
-    received: () => ({ received: this.received }),
-    debug: () => ({ _debug: this.debug }),
-    numReceived: () => ({ num_received: this.numReceived }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ReceivedMessageJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ReceivedMessageJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerSectionDeletedParamsJSON {
-  /* eslint-disable camelcase */
-  chat_type: ChatType;
-  gentime: number;
-  sections: DeletedSectionJSON[];
-  /* eslint-enable camelcase */
-}
-
-export class ServerSectionDeletedParams implements TDProtoClass<ServerSectionDeletedParams> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param chatType Chat type
-   * @param gentime Deprecated
-   * @param sections Section/project info
-   */
-  constructor (
-    public chatType: ChatType,
-    public gentime: number,
-    public sections: DeletedSection[],
-  ) {}
-
-  public static fromJSON (raw: ServerSectionDeletedParamsJSON): ServerSectionDeletedParams {
-    return new ServerSectionDeletedParams(
-      raw.chat_type,
-      raw.gentime,
-      raw.sections.map(DeletedSection.fromJSON),
-    )
-  }
-
-  public mappableFields = [
-    'chatType',
-    'gentime',
-    'sections',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    chatType: () => ({ chat_type: this.chatType }),
-    gentime: () => ({ gentime: this.gentime }),
-    sections: () => ({ sections: this.sections.map(u => u.toJSON()) }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerSectionDeletedParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerSectionDeletedParamsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerCallStateParamsJSON {
-  /* eslint-disable camelcase */
-  audiorecord: boolean;
-  finish: ISODateTimeString;
-  jid: JID;
-  onliners: CallOnlinerJSON[];
-  start: ISODateTimeString;
-  timestamp: number;
-  uid: string;
-  buzz?: boolean;
-  /* eslint-enable camelcase */
-}
-
-export class ServerCallStateParams implements TDProtoClass<ServerCallStateParams> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param audiorecord Call record enabled
-   * @param finish Call finish, if any
-   * @param jid Chat or contact id
-   * @param onliners Call participants
-   * @param start Call start, if any
-   * @param timestamp Event start. FIXME: why not gentime?
-   * @param uid Call id
-   * @param buzz Call buzzing
-   */
-  constructor (
-    public audiorecord: boolean,
-    public finish: ISODateTimeString,
-    public jid: JID,
-    public onliners: CallOnliner[],
-    public start: ISODateTimeString,
-    public timestamp: number,
-    public uid: string,
-    public buzz?: boolean,
-  ) {}
-
-  public static fromJSON (raw: ServerCallStateParamsJSON): ServerCallStateParams {
-    return new ServerCallStateParams(
-      raw.audiorecord,
-      raw.finish,
-      raw.jid,
-      raw.onliners.map(CallOnliner.fromJSON),
-      raw.start,
-      raw.timestamp,
-      raw.uid,
-      raw.buzz,
-    )
-  }
-
-  public mappableFields = [
-    'audiorecord',
-    'finish',
-    'jid',
-    'onliners',
-    'start',
-    'timestamp',
-    'uid',
-    'buzz',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    audiorecord: () => ({ audiorecord: this.audiorecord }),
-    finish: () => ({ finish: this.finish }),
-    jid: () => ({ jid: this.jid }),
-    onliners: () => ({ onliners: this.onliners.map(u => u.toJSON()) }),
-    start: () => ({ start: this.start }),
-    timestamp: () => ({ timestamp: this.timestamp }),
-    uid: () => ({ uid: this.uid }),
-    buzz: () => ({ buzz: this.buzz }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerCallStateParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallStateParamsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ClientMessageDeletedJSON {
+export interface ServerCallSoundJSON {
   /* eslint-disable camelcase */
   event: string;
-  params: ClientMessageDeletedParamsJSON;
+  params: ServerCallSoundParamsJSON;
   confirm_id?: string;
   /* eslint-enable camelcase */
 }
 
-export class ClientMessageDeleted implements TDProtoClass<ClientMessageDeleted> {
+export class ServerCallSound implements TDProtoClass<ServerCallSound> {
   /**
-   * Message deleted
-   * @param name DOCUMENTATION MISSING
+   * Mute/unmute call participant
+   * @param event DOCUMENTATION MISSING
    * @param params DOCUMENTATION MISSING
    * @param confirmId DOCUMENTATION MISSING
    */
   constructor (
-    public name: string,
-    public params: ClientMessageDeletedParams,
+    public event: string,
+    public params: ServerCallSoundParams,
     public confirmId?: string,
   ) {}
 
-  public static fromJSON (raw: ClientMessageDeletedJSON): ClientMessageDeleted {
-    return new ClientMessageDeleted(
+  public static fromJSON (raw: ServerCallSoundJSON): ServerCallSound {
+    return new ServerCallSound(
       raw.event,
-      ClientMessageDeletedParams.fromJSON(raw.params),
+      ServerCallSoundParams.fromJSON(raw.params),
       raw.confirm_id,
     )
   }
 
   public mappableFields = [
-    'name',
+    'event',
     'params',
     'confirmId',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
+    event: () => ({ event: this.event }),
     params: () => ({ params: this.params.toJSON() }),
     confirmId: () => ({ confirm_id: this.confirmId }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): ClientMessageDeletedJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientMessageDeletedJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerMessageUpdatedJSON {
-  /* eslint-disable camelcase */
-  event: string;
-  params: ServerMessageUpdatedParamsJSON;
-  confirm_id?: string;
-  /* eslint-enable camelcase */
-}
-
-export class ServerMessageUpdated implements TDProtoClass<ServerMessageUpdated> {
-  /**
-   * Chat message created, updated or deleted
-   * @param name DOCUMENTATION MISSING
-   * @param params DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
-   */
-  constructor (
-    public name: string,
-    public params: ServerMessageUpdatedParams,
-    public confirmId?: string,
-  ) {}
-
-  public static fromJSON (raw: ServerMessageUpdatedJSON): ServerMessageUpdated {
-    return new ServerMessageUpdated(
-      raw.event,
-      ServerMessageUpdatedParams.fromJSON(raw.params),
-      raw.confirm_id,
-    )
-  }
-
-  public mappableFields = [
-    'name',
-    'params',
-    'confirmId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    params: () => ({ params: this.params.toJSON() }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerMessageUpdatedJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerMessageUpdatedJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface OnlineContactJSON {
-  /* eslint-disable camelcase */
-  jid: JID;
-  mobile: boolean;
-  afk?: boolean;
-  /* eslint-enable camelcase */
-}
-
-export class OnlineContact implements TDProtoClass<OnlineContact> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param jid Contact id
-   * @param mobile Is mobile client
-   * @param afk Is away from keyboard
-   */
-  constructor (
-    public jid: JID,
-    public mobile: boolean,
-    public afk?: boolean,
-  ) {}
-
-  public static fromJSON (raw: OnlineContactJSON): OnlineContact {
-    return new OnlineContact(
-      raw.jid,
-      raw.mobile,
-      raw.afk,
-    )
-  }
-
-  public mappableFields = [
-    'jid',
-    'mobile',
-    'afk',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    jid: () => ({ jid: this.jid }),
-    mobile: () => ({ mobile: this.mobile }),
-    afk: () => ({ afk: this.afk }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): OnlineContactJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<OnlineContactJSON>
+  public toJSON (): ServerCallSoundJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallSoundJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -10118,13 +12260,103 @@ export class FontColors implements TDProtoClass<FontColors> {
   }
 }
 
-export interface ClientCallBuzzCancelParamsJSON {
+export interface ServerTeamDeletedParamsJSON {
+  /* eslint-disable camelcase */
+  teams: DeletedTeamJSON[];
+  /* eslint-enable camelcase */
+}
+
+export class ServerTeamDeletedParams implements TDProtoClass<ServerTeamDeletedParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param teams Teams info
+   */
+  constructor (
+    public teams: DeletedTeam[],
+  ) {}
+
+  public static fromJSON (raw: ServerTeamDeletedParamsJSON): ServerTeamDeletedParams {
+    return new ServerTeamDeletedParams(
+      raw.teams.map(DeletedTeam.fromJSON),
+    )
+  }
+
+  public mappableFields = [
+    'teams',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    teams: () => ({ teams: this.teams.map(u => u.toJSON()) }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerTeamDeletedParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerTeamDeletedParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface MessageLinkPreviewJSON {
+  /* eslint-disable camelcase */
+  title: string;
+  description?: string;
+  /* eslint-enable camelcase */
+}
+
+export class MessageLinkPreview implements TDProtoClass<MessageLinkPreview> {
+  /**
+   * Website title and description
+   * @param title Website title or og:title content
+   * @param description Website description
+   */
+  constructor (
+    public title: string,
+    public description?: string,
+  ) {}
+
+  public static fromJSON (raw: MessageLinkPreviewJSON): MessageLinkPreview {
+    return new MessageLinkPreview(
+      raw.title,
+      raw.description,
+    )
+  }
+
+  public mappableFields = [
+    'title',
+    'description',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    title: () => ({ title: this.title }),
+    description: () => ({ description: this.description }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): MessageLinkPreviewJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<MessageLinkPreviewJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ClientCallMuteAllParamsJSON {
   /* eslint-disable camelcase */
   jid: JID;
   /* eslint-enable camelcase */
 }
 
-export class ClientCallBuzzCancelParams implements TDProtoClass<ClientCallBuzzCancelParams> {
+export class ClientCallMuteAllParams implements TDProtoClass<ClientCallMuteAllParams> {
   /**
    * MISSING CLASS DOCUMENTATION
    * @param jid Chat or contact id
@@ -10133,8 +12365,8 @@ export class ClientCallBuzzCancelParams implements TDProtoClass<ClientCallBuzzCa
     public jid: JID,
   ) {}
 
-  public static fromJSON (raw: ClientCallBuzzCancelParamsJSON): ClientCallBuzzCancelParams {
-    return new ClientCallBuzzCancelParams(
+  public static fromJSON (raw: ClientCallMuteAllParamsJSON): ClientCallMuteAllParams {
+    return new ClientCallMuteAllParams(
       raw.jid,
     )
   }
@@ -10149,8 +12381,8 @@ export class ClientCallBuzzCancelParams implements TDProtoClass<ClientCallBuzzCa
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): ClientCallBuzzCancelParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientCallBuzzCancelParamsJSON>
+  public toJSON (): ClientCallMuteAllParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientCallMuteAllParamsJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -10160,51 +12392,255 @@ export class ClientCallBuzzCancelParams implements TDProtoClass<ClientCallBuzzCa
   }
 }
 
-export interface ServerCallTalkingJSON {
+export interface ThemeJSON {
   /* eslint-disable camelcase */
-  event: string;
-  params: ServerCallTalkingParamsJSON;
-  confirm_id?: string;
+  AccentColor: string;
+  AccentHoverColor: string;
+  AppAccentColor: string;
+  AppPrimaryColor: string;
+  BgColor: string;
+  BgHoverColor: string;
+  MainAccent: string;
+  MainAccentHover: string;
+  MainLightAccent: string;
+  MainLink: string;
+  MutedTextColor: string;
+  TextColor: string;
+  TextOnAccentHoverColor: string;
+  attention: string;
+  attention_light: string;
+  back: string;
+  back_dark: string;
+  back_light: string;
+  background: string;
+  brand: string;
+  brand_dark: string;
+  brand_light: string;
+  button: ButtonColorsJSON;
+  chat_input_background: string;
+  error: string;
+  error_light: string;
+  font: FontColorsJSON;
+  ic: IconColorsJSON;
+  input: InputColorsJSON;
+  message: MessageColorsJSON;
+  modal_background: string;
+  substrate_background: string;
+  success: string;
+  success_light: string;
+  switcher: SwitcherColorsJSON;
+  tab_background: string;
+  title_background: string;
   /* eslint-enable camelcase */
 }
 
-export class ServerCallTalking implements TDProtoClass<ServerCallTalking> {
+export class Theme implements TDProtoClass<Theme> {
   /**
-   * Someone talks in call
-   * @param name DOCUMENTATION MISSING
-   * @param params DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
+   * Color theme
+   * @param AccentColor DOCUMENTATION MISSING
+   * @param AccentHoverColor DOCUMENTATION MISSING
+   * @param AppAccentColor Deprecated
+   * @param AppPrimaryColor Deprecated
+   * @param BgColor Web colors
+   * @param BgHoverColor DOCUMENTATION MISSING
+   * @param MainAccent DOCUMENTATION MISSING
+   * @param MainAccentHover DOCUMENTATION MISSING
+   * @param MainLightAccent DOCUMENTATION MISSING
+   * @param MainLink DOCUMENTATION MISSING
+   * @param MutedTextColor DOCUMENTATION MISSING
+   * @param TextColor DOCUMENTATION MISSING
+   * @param TextOnAccentHoverColor DOCUMENTATION MISSING
+   * @param attention DOCUMENTATION MISSING
+   * @param attentionLight DOCUMENTATION MISSING
+   * @param back DOCUMENTATION MISSING
+   * @param backDark DOCUMENTATION MISSING
+   * @param backLight DOCUMENTATION MISSING
+   * @param background DOCUMENTATION MISSING
+   * @param brand App colors
+   * @param brandDark DOCUMENTATION MISSING
+   * @param brandLight DOCUMENTATION MISSING
+   * @param button DOCUMENTATION MISSING
+   * @param chatInputBackground DOCUMENTATION MISSING
+   * @param error DOCUMENTATION MISSING
+   * @param errorLight DOCUMENTATION MISSING
+   * @param font DOCUMENTATION MISSING
+   * @param ic DOCUMENTATION MISSING
+   * @param input DOCUMENTATION MISSING
+   * @param message DOCUMENTATION MISSING
+   * @param modalBackground DOCUMENTATION MISSING
+   * @param substrateBackground DOCUMENTATION MISSING
+   * @param success DOCUMENTATION MISSING
+   * @param successLight DOCUMENTATION MISSING
+   * @param switcher DOCUMENTATION MISSING
+   * @param tabBackground DOCUMENTATION MISSING
+   * @param titleBackground DOCUMENTATION MISSING
    */
   constructor (
-    public name: string,
-    public params: ServerCallTalkingParams,
-    public confirmId?: string,
+    public AccentColor: string,
+    public AccentHoverColor: string,
+    public AppAccentColor: string,
+    public AppPrimaryColor: string,
+    public BgColor: string,
+    public BgHoverColor: string,
+    public MainAccent: string,
+    public MainAccentHover: string,
+    public MainLightAccent: string,
+    public MainLink: string,
+    public MutedTextColor: string,
+    public TextColor: string,
+    public TextOnAccentHoverColor: string,
+    public attention: string,
+    public attentionLight: string,
+    public back: string,
+    public backDark: string,
+    public backLight: string,
+    public background: string,
+    public brand: string,
+    public brandDark: string,
+    public brandLight: string,
+    public button: ButtonColors,
+    public chatInputBackground: string,
+    public error: string,
+    public errorLight: string,
+    public font: FontColors,
+    public ic: IconColors,
+    public input: InputColors,
+    public message: MessageColors,
+    public modalBackground: string,
+    public substrateBackground: string,
+    public success: string,
+    public successLight: string,
+    public switcher: SwitcherColors,
+    public tabBackground: string,
+    public titleBackground: string,
   ) {}
 
-  public static fromJSON (raw: ServerCallTalkingJSON): ServerCallTalking {
-    return new ServerCallTalking(
-      raw.event,
-      ServerCallTalkingParams.fromJSON(raw.params),
-      raw.confirm_id,
+  public static fromJSON (raw: ThemeJSON): Theme {
+    return new Theme(
+      raw.AccentColor,
+      raw.AccentHoverColor,
+      raw.AppAccentColor,
+      raw.AppPrimaryColor,
+      raw.BgColor,
+      raw.BgHoverColor,
+      raw.MainAccent,
+      raw.MainAccentHover,
+      raw.MainLightAccent,
+      raw.MainLink,
+      raw.MutedTextColor,
+      raw.TextColor,
+      raw.TextOnAccentHoverColor,
+      raw.attention,
+      raw.attention_light,
+      raw.back,
+      raw.back_dark,
+      raw.back_light,
+      raw.background,
+      raw.brand,
+      raw.brand_dark,
+      raw.brand_light,
+      ButtonColors.fromJSON(raw.button),
+      raw.chat_input_background,
+      raw.error,
+      raw.error_light,
+      FontColors.fromJSON(raw.font),
+      IconColors.fromJSON(raw.ic),
+      InputColors.fromJSON(raw.input),
+      MessageColors.fromJSON(raw.message),
+      raw.modal_background,
+      raw.substrate_background,
+      raw.success,
+      raw.success_light,
+      SwitcherColors.fromJSON(raw.switcher),
+      raw.tab_background,
+      raw.title_background,
     )
   }
 
   public mappableFields = [
-    'name',
-    'params',
-    'confirmId',
+    'AccentColor',
+    'AccentHoverColor',
+    'AppAccentColor',
+    'AppPrimaryColor',
+    'BgColor',
+    'BgHoverColor',
+    'MainAccent',
+    'MainAccentHover',
+    'MainLightAccent',
+    'MainLink',
+    'MutedTextColor',
+    'TextColor',
+    'TextOnAccentHoverColor',
+    'attention',
+    'attentionLight',
+    'back',
+    'backDark',
+    'backLight',
+    'background',
+    'brand',
+    'brandDark',
+    'brandLight',
+    'button',
+    'chatInputBackground',
+    'error',
+    'errorLight',
+    'font',
+    'ic',
+    'input',
+    'message',
+    'modalBackground',
+    'substrateBackground',
+    'success',
+    'successLight',
+    'switcher',
+    'tabBackground',
+    'titleBackground',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    params: () => ({ params: this.params.toJSON() }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
+    AccentColor: () => ({ AccentColor: this.AccentColor }),
+    AccentHoverColor: () => ({ AccentHoverColor: this.AccentHoverColor }),
+    AppAccentColor: () => ({ AppAccentColor: this.AppAccentColor }),
+    AppPrimaryColor: () => ({ AppPrimaryColor: this.AppPrimaryColor }),
+    BgColor: () => ({ BgColor: this.BgColor }),
+    BgHoverColor: () => ({ BgHoverColor: this.BgHoverColor }),
+    MainAccent: () => ({ MainAccent: this.MainAccent }),
+    MainAccentHover: () => ({ MainAccentHover: this.MainAccentHover }),
+    MainLightAccent: () => ({ MainLightAccent: this.MainLightAccent }),
+    MainLink: () => ({ MainLink: this.MainLink }),
+    MutedTextColor: () => ({ MutedTextColor: this.MutedTextColor }),
+    TextColor: () => ({ TextColor: this.TextColor }),
+    TextOnAccentHoverColor: () => ({ TextOnAccentHoverColor: this.TextOnAccentHoverColor }),
+    attention: () => ({ attention: this.attention }),
+    attentionLight: () => ({ attention_light: this.attentionLight }),
+    back: () => ({ back: this.back }),
+    backDark: () => ({ back_dark: this.backDark }),
+    backLight: () => ({ back_light: this.backLight }),
+    background: () => ({ background: this.background }),
+    brand: () => ({ brand: this.brand }),
+    brandDark: () => ({ brand_dark: this.brandDark }),
+    brandLight: () => ({ brand_light: this.brandLight }),
+    button: () => ({ button: this.button.toJSON() }),
+    chatInputBackground: () => ({ chat_input_background: this.chatInputBackground }),
+    error: () => ({ error: this.error }),
+    errorLight: () => ({ error_light: this.errorLight }),
+    font: () => ({ font: this.font.toJSON() }),
+    ic: () => ({ ic: this.ic.toJSON() }),
+    input: () => ({ input: this.input.toJSON() }),
+    message: () => ({ message: this.message.toJSON() }),
+    modalBackground: () => ({ modal_background: this.modalBackground }),
+    substrateBackground: () => ({ substrate_background: this.substrateBackground }),
+    success: () => ({ success: this.success }),
+    successLight: () => ({ success_light: this.successLight }),
+    switcher: () => ({ switcher: this.switcher.toJSON() }),
+    tabBackground: () => ({ tab_background: this.tabBackground }),
+    titleBackground: () => ({ title_background: this.titleBackground }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): ServerCallTalkingJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallTalkingJSON>
+  public toJSON (): ThemeJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ThemeJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -10214,111 +12650,141 @@ export class ServerCallTalking implements TDProtoClass<ServerCallTalking> {
   }
 }
 
-export interface ContactShortJSON {
+export interface DeletedSectionJSON {
   /* eslint-disable camelcase */
-  display_name: string;
-  icons: IconDataJSON;
-  jid: JID;
-  short_name: string;
-  /* eslint-enable camelcase */
-}
-
-export class ContactShort implements TDProtoClass<ContactShort> {
-  /**
-   * Short contact representation
-   * @param displayName Full name in chats
-   * @param icons Icons data
-   * @param jid Contact Id
-   * @param shortName Short name in chats
-   */
-  constructor (
-    public displayName: string,
-    public icons: IconData,
-    public jid: JID,
-    public shortName: string,
-  ) {}
-
-  public static fromJSON (raw: ContactShortJSON): ContactShort {
-    return new ContactShort(
-      raw.display_name,
-      IconData.fromJSON(raw.icons),
-      raw.jid,
-      raw.short_name,
-    )
-  }
-
-  public mappableFields = [
-    'displayName',
-    'icons',
-    'jid',
-    'shortName',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    displayName: () => ({ display_name: this.displayName }),
-    icons: () => ({ icons: this.icons.toJSON() }),
-    jid: () => ({ jid: this.jid }),
-    shortName: () => ({ short_name: this.shortName }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ContactShortJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ContactShortJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface GroupAccessRequestJSON {
-  /* eslint-disable camelcase */
-  created: ISODateTimeString;
-  subject: JID;
+  gentime: number;
   uid: string;
   /* eslint-enable camelcase */
 }
 
-export class GroupAccessRequest implements TDProtoClass<GroupAccessRequest> {
+export class DeletedSection implements TDProtoClass<DeletedSection> {
   /**
    * MISSING CLASS DOCUMENTATION
-   * @param created DOCUMENTATION MISSING
-   * @param subject DOCUMENTATION MISSING
-   * @param uid DOCUMENTATION MISSING
+   * @param gentime Object version
+   * @param uid Section uid
    */
   constructor (
-    public created: ISODateTimeString,
-    public subject: JID,
+    public gentime: number,
     public uid: string,
   ) {}
 
-  public static fromJSON (raw: GroupAccessRequestJSON): GroupAccessRequest {
-    return new GroupAccessRequest(
-      raw.created,
-      raw.subject,
+  public static fromJSON (raw: DeletedSectionJSON): DeletedSection {
+    return new DeletedSection(
+      raw.gentime,
       raw.uid,
+    )
+  }
+
+  public mappableFields = [
+    'gentime',
+    'uid',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    gentime: () => ({ gentime: this.gentime }),
+    uid: () => ({ uid: this.uid }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): DeletedSectionJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<DeletedSectionJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface UserAuthJSON {
+  /* eslint-disable camelcase */
+  created: string;
+  kind: string;
+  uid: string;
+  _age?: number;
+  addr?: string;
+  country?: string;
+  device?: PushDeviceJSON;
+  last_access?: string;
+  region?: string;
+  user_agent?: string;
+  /* eslint-enable camelcase */
+}
+
+export class UserAuth implements TDProtoClass<UserAuth> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param created DOCUMENTATION MISSING
+   * @param kind type of auth
+   * @param uid DOCUMENTATION MISSING
+   * @param _age DOCUMENTATION MISSING
+   * @param addr ip address
+   * @param country name of country
+   * @param device info about device (struct)
+   * @param lastAccess DOCUMENTATION MISSING
+   * @param region name of region
+   * @param userAgent info about useragent
+   */
+  constructor (
+    public created: string,
+    public kind: string,
+    public uid: string,
+    public _age?: number,
+    public addr?: string,
+    public country?: string,
+    public device?: PushDevice,
+    public lastAccess?: string,
+    public region?: string,
+    public userAgent?: string,
+  ) {}
+
+  public static fromJSON (raw: UserAuthJSON): UserAuth {
+    return new UserAuth(
+      raw.created,
+      raw.kind,
+      raw.uid,
+      raw._age,
+      raw.addr,
+      raw.country,
+      raw.device && PushDevice.fromJSON(raw.device),
+      raw.last_access,
+      raw.region,
+      raw.user_agent,
     )
   }
 
   public mappableFields = [
     'created',
-    'subject',
+    'kind',
     'uid',
+    '_age',
+    'addr',
+    'country',
+    'device',
+    'lastAccess',
+    'region',
+    'userAgent',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
     created: () => ({ created: this.created }),
-    subject: () => ({ subject: this.subject }),
+    kind: () => ({ kind: this.kind }),
     uid: () => ({ uid: this.uid }),
+    _age: () => ({ _age: this._age }),
+    addr: () => ({ addr: this.addr }),
+    country: () => ({ country: this.country }),
+    device: () => ({ device: this.device?.toJSON() }),
+    lastAccess: () => ({ last_access: this.lastAccess }),
+    region: () => ({ region: this.region }),
+    userAgent: () => ({ user_agent: this.userAgent }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): GroupAccessRequestJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<GroupAccessRequestJSON>
+  public toJSON (): UserAuthJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<UserAuthJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -10328,51 +12794,45 @@ export class GroupAccessRequest implements TDProtoClass<GroupAccessRequest> {
   }
 }
 
-export interface TeamShortJSON {
+export interface ClientCallBuzzParamsJSON {
   /* eslint-disable camelcase */
-  icons: IconDataJSON;
-  name: string;
-  uid: string;
+  jid: JID;
+  members: JID[];
   /* eslint-enable camelcase */
 }
 
-export class TeamShort implements TDProtoClass<TeamShort> {
+export class ClientCallBuzzParams implements TDProtoClass<ClientCallBuzzParams> {
   /**
-   * Short team representation. For invites, push notifications, etc. Readonly
-   * @param icons Team icons
-   * @param name Team name
-   * @param uid Team id
+   * Call buzzing
+   * @param jid Chat or contact id
+   * @param members List of call participants
    */
   constructor (
-    public icons: IconData,
-    public name: string,
-    public uid: string,
+    public jid: JID,
+    public members: JID[],
   ) {}
 
-  public static fromJSON (raw: TeamShortJSON): TeamShort {
-    return new TeamShort(
-      IconData.fromJSON(raw.icons),
-      raw.name,
-      raw.uid,
+  public static fromJSON (raw: ClientCallBuzzParamsJSON): ClientCallBuzzParams {
+    return new ClientCallBuzzParams(
+      raw.jid,
+      raw.members,
     )
   }
 
   public mappableFields = [
-    'icons',
-    'name',
-    'uid',
+    'jid',
+    'members',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    icons: () => ({ icons: this.icons.toJSON() }),
-    name: () => ({ name: this.name }),
-    uid: () => ({ uid: this.uid }),
+    jid: () => ({ jid: this.jid }),
+    members: () => ({ members: this.members }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): TeamShortJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<TeamShortJSON>
+  public toJSON (): ClientCallBuzzParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientCallBuzzParamsJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -10393,12 +12853,12 @@ export interface ServerDebugJSON {
 export class ServerDebug implements TDProtoClass<ServerDebug> {
   /**
    * Debug message
-   * @param name DOCUMENTATION MISSING
+   * @param event DOCUMENTATION MISSING
    * @param params DOCUMENTATION MISSING
    * @param confirmId DOCUMENTATION MISSING
    */
   constructor (
-    public name: string,
+    public event: string,
     public params: ServerDebugParams,
     public confirmId?: string,
   ) {}
@@ -10412,14 +12872,14 @@ export class ServerDebug implements TDProtoClass<ServerDebug> {
   }
 
   public mappableFields = [
-    'name',
+    'event',
     'params',
     'confirmId',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
+    event: () => ({ event: this.event }),
     params: () => ({ params: this.params.toJSON() }),
     confirmId: () => ({ confirm_id: this.confirmId }),
     /* eslint-enable camelcase */
@@ -10436,51 +12896,51 @@ export class ServerDebug implements TDProtoClass<ServerDebug> {
   }
 }
 
-export interface ServerChatComposingJSON {
+export interface ClientCallOfferJSON {
   /* eslint-disable camelcase */
   event: string;
-  params: ServerChatComposingParamsJSON;
+  params: ClientCallOfferParamsJSON;
   confirm_id?: string;
   /* eslint-enable camelcase */
 }
 
-export class ServerChatComposing implements TDProtoClass<ServerChatComposing> {
+export class ClientCallOffer implements TDProtoClass<ClientCallOffer> {
   /**
-   * Someone typing or recording audiomessage in chat
-   * @param name DOCUMENTATION MISSING
+   * Start a call
+   * @param event DOCUMENTATION MISSING
    * @param params DOCUMENTATION MISSING
    * @param confirmId DOCUMENTATION MISSING
    */
   constructor (
-    public name: string,
-    public params: ServerChatComposingParams,
+    public event: string,
+    public params: ClientCallOfferParams,
     public confirmId?: string,
   ) {}
 
-  public static fromJSON (raw: ServerChatComposingJSON): ServerChatComposing {
-    return new ServerChatComposing(
+  public static fromJSON (raw: ClientCallOfferJSON): ClientCallOffer {
+    return new ClientCallOffer(
       raw.event,
-      ServerChatComposingParams.fromJSON(raw.params),
+      ClientCallOfferParams.fromJSON(raw.params),
       raw.confirm_id,
     )
   }
 
   public mappableFields = [
-    'name',
+    'event',
     'params',
     'confirmId',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
+    event: () => ({ event: this.event }),
     params: () => ({ params: this.params.toJSON() }),
     confirmId: () => ({ confirm_id: this.confirmId }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): ServerChatComposingJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerChatComposingJSON>
+  public toJSON (): ClientCallOfferJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientCallOfferJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -10490,459 +12950,51 @@ export class ServerChatComposing implements TDProtoClass<ServerChatComposing> {
   }
 }
 
-export interface SwitcherColorsJSON {
-  /* eslint-disable camelcase */
-  off: string;
-  on: string;
-  /* eslint-enable camelcase */
-}
-
-export class SwitcherColors implements TDProtoClass<SwitcherColors> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param off DOCUMENTATION MISSING
-   * @param on DOCUMENTATION MISSING
-   */
-  constructor (
-    public off: string,
-    public on: string,
-  ) {}
-
-  public static fromJSON (raw: SwitcherColorsJSON): SwitcherColors {
-    return new SwitcherColors(
-      raw.off,
-      raw.on,
-    )
-  }
-
-  public mappableFields = [
-    'off',
-    'on',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    off: () => ({ off: this.off }),
-    on: () => ({ on: this.on }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): SwitcherColorsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<SwitcherColorsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface TeamCounterJSON {
-  /* eslint-disable camelcase */
-  uid: string;
-  unread: TeamUnreadJSON;
-  /* eslint-enable camelcase */
-}
-
-export class TeamCounter implements TDProtoClass<TeamCounter> {
-  /**
-   * Unread message counters
-   * @param uid Team id
-   * @param unreads Unread message counters
-   */
-  constructor (
-    public uid: string,
-    public unreads: TeamUnread,
-  ) {}
-
-  public static fromJSON (raw: TeamCounterJSON): TeamCounter {
-    return new TeamCounter(
-      raw.uid,
-      TeamUnread.fromJSON(raw.unread),
-    )
-  }
-
-  public mappableFields = [
-    'uid',
-    'unreads',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    uid: () => ({ uid: this.uid }),
-    unreads: () => ({ unread: this.unreads.toJSON() }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): TeamCounterJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<TeamCounterJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface InvitationJSON {
-  /* eslint-disable camelcase */
-  created: ISODateTimeString;
-  qr: string;
-  token: string;
-  uid: string;
-  /* eslint-enable camelcase */
-}
-
-export class Invitation implements TDProtoClass<Invitation> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param created DOCUMENTATION MISSING
-   * @param qr DOCUMENTATION MISSING
-   * @param token DOCUMENTATION MISSING
-   * @param uid DOCUMENTATION MISSING
-   */
-  constructor (
-    public created: ISODateTimeString,
-    public qr: string,
-    public token: string,
-    public uid: string,
-  ) {}
-
-  public static fromJSON (raw: InvitationJSON): Invitation {
-    return new Invitation(
-      raw.created,
-      raw.qr,
-      raw.token,
-      raw.uid,
-    )
-  }
-
-  public mappableFields = [
-    'created',
-    'qr',
-    'token',
-    'uid',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    created: () => ({ created: this.created }),
-    qr: () => ({ qr: this.qr }),
-    token: () => ({ token: this.token }),
-    uid: () => ({ uid: this.uid }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): InvitationJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<InvitationJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerCallCheckFingerprintParamsJSON {
-  /* eslint-disable camelcase */
-  fingerprint: string;
-  /* eslint-enable camelcase */
-}
-
-export class ServerCallCheckFingerprintParams implements TDProtoClass<ServerCallCheckFingerprintParams> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param fingerprint DOCUMENTATION MISSING
-   */
-  constructor (
-    public fingerprint: string,
-  ) {}
-
-  public static fromJSON (raw: ServerCallCheckFingerprintParamsJSON): ServerCallCheckFingerprintParams {
-    return new ServerCallCheckFingerprintParams(
-      raw.fingerprint,
-    )
-  }
-
-  public mappableFields = [
-    'fingerprint',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    fingerprint: () => ({ fingerprint: this.fingerprint }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerCallCheckFingerprintParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallCheckFingerprintParamsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface TeamJSON {
-  /* eslint-disable camelcase */
-  gentime: number;
-  icons: IconDataJSON;
-  last_active: boolean;
-  max_message_update_age: number;
-  me: ContactJSON;
-  name: string;
-  need_confirmation: boolean;
-  uid: string;
-  unread: TeamUnreadJSON;
-  user_fields: string[];
-  bad_profile?: boolean;
-  changeable_statuses?: TeamStatus[];
-  contacts?: ContactJSON[];
-  default_task_deadline?: string;
-  display_family_name_first?: boolean;
-  hide_archived_users?: boolean;
-  is_archive?: boolean;
-  single_group?: JID;
-  task_importance_max?: number;
-  task_importance_min?: number;
-  task_importance_rev?: boolean;
-  theme?: ThemeJSON;
-  uploads_size?: number;
-  uploads_size_limit?: number;
-  use_patronymic?: boolean;
-  use_task_complexity?: boolean;
-  use_task_importance?: boolean;
-  use_task_spent_time?: boolean;
-  use_task_urgency?: boolean;
-  /* eslint-enable camelcase */
-}
-
-export class Team implements TDProtoClass<Team> {
-  /**
-   * Team
-   * @param gentime Object version
-   * @param icons Team icons
-   * @param lastActive User last activity was in this team
-   * @param maxMessageUpdateAge Max message update/deletion age, in seconds
-   * @param me My profile in this team
-   * @param name Team name
-   * @param needConfirmation Need confirmation after invite to this team
-   * @param uid Team id
-   * @param unreads Unread message counters
-   * @param userFields Username fields ordering
-   * @param badProfile My profile in this team isn't full
-   * @param changeableStatuses What status I can set to other team members
-   * @param contacts Team contacts. Used only for team creation
-   * @param defaultTaskDeadline Default task deadline
-   * @param displayFamilyNameFirst Family name should be first in display name
-   * @param hideArchivedUsers Don't show archived users by default
-   * @param isArchive Team deleted
-   * @param singleGroup For single group teams, jid of chat
-   * @param taskImportanceMax Maximum value of task importance. Default is 5
-   * @param taskImportanceMin Minimal value of task importance. Default is 1
-   * @param taskImportanceRev Bigger number = bigger importance. Default: lower number = bigger importance
-   * @param theme Color theme, if any
-   * @param uploadsSize Total uploads size, bytes
-   * @param uploadsSizeLimit Maximum uploads size, bytes, if any
-   * @param usePatronymic Patronymic in usernames for this team
-   * @param useTaskComplexity Use complexity field in task
-   * @param useTaskImportance Use importance field in task
-   * @param useTaskSpentTime Use spent time field in task
-   * @param useTaskUrgency Use urgency field in task
-   */
-  constructor (
-    public readonly gentime: number,
-    public readonly icons: IconData,
-    public readonly lastActive: boolean,
-    public maxMessageUpdateAge: number,
-    public readonly me: Contact,
-    public name: string,
-    public readonly needConfirmation: boolean,
-    public readonly uid: string,
-    public readonly unreads: TeamUnread,
-    public readonly userFields: string[],
-    public readonly badProfile?: boolean,
-    public readonly changeableStatuses?: TeamStatus[],
-    public readonly contacts?: Contact[],
-    public defaultTaskDeadline?: string,
-    public displayFamilyNameFirst?: boolean,
-    public hideArchivedUsers?: boolean,
-    public readonly isArchive?: boolean,
-    public readonly singleGroup?: JID,
-    public taskImportanceMax?: number,
-    public taskImportanceMin?: number,
-    public taskImportanceRev?: boolean,
-    public readonly theme?: Theme,
-    public readonly uploadsSize?: number,
-    public readonly uploadsSizeLimit?: number,
-    public usePatronymic?: boolean,
-    public useTaskComplexity?: boolean,
-    public useTaskImportance?: boolean,
-    public useTaskSpentTime?: boolean,
-    public useTaskUrgency?: boolean,
-  ) {}
-
-  public static fromJSON (raw: TeamJSON): Team {
-    return new Team(
-      raw.gentime,
-      IconData.fromJSON(raw.icons),
-      raw.last_active,
-      raw.max_message_update_age,
-      Contact.fromJSON(raw.me),
-      raw.name,
-      raw.need_confirmation,
-      raw.uid,
-      TeamUnread.fromJSON(raw.unread),
-      raw.user_fields,
-      raw.bad_profile,
-      raw.changeable_statuses,
-      raw.contacts && raw.contacts.map(Contact.fromJSON),
-      raw.default_task_deadline,
-      raw.display_family_name_first,
-      raw.hide_archived_users,
-      raw.is_archive,
-      raw.single_group,
-      raw.task_importance_max,
-      raw.task_importance_min,
-      raw.task_importance_rev,
-      raw.theme && Theme.fromJSON(raw.theme),
-      raw.uploads_size,
-      raw.uploads_size_limit,
-      raw.use_patronymic,
-      raw.use_task_complexity,
-      raw.use_task_importance,
-      raw.use_task_spent_time,
-      raw.use_task_urgency,
-    )
-  }
-
-  public mappableFields = [
-    'gentime',
-    'icons',
-    'lastActive',
-    'maxMessageUpdateAge',
-    'me',
-    'name',
-    'needConfirmation',
-    'uid',
-    'unreads',
-    'userFields',
-    'badProfile',
-    'changeableStatuses',
-    'contacts',
-    'defaultTaskDeadline',
-    'displayFamilyNameFirst',
-    'hideArchivedUsers',
-    'isArchive',
-    'singleGroup',
-    'taskImportanceMax',
-    'taskImportanceMin',
-    'taskImportanceRev',
-    'theme',
-    'uploadsSize',
-    'uploadsSizeLimit',
-    'usePatronymic',
-    'useTaskComplexity',
-    'useTaskImportance',
-    'useTaskSpentTime',
-    'useTaskUrgency',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    gentime: () => ({ gentime: this.gentime }),
-    icons: () => ({ icons: this.icons.toJSON() }),
-    lastActive: () => ({ last_active: this.lastActive }),
-    maxMessageUpdateAge: () => ({ max_message_update_age: this.maxMessageUpdateAge }),
-    me: () => ({ me: this.me.toJSON() }),
-    name: () => ({ name: this.name }),
-    needConfirmation: () => ({ need_confirmation: this.needConfirmation }),
-    uid: () => ({ uid: this.uid }),
-    unreads: () => ({ unread: this.unreads.toJSON() }),
-    userFields: () => ({ user_fields: this.userFields }),
-    badProfile: () => ({ bad_profile: this.badProfile }),
-    changeableStatuses: () => ({ changeable_statuses: this.changeableStatuses }),
-    contacts: () => ({ contacts: this.contacts?.map(u => u.toJSON()) }),
-    defaultTaskDeadline: () => ({ default_task_deadline: this.defaultTaskDeadline }),
-    displayFamilyNameFirst: () => ({ display_family_name_first: this.displayFamilyNameFirst }),
-    hideArchivedUsers: () => ({ hide_archived_users: this.hideArchivedUsers }),
-    isArchive: () => ({ is_archive: this.isArchive }),
-    singleGroup: () => ({ single_group: this.singleGroup }),
-    taskImportanceMax: () => ({ task_importance_max: this.taskImportanceMax }),
-    taskImportanceMin: () => ({ task_importance_min: this.taskImportanceMin }),
-    taskImportanceRev: () => ({ task_importance_rev: this.taskImportanceRev }),
-    theme: () => ({ theme: this.theme?.toJSON() }),
-    uploadsSize: () => ({ uploads_size: this.uploadsSize }),
-    uploadsSizeLimit: () => ({ uploads_size_limit: this.uploadsSizeLimit }),
-    usePatronymic: () => ({ use_patronymic: this.usePatronymic }),
-    useTaskComplexity: () => ({ use_task_complexity: this.useTaskComplexity }),
-    useTaskImportance: () => ({ use_task_importance: this.useTaskImportance }),
-    useTaskSpentTime: () => ({ use_task_spent_time: this.useTaskSpentTime }),
-    useTaskUrgency: () => ({ use_task_urgency: this.useTaskUrgency }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): TeamJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<TeamJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ClientCallMuteAllJSON {
+export interface ServerRemindUpdatedJSON {
   /* eslint-disable camelcase */
   event: string;
-  params: ClientCallMuteAllParamsJSON;
+  params: ServerRemindUpdatedParamsJSON;
   confirm_id?: string;
   /* eslint-enable camelcase */
 }
 
-export class ClientCallMuteAll implements TDProtoClass<ClientCallMuteAll> {
+export class ServerRemindUpdated implements TDProtoClass<ServerRemindUpdated> {
   /**
-   * Mute all other call participants
-   * @param name DOCUMENTATION MISSING
+   * Task/group remind created or changed
+   * @param event DOCUMENTATION MISSING
    * @param params DOCUMENTATION MISSING
    * @param confirmId DOCUMENTATION MISSING
    */
   constructor (
-    public name: string,
-    public params: ClientCallMuteAllParams,
+    public event: string,
+    public params: ServerRemindUpdatedParams,
     public confirmId?: string,
   ) {}
 
-  public static fromJSON (raw: ClientCallMuteAllJSON): ClientCallMuteAll {
-    return new ClientCallMuteAll(
+  public static fromJSON (raw: ServerRemindUpdatedJSON): ServerRemindUpdated {
+    return new ServerRemindUpdated(
       raw.event,
-      ClientCallMuteAllParams.fromJSON(raw.params),
+      ServerRemindUpdatedParams.fromJSON(raw.params),
       raw.confirm_id,
     )
   }
 
   public mappableFields = [
-    'name',
+    'event',
     'params',
     'confirmId',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
+    event: () => ({ event: this.event }),
     params: () => ({ params: this.params.toJSON() }),
     confirmId: () => ({ confirm_id: this.confirmId }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): ClientCallMuteAllJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientCallMuteAllJSON>
+  public toJSON (): ServerRemindUpdatedJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerRemindUpdatedJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -10952,57 +13004,51 @@ export class ClientCallMuteAll implements TDProtoClass<ClientCallMuteAll> {
   }
 }
 
-export interface UploadPreviewJSON {
+export interface ClientChatLastreadJSON {
   /* eslint-disable camelcase */
-  height: number;
-  url: string;
-  url_2x: string;
-  width: number;
+  event: string;
+  params: ClientChatLastreadParamsJSON;
+  confirm_id?: string;
   /* eslint-enable camelcase */
 }
 
-export class UploadPreview implements TDProtoClass<UploadPreview> {
+export class ClientChatLastread implements TDProtoClass<ClientChatLastread> {
   /**
-   * Upload preview
-   * @param height Height in pixels
-   * @param url Absolute url to image
-   * @param url2x Absolute url to high resolution image (retina)
-   * @param width Width in pixels
+   * Last read message in chat changed
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
    */
   constructor (
-    public height: number,
-    public url: string,
-    public url2x: string,
-    public width: number,
+    public event: string,
+    public params: ClientChatLastreadParams,
+    public confirmId?: string,
   ) {}
 
-  public static fromJSON (raw: UploadPreviewJSON): UploadPreview {
-    return new UploadPreview(
-      raw.height,
-      raw.url,
-      raw.url_2x,
-      raw.width,
+  public static fromJSON (raw: ClientChatLastreadJSON): ClientChatLastread {
+    return new ClientChatLastread(
+      raw.event,
+      ClientChatLastreadParams.fromJSON(raw.params),
+      raw.confirm_id,
     )
   }
 
   public mappableFields = [
-    'height',
-    'url',
-    'url2x',
-    'width',
+    'event',
+    'params',
+    'confirmId',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    height: () => ({ height: this.height }),
-    url: () => ({ url: this.url }),
-    url2x: () => ({ url_2x: this.url2x }),
-    width: () => ({ width: this.width }),
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): UploadPreviewJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<UploadPreviewJSON>
+  public toJSON (): ClientChatLastreadJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientChatLastreadJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -11066,1476 +13112,6 @@ export class IntegrationField implements TDProtoClass<IntegrationField> {
   }
 }
 
-export interface ServerCallSoundJSON {
-  /* eslint-disable camelcase */
-  event: string;
-  params: ServerCallSoundParamsJSON;
-  confirm_id?: string;
-  /* eslint-enable camelcase */
-}
-
-export class ServerCallSound implements TDProtoClass<ServerCallSound> {
-  /**
-   * Mute/unmute call participant
-   * @param name DOCUMENTATION MISSING
-   * @param params DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
-   */
-  constructor (
-    public name: string,
-    public params: ServerCallSoundParams,
-    public confirmId?: string,
-  ) {}
-
-  public static fromJSON (raw: ServerCallSoundJSON): ServerCallSound {
-    return new ServerCallSound(
-      raw.event,
-      ServerCallSoundParams.fromJSON(raw.params),
-      raw.confirm_id,
-    )
-  }
-
-  public mappableFields = [
-    'name',
-    'params',
-    'confirmId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    params: () => ({ params: this.params.toJSON() }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerCallSoundJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallSoundJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ClientChatComposingParamsJSON {
-  /* eslint-disable camelcase */
-  jid: JID;
-  composing?: boolean;
-  draft?: string;
-  is_audio?: boolean;
-  /* eslint-enable camelcase */
-}
-
-export class ClientChatComposingParams implements TDProtoClass<ClientChatComposingParams> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param jid Chat or contact id
-   * @param composing true = start typing / audio recording, false = stop
-   * @param draft Message draft data
-   * @param isAudio true = audiomessage, false = text typing
-   */
-  constructor (
-    public jid: JID,
-    public composing?: boolean,
-    public draft?: string,
-    public isAudio?: boolean,
-  ) {}
-
-  public static fromJSON (raw: ClientChatComposingParamsJSON): ClientChatComposingParams {
-    return new ClientChatComposingParams(
-      raw.jid,
-      raw.composing,
-      raw.draft,
-      raw.is_audio,
-    )
-  }
-
-  public mappableFields = [
-    'jid',
-    'composing',
-    'draft',
-    'isAudio',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    jid: () => ({ jid: this.jid }),
-    composing: () => ({ composing: this.composing }),
-    draft: () => ({ draft: this.draft }),
-    isAudio: () => ({ is_audio: this.isAudio }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ClientChatComposingParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientChatComposingParamsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ClientCallTrickleParamsJSON {
-  /* eslint-disable camelcase */
-  candidate: string;
-  jid: JID;
-  sdp_mid: string;
-  sdp_mline_index: number;
-  /* eslint-enable camelcase */
-}
-
-export class ClientCallTrickleParams implements TDProtoClass<ClientCallTrickleParams> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param candidate Trickle candidate
-   * @param jid Chat or contact id
-   * @param sdpMid SDP mid
-   * @param sdpMlineIndex SDP index
-   */
-  constructor (
-    public candidate: string,
-    public jid: JID,
-    public sdpMid: string,
-    public sdpMlineIndex: number,
-  ) {}
-
-  public static fromJSON (raw: ClientCallTrickleParamsJSON): ClientCallTrickleParams {
-    return new ClientCallTrickleParams(
-      raw.candidate,
-      raw.jid,
-      raw.sdp_mid,
-      raw.sdp_mline_index,
-    )
-  }
-
-  public mappableFields = [
-    'candidate',
-    'jid',
-    'sdpMid',
-    'sdpMlineIndex',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    candidate: () => ({ candidate: this.candidate }),
-    jid: () => ({ jid: this.jid }),
-    sdpMid: () => ({ sdp_mid: this.sdpMid }),
-    sdpMlineIndex: () => ({ sdp_mline_index: this.sdpMlineIndex }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ClientCallTrickleParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientCallTrickleParamsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerCallRestartJSON {
-  /* eslint-disable camelcase */
-  event: string;
-  params: ServerCallRestartParamsJSON;
-  confirm_id?: string;
-  /* eslint-enable camelcase */
-}
-
-export class ServerCallRestart implements TDProtoClass<ServerCallRestart> {
-  /**
-   * Call restarted
-   * @param name DOCUMENTATION MISSING
-   * @param params DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
-   */
-  constructor (
-    public name: string,
-    public params: ServerCallRestartParams,
-    public confirmId?: string,
-  ) {}
-
-  public static fromJSON (raw: ServerCallRestartJSON): ServerCallRestart {
-    return new ServerCallRestart(
-      raw.event,
-      ServerCallRestartParams.fromJSON(raw.params),
-      raw.confirm_id,
-    )
-  }
-
-  public mappableFields = [
-    'name',
-    'params',
-    'confirmId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    params: () => ({ params: this.params.toJSON() }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerCallRestartJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallRestartJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ClientCallSoundParamsJSON {
-  /* eslint-disable camelcase */
-  jid: JID;
-  muted: boolean;
-  /* eslint-enable camelcase */
-}
-
-export class ClientCallSoundParams implements TDProtoClass<ClientCallSoundParams> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param jid Chat or contact id
-   * @param muted Mute state
-   */
-  constructor (
-    public jid: JID,
-    public muted: boolean,
-  ) {}
-
-  public static fromJSON (raw: ClientCallSoundParamsJSON): ClientCallSoundParams {
-    return new ClientCallSoundParams(
-      raw.jid,
-      raw.muted,
-    )
-  }
-
-  public mappableFields = [
-    'jid',
-    'muted',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    jid: () => ({ jid: this.jid }),
-    muted: () => ({ muted: this.muted }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ClientCallSoundParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientCallSoundParamsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerChatDraftJSON {
-  /* eslint-disable camelcase */
-  event: string;
-  params: ServerChatDraftParamsJSON;
-  confirm_id?: string;
-  /* eslint-enable camelcase */
-}
-
-export class ServerChatDraft implements TDProtoClass<ServerChatDraft> {
-  /**
-   * Changed draft message in chan
-   * @param name DOCUMENTATION MISSING
-   * @param params DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
-   */
-  constructor (
-    public name: string,
-    public params: ServerChatDraftParams,
-    public confirmId?: string,
-  ) {}
-
-  public static fromJSON (raw: ServerChatDraftJSON): ServerChatDraft {
-    return new ServerChatDraft(
-      raw.event,
-      ServerChatDraftParams.fromJSON(raw.params),
-      raw.confirm_id,
-    )
-  }
-
-  public mappableFields = [
-    'name',
-    'params',
-    'confirmId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    params: () => ({ params: this.params.toJSON() }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerChatDraftJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerChatDraftJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerTagDeletedJSON {
-  /* eslint-disable camelcase */
-  event: string;
-  params: ServerTagDeletedParamsJSON;
-  confirm_id?: string;
-  /* eslint-enable camelcase */
-}
-
-export class ServerTagDeleted implements TDProtoClass<ServerTagDeleted> {
-  /**
-   * Tag deleted
-   * @param name DOCUMENTATION MISSING
-   * @param params DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
-   */
-  constructor (
-    public name: string,
-    public params: ServerTagDeletedParams,
-    public confirmId?: string,
-  ) {}
-
-  public static fromJSON (raw: ServerTagDeletedJSON): ServerTagDeleted {
-    return new ServerTagDeleted(
-      raw.event,
-      ServerTagDeletedParams.fromJSON(raw.params),
-      raw.confirm_id,
-    )
-  }
-
-  public mappableFields = [
-    'name',
-    'params',
-    'confirmId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    params: () => ({ params: this.params.toJSON() }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerTagDeletedJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerTagDeletedJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerTimeParamsJSON {
-  /* eslint-disable camelcase */
-  time: ISODateTimeString;
-  /* eslint-enable camelcase */
-}
-
-export class ServerTimeParams implements TDProtoClass<ServerTimeParams> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param time Current time
-   */
-  constructor (
-    public time: ISODateTimeString,
-  ) {}
-
-  public static fromJSON (raw: ServerTimeParamsJSON): ServerTimeParams {
-    return new ServerTimeParams(
-      raw.time,
-    )
-  }
-
-  public mappableFields = [
-    'time',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    time: () => ({ time: this.time }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerTimeParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerTimeParamsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ClientActivityJSON {
-  /* eslint-disable camelcase */
-  event: string;
-  params: ClientActivityParamsJSON;
-  confirm_id?: string;
-  /* eslint-enable camelcase */
-}
-
-export class ClientActivity implements TDProtoClass<ClientActivity> {
-  /**
-   * Change AFK (away from keyboard) status
-   * @param name DOCUMENTATION MISSING
-   * @param params DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
-   */
-  constructor (
-    public name: string,
-    public params: ClientActivityParams,
-    public confirmId?: string,
-  ) {}
-
-  public static fromJSON (raw: ClientActivityJSON): ClientActivity {
-    return new ClientActivity(
-      raw.event,
-      ClientActivityParams.fromJSON(raw.params),
-      raw.confirm_id,
-    )
-  }
-
-  public mappableFields = [
-    'name',
-    'params',
-    'confirmId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    params: () => ({ params: this.params.toJSON() }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ClientActivityJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientActivityJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface DeletedTagJSON {
-  /* eslint-disable camelcase */
-  uid: string;
-  /* eslint-enable camelcase */
-}
-
-export class DeletedTag implements TDProtoClass<DeletedTag> {
-  /**
-   * Delete tag message
-   * @param uid Tag id
-   */
-  constructor (
-    public uid: string,
-  ) {}
-
-  public static fromJSON (raw: DeletedTagJSON): DeletedTag {
-    return new DeletedTag(
-      raw.uid,
-    )
-  }
-
-  public mappableFields = [
-    'uid',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    uid: () => ({ uid: this.uid }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): DeletedTagJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<DeletedTagJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface TaskCountersJSON {
-  /* eslint-disable camelcase */
-  jid: JID;
-  num_unread?: number;
-  num_unread_notices?: number;
-  /* eslint-enable camelcase */
-}
-
-export class TaskCounters implements TDProtoClass<TaskCounters> {
-  /**
-   * Tasks counters
-   * @param jid Task jid
-   * @param numUnread Unreads counter
-   * @param numUnreadNotices Mentions (@) counter
-   */
-  constructor (
-    public jid: JID,
-    public numUnread?: number,
-    public numUnreadNotices?: number,
-  ) {}
-
-  public static fromJSON (raw: TaskCountersJSON): TaskCounters {
-    return new TaskCounters(
-      raw.jid,
-      raw.num_unread,
-      raw.num_unread_notices,
-    )
-  }
-
-  public mappableFields = [
-    'jid',
-    'numUnread',
-    'numUnreadNotices',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    jid: () => ({ jid: this.jid }),
-    numUnread: () => ({ num_unread: this.numUnread }),
-    numUnreadNotices: () => ({ num_unread_notices: this.numUnreadNotices }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): TaskCountersJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<TaskCountersJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface MessageLinkPreviewJSON {
-  /* eslint-disable camelcase */
-  title: string;
-  description?: string;
-  /* eslint-enable camelcase */
-}
-
-export class MessageLinkPreview implements TDProtoClass<MessageLinkPreview> {
-  /**
-   * Website title and description
-   * @param title Website title or og:title content
-   * @param description Website description
-   */
-  constructor (
-    public title: string,
-    public description?: string,
-  ) {}
-
-  public static fromJSON (raw: MessageLinkPreviewJSON): MessageLinkPreview {
-    return new MessageLinkPreview(
-      raw.title,
-      raw.description,
-    )
-  }
-
-  public mappableFields = [
-    'title',
-    'description',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    title: () => ({ title: this.title }),
-    description: () => ({ description: this.description }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): MessageLinkPreviewJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<MessageLinkPreviewJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface MessageReactionDetailJSON {
-  /* eslint-disable camelcase */
-  created: ISODateTimeString;
-  name: string;
-  sender: JID;
-  /* eslint-enable camelcase */
-}
-
-export class MessageReactionDetail implements TDProtoClass<MessageReactionDetail> {
-  /**
-   * Message reaction detail
-   * @param created When reaction added, iso datetime
-   * @param name Reaction emoji
-   * @param sender Reaction author
-   */
-  constructor (
-    public created: ISODateTimeString,
-    public name: string,
-    public sender: JID,
-  ) {}
-
-  public static fromJSON (raw: MessageReactionDetailJSON): MessageReactionDetail {
-    return new MessageReactionDetail(
-      raw.created,
-      raw.name,
-      raw.sender,
-    )
-  }
-
-  public mappableFields = [
-    'created',
-    'name',
-    'sender',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    created: () => ({ created: this.created }),
-    name: () => ({ name: this.name }),
-    sender: () => ({ sender: this.sender }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): MessageReactionDetailJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<MessageReactionDetailJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerRemindUpdatedParamsJSON {
-  /* eslint-disable camelcase */
-  reminds: RemindJSON[];
-  /* eslint-enable camelcase */
-}
-
-export class ServerRemindUpdatedParams implements TDProtoClass<ServerRemindUpdatedParams> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param reminds Remind information
-   */
-  constructor (
-    public reminds: Remind[],
-  ) {}
-
-  public static fromJSON (raw: ServerRemindUpdatedParamsJSON): ServerRemindUpdatedParams {
-    return new ServerRemindUpdatedParams(
-      raw.reminds.map(Remind.fromJSON),
-    )
-  }
-
-  public mappableFields = [
-    'reminds',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    reminds: () => ({ reminds: this.reminds.map(u => u.toJSON()) }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerRemindUpdatedParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerRemindUpdatedParamsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ClientCallMuteAllParamsJSON {
-  /* eslint-disable camelcase */
-  jid: JID;
-  /* eslint-enable camelcase */
-}
-
-export class ClientCallMuteAllParams implements TDProtoClass<ClientCallMuteAllParams> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param jid Chat or contact id
-   */
-  constructor (
-    public jid: JID,
-  ) {}
-
-  public static fromJSON (raw: ClientCallMuteAllParamsJSON): ClientCallMuteAllParams {
-    return new ClientCallMuteAllParams(
-      raw.jid,
-    )
-  }
-
-  public mappableFields = [
-    'jid',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    jid: () => ({ jid: this.jid }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ClientCallMuteAllParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientCallMuteAllParamsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerTeamCountersJSON {
-  /* eslint-disable camelcase */
-  event: string;
-  params: ServerTeamCountersParamsJSON;
-  confirm_id?: string;
-  /* eslint-enable camelcase */
-}
-
-export class ServerTeamCounters implements TDProtoClass<ServerTeamCounters> {
-  /**
-   * Counters form other teams
-   * @param name DOCUMENTATION MISSING
-   * @param params DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
-   */
-  constructor (
-    public name: string,
-    public params: ServerTeamCountersParams,
-    public confirmId?: string,
-  ) {}
-
-  public static fromJSON (raw: ServerTeamCountersJSON): ServerTeamCounters {
-    return new ServerTeamCounters(
-      raw.event,
-      ServerTeamCountersParams.fromJSON(raw.params),
-      raw.confirm_id,
-    )
-  }
-
-  public mappableFields = [
-    'name',
-    'params',
-    'confirmId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    params: () => ({ params: this.params.toJSON() }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerTeamCountersJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerTeamCountersJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ClientCallTrickleJSON {
-  /* eslint-disable camelcase */
-  event: string;
-  params: ClientCallTrickleParamsJSON;
-  confirm_id?: string;
-  /* eslint-enable camelcase */
-}
-
-export class ClientCallTrickle implements TDProtoClass<ClientCallTrickle> {
-  /**
-   * Send trickle candidate for webrtc connection
-   * @param name DOCUMENTATION MISSING
-   * @param params DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
-   */
-  constructor (
-    public name: string,
-    public params: ClientCallTrickleParams,
-    public confirmId?: string,
-  ) {}
-
-  public static fromJSON (raw: ClientCallTrickleJSON): ClientCallTrickle {
-    return new ClientCallTrickle(
-      raw.event,
-      ClientCallTrickleParams.fromJSON(raw.params),
-      raw.confirm_id,
-    )
-  }
-
-  public mappableFields = [
-    'name',
-    'params',
-    'confirmId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    params: () => ({ params: this.params.toJSON() }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ClientCallTrickleJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientCallTrickleJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerCallStateJSON {
-  /* eslint-disable camelcase */
-  event: string;
-  params: ServerCallStateParamsJSON;
-  confirm_id?: string;
-  /* eslint-enable camelcase */
-}
-
-export class ServerCallState implements TDProtoClass<ServerCallState> {
-  /**
-   * Call participant number or parameters changed
-   * @param name DOCUMENTATION MISSING
-   * @param params DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
-   */
-  constructor (
-    public name: string,
-    public params: ServerCallStateParams,
-    public confirmId?: string,
-  ) {}
-
-  public static fromJSON (raw: ServerCallStateJSON): ServerCallState {
-    return new ServerCallState(
-      raw.event,
-      ServerCallStateParams.fromJSON(raw.params),
-      raw.confirm_id,
-    )
-  }
-
-  public mappableFields = [
-    'name',
-    'params',
-    'confirmId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    params: () => ({ params: this.params.toJSON() }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerCallStateJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallStateJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface TagJSON {
-  /* eslint-disable camelcase */
-  name: string;
-  uid: string;
-  /* eslint-enable camelcase */
-}
-
-export class Tag implements TDProtoClass<Tag> {
-  /**
-   * Task tag
-   * @param name Tag name
-   * @param uid Tag id
-   */
-  constructor (
-    public name: string,
-    public uid: string,
-  ) {}
-
-  public static fromJSON (raw: TagJSON): Tag {
-    return new Tag(
-      raw.name,
-      raw.uid,
-    )
-  }
-
-  public mappableFields = [
-    'name',
-    'uid',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    name: () => ({ name: this.name }),
-    uid: () => ({ uid: this.uid }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): TagJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<TagJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface BaseEventJSON {
-  /* eslint-disable camelcase */
-  event: string;
-  confirm_id?: string;
-  /* eslint-enable camelcase */
-}
-
-export class BaseEvent implements TDProtoClass<BaseEvent> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param name DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
-   */
-  constructor (
-    public name: string,
-    public confirmId?: string,
-  ) {}
-
-  public static fromJSON (raw: BaseEventJSON): BaseEvent {
-    return new BaseEvent(
-      raw.event,
-      raw.confirm_id,
-    )
-  }
-
-  public mappableFields = [
-    'name',
-    'confirmId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): BaseEventJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<BaseEventJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ClientCallRejectParamsJSON {
-  /* eslint-disable camelcase */
-  jid: JID;
-  reason: string;
-  /* eslint-enable camelcase */
-}
-
-export class ClientCallRejectParams implements TDProtoClass<ClientCallRejectParams> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param jid Chat or contact id
-   * @param reason Reason, if any
-   */
-  constructor (
-    public jid: JID,
-    public reason: string,
-  ) {}
-
-  public static fromJSON (raw: ClientCallRejectParamsJSON): ClientCallRejectParams {
-    return new ClientCallRejectParams(
-      raw.jid,
-      raw.reason,
-    )
-  }
-
-  public mappableFields = [
-    'jid',
-    'reason',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    jid: () => ({ jid: this.jid }),
-    reason: () => ({ reason: this.reason }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ClientCallRejectParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientCallRejectParamsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface PaginatedChatsJSON {
-  /* eslint-disable camelcase */
-  count: number;
-  limit: number;
-  objects: ChatJSON[];
-  offset: number;
-  contacts?: ContactJSON[];
-  /* eslint-enable camelcase */
-}
-
-export class PaginatedChats implements TDProtoClass<PaginatedChats> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param count DOCUMENTATION MISSING
-   * @param limit DOCUMENTATION MISSING
-   * @param objects DOCUMENTATION MISSING
-   * @param offset DOCUMENTATION MISSING
-   * @param contacts DOCUMENTATION MISSING
-   */
-  constructor (
-    public count: number,
-    public limit: number,
-    public objects: Chat[],
-    public offset: number,
-    public contacts?: Contact[],
-  ) {}
-
-  public static fromJSON (raw: PaginatedChatsJSON): PaginatedChats {
-    return new PaginatedChats(
-      raw.count,
-      raw.limit,
-      raw.objects.map(Chat.fromJSON),
-      raw.offset,
-      raw.contacts && raw.contacts.map(Contact.fromJSON),
-    )
-  }
-
-  public mappableFields = [
-    'count',
-    'limit',
-    'objects',
-    'offset',
-    'contacts',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    count: () => ({ count: this.count }),
-    limit: () => ({ limit: this.limit }),
-    objects: () => ({ objects: this.objects.map(u => u.toJSON()) }),
-    offset: () => ({ offset: this.offset }),
-    contacts: () => ({ contacts: this.contacts?.map(u => u.toJSON()) }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): PaginatedChatsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<PaginatedChatsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ChatShortJSON {
-  /* eslint-disable camelcase */
-  chat_type: ChatType;
-  display_name: string;
-  icons: IconDataJSON;
-  jid: JID;
-  /* eslint-enable camelcase */
-}
-
-export class ChatShort implements TDProtoClass<ChatShort> {
-  /**
-   * Minimal chat representation
-   * @param chatType Chat type
-   * @param displayName Title
-   * @param icons Icon data
-   * @param jid Group/Task/Contact id
-   */
-  constructor (
-    public chatType: ChatType,
-    public displayName: string,
-    public icons: IconData,
-    public jid: JID,
-  ) {}
-
-  public static fromJSON (raw: ChatShortJSON): ChatShort {
-    return new ChatShort(
-      raw.chat_type,
-      raw.display_name,
-      IconData.fromJSON(raw.icons),
-      raw.jid,
-    )
-  }
-
-  public mappableFields = [
-    'chatType',
-    'displayName',
-    'icons',
-    'jid',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    chatType: () => ({ chat_type: this.chatType }),
-    displayName: () => ({ display_name: this.displayName }),
-    icons: () => ({ icons: this.icons.toJSON() }),
-    jid: () => ({ jid: this.jid }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ChatShortJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ChatShortJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface StickerpackJSON {
-  /* eslint-disable camelcase */
-  name: string;
-  stickers: StickerJSON[];
-  title: string;
-  uid: string;
-  author?: string;
-  author_link?: string;
-  /* eslint-enable camelcase */
-}
-
-export class Stickerpack implements TDProtoClass<Stickerpack> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param name DOCUMENTATION MISSING
-   * @param stickers DOCUMENTATION MISSING
-   * @param title DOCUMENTATION MISSING
-   * @param uid DOCUMENTATION MISSING
-   * @param author DOCUMENTATION MISSING
-   * @param authorLink DOCUMENTATION MISSING
-   */
-  constructor (
-    public name: string,
-    public stickers: Sticker[],
-    public title: string,
-    public uid: string,
-    public author?: string,
-    public authorLink?: string,
-  ) {}
-
-  public static fromJSON (raw: StickerpackJSON): Stickerpack {
-    return new Stickerpack(
-      raw.name,
-      raw.stickers.map(Sticker.fromJSON),
-      raw.title,
-      raw.uid,
-      raw.author,
-      raw.author_link,
-    )
-  }
-
-  public mappableFields = [
-    'name',
-    'stickers',
-    'title',
-    'uid',
-    'author',
-    'authorLink',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    name: () => ({ name: this.name }),
-    stickers: () => ({ stickers: this.stickers.map(u => u.toJSON()) }),
-    title: () => ({ title: this.title }),
-    uid: () => ({ uid: this.uid }),
-    author: () => ({ author: this.author }),
-    authorLink: () => ({ author_link: this.authorLink }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): StickerpackJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<StickerpackJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerChatDraftParamsJSON {
-  /* eslint-disable camelcase */
-  draft: string;
-  draft_num: number;
-  jid: JID;
-  /* eslint-enable camelcase */
-}
-
-export class ServerChatDraftParams implements TDProtoClass<ServerChatDraftParams> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param draft Draft text
-   * @param draftNum Draft version
-   * @param jid Chat or contact id
-   */
-  constructor (
-    public draft: string,
-    public draftNum: number,
-    public jid: JID,
-  ) {}
-
-  public static fromJSON (raw: ServerChatDraftParamsJSON): ServerChatDraftParams {
-    return new ServerChatDraftParams(
-      raw.draft,
-      raw.draft_num,
-      raw.jid,
-    )
-  }
-
-  public mappableFields = [
-    'draft',
-    'draftNum',
-    'jid',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    draft: () => ({ draft: this.draft }),
-    draftNum: () => ({ draft_num: this.draftNum }),
-    jid: () => ({ jid: this.jid }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerChatDraftParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerChatDraftParamsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface IconColorsJSON {
-  /* eslint-disable camelcase */
-  brand: string;
-  other: string;
-  title: string;
-  /* eslint-enable camelcase */
-}
-
-export class IconColors implements TDProtoClass<IconColors> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param brand DOCUMENTATION MISSING
-   * @param other DOCUMENTATION MISSING
-   * @param title DOCUMENTATION MISSING
-   */
-  constructor (
-    public brand: string,
-    public other: string,
-    public title: string,
-  ) {}
-
-  public static fromJSON (raw: IconColorsJSON): IconColors {
-    return new IconColors(
-      raw.brand,
-      raw.other,
-      raw.title,
-    )
-  }
-
-  public mappableFields = [
-    'brand',
-    'other',
-    'title',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    brand: () => ({ brand: this.brand }),
-    other: () => ({ other: this.other }),
-    title: () => ({ title: this.title }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): IconColorsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<IconColorsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ClientMessageUpdatedParamsJSON {
-  /* eslint-disable camelcase */
-  content: MessageContentJSON;
-  to: JID;
-  comment?: string;
-  important?: boolean;
-  linked_messages?: string[];
-  message_id?: string;
-  nopreview?: boolean;
-  old_style_attachment?: boolean;
-  reply_to?: string;
-  uploads?: string[];
-  /* eslint-enable camelcase */
-}
-
-export class ClientMessageUpdatedParams implements TDProtoClass<ClientMessageUpdatedParams> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param content Message content. Required
-   * @param to Chat, task or contact jid. Required
-   * @param comment Deprecated
-   * @param important Important flag. Not required. Default: false
-   * @param linkedMessages Forwarded messages (previously was for reply too). Not required
-   * @param messageId Uid created by client. Recommended
-   * @param nopreview Disable links preview generation. Not required. Default: false
-   * @param oldStyleAttachment Backward compatibility mode
-   * @param replyTo Replied to message id. Not required
-   * @param uploads Message attachments
-   */
-  constructor (
-    public content: MessageContent,
-    public to: JID,
-    public comment?: string,
-    public important?: boolean,
-    public linkedMessages?: string[],
-    public messageId?: string,
-    public nopreview?: boolean,
-    public oldStyleAttachment?: boolean,
-    public replyTo?: string,
-    public uploads?: string[],
-  ) {}
-
-  public static fromJSON (raw: ClientMessageUpdatedParamsJSON): ClientMessageUpdatedParams {
-    return new ClientMessageUpdatedParams(
-      MessageContent.fromJSON(raw.content),
-      raw.to,
-      raw.comment,
-      raw.important,
-      raw.linked_messages,
-      raw.message_id,
-      raw.nopreview,
-      raw.old_style_attachment,
-      raw.reply_to,
-      raw.uploads,
-    )
-  }
-
-  public mappableFields = [
-    'content',
-    'to',
-    'comment',
-    'important',
-    'linkedMessages',
-    'messageId',
-    'nopreview',
-    'oldStyleAttachment',
-    'replyTo',
-    'uploads',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    content: () => ({ content: this.content.toJSON() }),
-    to: () => ({ to: this.to }),
-    comment: () => ({ comment: this.comment }),
-    important: () => ({ important: this.important }),
-    linkedMessages: () => ({ linked_messages: this.linkedMessages }),
-    messageId: () => ({ message_id: this.messageId }),
-    nopreview: () => ({ nopreview: this.nopreview }),
-    oldStyleAttachment: () => ({ old_style_attachment: this.oldStyleAttachment }),
-    replyTo: () => ({ reply_to: this.replyTo }),
-    uploads: () => ({ uploads: this.uploads }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ClientMessageUpdatedParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientMessageUpdatedParamsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
 export interface ServerSectionUpdatedParamsJSON {
   /* eslint-disable camelcase */
   chat_type: ChatType;
@@ -12590,51 +13166,63 @@ export class ServerSectionUpdatedParams implements TDProtoClass<ServerSectionUpd
   }
 }
 
-export interface ServerChatDeletedJSON {
+export interface TaskStatusJSON {
   /* eslint-disable camelcase */
-  event: string;
-  params: ServerChatDeletedParamsJSON;
-  confirm_id?: string;
+  name: string;
+  sort_ordering: number;
+  title: string;
+  is_archive?: boolean;
+  uid?: string;
   /* eslint-enable camelcase */
 }
 
-export class ServerChatDeleted implements TDProtoClass<ServerChatDeleted> {
+export class TaskStatus implements TDProtoClass<TaskStatus> {
   /**
-   * Chat deleted
-   * @param name DOCUMENTATION MISSING
-   * @param params DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
+   * Custom task status
+   * @param name Status internal name
+   * @param sortOrdering Status sort ordering
+   * @param title Status localized name
+   * @param isArchive Status not used anymore
+   * @param uid Status id
    */
   constructor (
     public name: string,
-    public params: ServerChatDeletedParams,
-    public confirmId?: string,
+    public sortOrdering: number,
+    public title: string,
+    public isArchive?: boolean,
+    public uid?: string,
   ) {}
 
-  public static fromJSON (raw: ServerChatDeletedJSON): ServerChatDeleted {
-    return new ServerChatDeleted(
-      raw.event,
-      ServerChatDeletedParams.fromJSON(raw.params),
-      raw.confirm_id,
+  public static fromJSON (raw: TaskStatusJSON): TaskStatus {
+    return new TaskStatus(
+      raw.name,
+      raw.sort_ordering,
+      raw.title,
+      raw.is_archive,
+      raw.uid,
     )
   }
 
   public mappableFields = [
     'name',
-    'params',
-    'confirmId',
+    'sortOrdering',
+    'title',
+    'isArchive',
+    'uid',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    params: () => ({ params: this.params.toJSON() }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
+    name: () => ({ name: this.name }),
+    sortOrdering: () => ({ sort_ordering: this.sortOrdering }),
+    title: () => ({ title: this.title }),
+    isArchive: () => ({ is_archive: this.isArchive }),
+    uid: () => ({ uid: this.uid }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): ServerChatDeletedJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerChatDeletedJSON>
+  public toJSON (): TaskStatusJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<TaskStatusJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -12644,147 +13232,57 @@ export class ServerChatDeleted implements TDProtoClass<ServerChatDeleted> {
   }
 }
 
-export interface ServerSectionDeletedJSON {
-  /* eslint-disable camelcase */
-  event: string;
-  params: ServerSectionDeletedParamsJSON;
-  confirm_id?: string;
-  /* eslint-enable camelcase */
-}
-
-export class ServerSectionDeleted implements TDProtoClass<ServerSectionDeleted> {
-  /**
-   * Contact section or task project deleted
-   * @param name DOCUMENTATION MISSING
-   * @param params DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
-   */
-  constructor (
-    public name: string,
-    public params: ServerSectionDeletedParams,
-    public confirmId?: string,
-  ) {}
-
-  public static fromJSON (raw: ServerSectionDeletedJSON): ServerSectionDeleted {
-    return new ServerSectionDeleted(
-      raw.event,
-      ServerSectionDeletedParams.fromJSON(raw.params),
-      raw.confirm_id,
-    )
-  }
-
-  public mappableFields = [
-    'name',
-    'params',
-    'confirmId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    params: () => ({ params: this.params.toJSON() }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerSectionDeletedJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerSectionDeletedJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerDebugParamsJSON {
-  /* eslint-disable camelcase */
-  text: string;
-  /* eslint-enable camelcase */
-}
-
-export class ServerDebugParams implements TDProtoClass<ServerDebugParams> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param text Debug message
-   */
-  constructor (
-    public text: string,
-  ) {}
-
-  public static fromJSON (raw: ServerDebugParamsJSON): ServerDebugParams {
-    return new ServerDebugParams(
-      raw.text,
-    )
-  }
-
-  public mappableFields = [
-    'text',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    text: () => ({ text: this.text }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerDebugParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerDebugParamsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerCallRestartParamsJSON {
+export interface ClientCallOfferParamsJSON {
   /* eslint-disable camelcase */
   jid: JID;
-  team: string;
-  uid: string;
+  muted: boolean;
+  sdp: string;
+  trickle: boolean;
   /* eslint-enable camelcase */
 }
 
-export class ServerCallRestartParams implements TDProtoClass<ServerCallRestartParams> {
+export class ClientCallOfferParams implements TDProtoClass<ClientCallOfferParams> {
   /**
    * MISSING CLASS DOCUMENTATION
    * @param jid Chat or contact id
-   * @param team Team id
-   * @param uid Call id
+   * @param muted Mute state
+   * @param sdp SDP (session description protocol) data
+   * @param trickle Is trickle mode enabled
    */
   constructor (
     public jid: JID,
-    public team: string,
-    public uid: string,
+    public muted: boolean,
+    public sdp: string,
+    public trickle: boolean,
   ) {}
 
-  public static fromJSON (raw: ServerCallRestartParamsJSON): ServerCallRestartParams {
-    return new ServerCallRestartParams(
+  public static fromJSON (raw: ClientCallOfferParamsJSON): ClientCallOfferParams {
+    return new ClientCallOfferParams(
       raw.jid,
-      raw.team,
-      raw.uid,
+      raw.muted,
+      raw.sdp,
+      raw.trickle,
     )
   }
 
   public mappableFields = [
     'jid',
-    'team',
-    'uid',
+    'muted',
+    'sdp',
+    'trickle',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
     jid: () => ({ jid: this.jid }),
-    team: () => ({ team: this.team }),
-    uid: () => ({ uid: this.uid }),
+    muted: () => ({ muted: this.muted }),
+    sdp: () => ({ sdp: this.sdp }),
+    trickle: () => ({ trickle: this.trickle }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): ServerCallRestartParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallRestartParamsJSON>
+  public toJSON (): ClientCallOfferParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientCallOfferParamsJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -12794,531 +13292,69 @@ export class ServerCallRestartParams implements TDProtoClass<ServerCallRestartPa
   }
 }
 
-export interface ServerTeamUpdatedJSON {
+export interface SectionJSON {
   /* eslint-disable camelcase */
-  event: string;
-  params: ServerTeamUpdatedParamsJSON;
-  confirm_id?: string;
-  /* eslint-enable camelcase */
-}
-
-export class ServerTeamUpdated implements TDProtoClass<ServerTeamUpdated> {
-  /**
-   * Team created or changed
-   * @param name DOCUMENTATION MISSING
-   * @param params DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
-   */
-  constructor (
-    public name: string,
-    public params: ServerTeamUpdatedParams,
-    public confirmId?: string,
-  ) {}
-
-  public static fromJSON (raw: ServerTeamUpdatedJSON): ServerTeamUpdated {
-    return new ServerTeamUpdated(
-      raw.event,
-      ServerTeamUpdatedParams.fromJSON(raw.params),
-      raw.confirm_id,
-    )
-  }
-
-  public mappableFields = [
-    'name',
-    'params',
-    'confirmId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    params: () => ({ params: this.params.toJSON() }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerTeamUpdatedJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerTeamUpdatedJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface UserWithMeJSON {
-  /* eslint-disable camelcase */
-  alt_send: boolean;
-  always_send_pushes: boolean;
-  asterisk_mention: boolean;
-  devices: PushDeviceJSON[];
-  munread_first: boolean;
-  quiet_time_finish: string;
-  quiet_time_start: string;
-  teams: TeamJSON[];
-  timezone: string;
-  unread_first: boolean;
-  default_lang?: string;
-  email?: string;
-  family_name?: string;
-  given_name?: string;
-  inviter?: JID;
-  patronymic?: string;
-  phone?: string;
-  /* eslint-enable camelcase */
-}
-
-export class UserWithMe implements TDProtoClass<UserWithMe> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param altSend Use Ctrl/Cmd + Enter instead Enter
-   * @param alwaysSendPushes Send pushes even user is online
-   * @param asteriskMention Use * as @ for mentions
-   * @param devices DOCUMENTATION MISSING
-   * @param mUnreadFirst Show unread chats in chat list first on mobiles
-   * @param quietTimeFinish Finish silently time (no pushes, no sounds)
-   * @param quietTimeStart Start silently time (no pushes, no sounds)
-   * @param teams DOCUMENTATION MISSING
-   * @param timezone Timezone
-   * @param unreadFirst Show unread chats in chat list first
-   * @param defaultLang Default language code
-   * @param email Email for login
-   * @param familyName Family name
-   * @param givenName Given name
-   * @param inviter DOCUMENTATION MISSING
-   * @param patronymic Patronymic, if any
-   * @param phone Phone for login
-   */
-  constructor (
-    public altSend: boolean,
-    public alwaysSendPushes: boolean,
-    public asteriskMention: boolean,
-    public devices: PushDevice[],
-    public mUnreadFirst: boolean,
-    public quietTimeFinish: string,
-    public quietTimeStart: string,
-    public teams: Team[],
-    public timezone: string,
-    public unreadFirst: boolean,
-    public defaultLang?: string,
-    public email?: string,
-    public familyName?: string,
-    public givenName?: string,
-    public inviter?: JID,
-    public patronymic?: string,
-    public phone?: string,
-  ) {}
-
-  public static fromJSON (raw: UserWithMeJSON): UserWithMe {
-    return new UserWithMe(
-      raw.alt_send,
-      raw.always_send_pushes,
-      raw.asterisk_mention,
-      raw.devices.map(PushDevice.fromJSON),
-      raw.munread_first,
-      raw.quiet_time_finish,
-      raw.quiet_time_start,
-      raw.teams.map(Team.fromJSON),
-      raw.timezone,
-      raw.unread_first,
-      raw.default_lang,
-      raw.email,
-      raw.family_name,
-      raw.given_name,
-      raw.inviter,
-      raw.patronymic,
-      raw.phone,
-    )
-  }
-
-  public mappableFields = [
-    'altSend',
-    'alwaysSendPushes',
-    'asteriskMention',
-    'devices',
-    'mUnreadFirst',
-    'quietTimeFinish',
-    'quietTimeStart',
-    'teams',
-    'timezone',
-    'unreadFirst',
-    'defaultLang',
-    'email',
-    'familyName',
-    'givenName',
-    'inviter',
-    'patronymic',
-    'phone',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    altSend: () => ({ alt_send: this.altSend }),
-    alwaysSendPushes: () => ({ always_send_pushes: this.alwaysSendPushes }),
-    asteriskMention: () => ({ asterisk_mention: this.asteriskMention }),
-    devices: () => ({ devices: this.devices.map(u => u.toJSON()) }),
-    mUnreadFirst: () => ({ munread_first: this.mUnreadFirst }),
-    quietTimeFinish: () => ({ quiet_time_finish: this.quietTimeFinish }),
-    quietTimeStart: () => ({ quiet_time_start: this.quietTimeStart }),
-    teams: () => ({ teams: this.teams.map(u => u.toJSON()) }),
-    timezone: () => ({ timezone: this.timezone }),
-    unreadFirst: () => ({ unread_first: this.unreadFirst }),
-    defaultLang: () => ({ default_lang: this.defaultLang }),
-    email: () => ({ email: this.email }),
-    familyName: () => ({ family_name: this.familyName }),
-    givenName: () => ({ given_name: this.givenName }),
-    inviter: () => ({ inviter: this.inviter }),
-    patronymic: () => ({ patronymic: this.patronymic }),
-    phone: () => ({ phone: this.phone }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): UserWithMeJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<UserWithMeJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface TaskFilterJSON {
-  /* eslint-disable camelcase */
-  field: TaskFilterKey;
-  title: string;
-  /* eslint-enable camelcase */
-}
-
-export class TaskFilter implements TDProtoClass<TaskFilter> {
-  /**
-   * Task filter
-   * @param field Task filter field
-   * @param title Filter title
-   */
-  constructor (
-    public field: TaskFilterKey,
-    public title: string,
-  ) {}
-
-  public static fromJSON (raw: TaskFilterJSON): TaskFilter {
-    return new TaskFilter(
-      raw.field,
-      raw.title,
-    )
-  }
-
-  public mappableFields = [
-    'field',
-    'title',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    field: () => ({ field: this.field }),
-    title: () => ({ title: this.title }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): TaskFilterJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<TaskFilterJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerProcessingParamsJSON {
-  /* eslint-disable camelcase */
-  action: string;
-  has_error: boolean;
-  message: string;
-  num: number;
-  total: number;
-  /* eslint-enable camelcase */
-}
-
-export class ServerProcessingParams implements TDProtoClass<ServerProcessingParams> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param action Action name
-   * @param hasError Has error
-   * @param message Message
-   * @param num Current processing item
-   * @param total Total processing items
-   */
-  constructor (
-    public action: string,
-    public hasError: boolean,
-    public message: string,
-    public num: number,
-    public total: number,
-  ) {}
-
-  public static fromJSON (raw: ServerProcessingParamsJSON): ServerProcessingParams {
-    return new ServerProcessingParams(
-      raw.action,
-      raw.has_error,
-      raw.message,
-      raw.num,
-      raw.total,
-    )
-  }
-
-  public mappableFields = [
-    'action',
-    'hasError',
-    'message',
-    'num',
-    'total',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    action: () => ({ action: this.action }),
-    hasError: () => ({ has_error: this.hasError }),
-    message: () => ({ message: this.message }),
-    num: () => ({ num: this.num }),
-    total: () => ({ total: this.total }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerProcessingParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerProcessingParamsJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface MessageLinkJSON {
-  /* eslint-disable camelcase */
-  pattern: string;
-  text: string;
-  url: string;
-  nopreview?: boolean;
-  preview?: MessageLinkPreviewJSON;
-  uploads?: UploadJSON[];
-  youtube_id?: string;
-  /* eslint-enable camelcase */
-}
-
-export class MessageLink implements TDProtoClass<MessageLink> {
-  /**
-   * Checked message links. In short: "Click here: {link.Pattern}" => "Click here: <a href='{link.Url}'>{link.Text}</a>"
-   * @param pattern Text fragment that should be replaced by link
-   * @param text Text replacement
-   * @param url Internal or external link
-   * @param noPreview Website previews disabled
-   * @param preview Optional preview info, for websites
-   * @param uploads Optional upload info
-   * @param youtubeId Optional youtube movie id
-   */
-  constructor (
-    public pattern: string,
-    public text: string,
-    public url: string,
-    public noPreview?: boolean,
-    public preview?: MessageLinkPreview,
-    public uploads?: Upload[],
-    public youtubeId?: string,
-  ) {}
-
-  public static fromJSON (raw: MessageLinkJSON): MessageLink {
-    return new MessageLink(
-      raw.pattern,
-      raw.text,
-      raw.url,
-      raw.nopreview,
-      raw.preview && MessageLinkPreview.fromJSON(raw.preview),
-      raw.uploads && raw.uploads.map(Upload.fromJSON),
-      raw.youtube_id,
-    )
-  }
-
-  public mappableFields = [
-    'pattern',
-    'text',
-    'url',
-    'noPreview',
-    'preview',
-    'uploads',
-    'youtubeId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    pattern: () => ({ pattern: this.pattern }),
-    text: () => ({ text: this.text }),
-    url: () => ({ url: this.url }),
-    noPreview: () => ({ nopreview: this.noPreview }),
-    preview: () => ({ preview: this.preview?.toJSON() }),
-    uploads: () => ({ uploads: this.uploads?.map(u => u.toJSON()) }),
-    youtubeId: () => ({ youtube_id: this.youtubeId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): MessageLinkJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<MessageLinkJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ClientChatComposingJSON {
-  /* eslint-disable camelcase */
-  event: string;
-  params: ClientChatComposingParamsJSON;
-  confirm_id?: string;
-  /* eslint-enable camelcase */
-}
-
-export class ClientChatComposing implements TDProtoClass<ClientChatComposing> {
-  /**
-   * Typing or recording audiomessage
-   * @param name DOCUMENTATION MISSING
-   * @param params DOCUMENTATION MISSING
-   * @param confirmId DOCUMENTATION MISSING
-   */
-  constructor (
-    public name: string,
-    public params: ClientChatComposingParams,
-    public confirmId?: string,
-  ) {}
-
-  public static fromJSON (raw: ClientChatComposingJSON): ClientChatComposing {
-    return new ClientChatComposing(
-      raw.event,
-      ClientChatComposingParams.fromJSON(raw.params),
-      raw.confirm_id,
-    )
-  }
-
-  public mappableFields = [
-    'name',
-    'params',
-    'confirmId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    name: () => ({ event: this.name }),
-    params: () => ({ params: this.params.toJSON() }),
-    confirmId: () => ({ confirm_id: this.confirmId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ClientChatComposingJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientChatComposingJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface UserAuthJSON {
-  /* eslint-disable camelcase */
-  created: string;
-  kind: string;
+  gentime: number;
+  name: string;
+  sort_ordering: number;
   uid: string;
-  addr?: string;
-  country?: string;
-  _age?: number;
-  device?: PushDeviceJSON;
-  last_access?: string;
-  region?: string;
-  user_agent?: string;
+  description?: string;
+  is_archive?: boolean;
   /* eslint-enable camelcase */
 }
 
-export class UserAuth implements TDProtoClass<UserAuth> {
+export class Section implements TDProtoClass<Section> {
   /**
    * MISSING CLASS DOCUMENTATION
-   * @param created DOCUMENTATION MISSING
-   * @param kind type of auth
-   * @param uid DOCUMENTATION MISSING
-   * @param addr ip address
-   * @param country name of country
-   * @param debugAge DOCUMENTATION MISSING
-   * @param device info about device (struct)
-   * @param lastAccess DOCUMENTATION MISSING
-   * @param region name of region
-   * @param useragent info about useragent
+   * @param gentime Object version
+   * @param name Name
+   * @param sortOrdering Sort ordering
+   * @param uid Section uid
+   * @param description Description, if any
+   * @param isArchive Is deleted
    */
   constructor (
-    public created: string,
-    public kind: string,
+    public gentime: number,
+    public name: string,
+    public sortOrdering: number,
     public uid: string,
-    public addr?: string,
-    public country?: string,
-    public debugAge?: number,
-    public device?: PushDevice,
-    public lastAccess?: string,
-    public region?: string,
-    public useragent?: string,
+    public description?: string,
+    public isArchive?: boolean,
   ) {}
 
-  public static fromJSON (raw: UserAuthJSON): UserAuth {
-    return new UserAuth(
-      raw.created,
-      raw.kind,
+  public static fromJSON (raw: SectionJSON): Section {
+    return new Section(
+      raw.gentime,
+      raw.name,
+      raw.sort_ordering,
       raw.uid,
-      raw.addr,
-      raw.country,
-      raw._age,
-      raw.device && PushDevice.fromJSON(raw.device),
-      raw.last_access,
-      raw.region,
-      raw.user_agent,
+      raw.description,
+      raw.is_archive,
     )
   }
 
   public mappableFields = [
-    'created',
-    'kind',
+    'gentime',
+    'name',
+    'sortOrdering',
     'uid',
-    'addr',
-    'country',
-    'debugAge',
-    'device',
-    'lastAccess',
-    'region',
-    'useragent',
+    'description',
+    'isArchive',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    created: () => ({ created: this.created }),
-    kind: () => ({ kind: this.kind }),
+    gentime: () => ({ gentime: this.gentime }),
+    name: () => ({ name: this.name }),
+    sortOrdering: () => ({ sort_ordering: this.sortOrdering }),
     uid: () => ({ uid: this.uid }),
-    addr: () => ({ addr: this.addr }),
-    country: () => ({ country: this.country }),
-    debugAge: () => ({ _age: this.debugAge }),
-    device: () => ({ device: this.device?.toJSON() }),
-    lastAccess: () => ({ last_access: this.lastAccess }),
-    region: () => ({ region: this.region }),
-    useragent: () => ({ user_agent: this.useragent }),
+    description: () => ({ description: this.description }),
+    isArchive: () => ({ is_archive: this.isArchive }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): UserAuthJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<UserAuthJSON>
+  public toJSON (): SectionJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<SectionJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -13328,87 +13364,51 @@ export class UserAuth implements TDProtoClass<UserAuth> {
   }
 }
 
-export interface MarkupEntityJSON {
+export interface ServerSectionDeletedParamsJSON {
   /* eslint-disable camelcase */
-  cl: number;
-  op: number;
-  typ: MarkupType;
-  childs?: MarkupEntityJSON[];
-  cllen?: number;
-  oplen?: number;
-  repl?: string;
-  time?: string;
-  url?: string;
+  chat_type: ChatType;
+  gentime: number;
+  sections: DeletedSectionJSON[];
   /* eslint-enable camelcase */
 }
 
-export class MarkupEntity implements TDProtoClass<MarkupEntity> {
+export class ServerSectionDeletedParams implements TDProtoClass<ServerSectionDeletedParams> {
   /**
-   * Markup entity. Experimental
-   * @param close Close marker offset
-   * @param open Open marker offset
-   * @param type Marker type
-   * @param childs List of internal markup entities
-   * @param closeLength Close marker length
-   * @param openLength Open marker length
-   * @param repl Text replacement
-   * @param time Time, for Time type
-   * @param url Url, for Link type
+   * MISSING CLASS DOCUMENTATION
+   * @param chatType Chat type
+   * @param gentime Deprecated
+   * @param sections Section/project info
    */
   constructor (
-    public close: number,
-    public open: number,
-    public type: MarkupType,
-    public childs?: MarkupEntity[],
-    public closeLength?: number,
-    public openLength?: number,
-    public repl?: string,
-    public time?: string,
-    public url?: string,
+    public chatType: ChatType,
+    public gentime: number,
+    public sections: DeletedSection[],
   ) {}
 
-  public static fromJSON (raw: MarkupEntityJSON): MarkupEntity {
-    return new MarkupEntity(
-      raw.cl,
-      raw.op,
-      raw.typ,
-      raw.childs && raw.childs.map(MarkupEntity.fromJSON),
-      raw.cllen,
-      raw.oplen,
-      raw.repl,
-      raw.time,
-      raw.url,
+  public static fromJSON (raw: ServerSectionDeletedParamsJSON): ServerSectionDeletedParams {
+    return new ServerSectionDeletedParams(
+      raw.chat_type,
+      raw.gentime,
+      raw.sections.map(DeletedSection.fromJSON),
     )
   }
 
   public mappableFields = [
-    'close',
-    'open',
-    'type',
-    'childs',
-    'closeLength',
-    'openLength',
-    'repl',
-    'time',
-    'url',
+    'chatType',
+    'gentime',
+    'sections',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    close: () => ({ cl: this.close }),
-    open: () => ({ op: this.open }),
-    type: () => ({ typ: this.type }),
-    childs: () => ({ childs: this.childs?.map(u => u.toJSON()) }),
-    closeLength: () => ({ cllen: this.closeLength }),
-    openLength: () => ({ oplen: this.openLength }),
-    repl: () => ({ repl: this.repl }),
-    time: () => ({ time: this.time }),
-    url: () => ({ url: this.url }),
+    chatType: () => ({ chat_type: this.chatType }),
+    gentime: () => ({ gentime: this.gentime }),
+    sections: () => ({ sections: this.sections.map(u => u.toJSON()) }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): MarkupEntityJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<MarkupEntityJSON>
+  public toJSON (): ServerSectionDeletedParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerSectionDeletedParamsJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
