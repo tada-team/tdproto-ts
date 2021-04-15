@@ -7,7 +7,7 @@ interface TDProtoClass<T> {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type UiSettings = Record<string, any>
+export type UiSettings = Record<string, any>
 
 type ChatType =
    | 'direct'
@@ -58,17 +58,17 @@ type UploadMediaType =
    | 'audio'
    | 'imagefile'
 
-type ISODateTimeString = string
+export type ISODateTimeString = string
 
-type JID = string
+export type JID = string
 
-type PushDeviceType = number
+export type PushDeviceType = number
 
-type TaskFilterKey = string
+export type TaskFilterKey = string
 
-type TaskSortKey = string
+export type TaskSortKey = string
 
-type TaskTabKey = string
+export type TaskTabKey = string
 
 export interface TeamUnreadJSON {
    /* eslint-disable camelcase */
@@ -3775,6 +3775,7 @@ export interface FeaturesJSON {
   auth_by_qr_code?: boolean;
   auth_by_sms?: boolean;
   default_wallpaper?: WallpaperJSON;
+  landing_url?: string;
   max_participants_per_call?: number;
   oauth_services?: OAuthServiceJSON[];
   only_one_device_per_call?: boolean;
@@ -3849,6 +3850,7 @@ export class Features implements TDProtoClass<Features> {
    * @param authByQrCode QR-code / link authentication enabled
    * @param authBySms SMS authentication enabled
    * @param defaultWallpaper Default wallpaper url for mobile apps, if any
+   * @param landingUrl Landing page address, if any
    * @param maxParticipantsPerCall Maximum number of participants per call
    * @param oauthServices External services
    * @param onlyOneDevicePerCall Disallow call from multiply devices. Experimental
@@ -3919,6 +3921,7 @@ export class Features implements TDProtoClass<Features> {
     public authByQrCode?: boolean,
     public authBySms?: boolean,
     public defaultWallpaper?: Wallpaper,
+    public landingUrl?: string,
     public maxParticipantsPerCall?: number,
     public oauthServices?: OAuthService[],
     public onlyOneDevicePerCall?: boolean,
@@ -3991,6 +3994,7 @@ export class Features implements TDProtoClass<Features> {
       raw.auth_by_qr_code,
       raw.auth_by_sms,
       raw.default_wallpaper && Wallpaper.fromJSON(raw.default_wallpaper),
+      raw.landing_url,
       raw.max_participants_per_call,
       raw.oauth_services && raw.oauth_services.map(OAuthService.fromJSON),
       raw.only_one_device_per_call,
@@ -4063,6 +4067,7 @@ export class Features implements TDProtoClass<Features> {
     'authByQrCode',
     'authBySms',
     'defaultWallpaper',
+    'landingUrl',
     'maxParticipantsPerCall',
     'oauthServices',
     'onlyOneDevicePerCall',
@@ -4135,6 +4140,7 @@ export class Features implements TDProtoClass<Features> {
     authByQrCode: () => ({ auth_by_qr_code: this.authByQrCode }),
     authBySms: () => ({ auth_by_sms: this.authBySms }),
     defaultWallpaper: () => ({ default_wallpaper: this.defaultWallpaper?.toJSON() }),
+    landingUrl: () => ({ landing_url: this.landingUrl }),
     maxParticipantsPerCall: () => ({ max_participants_per_call: this.maxParticipantsPerCall }),
     oauthServices: () => ({ oauth_services: this.oauthServices?.map(u => u.toJSON()) }),
     onlyOneDevicePerCall: () => ({ only_one_device_per_call: this.onlyOneDevicePerCall }),
