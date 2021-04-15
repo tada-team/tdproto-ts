@@ -9,16 +9,16 @@ interface TDProtoClass<T> {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type UiSettings = Record<string, any>
 
-type ChatType =
+export type ChatType =
    | 'direct'
    | 'group'
    | 'task'
 
-type GroupStatus =
+export type GroupStatus =
    | 'admin'
    | 'member'
 
-type MarkupType =
+export type MarkupType =
    | 'bold'
    | 'italic'
    | 'underscore'
@@ -30,11 +30,11 @@ type MarkupType =
    | 'time'
    | 'unsafe'
 
-type Mediasubtype =
+export type Mediasubtype =
    | 'sticker'
    | 'newtask'
 
-type Mediatype =
+export type Mediatype =
    | 'plain'
    | 'change'
    | 'deleted'
@@ -45,13 +45,13 @@ type Mediatype =
    | 'contact'
    | 'pdf'
 
-type TeamStatus =
+export type TeamStatus =
    | 'owner'
    | 'admin'
    | 'member'
    | 'guest'
 
-type UploadMediaType =
+export type UploadMediaType =
    | 'file'
    | 'image'
    | 'video'
