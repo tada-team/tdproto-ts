@@ -13196,22 +13196,22 @@ export interface UserWithMeJSON {
 
 export class UserWithMe implements TDProtoClass<UserWithMe> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Accouint data with extra information
    * @param altSend Use Ctrl/Cmd + Enter instead Enter
    * @param alwaysSendPushes Send pushes even user is online
    * @param asteriskMention Use * as @ for mentions
-   * @param devices DOCUMENTATION MISSING
+   * @param devices Registered push devices
    * @param munreadFirst Show unread chats in chat list first on mobiles
    * @param quietTimeFinish Finish silently time (no pushes, no sounds)
    * @param quietTimeStart Start silently time (no pushes, no sounds)
-   * @param teams DOCUMENTATION MISSING
+   * @param teams Available teams
    * @param timezone Timezone
    * @param unreadFirst Show unread chats in chat list first
    * @param defaultLang Default language code
    * @param email Email for login
    * @param familyName Family name
    * @param givenName Given name
-   * @param inviter DOCUMENTATION MISSING
+   * @param inviter Inviter id, if any
    * @param patronymic Patronymic, if any
    * @param phone Phone for login
    */
