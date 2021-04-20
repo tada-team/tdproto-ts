@@ -4442,55 +4442,61 @@ export class IconColors implements TDProtoClass<IconColors> {
 
 export interface IconDataJSON {
   /* eslint-disable camelcase */
+  lg: SingleIconJSON;
+  sm: SingleIconJSON;
+  blurhash?: string;
   color?: string;
   letters?: string;
-  lg?: SingleIconJSON;
-  sm?: SingleIconJSON;
   stub?: string;
   /* eslint-enable camelcase */
 }
 
 export class IconData implements TDProtoClass<IconData> {
   /**
-   * Icon data. Contains sm+lg (for uploaded image) OR stub+letters+color (for icon generated from display name)
-   * @param color Stub icon background color
-   * @param letters Letters from stub icon
+   * Icon data. For icon generated from display name contains Letters + Color fields
    * @param lg Large image
    * @param sm Small icon
-   * @param stub Generated image with 1-2 letters
+   * @param blurhash Compact representation of a placeholder for an image (experimental)
+   * @param color Icon background color (only for stub icon)
+   * @param letters Letters (only for stub icon)
+   * @param stub Deprecated
    */
   constructor (
+    public lg: SingleIcon,
+    public sm: SingleIcon,
+    public blurhash?: string,
     public color?: string,
     public letters?: string,
-    public lg?: SingleIcon,
-    public sm?: SingleIcon,
     public stub?: string,
   ) {}
 
   public static fromJSON (raw: IconDataJSON): IconData {
     return new IconData(
+      SingleIcon.fromJSON(raw.lg),
+      SingleIcon.fromJSON(raw.sm),
+      raw.blurhash,
       raw.color,
       raw.letters,
-      raw.lg && SingleIcon.fromJSON(raw.lg),
-      raw.sm && SingleIcon.fromJSON(raw.sm),
       raw.stub,
     )
   }
 
   public mappableFields = [
-    'color',
-    'letters',
     'lg',
     'sm',
+    'blurhash',
+    'color',
+    'letters',
     'stub',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
+    lg: () => ({ lg: this.lg.toJSON() }),
+    sm: () => ({ sm: this.sm.toJSON() }),
+    blurhash: () => ({ blurhash: this.blurhash }),
     color: () => ({ color: this.color }),
     letters: () => ({ letters: this.letters }),
-    lg: () => ({ lg: this.lg?.toJSON() }),
-    sm: () => ({ sm: this.sm?.toJSON() }),
     stub: () => ({ stub: this.stub }),
     /* eslint-enable camelcase */
   }
