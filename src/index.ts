@@ -12750,6 +12750,7 @@ export interface UploadJSON {
   uid: string;
   url: string;
   animated?: boolean;
+  blurhash?: string;
   duration?: number;
   pdf_version?: PdfVersionJSON;
   preview?: UploadPreviewJSON;
@@ -12768,6 +12769,7 @@ export class Upload implements TDProtoClass<Upload> {
    * @param uid Upload id
    * @param url Absolute url
    * @param animated Is animated (images only)
+   * @param blurhash Compact representation of a placeholder for an image (images only)
    * @param duration Mediafile duration (for audio/video only)
    * @param pdfVersion PDF version of file. Experimental
    * @param preview Preview details
@@ -12782,6 +12784,7 @@ export class Upload implements TDProtoClass<Upload> {
     public uid: string,
     public url: string,
     public animated?: boolean,
+    public blurhash?: string,
     public duration?: number,
     public pdfVersion?: PdfVersion,
     public preview?: UploadPreview,
@@ -12798,6 +12801,7 @@ export class Upload implements TDProtoClass<Upload> {
       raw.uid,
       raw.url,
       raw.animated,
+      raw.blurhash,
       raw.duration,
       raw.pdf_version && PdfVersion.fromJSON(raw.pdf_version),
       raw.preview && UploadPreview.fromJSON(raw.preview),
@@ -12814,6 +12818,7 @@ export class Upload implements TDProtoClass<Upload> {
     'uid',
     'url',
     'animated',
+    'blurhash',
     'duration',
     'pdfVersion',
     'preview',
@@ -12830,6 +12835,7 @@ export class Upload implements TDProtoClass<Upload> {
     uid: () => ({ uid: this.uid }),
     url: () => ({ url: this.url }),
     animated: () => ({ animated: this.animated }),
+    blurhash: () => ({ blurhash: this.blurhash }),
     duration: () => ({ duration: this.duration }),
     pdfVersion: () => ({ pdf_version: this.pdfVersion?.toJSON() }),
     preview: () => ({ preview: this.preview?.toJSON() }),
