@@ -5376,6 +5376,7 @@ export interface MessageContentJSON {
   type: Mediatype;
   actor?: JID;
   animated?: boolean;
+  blurhash?: string;
   comment?: string;
   duration?: number;
   emails?: string[];
@@ -5408,6 +5409,7 @@ export class MessageContent implements TDProtoClass<MessageContent> {
    * @param type Message type
    * @param actor Change actor contact id (for "change" mediatype)
    * @param animated Upload is animated image, if any. Deprecated: use Uploads instead
+   * @param blurhash Compact representation of a placeholder for an image. Deprecated: use Uploads instead
    * @param comment Comment (for "audiomsg" mediatype)
    * @param duration Upload duration, if any. Deprecated: use Uploads instead
    * @param emails Emails list (for "contact" mediatype)
@@ -5436,6 +5438,7 @@ export class MessageContent implements TDProtoClass<MessageContent> {
     public type: Mediatype,
     public actor?: JID,
     public animated?: boolean,
+    public blurhash?: string,
     public comment?: string,
     public duration?: number,
     public emails?: string[],
@@ -5466,6 +5469,7 @@ export class MessageContent implements TDProtoClass<MessageContent> {
       raw.type,
       raw.actor,
       raw.animated,
+      raw.blurhash,
       raw.comment,
       raw.duration,
       raw.emails,
@@ -5496,6 +5500,7 @@ export class MessageContent implements TDProtoClass<MessageContent> {
     'type',
     'actor',
     'animated',
+    'blurhash',
     'comment',
     'duration',
     'emails',
@@ -5526,6 +5531,7 @@ export class MessageContent implements TDProtoClass<MessageContent> {
     type: () => ({ type: this.type }),
     actor: () => ({ actor: this.actor }),
     animated: () => ({ animated: this.animated }),
+    blurhash: () => ({ blurhash: this.blurhash }),
     comment: () => ({ comment: this.comment }),
     duration: () => ({ duration: this.duration }),
     emails: () => ({ emails: this.emails }),
