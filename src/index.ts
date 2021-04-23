@@ -3774,7 +3774,9 @@ export interface FeaturesJSON {
   auth_by_password?: boolean;
   auth_by_qr_code?: boolean;
   auth_by_sms?: boolean;
+  background?: string;
   default_wallpaper?: WallpaperJSON;
+  installation_title?: string;
   landing_url?: string;
   max_participants_per_call?: number;
   oauth_services?: OAuthServiceJSON[];
@@ -3849,7 +3851,9 @@ export class Features implements TDProtoClass<Features> {
    * @param authByPassword Password authentication enabled
    * @param authByQrCode QR-code / link authentication enabled
    * @param authBySms SMS authentication enabled
+   * @param background Background image url, if any
    * @param defaultWallpaper Default wallpaper url for mobile apps, if any
+   * @param installationTitle Installation title, used on login screen
    * @param landingUrl Landing page address, if any
    * @param maxParticipantsPerCall Maximum number of participants per call
    * @param oauthServices External services
@@ -3920,7 +3924,9 @@ export class Features implements TDProtoClass<Features> {
     public authByPassword?: boolean,
     public authByQrCode?: boolean,
     public authBySms?: boolean,
+    public background?: string,
     public defaultWallpaper?: Wallpaper,
+    public installationTitle?: string,
     public landingUrl?: string,
     public maxParticipantsPerCall?: number,
     public oauthServices?: OAuthService[],
@@ -3993,7 +3999,9 @@ export class Features implements TDProtoClass<Features> {
       raw.auth_by_password,
       raw.auth_by_qr_code,
       raw.auth_by_sms,
+      raw.background,
       raw.default_wallpaper && Wallpaper.fromJSON(raw.default_wallpaper),
+      raw.installation_title,
       raw.landing_url,
       raw.max_participants_per_call,
       raw.oauth_services && raw.oauth_services.map(OAuthService.fromJSON),
@@ -4066,7 +4074,9 @@ export class Features implements TDProtoClass<Features> {
     'authByPassword',
     'authByQrCode',
     'authBySms',
+    'background',
     'defaultWallpaper',
+    'installationTitle',
     'landingUrl',
     'maxParticipantsPerCall',
     'oauthServices',
@@ -4139,7 +4149,9 @@ export class Features implements TDProtoClass<Features> {
     authByPassword: () => ({ auth_by_password: this.authByPassword }),
     authByQrCode: () => ({ auth_by_qr_code: this.authByQrCode }),
     authBySms: () => ({ auth_by_sms: this.authBySms }),
+    background: () => ({ background: this.background }),
     defaultWallpaper: () => ({ default_wallpaper: this.defaultWallpaper?.toJSON() }),
+    installationTitle: () => ({ installation_title: this.installationTitle }),
     landingUrl: () => ({ landing_url: this.landingUrl }),
     maxParticipantsPerCall: () => ({ max_participants_per_call: this.maxParticipantsPerCall }),
     oauthServices: () => ({ oauth_services: this.oauthServices?.map(u => u.toJSON()) }),
