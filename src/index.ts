@@ -2685,19 +2685,19 @@ export interface ColorRuleJSON {
 export class ColorRule implements TDProtoClass<ColorRule> {
   /**
    * Set of rules to apply to tasks for coloring
-   * @param colorIndex DOCUMENTATION MISSING
-   * @param priority DOCUMENTATION MISSING
-   * @param uid DOCUMENTATION MISSING
-   * @param description DOCUMENTATION MISSING
-   * @param section DOCUMENTATION MISSING
-   * @param sectionEnabled DOCUMENTATION MISSING
-   * @param tags DOCUMENTATION MISSING
-   * @param tagsEnabled DOCUMENTATION MISSING
-   * @param taskImportance DOCUMENTATION MISSING
-   * @param taskImportanceEnabled DOCUMENTATION MISSING
-   * @param taskStatus DOCUMENTATION MISSING
-   * @param taskUrgency DOCUMENTATION MISSING
-   * @param taskUrgencyEnabled DOCUMENTATION MISSING
+   * @param colorIndex Color index
+   * @param priority Rule priority
+   * @param uid Rule id
+   * @param description Rule description
+   * @param section Project id if project filter enabled
+   * @param sectionEnabled Project filter enabled
+   * @param tags Tag ids if tags filter enabled
+   * @param tagsEnabled Tags filter enabled
+   * @param taskImportance Task importance if task importance filter enabled
+   * @param taskImportanceEnabled Task importance filter enabled
+   * @param taskStatus Task status
+   * @param taskUrgency Task urgency if task urgency filter enabled
+   * @param taskUrgencyEnabled Task urgency filter enabled
    */
   constructor (
     public colorIndex: number,
@@ -3163,11 +3163,11 @@ export interface ContactCustomFieldsJSON {
 export class ContactCustomFields implements TDProtoClass<ContactCustomFields> {
   /**
    * Extra contact fields
-   * @param company DOCUMENTATION MISSING
-   * @param department DOCUMENTATION MISSING
-   * @param mobilePhone DOCUMENTATION MISSING
-   * @param source DOCUMENTATION MISSING
-   * @param title DOCUMENTATION MISSING
+   * @param company Company
+   * @param department Department
+   * @param mobilePhone MobilePhone
+   * @param source Import source
+   * @param title Title
    */
   constructor (
     public company?: string,
