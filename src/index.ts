@@ -11353,9 +11353,9 @@ export interface TaskColorJSON {
 export class TaskColor implements TDProtoClass<TaskColor> {
   /**
    * Task color rules color
-   * @param dark DOCUMENTATION MISSING
-   * @param light DOCUMENTATION MISSING
-   * @param regular DOCUMENTATION MISSING
+   * @param dark Dark color (HEX)
+   * @param light Light color (HEX)
+   * @param regular Regular color (HEX)
    */
   constructor (
     public dark: string,
