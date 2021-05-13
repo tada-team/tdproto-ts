@@ -64,6 +64,8 @@ export type JID = string
 
 export type PushDeviceType = number
 
+export type RGBColor = string
+
 export type TaskFilterKey = string
 
 export type TaskSortKey = string
@@ -306,32 +308,32 @@ export class BaseEvent implements TDProtoClass<BaseEvent> {
 
 export interface ButtonColorsJSON {
   /* eslint-disable camelcase */
-  brand_active: string;
-  brand_disable: string;
-  brand_static: string;
-  simple_active: string;
-  simple_disable: string;
-  simple_static: string;
+  brand_active: RGBColor;
+  brand_disable: RGBColor;
+  brand_static: RGBColor;
+  simple_active: RGBColor;
+  simple_disable: RGBColor;
+  simple_static: RGBColor;
   /* eslint-enable camelcase */
 }
 
 export class ButtonColors implements TDProtoClass<ButtonColors> {
   /**
-   * MISSING CLASS DOCUMENTATION
-   * @param brandActive DOCUMENTATION MISSING
-   * @param brandDisable DOCUMENTATION MISSING
-   * @param brandStatic DOCUMENTATION MISSING
-   * @param simpleActive DOCUMENTATION MISSING
-   * @param simpleDisable DOCUMENTATION MISSING
-   * @param simpleStatic DOCUMENTATION MISSING
+   * Button colors for app
+   * @param brandActive Brand active color
+   * @param brandDisable Brand disable color
+   * @param brandStatic Brand static color
+   * @param simpleActive Simple active color
+   * @param simpleDisable Simple disable color
+   * @param simpleStatic Simple static color
    */
   constructor (
-    public brandActive: string,
-    public brandDisable: string,
-    public brandStatic: string,
-    public simpleActive: string,
-    public simpleDisable: string,
-    public simpleStatic: string,
+    public brandActive: RGBColor,
+    public brandDisable: RGBColor,
+    public brandStatic: RGBColor,
+    public simpleActive: RGBColor,
+    public simpleDisable: RGBColor,
+    public simpleStatic: RGBColor,
   ) {}
 
   public static fromJSON (raw: ButtonColorsJSON): ButtonColors {
@@ -3525,7 +3527,7 @@ export interface DeletedSectionJSON {
 
 export class DeletedSection implements TDProtoClass<DeletedSection> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Deleted task project or contact section
    * @param gentime Object version
    * @param uid Section uid
    */
@@ -4172,35 +4174,35 @@ export class Features implements TDProtoClass<Features> {
 
 export interface FontColorsJSON {
   /* eslint-disable camelcase */
-  brand_button: string;
-  bubble_received: string;
-  bubble_sent: string;
-  simple_button: string;
-  sub: string;
-  text: string;
-  title: string;
+  brand_button: RGBColor;
+  bubble_received: RGBColor;
+  bubble_sent: RGBColor;
+  simple_button: RGBColor;
+  sub: RGBColor;
+  text: RGBColor;
+  title: RGBColor;
   /* eslint-enable camelcase */
 }
 
 export class FontColors implements TDProtoClass<FontColors> {
   /**
-   * MISSING CLASS DOCUMENTATION
-   * @param brandButton DOCUMENTATION MISSING
-   * @param bubbleReceived DOCUMENTATION MISSING
-   * @param bubbleSent DOCUMENTATION MISSING
-   * @param simpleButton DOCUMENTATION MISSING
-   * @param sub DOCUMENTATION MISSING
-   * @param text DOCUMENTATION MISSING
-   * @param title DOCUMENTATION MISSING
+   * Font colors for app
+   * @param brandButton Brand button color
+   * @param bubbleReceived Bubble received color
+   * @param bubbleSent Bubble sent color
+   * @param simpleButton Simple button color
+   * @param sub Sub color
+   * @param text Text color
+   * @param title Title color
    */
   constructor (
-    public brandButton: string,
-    public bubbleReceived: string,
-    public bubbleSent: string,
-    public simpleButton: string,
-    public sub: string,
-    public text: string,
-    public title: string,
+    public brandButton: RGBColor,
+    public bubbleReceived: RGBColor,
+    public bubbleSent: RGBColor,
+    public simpleButton: RGBColor,
+    public sub: RGBColor,
+    public text: RGBColor,
+    public title: RGBColor,
   ) {}
 
   public static fromJSON (raw: FontColorsJSON): FontColors {
@@ -4400,23 +4402,23 @@ export class ICEServer implements TDProtoClass<ICEServer> {
 
 export interface IconColorsJSON {
   /* eslint-disable camelcase */
-  brand: string;
-  other: string;
-  title: string;
+  brand: RGBColor;
+  other: RGBColor;
+  title: RGBColor;
   /* eslint-enable camelcase */
 }
 
 export class IconColors implements TDProtoClass<IconColors> {
   /**
-   * MISSING CLASS DOCUMENTATION
-   * @param brand DOCUMENTATION MISSING
-   * @param other DOCUMENTATION MISSING
-   * @param title DOCUMENTATION MISSING
+   * Icon colors for app
+   * @param brand Brand color
+   * @param other Other color
+   * @param title Title color
    */
   constructor (
-    public brand: string,
-    public other: string,
-    public title: string,
+    public brand: RGBColor,
+    public other: RGBColor,
+    public title: RGBColor,
   ) {}
 
   public static fromJSON (raw: IconColorsJSON): IconColors {
@@ -4526,26 +4528,26 @@ export class IconData implements TDProtoClass<IconData> {
 
 export interface InputColorsJSON {
   /* eslint-disable camelcase */
-  active: string;
-  disable: string;
-  error: string;
-  static: string;
+  active: RGBColor;
+  disable: RGBColor;
+  error: RGBColor;
+  static: RGBColor;
   /* eslint-enable camelcase */
 }
 
 export class InputColors implements TDProtoClass<InputColors> {
   /**
-   * MISSING CLASS DOCUMENTATION
-   * @param active DOCUMENTATION MISSING
-   * @param disable DOCUMENTATION MISSING
-   * @param error DOCUMENTATION MISSING
-   * @param isStatic DOCUMENTATION MISSING
+   * Input colors for app
+   * @param active Active color
+   * @param disable Disable color
+   * @param error Error color
+   * @param isStatic Static color
    */
   constructor (
-    public active: string,
-    public disable: string,
-    public error: string,
-    public isStatic: string,
+    public active: RGBColor,
+    public disable: RGBColor,
+    public error: RGBColor,
+    public isStatic: RGBColor,
   ) {}
 
   public static fromJSON (raw: InputColorsJSON): InputColors {
@@ -5312,32 +5314,32 @@ export class Message implements TDProtoClass<Message> {
 
 export interface MessageColorsJSON {
   /* eslint-disable camelcase */
-  allocated: string;
-  bubble_important: string;
-  bubble_received: string;
-  bubble_sent: string;
-  status_bubble: string;
-  status_feed: string;
+  allocated: RGBColor;
+  bubble_important: RGBColor;
+  bubble_received: RGBColor;
+  bubble_sent: RGBColor;
+  status_bubble: RGBColor;
+  status_feed: RGBColor;
   /* eslint-enable camelcase */
 }
 
 export class MessageColors implements TDProtoClass<MessageColors> {
   /**
-   * MISSING CLASS DOCUMENTATION
-   * @param allocated DOCUMENTATION MISSING
-   * @param bubbleImportant DOCUMENTATION MISSING
-   * @param bubbleReceived DOCUMENTATION MISSING
-   * @param bubbleSent DOCUMENTATION MISSING
-   * @param statusBubble DOCUMENTATION MISSING
-   * @param statusFeed DOCUMENTATION MISSING
+   * Message colors for app
+   * @param allocated Allocated color
+   * @param bubbleImportant Bubble important color
+   * @param bubbleReceived Bubble received color
+   * @param bubbleSent Bubble sent color
+   * @param statusBubble Status bubble color
+   * @param statusFeed Status feed color
    */
   constructor (
-    public allocated: string,
-    public bubbleImportant: string,
-    public bubbleReceived: string,
-    public bubbleSent: string,
-    public statusBubble: string,
-    public statusFeed: string,
+    public allocated: RGBColor,
+    public bubbleImportant: RGBColor,
+    public bubbleReceived: RGBColor,
+    public bubbleSent: RGBColor,
+    public statusBubble: RGBColor,
+    public statusFeed: RGBColor,
   ) {}
 
   public static fromJSON (raw: MessageColorsJSON): MessageColors {
@@ -5975,7 +5977,7 @@ export interface OnlineCallJSON {
 
 export class OnlineCall implements TDProtoClass<OnlineCall> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Active call status
    * @param jid Chat or contact id
    * @param uid Call id
    * @param onlineCount Number participants in call
@@ -6034,7 +6036,7 @@ export interface OnlineContactJSON {
 
 export class OnlineContact implements TDProtoClass<OnlineContact> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Contact online status
    * @param jid Contact id
    * @param mobile Is mobile client
    * @param afk Is away from keyboard
@@ -6468,7 +6470,7 @@ export interface ReceivedMessageJSON {
 
 export class ReceivedMessage implements TDProtoClass<ReceivedMessage> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Message receiving status
    * @param chat Chat or contact id
    * @param messageId Message id
    * @param received Is received
@@ -6595,7 +6597,7 @@ export interface SectionJSON {
 
 export class Section implements TDProtoClass<Section> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Task project or contact section
    * @param gentime Object version
    * @param name Name
    * @param sortOrdering Sort ordering
@@ -11248,20 +11250,20 @@ export class Subtask implements TDProtoClass<Subtask> {
 
 export interface SwitcherColorsJSON {
   /* eslint-disable camelcase */
-  off: string;
-  on: string;
+  off: RGBColor;
+  on: RGBColor;
   /* eslint-enable camelcase */
 }
 
 export class SwitcherColors implements TDProtoClass<SwitcherColors> {
   /**
-   * MISSING CLASS DOCUMENTATION
-   * @param off DOCUMENTATION MISSING
-   * @param on DOCUMENTATION MISSING
+   * Switcher colors for app
+   * @param off Off color
+   * @param on On color
    */
   constructor (
-    public off: string,
-    public on: string,
+    public off: RGBColor,
+    public on: RGBColor,
   ) {}
 
   public static fromJSON (raw: SwitcherColorsJSON): SwitcherColors {
@@ -11344,23 +11346,23 @@ export class Tag implements TDProtoClass<Tag> {
 
 export interface TaskColorJSON {
   /* eslint-disable camelcase */
-  dark: string;
-  light: string;
-  regular: string;
+  dark: RGBColor;
+  light: RGBColor;
+  regular: RGBColor;
   /* eslint-enable camelcase */
 }
 
 export class TaskColor implements TDProtoClass<TaskColor> {
   /**
    * Task color rules color
-   * @param dark Dark color (HEX)
-   * @param light Light color (HEX)
-   * @param regular Regular color (HEX)
+   * @param dark Dark color
+   * @param light Light color
+   * @param regular Regular color
    */
   constructor (
-    public dark: string,
-    public light: string,
-    public regular: string,
+    public dark: RGBColor,
+    public light: RGBColor,
+    public regular: RGBColor,
   ) {}
 
   public static fromJSON (raw: TaskColorJSON): TaskColor {
@@ -12254,40 +12256,40 @@ export interface TermsJSON {
 export class Terms implements TDProtoClass<Terms> {
   /**
    * Experimental translation fields for "team" entity renaming. Readonly
-   * @param EnInTeam DOCUMENTATION MISSING
-   * @param EnTeam DOCUMENTATION MISSING
-   * @param EnTeamAccess DOCUMENTATION MISSING
-   * @param EnTeamAdmin DOCUMENTATION MISSING
-   * @param EnTeamAdmins DOCUMENTATION MISSING
-   * @param EnTeamGuest DOCUMENTATION MISSING
-   * @param EnTeamMember DOCUMENTATION MISSING
-   * @param EnTeamMembers DOCUMENTATION MISSING
-   * @param EnTeamOwner DOCUMENTATION MISSING
-   * @param EnTeamSettings DOCUMENTATION MISSING
-   * @param EnTeams DOCUMENTATION MISSING
-   * @param EnToTeam DOCUMENTATION MISSING
-   * @param RuInTeam DOCUMENTATION MISSING
-   * @param RuTeam DOCUMENTATION MISSING
-   * @param RuTeamAccess DOCUMENTATION MISSING
-   * @param RuTeamAdmin DOCUMENTATION MISSING
-   * @param RuTeamAdmins DOCUMENTATION MISSING
-   * @param RuTeamD DOCUMENTATION MISSING
-   * @param RuTeamGuest DOCUMENTATION MISSING
-   * @param RuTeamMember DOCUMENTATION MISSING
-   * @param RuTeamMembers DOCUMENTATION MISSING
-   * @param RuTeamOwner DOCUMENTATION MISSING
-   * @param RuTeamP DOCUMENTATION MISSING
-   * @param RuTeamR DOCUMENTATION MISSING
-   * @param RuTeamSettings DOCUMENTATION MISSING
-   * @param RuTeamT DOCUMENTATION MISSING
-   * @param RuTeamV DOCUMENTATION MISSING
-   * @param RuTeams DOCUMENTATION MISSING
-   * @param RuTeamsD DOCUMENTATION MISSING
-   * @param RuTeamsP DOCUMENTATION MISSING
-   * @param RuTeamsR DOCUMENTATION MISSING
-   * @param RuTeamsT DOCUMENTATION MISSING
-   * @param RuTeamsV DOCUMENTATION MISSING
-   * @param RuToTeam DOCUMENTATION MISSING
+   * @param EnInTeam "in team"
+   * @param EnTeam "team"
+   * @param EnTeamAccess "access to team"
+   * @param EnTeamAdmin "team admin"
+   * @param EnTeamAdmins "team admins"
+   * @param EnTeamGuest "team guest"
+   * @param EnTeamMember "team member"
+   * @param EnTeamMembers "team members"
+   * @param EnTeamOwner "team owner",
+   * @param EnTeamSettings "team settings"
+   * @param EnTeams "teams"
+   * @param EnToTeam "to team"
+   * @param RuInTeam "в команде"
+   * @param RuTeam "команда"
+   * @param RuTeamAccess "доступ к команде"
+   * @param RuTeamAdmin "администратор команды"
+   * @param RuTeamAdmins "администраторы команды"
+   * @param RuTeamD "команде"
+   * @param RuTeamGuest "гость команды"
+   * @param RuTeamMember "участник команды"
+   * @param RuTeamMembers "участники команды"
+   * @param RuTeamOwner "владелец команды"
+   * @param RuTeamP "команде"
+   * @param RuTeamR "команды"
+   * @param RuTeamSettings "настройки команды"
+   * @param RuTeamT "командой"
+   * @param RuTeamV "команду"
+   * @param RuTeams "команды"
+   * @param RuTeamsD "командам"
+   * @param RuTeamsP "командах"
+   * @param RuTeamsR "команд"
+   * @param RuTeamsT "командами"
+   * @param RuTeamsV "команды"
+   * @param RuToTeam "в команду"
    */
   constructor (
     public EnInTeam: string,
@@ -12454,125 +12456,125 @@ export class Terms implements TDProtoClass<Terms> {
 
 export interface ThemeJSON {
   /* eslint-disable camelcase */
-  AccentColor: string;
-  AccentHoverColor: string;
-  AppAccentColor: string;
-  AppPrimaryColor: string;
-  BgColor: string;
-  BgHoverColor: string;
-  MainAccent: string;
-  MainAccentHover: string;
-  MainLightAccent: string;
-  MainLink: string;
-  MutedTextColor: string;
-  TextColor: string;
-  TextOnAccentHoverColor: string;
-  attention: string;
-  attention_light: string;
-  back: string;
-  back_dark: string;
-  back_light: string;
-  background: string;
-  brand: string;
-  brand_dark: string;
-  brand_light: string;
+  AccentColor: RGBColor;
+  AccentHoverColor: RGBColor;
+  AppAccentColor: RGBColor;
+  AppPrimaryColor: RGBColor;
+  BgColor: RGBColor;
+  BgHoverColor: RGBColor;
+  MainAccent: RGBColor;
+  MainAccentHover: RGBColor;
+  MainLightAccent: RGBColor;
+  MainLink: RGBColor;
+  MutedTextColor: RGBColor;
+  TextColor: RGBColor;
+  TextOnAccentHoverColor: RGBColor;
+  attention: RGBColor;
+  attention_light: RGBColor;
+  back: RGBColor;
+  back_dark: RGBColor;
+  back_light: RGBColor;
+  background: RGBColor;
+  brand: RGBColor;
+  brand_dark: RGBColor;
+  brand_light: RGBColor;
   button: ButtonColorsJSON;
-  chat_input_background: string;
-  error: string;
-  error_light: string;
+  chat_input_background: RGBColor;
+  error: RGBColor;
+  error_light: RGBColor;
   font: FontColorsJSON;
   ic: IconColorsJSON;
   input: InputColorsJSON;
   message: MessageColorsJSON;
-  modal_background: string;
-  substrate_background: string;
-  success: string;
-  success_light: string;
+  modal_background: RGBColor;
+  substrate_background: RGBColor;
+  success: RGBColor;
+  success_light: RGBColor;
   switcher: SwitcherColorsJSON;
-  tab_background: string;
-  title_background: string;
+  tab_background: RGBColor;
+  title_background: RGBColor;
   /* eslint-enable camelcase */
 }
 
 export class Theme implements TDProtoClass<Theme> {
   /**
    * Color theme
-   * @param AccentColor DOCUMENTATION MISSING
-   * @param AccentHoverColor DOCUMENTATION MISSING
+   * @param AccentColor AccentColor for web
+   * @param AccentHoverColor AccentHoverColor for web
    * @param AppAccentColor Deprecated
    * @param AppPrimaryColor Deprecated
-   * @param BgColor Web colors
-   * @param BgHoverColor DOCUMENTATION MISSING
-   * @param MainAccent DOCUMENTATION MISSING
-   * @param MainAccentHover DOCUMENTATION MISSING
-   * @param MainLightAccent DOCUMENTATION MISSING
-   * @param MainLink DOCUMENTATION MISSING
-   * @param MutedTextColor DOCUMENTATION MISSING
-   * @param TextColor DOCUMENTATION MISSING
-   * @param TextOnAccentHoverColor DOCUMENTATION MISSING
-   * @param attention DOCUMENTATION MISSING
-   * @param attentionLight DOCUMENTATION MISSING
-   * @param back DOCUMENTATION MISSING
-   * @param backDark DOCUMENTATION MISSING
-   * @param backLight DOCUMENTATION MISSING
-   * @param background DOCUMENTATION MISSING
-   * @param brand App colors
-   * @param brandDark DOCUMENTATION MISSING
-   * @param brandLight DOCUMENTATION MISSING
-   * @param button DOCUMENTATION MISSING
-   * @param chatInputBackground DOCUMENTATION MISSING
-   * @param error DOCUMENTATION MISSING
-   * @param errorLight DOCUMENTATION MISSING
-   * @param font DOCUMENTATION MISSING
-   * @param ic DOCUMENTATION MISSING
-   * @param input DOCUMENTATION MISSING
-   * @param message DOCUMENTATION MISSING
-   * @param modalBackground DOCUMENTATION MISSING
-   * @param substrateBackground DOCUMENTATION MISSING
-   * @param success DOCUMENTATION MISSING
-   * @param successLight DOCUMENTATION MISSING
-   * @param switcher DOCUMENTATION MISSING
-   * @param tabBackground DOCUMENTATION MISSING
-   * @param titleBackground DOCUMENTATION MISSING
+   * @param BgColor BgColor for web
+   * @param BgHoverColor BgHoverColor for web
+   * @param MainAccent MainAccent for web
+   * @param MainAccentHover MainAccentHover for web
+   * @param MainLightAccent MainLightAccent for web
+   * @param MainLink MainLink for web
+   * @param MutedTextColor MutedTextColor for web
+   * @param TextColor TextColor for web
+   * @param TextOnAccentHoverColor TextOnAccentHoverColor for web
+   * @param attention Attention color for app
+   * @param attentionLight Attention light color for app
+   * @param back Back light color for app
+   * @param backDark Back dark color for app
+   * @param backLight Back light color for app
+   * @param background Background color for app
+   * @param brand Brand color for app
+   * @param brandDark BrandDark color for app
+   * @param brandLight Brand light color for app
+   * @param button Button colors for app
+   * @param chatInputBackground Chat input background color for app
+   * @param error Error color for app
+   * @param errorLight Error light color for app
+   * @param font Font colors for app
+   * @param ic Icon colors for app
+   * @param input Input colors for app
+   * @param message Message colors for app
+   * @param modalBackground Modal background color for app
+   * @param substrateBackground Substrate background color for app
+   * @param success Success color for app
+   * @param successLight Success light color for app
+   * @param switcher Switcher colors for app
+   * @param tabBackground Tab background color for app
+   * @param titleBackground Title background color for app
    */
   constructor (
-    public AccentColor: string,
-    public AccentHoverColor: string,
-    public AppAccentColor: string,
-    public AppPrimaryColor: string,
-    public BgColor: string,
-    public BgHoverColor: string,
-    public MainAccent: string,
-    public MainAccentHover: string,
-    public MainLightAccent: string,
-    public MainLink: string,
-    public MutedTextColor: string,
-    public TextColor: string,
-    public TextOnAccentHoverColor: string,
-    public attention: string,
-    public attentionLight: string,
-    public back: string,
-    public backDark: string,
-    public backLight: string,
-    public background: string,
-    public brand: string,
-    public brandDark: string,
-    public brandLight: string,
+    public AccentColor: RGBColor,
+    public AccentHoverColor: RGBColor,
+    public AppAccentColor: RGBColor,
+    public AppPrimaryColor: RGBColor,
+    public BgColor: RGBColor,
+    public BgHoverColor: RGBColor,
+    public MainAccent: RGBColor,
+    public MainAccentHover: RGBColor,
+    public MainLightAccent: RGBColor,
+    public MainLink: RGBColor,
+    public MutedTextColor: RGBColor,
+    public TextColor: RGBColor,
+    public TextOnAccentHoverColor: RGBColor,
+    public attention: RGBColor,
+    public attentionLight: RGBColor,
+    public back: RGBColor,
+    public backDark: RGBColor,
+    public backLight: RGBColor,
+    public background: RGBColor,
+    public brand: RGBColor,
+    public brandDark: RGBColor,
+    public brandLight: RGBColor,
     public button: ButtonColors,
-    public chatInputBackground: string,
-    public error: string,
-    public errorLight: string,
+    public chatInputBackground: RGBColor,
+    public error: RGBColor,
+    public errorLight: RGBColor,
     public font: FontColors,
     public ic: IconColors,
     public input: InputColors,
     public message: MessageColors,
-    public modalBackground: string,
-    public substrateBackground: string,
-    public success: string,
-    public successLight: string,
+    public modalBackground: RGBColor,
+    public substrateBackground: RGBColor,
+    public success: RGBColor,
+    public successLight: RGBColor,
     public switcher: SwitcherColors,
-    public tabBackground: string,
-    public titleBackground: string,
+    public tabBackground: RGBColor,
+    public titleBackground: RGBColor,
   ) {}
 
   public static fromJSON (raw: ThemeJSON): Theme {
@@ -12948,8 +12950,8 @@ export interface UploadShortMessageJSON {
 export class UploadShortMessage implements TDProtoClass<UploadShortMessage> {
   /**
    * Upload + ShortMessage
-   * @param message DOCUMENTATION MISSING
-   * @param upload DOCUMENTATION MISSING
+   * @param message Short message information
+   * @param upload Upload information
    */
   constructor (
     public message: ShortMessage,
