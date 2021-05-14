@@ -695,7 +695,7 @@ export class Chat implements TDProtoClass<Chat> {
    * @param pinned Is chat pinned on top
    * @param pinnedMessage Pinned message for this chat
    * @param pinnedSortOrdering Sort ordering for pinned chat
-   * @param readonlyForMembers Readonly for non-admins group chat (Like Channels in Telegram bug switchable)
+   * @param readonlyForMembers Readonly for non-admins group chat (Like Channels in Telegram but switchable)
    * @param section Project / section id, if any
    * @param spentTime Task spent time, number
    * @param status My status in group chat
