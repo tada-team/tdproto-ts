@@ -3710,6 +3710,54 @@ export class Dist implements TDProtoClass<Dist> {
   }
 }
 
+export interface EmojiJSON {
+  /* eslint-disable camelcase */
+  char: string;
+  key: string;
+  /* eslint-enable camelcase */
+}
+
+export class Emoji implements TDProtoClass<Emoji> {
+  /**
+   * Emoji
+   * @param char Unicode symbol
+   * @param key Text representation
+   */
+  constructor (
+    public char: string,
+    public key: string,
+  ) {}
+
+  public static fromJSON (raw: EmojiJSON): Emoji {
+    return new Emoji(
+      raw.char,
+      raw.key,
+    )
+  }
+
+  public mappableFields = [
+    'char',
+    'key',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    char: () => ({ char: this.char }),
+    key: () => ({ key: this.key }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): EmojiJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<EmojiJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface FeaturesJSON {
   /* eslint-disable camelcase */
   afk_age: number;
@@ -6449,6 +6497,48 @@ export class PushDevice implements TDProtoClass<PushDevice> {
 
   public toJSON (): PushDeviceJSON
   public toJSON (fields: Array<this['mappableFields'][number]>): Partial<PushDeviceJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ReactionJSON {
+  /* eslint-disable camelcase */
+  name: string;
+  /* eslint-enable camelcase */
+}
+
+export class Reaction implements TDProtoClass<Reaction> {
+  /**
+   * Emoji reaction
+   * @param name Unicode symbol
+   */
+  constructor (
+    public name: string,
+  ) {}
+
+  public static fromJSON (raw: ReactionJSON): Reaction {
+    return new Reaction(
+      raw.name,
+    )
+  }
+
+  public mappableFields = [
+    'name',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    name: () => ({ name: this.name }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ReactionJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ReactionJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
