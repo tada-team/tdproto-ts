@@ -3359,6 +3359,7 @@ export class ContactShort implements TDProtoClass<ContactShort> {
 export interface CountryJSON {
   /* eslint-disable camelcase */
   code: string;
+  iso: string;
   name: string;
   default?: boolean;
   popular?: boolean;
@@ -3368,13 +3369,15 @@ export interface CountryJSON {
 export class Country implements TDProtoClass<Country> {
   /**
    * Country for phone numbers selection on login screen
-   * @param code Country code
+   * @param code Phone code
+   * @param iso Country ISO code
    * @param name Country name
    * @param isDefault Selected by default
    * @param popular Is popular, need to cache
    */
   constructor (
     public code: string,
+    public iso: string,
     public name: string,
     public isDefault?: boolean,
     public popular?: boolean,
@@ -3383,6 +3386,7 @@ export class Country implements TDProtoClass<Country> {
   public static fromJSON (raw: CountryJSON): Country {
     return new Country(
       raw.code,
+      raw.iso,
       raw.name,
       raw.default,
       raw.popular,
@@ -3391,6 +3395,7 @@ export class Country implements TDProtoClass<Country> {
 
   public mappableFields = [
     'code',
+    'iso',
     'name',
     'isDefault',
     'popular',
@@ -3399,6 +3404,7 @@ export class Country implements TDProtoClass<Country> {
   readonly #mapper = {
     /* eslint-disable camelcase */
     code: () => ({ code: this.code }),
+    iso: () => ({ iso: this.iso }),
     name: () => ({ name: this.name }),
     isDefault: () => ({ default: this.isDefault }),
     popular: () => ({ popular: this.popular }),
