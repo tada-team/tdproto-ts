@@ -3816,6 +3816,7 @@ export interface FeaturesJSON {
   sentry_dsn_js: string;
   server_drafts: boolean;
   single_group_teams: boolean;
+  support_email: string;
   task_checklist: boolean;
   task_dashboard: boolean;
   task_messages: boolean;
@@ -3893,6 +3894,7 @@ export class Features implements TDProtoClass<Features> {
    * @param sentryDsnJs Frontend sentry.io settings
    * @param serverDrafts Message drafts saved on server
    * @param singleGroupTeams Cross team communication. Experimental
+   * @param supportEmail Support email
    * @param taskChecklist Deprecated
    * @param taskDashboard Deprecated
    * @param taskMessages Deprecated
@@ -3966,6 +3968,7 @@ export class Features implements TDProtoClass<Features> {
     public sentryDsnJs: string,
     public serverDrafts: boolean,
     public singleGroupTeams: boolean,
+    public supportEmail: string,
     public taskChecklist: boolean,
     public taskDashboard: boolean,
     public taskMessages: boolean,
@@ -4041,6 +4044,7 @@ export class Features implements TDProtoClass<Features> {
       raw.sentry_dsn_js,
       raw.server_drafts,
       raw.single_group_teams,
+      raw.support_email,
       raw.task_checklist,
       raw.task_dashboard,
       raw.task_messages,
@@ -4116,6 +4120,7 @@ export class Features implements TDProtoClass<Features> {
     'sentryDsnJs',
     'serverDrafts',
     'singleGroupTeams',
+    'supportEmail',
     'taskChecklist',
     'taskDashboard',
     'taskMessages',
@@ -4191,6 +4196,7 @@ export class Features implements TDProtoClass<Features> {
     sentryDsnJs: () => ({ sentry_dsn_js: this.sentryDsnJs }),
     serverDrafts: () => ({ server_drafts: this.serverDrafts }),
     singleGroupTeams: () => ({ single_group_teams: this.singleGroupTeams }),
+    supportEmail: () => ({ support_email: this.supportEmail }),
     taskChecklist: () => ({ task_checklist: this.taskChecklist }),
     taskDashboard: () => ({ task_dashboard: this.taskDashboard }),
     taskMessages: () => ({ task_messages: this.taskMessages }),
