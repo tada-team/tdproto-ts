@@ -3827,17 +3827,18 @@ export interface FeaturesJSON {
   userver: string;
   wiki_pages: boolean;
   allow_admin_mute?: boolean;
+  app_login_background?: string;
   auth_2fa?: boolean;
   auth_by_password?: boolean;
   auth_by_qr_code?: boolean;
   auth_by_sms?: boolean;
-  background?: string;
   default_wallpaper?: WallpaperJSON;
   installation_title?: string;
   landing_url?: string;
   max_participants_per_call?: number;
   oauth_services?: OAuthServiceJSON[];
   only_one_device_per_call?: boolean;
+  web_login_background?: string;
   /* eslint-enable camelcase */
 }
 
@@ -3905,17 +3906,18 @@ export class Features implements TDProtoClass<Features> {
    * @param userver Static files server address
    * @param wikiPages Wiki pages in chats. Experimental
    * @param allowAdminMute Wiki pages in chats. Experimental
+   * @param appLoginBackground AppBackground image url, if any
    * @param auth2fa Two-factor authentication (2FA) enabled
    * @param authByPassword Password authentication enabled
    * @param authByQrCode QR-code / link authentication enabled
    * @param authBySms SMS authentication enabled
-   * @param background Background image url, if any
    * @param defaultWallpaper Default wallpaper url for mobile apps, if any
    * @param installationTitle Installation title, used on login screen
    * @param landingUrl Landing page address, if any
    * @param maxParticipantsPerCall Maximum number of participants per call
    * @param oauthServices External services
    * @param onlyOneDevicePerCall Disallow call from multiply devices. Experimental
+   * @param webLoginBackground WebBackground image url, if any
    */
   constructor (
     public afkAge: number,
@@ -3979,17 +3981,18 @@ export class Features implements TDProtoClass<Features> {
     public userver: string,
     public wikiPages: boolean,
     public allowAdminMute?: boolean,
+    public appLoginBackground?: string,
     public auth2fa?: boolean,
     public authByPassword?: boolean,
     public authByQrCode?: boolean,
     public authBySms?: boolean,
-    public background?: string,
     public defaultWallpaper?: Wallpaper,
     public installationTitle?: string,
     public landingUrl?: string,
     public maxParticipantsPerCall?: number,
     public oauthServices?: OAuthService[],
     public onlyOneDevicePerCall?: boolean,
+    public webLoginBackground?: string,
   ) {}
 
   public static fromJSON (raw: FeaturesJSON): Features {
@@ -4055,17 +4058,18 @@ export class Features implements TDProtoClass<Features> {
       raw.userver,
       raw.wiki_pages,
       raw.allow_admin_mute,
+      raw.app_login_background,
       raw.auth_2fa,
       raw.auth_by_password,
       raw.auth_by_qr_code,
       raw.auth_by_sms,
-      raw.background,
       raw.default_wallpaper && Wallpaper.fromJSON(raw.default_wallpaper),
       raw.installation_title,
       raw.landing_url,
       raw.max_participants_per_call,
       raw.oauth_services && raw.oauth_services.map(OAuthService.fromJSON),
       raw.only_one_device_per_call,
+      raw.web_login_background,
     )
   }
 
@@ -4131,17 +4135,18 @@ export class Features implements TDProtoClass<Features> {
     'userver',
     'wikiPages',
     'allowAdminMute',
+    'appLoginBackground',
     'auth2fa',
     'authByPassword',
     'authByQrCode',
     'authBySms',
-    'background',
     'defaultWallpaper',
     'installationTitle',
     'landingUrl',
     'maxParticipantsPerCall',
     'oauthServices',
     'onlyOneDevicePerCall',
+    'webLoginBackground',
   ] as const
 
   readonly #mapper = {
@@ -4207,17 +4212,18 @@ export class Features implements TDProtoClass<Features> {
     userver: () => ({ userver: this.userver }),
     wikiPages: () => ({ wiki_pages: this.wikiPages }),
     allowAdminMute: () => ({ allow_admin_mute: this.allowAdminMute }),
+    appLoginBackground: () => ({ app_login_background: this.appLoginBackground }),
     auth2fa: () => ({ auth_2fa: this.auth2fa }),
     authByPassword: () => ({ auth_by_password: this.authByPassword }),
     authByQrCode: () => ({ auth_by_qr_code: this.authByQrCode }),
     authBySms: () => ({ auth_by_sms: this.authBySms }),
-    background: () => ({ background: this.background }),
     defaultWallpaper: () => ({ default_wallpaper: this.defaultWallpaper?.toJSON() }),
     installationTitle: () => ({ installation_title: this.installationTitle }),
     landingUrl: () => ({ landing_url: this.landingUrl }),
     maxParticipantsPerCall: () => ({ max_participants_per_call: this.maxParticipantsPerCall }),
     oauthServices: () => ({ oauth_services: this.oauthServices?.map(u => u.toJSON()) }),
     onlyOneDevicePerCall: () => ({ only_one_device_per_call: this.onlyOneDevicePerCall }),
+    webLoginBackground: () => ({ web_login_background: this.webLoginBackground }),
     /* eslint-enable camelcase */
   }
 
