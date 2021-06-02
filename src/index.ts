@@ -429,49 +429,85 @@ export class CallDevice implements TDProtoClass<CallDevice> {
 export interface CallEventJSON {
   /* eslint-disable camelcase */
   audiorecord: boolean;
-  finish: ISODateTimeString;
-  start: ISODateTimeString;
+  created: ISODateTimeString;
+  gentime: number;
+  jid: JID;
+  timestamp: number;
+  uid: string;
+  buzz?: boolean;
+  finish?: ISODateTimeString;
   onliners?: CallOnlinerJSON[];
+  start?: ISODateTimeString;
   /* eslint-enable camelcase */
 }
 
 export class CallEvent implements TDProtoClass<CallEvent> {
   /**
-   * Audio call information
+   * Call information
    * @param audiorecord Call record enabled
+   * @param created Creation date, iso datetime
+   * @param gentime Version
+   * @param jid Chat or contact id
+   * @param timestamp Deprecated: use gentime or created
+   * @param uid Call id
+   * @param buzz Call buzzing
    * @param finish Call finish
-   * @param start Call start
    * @param onliners Call participants
+   * @param start Call start. For direct calls can be empty when buzzing
    */
   constructor (
     public audiorecord: boolean,
-    public finish: ISODateTimeString,
-    public start: ISODateTimeString,
+    public created: ISODateTimeString,
+    public gentime: number,
+    public jid: JID,
+    public timestamp: number,
+    public uid: string,
+    public buzz?: boolean,
+    public finish?: ISODateTimeString,
     public onliners?: CallOnliner[],
+    public start?: ISODateTimeString,
   ) {}
 
   public static fromJSON (raw: CallEventJSON): CallEvent {
     return new CallEvent(
       raw.audiorecord,
+      raw.created,
+      raw.gentime,
+      raw.jid,
+      raw.timestamp,
+      raw.uid,
+      raw.buzz,
       raw.finish,
-      raw.start,
       raw.onliners && raw.onliners.map(CallOnliner.fromJSON),
+      raw.start,
     )
   }
 
   public mappableFields = [
     'audiorecord',
+    'created',
+    'gentime',
+    'jid',
+    'timestamp',
+    'uid',
+    'buzz',
     'finish',
-    'start',
     'onliners',
+    'start',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
     audiorecord: () => ({ audiorecord: this.audiorecord }),
+    created: () => ({ created: this.created }),
+    gentime: () => ({ gentime: this.gentime }),
+    jid: () => ({ jid: this.jid }),
+    timestamp: () => ({ timestamp: this.timestamp }),
+    uid: () => ({ uid: this.uid }),
+    buzz: () => ({ buzz: this.buzz }),
     finish: () => ({ finish: this.finish }),
-    start: () => ({ start: this.start }),
     onliners: () => ({ onliners: this.onliners?.map(u => u.toJSON()) }),
+    start: () => ({ start: this.start }),
     /* eslint-enable camelcase */
   }
 
@@ -1385,7 +1421,7 @@ export class ClientCallBuzzCancelParams implements TDProtoClass<ClientCallBuzzCa
 export interface ClientCallBuzzParamsJSON {
   /* eslint-disable camelcase */
   jid: JID;
-  members: JID[];
+  members?: JID[];
   /* eslint-enable camelcase */
 }
 
@@ -1393,11 +1429,11 @@ export class ClientCallBuzzParams implements TDProtoClass<ClientCallBuzzParams> 
   /**
    * Call buzzing
    * @param jid Chat or contact id
-   * @param members List of call participants
+   * @param members List of call participants. Empty value means all participants in call
    */
   constructor (
     public jid: JID,
-    public members: JID[],
+    public members?: JID[],
   ) {}
 
   public static fromJSON (raw: ClientCallBuzzParamsJSON): ClientCallBuzzParams {
@@ -1487,7 +1523,7 @@ export class ClientCallLeave implements TDProtoClass<ClientCallLeave> {
 export interface ClientCallLeaveParamsJSON {
   /* eslint-disable camelcase */
   jid: JID;
-  reason: string;
+  reason?: string;
   /* eslint-enable camelcase */
 }
 
@@ -1499,7 +1535,7 @@ export class ClientCallLeaveParams implements TDProtoClass<ClientCallLeaveParams
    */
   constructor (
     public jid: JID,
-    public reason: string,
+    public reason?: string,
   ) {}
 
   public static fromJSON (raw: ClientCallLeaveParamsJSON): ClientCallLeaveParams {
@@ -1799,7 +1835,7 @@ export class ClientCallReject implements TDProtoClass<ClientCallReject> {
 export interface ClientCallRejectParamsJSON {
   /* eslint-disable camelcase */
   jid: JID;
-  reason: string;
+  reason?: string;
   /* eslint-enable camelcase */
 }
 
@@ -1811,7 +1847,7 @@ export class ClientCallRejectParams implements TDProtoClass<ClientCallRejectPara
    */
   constructor (
     public jid: JID,
-    public reason: string,
+    public reason?: string,
   ) {}
 
   public static fromJSON (raw: ClientCallRejectParamsJSON): ClientCallRejectParams {
@@ -2004,8 +2040,8 @@ export interface ClientCallTrickleParamsJSON {
   /* eslint-disable camelcase */
   candidate: string;
   jid: JID;
-  sdp_mid: string;
-  sdp_mline_index: number;
+  sdp_mid?: string;
+  sdp_mline_index?: number;
   /* eslint-enable camelcase */
 }
 
@@ -2020,8 +2056,8 @@ export class ClientCallTrickleParams implements TDProtoClass<ClientCallTricklePa
   constructor (
     public candidate: string,
     public jid: JID,
-    public sdpMid: string,
-    public sdpMlineIndex: number,
+    public sdpMid?: string,
+    public sdpMlineIndex?: number,
   ) {}
 
   public static fromJSON (raw: ClientCallTrickleParamsJSON): ClientCallTrickleParams {
@@ -6868,10 +6904,10 @@ export class ServerCallAnswerCandidate implements TDProtoClass<ServerCallAnswerC
 
 export interface ServerCallAnswerParamsJSON {
   /* eslint-disable camelcase */
-  candidates: ServerCallAnswerCandidateJSON[];
   jid: JID;
   jsep: JSEPJSON;
   uid: string;
+  candidates?: ServerCallAnswerCandidateJSON[];
   onliners?: CallOnlinerJSON[];
   /* eslint-enable camelcase */
 }
@@ -6879,44 +6915,44 @@ export interface ServerCallAnswerParamsJSON {
 export class ServerCallAnswerParams implements TDProtoClass<ServerCallAnswerParams> {
   /**
    * MISSING CLASS DOCUMENTATION
-   * @param candidates List of ICE candidates (when trickle = false)
    * @param jid Chat or contact id
    * @param jsep SDP data
    * @param uid Call id
+   * @param candidates List of ICE candidates (when trickle = false)
    * @param onliners Current call participants
    */
   constructor (
-    public candidates: ServerCallAnswerCandidate[],
     public jid: JID,
     public jsep: JSEP,
     public uid: string,
+    public candidates?: ServerCallAnswerCandidate[],
     public onliners?: CallOnliner[],
   ) {}
 
   public static fromJSON (raw: ServerCallAnswerParamsJSON): ServerCallAnswerParams {
     return new ServerCallAnswerParams(
-      raw.candidates.map(ServerCallAnswerCandidate.fromJSON),
       raw.jid,
       JSEP.fromJSON(raw.jsep),
       raw.uid,
+      raw.candidates && raw.candidates.map(ServerCallAnswerCandidate.fromJSON),
       raw.onliners && raw.onliners.map(CallOnliner.fromJSON),
     )
   }
 
   public mappableFields = [
-    'candidates',
     'jid',
     'jsep',
     'uid',
+    'candidates',
     'onliners',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    candidates: () => ({ candidates: this.candidates.map(u => u.toJSON()) }),
     jid: () => ({ jid: this.jid }),
     jsep: () => ({ jsep: this.jsep.toJSON() }),
     uid: () => ({ uid: this.uid }),
+    candidates: () => ({ candidates: this.candidates?.map(u => u.toJSON()) }),
     onliners: () => ({ onliners: this.onliners?.map(u => u.toJSON()) }),
     /* eslint-enable camelcase */
   }
@@ -7805,28 +7841,28 @@ export class ServerCallSoundParams implements TDProtoClass<ServerCallSoundParams
 export interface ServerCallStateJSON {
   /* eslint-disable camelcase */
   event: string;
-  params: ServerCallStateParamsJSON;
+  params: CallEventJSON;
   confirm_id?: string;
   /* eslint-enable camelcase */
 }
 
 export class ServerCallState implements TDProtoClass<ServerCallState> {
   /**
-   * Call participant number or parameters changed
+   * Call information
    * @param event DOCUMENTATION MISSING
    * @param params DOCUMENTATION MISSING
    * @param confirmId DOCUMENTATION MISSING
    */
   constructor (
     public event: string,
-    public params: ServerCallStateParams,
+    public params: CallEvent,
     public confirmId?: string,
   ) {}
 
   public static fromJSON (raw: ServerCallStateJSON): ServerCallState {
     return new ServerCallState(
       raw.event,
-      ServerCallStateParams.fromJSON(raw.params),
+      CallEvent.fromJSON(raw.params),
       raw.confirm_id,
     )
   }
@@ -7847,90 +7883,6 @@ export class ServerCallState implements TDProtoClass<ServerCallState> {
 
   public toJSON (): ServerCallStateJSON
   public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallStateJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ServerCallStateParamsJSON {
-  /* eslint-disable camelcase */
-  audiorecord: boolean;
-  finish: ISODateTimeString;
-  jid: JID;
-  start: ISODateTimeString;
-  timestamp: number;
-  uid: string;
-  buzz?: boolean;
-  onliners?: CallOnlinerJSON[];
-  /* eslint-enable camelcase */
-}
-
-export class ServerCallStateParams implements TDProtoClass<ServerCallStateParams> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param audiorecord Call record enabled
-   * @param finish Call finish, if any
-   * @param jid Chat or contact id
-   * @param start Call start, if any
-   * @param timestamp Event start. FIXME: why not gentime?
-   * @param uid Call id
-   * @param buzz Call buzzing
-   * @param onliners Call participants
-   */
-  constructor (
-    public audiorecord: boolean,
-    public finish: ISODateTimeString,
-    public jid: JID,
-    public start: ISODateTimeString,
-    public timestamp: number,
-    public uid: string,
-    public buzz?: boolean,
-    public onliners?: CallOnliner[],
-  ) {}
-
-  public static fromJSON (raw: ServerCallStateParamsJSON): ServerCallStateParams {
-    return new ServerCallStateParams(
-      raw.audiorecord,
-      raw.finish,
-      raw.jid,
-      raw.start,
-      raw.timestamp,
-      raw.uid,
-      raw.buzz,
-      raw.onliners && raw.onliners.map(CallOnliner.fromJSON),
-    )
-  }
-
-  public mappableFields = [
-    'audiorecord',
-    'finish',
-    'jid',
-    'start',
-    'timestamp',
-    'uid',
-    'buzz',
-    'onliners',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    audiorecord: () => ({ audiorecord: this.audiorecord }),
-    finish: () => ({ finish: this.finish }),
-    jid: () => ({ jid: this.jid }),
-    start: () => ({ start: this.start }),
-    timestamp: () => ({ timestamp: this.timestamp }),
-    uid: () => ({ uid: this.uid }),
-    buzz: () => ({ buzz: this.buzz }),
-    onliners: () => ({ onliners: this.onliners?.map(u => u.toJSON()) }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ServerCallStateParamsJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallStateParamsJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
