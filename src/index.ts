@@ -11404,6 +11404,144 @@ export class Tag implements TDProtoClass<Tag> {
   }
 }
 
+export interface TaskJSON {
+  /* eslint-disable camelcase */
+  assignee?: JID;
+  complexity?: number;
+  custom_color_index?: number;
+  deadline?: string;
+  description?: string;
+  importance?: number;
+  public?: boolean;
+  items?: string[];
+  linked_messages?: string[];
+  observers?: JID[];
+  remind_at?: string;
+  section?: string;
+  spent_time?: number;
+  tags?: string[];
+  task_status?: string;
+  uploads?: string[];
+  urgency?: number;
+  /* eslint-enable camelcase */
+}
+
+export class Task implements TDProtoClass<Task> {
+  /**
+   * Task
+   * @param assignee User who was assigned the task
+   * @param complexity Task complexity
+   * @param customColorIndex Custom task color
+   * @param deadline Deadline time
+   * @param description Task description
+   * @param importance Task importance
+   * @param isPublic Is task public
+   * @param items Items of the task
+   * @param linkedMessages Linked messages
+   * @param observers User who follow the task
+   * @param remindAt Fire a reminder at this time
+   * @param section Task section UID
+   * @param spentTime Time spent
+   * @param tags Task tags
+   * @param taskStatus Task status
+   * @param uploads Task uploads
+   * @param urgency Task urgency
+   */
+  constructor (
+    public assignee?: JID,
+    public complexity?: number,
+    public customColorIndex?: number,
+    public deadline?: string,
+    public description?: string,
+    public importance?: number,
+    public isPublic?: boolean,
+    public items?: string[],
+    public linkedMessages?: string[],
+    public observers?: JID[],
+    public remindAt?: string,
+    public section?: string,
+    public spentTime?: number,
+    public tags?: string[],
+    public taskStatus?: string,
+    public uploads?: string[],
+    public urgency?: number,
+  ) {}
+
+  public static fromJSON (raw: TaskJSON): Task {
+    return new Task(
+      raw.assignee,
+      raw.complexity,
+      raw.custom_color_index,
+      raw.deadline,
+      raw.description,
+      raw.importance,
+      raw.public,
+      raw.items,
+      raw.linked_messages,
+      raw.observers,
+      raw.remind_at,
+      raw.section,
+      raw.spent_time,
+      raw.tags,
+      raw.task_status,
+      raw.uploads,
+      raw.urgency,
+    )
+  }
+
+  public mappableFields = [
+    'assignee',
+    'complexity',
+    'customColorIndex',
+    'deadline',
+    'description',
+    'importance',
+    'isPublic',
+    'items',
+    'linkedMessages',
+    'observers',
+    'remindAt',
+    'section',
+    'spentTime',
+    'tags',
+    'taskStatus',
+    'uploads',
+    'urgency',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    assignee: () => ({ assignee: this.assignee }),
+    complexity: () => ({ complexity: this.complexity }),
+    customColorIndex: () => ({ custom_color_index: this.customColorIndex }),
+    deadline: () => ({ deadline: this.deadline }),
+    description: () => ({ description: this.description }),
+    importance: () => ({ importance: this.importance }),
+    isPublic: () => ({ public: this.isPublic }),
+    items: () => ({ items: this.items }),
+    linkedMessages: () => ({ linked_messages: this.linkedMessages }),
+    observers: () => ({ observers: this.observers }),
+    remindAt: () => ({ remind_at: this.remindAt }),
+    section: () => ({ section: this.section }),
+    spentTime: () => ({ spent_time: this.spentTime }),
+    tags: () => ({ tags: this.tags }),
+    taskStatus: () => ({ task_status: this.taskStatus }),
+    uploads: () => ({ uploads: this.uploads }),
+    urgency: () => ({ urgency: this.urgency }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): TaskJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<TaskJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface TaskColorJSON {
   /* eslint-disable camelcase */
   dark: RGBColor;
