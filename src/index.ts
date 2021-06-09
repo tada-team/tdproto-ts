@@ -3809,6 +3809,7 @@ export interface FeaturesJSON {
   build: string;
   calls: boolean;
   calls_record: boolean;
+  calls_version: number;
   custom_server: boolean;
   desktop_version: string;
   firebase_api_key: string;
@@ -3843,7 +3844,9 @@ export interface FeaturesJSON {
   max_username_part_length: number;
   message_uploads: boolean;
   metrika: string;
+  min_android_version: string;
   min_app_version: string;
+  min_ios_version: string;
   min_search_length: number;
   mobile_calls: boolean;
   readonly_groups: boolean;
@@ -3886,8 +3889,9 @@ export class Features implements TDProtoClass<Features> {
    * @param appSchemes Local applications urls
    * @param appTitle Application title
    * @param build Build/revision of server side
-   * @param calls Calls functions enabled
+   * @param calls Deprecated
    * @param callsRecord Calls record enabled
+   * @param callsVersion Calls version. 0 = disabled, 1 = audio only, 2 = audio+video
    * @param customServer True for premise installation
    * @param desktopVersion Desktop application version
    * @param firebaseApiKey Firebase settings for web-push notifications
@@ -3922,7 +3926,9 @@ export class Features implements TDProtoClass<Features> {
    * @param maxUsernamePartLength Maximum chars for: family_name, given_name, patronymic if any
    * @param messageUploads Multiple message uploads
    * @param metrika Yandex metrika counter id
-   * @param minAppVersion Minimal application version required for this server. Used for breaking changes
+   * @param minAndroidVersion Minimal android application version required for this server. Used for breaking changes
+   * @param minAppVersion Deprecated
+   * @param minIosVersion Minimal iOS application version required for this server. Used for breaking changes
    * @param minSearchLength Minimal chars number for starting global search
    * @param mobileCalls Calls functions enabled for mobile applications
    * @param readonlyGroups Deprecated
@@ -3963,6 +3969,7 @@ export class Features implements TDProtoClass<Features> {
     public build: string,
     public calls: boolean,
     public callsRecord: boolean,
+    public callsVersion: number,
     public customServer: boolean,
     public desktopVersion: string,
     public firebaseApiKey: string,
@@ -3997,7 +4004,9 @@ export class Features implements TDProtoClass<Features> {
     public maxUsernamePartLength: number,
     public messageUploads: boolean,
     public metrika: string,
+    public minAndroidVersion: string,
     public minAppVersion: string,
+    public minIosVersion: string,
     public minSearchLength: number,
     public mobileCalls: boolean,
     public readonlyGroups: boolean,
@@ -4040,6 +4049,7 @@ export class Features implements TDProtoClass<Features> {
       raw.build,
       raw.calls,
       raw.calls_record,
+      raw.calls_version,
       raw.custom_server,
       raw.desktop_version,
       raw.firebase_api_key,
@@ -4074,7 +4084,9 @@ export class Features implements TDProtoClass<Features> {
       raw.max_username_part_length,
       raw.message_uploads,
       raw.metrika,
+      raw.min_android_version,
       raw.min_app_version,
+      raw.min_ios_version,
       raw.min_search_length,
       raw.mobile_calls,
       raw.readonly_groups,
@@ -4117,6 +4129,7 @@ export class Features implements TDProtoClass<Features> {
     'build',
     'calls',
     'callsRecord',
+    'callsVersion',
     'customServer',
     'desktopVersion',
     'firebaseApiKey',
@@ -4151,7 +4164,9 @@ export class Features implements TDProtoClass<Features> {
     'maxUsernamePartLength',
     'messageUploads',
     'metrika',
+    'minAndroidVersion',
     'minAppVersion',
+    'minIosVersion',
     'minSearchLength',
     'mobileCalls',
     'readonlyGroups',
@@ -4194,6 +4209,7 @@ export class Features implements TDProtoClass<Features> {
     build: () => ({ build: this.build }),
     calls: () => ({ calls: this.calls }),
     callsRecord: () => ({ calls_record: this.callsRecord }),
+    callsVersion: () => ({ calls_version: this.callsVersion }),
     customServer: () => ({ custom_server: this.customServer }),
     desktopVersion: () => ({ desktop_version: this.desktopVersion }),
     firebaseApiKey: () => ({ firebase_api_key: this.firebaseApiKey }),
@@ -4228,7 +4244,9 @@ export class Features implements TDProtoClass<Features> {
     maxUsernamePartLength: () => ({ max_username_part_length: this.maxUsernamePartLength }),
     messageUploads: () => ({ message_uploads: this.messageUploads }),
     metrika: () => ({ metrika: this.metrika }),
+    minAndroidVersion: () => ({ min_android_version: this.minAndroidVersion }),
     minAppVersion: () => ({ min_app_version: this.minAppVersion }),
+    minIosVersion: () => ({ min_ios_version: this.minIosVersion }),
     minSearchLength: () => ({ min_search_length: this.minSearchLength }),
     mobileCalls: () => ({ mobile_calls: this.mobileCalls }),
     readonlyGroups: () => ({ readonly_groups: this.readonlyGroups }),
