@@ -1322,6 +1322,108 @@ export class ClientActivityParams implements TDProtoClass<ClientActivityParams> 
   }
 }
 
+export interface ClientCallAnswerJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ClientCallAnswerParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ClientCallAnswer implements TDProtoClass<ClientCallAnswer> {
+  /**
+   * Signal server about answer
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ClientCallAnswerParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ClientCallAnswerJSON): ClientCallAnswer {
+    return new ClientCallAnswer(
+      raw.event,
+      ClientCallAnswerParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ClientCallAnswerJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientCallAnswerJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ClientCallAnswerParamsJSON {
+  /* eslint-disable camelcase */
+  jid: JID;
+  sdp: string;
+  /* eslint-enable camelcase */
+}
+
+export class ClientCallAnswerParams implements TDProtoClass<ClientCallAnswerParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param jid Chat or contact id
+   * @param sdp SDP (session description protocol) data
+   */
+  constructor (
+    public jid: JID,
+    public sdp: string,
+  ) {}
+
+  public static fromJSON (raw: ClientCallAnswerParamsJSON): ClientCallAnswerParams {
+    return new ClientCallAnswerParams(
+      raw.jid,
+      raw.sdp,
+    )
+  }
+
+  public mappableFields = [
+    'jid',
+    'sdp',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    jid: () => ({ jid: this.jid }),
+    sdp: () => ({ sdp: this.sdp }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ClientCallAnswerParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientCallAnswerParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface ClientCallBuzzCancelJSON {
   /* eslint-disable camelcase */
   event: string;
@@ -7529,6 +7631,108 @@ export class ServerCallMuteallParams implements TDProtoClass<ServerCallMuteallPa
 
   public toJSON (): ServerCallMuteallParamsJSON
   public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallMuteallParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerCallOfferJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ServerCallOfferParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerCallOffer implements TDProtoClass<ServerCallOffer> {
+  /**
+   * Signal client about offer
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ServerCallOfferParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ServerCallOfferJSON): ServerCallOffer {
+    return new ServerCallOffer(
+      raw.event,
+      ServerCallOfferParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerCallOfferJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallOfferJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerCallOfferParamsJSON {
+  /* eslint-disable camelcase */
+  jid: JID;
+  sdp: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerCallOfferParams implements TDProtoClass<ServerCallOfferParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param jid Chat or contact id
+   * @param sdp SDP (session description protocol) data
+   */
+  constructor (
+    public jid: JID,
+    public sdp: string,
+  ) {}
+
+  public static fromJSON (raw: ServerCallOfferParamsJSON): ServerCallOfferParams {
+    return new ServerCallOfferParams(
+      raw.jid,
+      raw.sdp,
+    )
+  }
+
+  public mappableFields = [
+    'jid',
+    'sdp',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    jid: () => ({ jid: this.jid }),
+    sdp: () => ({ sdp: this.sdp }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerCallOfferParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallOfferParamsJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
