@@ -8676,7 +8676,7 @@ export interface ServerChatDraftJSON {
 
 export class ServerChatDraft implements TDProtoClass<ServerChatDraft> {
   /**
-   * Changed draft message in chan
+   * Changed draft message in chat
    * @param event DOCUMENTATION MISSING
    * @param params DOCUMENTATION MISSING
    * @param confirmId DOCUMENTATION MISSING
@@ -8724,6 +8724,7 @@ export interface ServerChatDraftParamsJSON {
   /* eslint-disable camelcase */
   draft: string;
   draft_num: number;
+  gentime: number;
   jid: JID;
   /* eslint-enable camelcase */
 }
@@ -8732,12 +8733,14 @@ export class ServerChatDraftParams implements TDProtoClass<ServerChatDraftParams
   /**
    * MISSING CLASS DOCUMENTATION
    * @param draft Draft text
-   * @param draftNum Draft version. TODO: use gentime instead
+   * @param draftNum Deprecated
+   * @param gentime Draft version
    * @param jid Chat or contact id
    */
   constructor (
     public draft: string,
     public draftNum: number,
+    public readonly gentime: number,
     public jid: JID,
   ) {}
 
@@ -8745,6 +8748,7 @@ export class ServerChatDraftParams implements TDProtoClass<ServerChatDraftParams
     return new ServerChatDraftParams(
       raw.draft,
       raw.draft_num,
+      raw.gentime,
       raw.jid,
     )
   }
@@ -8752,6 +8756,7 @@ export class ServerChatDraftParams implements TDProtoClass<ServerChatDraftParams
   public mappableFields = [
     'draft',
     'draftNum',
+    'gentime',
     'jid',
   ] as const
 
@@ -8759,6 +8764,7 @@ export class ServerChatDraftParams implements TDProtoClass<ServerChatDraftParams
     /* eslint-disable camelcase */
     draft: () => ({ draft: this.draft }),
     draftNum: () => ({ draft_num: this.draftNum }),
+    gentime: () => ({ gentime: this.gentime }),
     jid: () => ({ jid: this.jid }),
     /* eslint-enable camelcase */
   }
