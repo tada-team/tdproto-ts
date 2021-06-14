@@ -45,10 +45,6 @@ export type Mediatype =
    | 'contact'
    | 'pdf'
 
-export type SDPType =
-   | 'answer'
-   | 'offer'
-
 export type TeamStatus =
    | 'owner'
    | 'admin'
@@ -5295,7 +5291,7 @@ export class Invitation implements TDProtoClass<Invitation> {
 export interface JSEPJSON {
   /* eslint-disable camelcase */
   sdp: string;
-  type: SDPType;
+  type: string;
   /* eslint-enable camelcase */
 }
 
@@ -5307,7 +5303,7 @@ export class JSEP implements TDProtoClass<JSEP> {
    */
   constructor (
     public sdp: string,
-    public type: SDPType,
+    public type: string,
   ) {}
 
   public static fromJSON (raw: JSEPJSON): JSEP {
