@@ -628,6 +628,7 @@ export interface ChatJSON {
   done?: ISODateTimeString;
   done_reason?: string;
   draft?: string;
+  draft_gentime?: number;
   draft_num?: number;
   feed?: boolean;
   hidden?: boolean;
@@ -704,7 +705,8 @@ export class Chat implements TDProtoClass<Chat> {
    * @param done Task done date in iso format, if any
    * @param doneReason Task done reason, if any
    * @param draft Last message draft, if any
-   * @param draftNum Last message draft version , if any
+   * @param draftGentime Last message draft version, if any
+   * @param draftNum Deprecated
    * @param feed Present in feed (main screen)
    * @param hidden Hidden chat
    * @param importance Task importance, if available in team
@@ -775,6 +777,7 @@ export class Chat implements TDProtoClass<Chat> {
     public done?: ISODateTimeString,
     public doneReason?: string,
     public draft?: string,
+    public draftGentime?: number,
     public draftNum?: number,
     public feed?: boolean,
     public hidden?: boolean,
@@ -849,6 +852,7 @@ export class Chat implements TDProtoClass<Chat> {
       raw.done,
       raw.done_reason,
       raw.draft,
+      raw.draft_gentime,
       raw.draft_num,
       raw.feed,
       raw.hidden,
@@ -922,6 +926,7 @@ export class Chat implements TDProtoClass<Chat> {
     'done',
     'doneReason',
     'draft',
+    'draftGentime',
     'draftNum',
     'feed',
     'hidden',
@@ -995,6 +1000,7 @@ export class Chat implements TDProtoClass<Chat> {
     done: () => ({ done: this.done }),
     doneReason: () => ({ done_reason: this.doneReason }),
     draft: () => ({ draft: this.draft }),
+    draftGentime: () => ({ draft_gentime: this.draftGentime }),
     draftNum: () => ({ draft_num: this.draftNum }),
     feed: () => ({ feed: this.feed }),
     hidden: () => ({ hidden: this.hidden }),
@@ -8723,8 +8729,8 @@ export class ServerChatDraft implements TDProtoClass<ServerChatDraft> {
 export interface ServerChatDraftParamsJSON {
   /* eslint-disable camelcase */
   draft: string;
+  draft_gentime: number;
   draft_num: number;
-  gentime: number;
   jid: JID;
   /* eslint-enable camelcase */
 }
@@ -8733,38 +8739,38 @@ export class ServerChatDraftParams implements TDProtoClass<ServerChatDraftParams
   /**
    * MISSING CLASS DOCUMENTATION
    * @param draft Draft text
+   * @param draftGentime Draft version
    * @param draftNum Deprecated
-   * @param gentime Draft version
    * @param jid Chat or contact id
    */
   constructor (
     public draft: string,
+    public draftGentime: number,
     public draftNum: number,
-    public readonly gentime: number,
     public jid: JID,
   ) {}
 
   public static fromJSON (raw: ServerChatDraftParamsJSON): ServerChatDraftParams {
     return new ServerChatDraftParams(
       raw.draft,
+      raw.draft_gentime,
       raw.draft_num,
-      raw.gentime,
       raw.jid,
     )
   }
 
   public mappableFields = [
     'draft',
+    'draftGentime',
     'draftNum',
-    'gentime',
     'jid',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
     draft: () => ({ draft: this.draft }),
+    draftGentime: () => ({ draft_gentime: this.draftGentime }),
     draftNum: () => ({ draft_num: this.draftNum }),
-    gentime: () => ({ gentime: this.gentime }),
     jid: () => ({ jid: this.jid }),
     /* eslint-enable camelcase */
   }
@@ -11853,14 +11859,14 @@ export interface TaskJSON {
   assignee?: JID;
   complexity?: number;
   custom_color_index?: number;
-  deadline?: string;
+  deadline?: ISODateTimeString;
   description?: string;
   importance?: number;
   public?: boolean;
   items?: string[];
   linked_messages?: string[];
   observers?: JID[];
-  remind_at?: string;
+  remind_at?: ISODateTimeString;
   section?: string;
   spent_time?: number;
   tags?: string[];
@@ -11876,7 +11882,7 @@ export class Task implements TDProtoClass<Task> {
    * @param assignee User who was assigned the task
    * @param complexity Task complexity
    * @param customColorIndex Custom task color
-   * @param deadline Deadline time
+   * @param deadline Deadline time, if any
    * @param description Task description
    * @param importance Task importance
    * @param isPublic Is task public
@@ -11895,14 +11901,14 @@ export class Task implements TDProtoClass<Task> {
     public assignee?: JID,
     public complexity?: number,
     public customColorIndex?: number,
-    public deadline?: string,
+    public deadline?: ISODateTimeString,
     public description?: string,
     public importance?: number,
     public isPublic?: boolean,
     public items?: string[],
     public linkedMessages?: string[],
     public observers?: JID[],
-    public remindAt?: string,
+    public remindAt?: ISODateTimeString,
     public section?: string,
     public spentTime?: number,
     public tags?: string[],
