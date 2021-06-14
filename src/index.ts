@@ -45,6 +45,10 @@ export type Mediatype =
    | 'contact'
    | 'pdf'
 
+export type SDPType =
+   | 'answer'
+   | 'offer'
+
 export type TeamStatus =
    | 'owner'
    | 'admin'
@@ -1998,7 +2002,7 @@ export interface ClientCallSdpJSON {
 
 export class ClientCallSdp implements TDProtoClass<ClientCallSdp> {
   /**
-   * Call parameters
+   * For exchange Session Description with server when client's Local Session Description is changed
    * @param event DOCUMENTATION MISSING
    * @param params DOCUMENTATION MISSING
    * @param confirmId DOCUMENTATION MISSING
@@ -5291,7 +5295,7 @@ export class Invitation implements TDProtoClass<Invitation> {
 export interface JSEPJSON {
   /* eslint-disable camelcase */
   sdp: string;
-  type: string;
+  type: SDPType;
   /* eslint-enable camelcase */
 }
 
@@ -5303,7 +5307,7 @@ export class JSEP implements TDProtoClass<JSEP> {
    */
   constructor (
     public sdp: string,
-    public type: string,
+    public type: SDPType,
   ) {}
 
   public static fromJSON (raw: JSEPJSON): JSEP {
@@ -8082,7 +8086,7 @@ export interface ServerCallSdpJSON {
 
 export class ServerCallSdp implements TDProtoClass<ServerCallSdp> {
   /**
-   * Call parameters
+   * For exchange Session Description with client when server's Local Session Description is changed
    * @param event DOCUMENTATION MISSING
    * @param params DOCUMENTATION MISSING
    * @param confirmId DOCUMENTATION MISSING
