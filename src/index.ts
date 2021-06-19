@@ -3960,6 +3960,8 @@ export interface FeaturesJSON {
   metrika: string;
   min_android_version: string;
   min_app_version: string;
+  min_corp_android_version: string;
+  min_corp_ios_version: string;
   min_ios_version: string;
   min_search_length: number;
   mobile_calls: boolean;
@@ -4042,6 +4044,8 @@ export class Features implements TDProtoClass<Features> {
    * @param metrika Yandex metrika counter id
    * @param minAndroidVersion Minimal android application version required for this server. Used for breaking changes
    * @param minAppVersion Deprecated
+   * @param minCorpAndroidVersion Minimal android corp application version required for this server. Used for breaking changes
+   * @param minCorpIosVersion Minimal iOS corp application version required for this server. Used for breaking changes
    * @param minIosVersion Minimal iOS application version required for this server. Used for breaking changes
    * @param minSearchLength Minimal chars number for starting global search
    * @param mobileCalls Calls functions enabled for mobile applications
@@ -4120,6 +4124,8 @@ export class Features implements TDProtoClass<Features> {
     public metrika: string,
     public minAndroidVersion: string,
     public minAppVersion: string,
+    public minCorpAndroidVersion: string,
+    public minCorpIosVersion: string,
     public minIosVersion: string,
     public minSearchLength: number,
     public mobileCalls: boolean,
@@ -4200,6 +4206,8 @@ export class Features implements TDProtoClass<Features> {
       raw.metrika,
       raw.min_android_version,
       raw.min_app_version,
+      raw.min_corp_android_version,
+      raw.min_corp_ios_version,
       raw.min_ios_version,
       raw.min_search_length,
       raw.mobile_calls,
@@ -4280,6 +4288,8 @@ export class Features implements TDProtoClass<Features> {
     'metrika',
     'minAndroidVersion',
     'minAppVersion',
+    'minCorpAndroidVersion',
+    'minCorpIosVersion',
     'minIosVersion',
     'minSearchLength',
     'mobileCalls',
@@ -4360,6 +4370,8 @@ export class Features implements TDProtoClass<Features> {
     metrika: () => ({ metrika: this.metrika }),
     minAndroidVersion: () => ({ min_android_version: this.minAndroidVersion }),
     minAppVersion: () => ({ min_app_version: this.minAppVersion }),
+    minCorpAndroidVersion: () => ({ min_corp_android_version: this.minCorpAndroidVersion }),
+    minCorpIosVersion: () => ({ min_corp_ios_version: this.minCorpIosVersion }),
     minIosVersion: () => ({ min_ios_version: this.minIosVersion }),
     minSearchLength: () => ({ min_search_length: this.minSearchLength }),
     mobileCalls: () => ({ mobile_calls: this.mobileCalls }),
