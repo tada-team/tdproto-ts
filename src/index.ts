@@ -5143,7 +5143,7 @@ export interface InvitationJSON {
 
 export class Invitation implements TDProtoClass<Invitation> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Invitation to team
    * @param created DOCUMENTATION MISSING
    * @param qr DOCUMENTATION MISSING
    * @param token DOCUMENTATION MISSING
