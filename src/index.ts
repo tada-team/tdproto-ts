@@ -5385,7 +5385,7 @@ export class Message implements TDProtoClass<Message> {
    * @param important Importance flag
    * @param isArchive This message is archive. True or null
    * @param isFirst This message is first in this chat. True or null
-   * @param isLast This message is first in this chat. True or null
+   * @param isLast This message is last in this chat. True or null
    * @param linkedMessages Forwarded messages. Can be null. Also contains double of ReplyTo for backward compatibility
    * @param links External/internals links
    * @param markup Markup entities. Experimental
