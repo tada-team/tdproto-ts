@@ -136,7 +136,7 @@ export interface ActiveUserDailyStatJSON {
 
 export class ActiveUserDailyStat implements TDProtoClass<ActiveUserDailyStat> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Active daily users statistics
    * @param day DOCUMENTATION MISSING
    * @param userId DOCUMENTATION MISSING
    * @param callSecondsTotal DOCUMENTATION MISSING
@@ -219,7 +219,7 @@ export interface AnyEventJSON {
 
 export class AnyEvent implements TDProtoClass<AnyEvent> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Generic event representation
    * @param event DOCUMENTATION MISSING
    * @param confirmId DOCUMENTATION MISSING
    */
@@ -267,7 +267,7 @@ export interface BaseEventJSON {
 
 export class BaseEvent implements TDProtoClass<BaseEvent> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Base of all events
    * @param event DOCUMENTATION MISSING
    * @param confirmId DOCUMENTATION MISSING
    */
@@ -1066,7 +1066,7 @@ export interface ChatCountersJSON {
 
 export class ChatCounters implements TDProtoClass<ChatCounters> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Unread messages counter
    * @param chatType DOCUMENTATION MISSING
    * @param gentime DOCUMENTATION MISSING
    * @param jid DOCUMENTATION MISSING
@@ -1138,7 +1138,7 @@ export interface ChatMessagesJSON {
 
 export class ChatMessages implements TDProtoClass<ChatMessages> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Chat messages
    * @param messages DOCUMENTATION MISSING
    */
   constructor (
@@ -1294,7 +1294,7 @@ export interface ClientActivityParamsJSON {
 
 export class ClientActivityParams implements TDProtoClass<ClientActivityParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the client.activity event
    * @param afk Is away from keyboard
    */
   constructor (
@@ -1390,7 +1390,7 @@ export interface ClientCallBuzzCancelParamsJSON {
 
 export class ClientCallBuzzCancelParams implements TDProtoClass<ClientCallBuzzCancelParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the client.call.buzzcancel event
    * @param jid Chat or contact id
    */
   constructor (
@@ -1535,7 +1535,7 @@ export interface ClientCallLeaveParamsJSON {
 
 export class ClientCallLeaveParams implements TDProtoClass<ClientCallLeaveParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the client.call.leave event
    * @param jid Chat or contact id
    * @param reason Reason, if any
    */
@@ -1636,7 +1636,7 @@ export interface ClientCallMuteAllParamsJSON {
 
 export class ClientCallMuteAllParams implements TDProtoClass<ClientCallMuteAllParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the client.call.muteall event
    * @param jid Chat or contact id
    */
   constructor (
@@ -1735,7 +1735,7 @@ export interface ClientCallOfferParamsJSON {
 
 export class ClientCallOfferParams implements TDProtoClass<ClientCallOfferParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the client.call.offer event
    * @param jid Chat or contact id
    * @param muted Mute state
    * @param sdp SDP (session description protocol) data
@@ -1847,7 +1847,7 @@ export interface ClientCallRejectParamsJSON {
 
 export class ClientCallRejectParams implements TDProtoClass<ClientCallRejectParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the client.call.reject event
    * @param jid Chat or contact id
    * @param reason Reason, if any
    */
@@ -1950,7 +1950,7 @@ export interface ClientCallSdpParamsJSON {
 
 export class ClientCallSdpParams implements TDProtoClass<ClientCallSdpParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the client.call.sdp event
    * @param jid Chat or contact id
    * @param jsep SDP data
    * @param uid Call id
@@ -2057,7 +2057,7 @@ export interface ClientCallSoundParamsJSON {
 
 export class ClientCallSoundParams implements TDProtoClass<ClientCallSoundParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the client.call.sound event
    * @param jid Chat or contact id
    * @param muted Mute state
    */
@@ -2161,7 +2161,7 @@ export interface ClientCallTrickleParamsJSON {
 
 export class ClientCallTrickleParams implements TDProtoClass<ClientCallTrickleParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of client.call.trickle event
    * @param candidate Trickle candidate
    * @param jid Chat or contact id
    * @param sdpMid SDP mid
@@ -2275,7 +2275,7 @@ export interface ClientChatComposingParamsJSON {
 
 export class ClientChatComposingParams implements TDProtoClass<ClientChatComposingParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the client.chat.composing event
    * @param jid Chat or contact id
    * @param composing true = start typing / audio recording, false = stop
    * @param draft Message draft data
@@ -2387,7 +2387,7 @@ export interface ClientChatLastreadParamsJSON {
 
 export class ClientChatLastreadParams implements TDProtoClass<ClientChatLastreadParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the client.chat.lastread event
    * @param jid Chat or contact id
    * @param lastReadMessageId Last read message id. Omitted = last message in chat
    */
@@ -2488,7 +2488,7 @@ export interface ClientConfirmParamsJSON {
 
 export class ClientConfirmParams implements TDProtoClass<ClientConfirmParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the client.confirm event
    * @param confirmId Unique identifier generated by client
    */
   constructor (
@@ -2584,7 +2584,7 @@ export interface ClientMessageDeletedParamsJSON {
 
 export class ClientMessageDeletedParams implements TDProtoClass<ClientMessageDeletedParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the client.message.deleted event
    * @param messageId Message id
    */
   constructor (
@@ -2689,7 +2689,7 @@ export interface ClientMessageUpdatedParamsJSON {
 
 export class ClientMessageUpdatedParams implements TDProtoClass<ClientMessageUpdatedParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the client.message.updated event
    * @param content Message content. Required
    * @param to Chat, task or contact jid. Required
    * @param comment Deprecated
@@ -3376,7 +3376,7 @@ export interface ContactPreviewJSON {
 
 export class ContactPreview implements TDProtoClass<ContactPreview> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Contact preview
    * @param familyName DOCUMENTATION MISSING
    * @param givenName DOCUMENTATION MISSING
    * @param phone DOCUMENTATION MISSING
@@ -3821,7 +3821,7 @@ export interface DistJSON {
 
 export class Dist implements TDProtoClass<Dist> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Distribution information
    * @param type DOCUMENTATION MISSING
    * @param url DOCUMENTATION MISSING
    */
@@ -4500,7 +4500,7 @@ export interface GroupAccessRequestJSON {
 
 export class GroupAccessRequest implements TDProtoClass<GroupAccessRequest> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Group Access Request
    * @param created DOCUMENTATION MISSING
    * @param subject DOCUMENTATION MISSING
    * @param uid DOCUMENTATION MISSING
@@ -5201,9 +5201,9 @@ export interface JSEPJSON {
 
 export class JSEP implements TDProtoClass<JSEP> {
   /**
-   * MISSING CLASS DOCUMENTATION
-   * @param sdp DOCUMENTATION MISSING
-   * @param type DOCUMENTATION MISSING
+   * JavaScript Session Establishment Protocol
+   * @param sdp Session Description Protocol information
+   * @param type See https://rtcweb-wg.github.io/jsep/#rfc.section.4.1.8
    */
   constructor (
     public sdp: string,
@@ -6332,7 +6332,7 @@ export interface PaginatedChatsJSON {
 
 export class PaginatedChats implements TDProtoClass<PaginatedChats> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Paginated chats
    * @param count DOCUMENTATION MISSING
    * @param limit DOCUMENTATION MISSING
    * @param objects DOCUMENTATION MISSING
@@ -6397,7 +6397,7 @@ export interface PaginatedContactsJSON {
 
 export class PaginatedContacts implements TDProtoClass<PaginatedContacts> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Paginated contacts
    * @param count DOCUMENTATION MISSING
    * @param limit DOCUMENTATION MISSING
    * @param objects DOCUMENTATION MISSING
@@ -6457,7 +6457,7 @@ export interface PaginatedMessagesJSON {
 
 export class PaginatedMessages implements TDProtoClass<PaginatedMessages> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Paginated messages
    * @param count DOCUMENTATION MISSING
    * @param limit DOCUMENTATION MISSING
    * @param objects DOCUMENTATION MISSING
@@ -6517,7 +6517,7 @@ export interface PaginatedUploadShortMessagesJSON {
 
 export class PaginatedUploadShortMessages implements TDProtoClass<PaginatedUploadShortMessages> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Paginated UploadShortMessage
    * @param count DOCUMENTATION MISSING
    * @param limit DOCUMENTATION MISSING
    * @param objects DOCUMENTATION MISSING
@@ -7001,7 +7001,7 @@ export interface ServerCallAnswerCandidateJSON {
 
 export class ServerCallAnswerCandidate implements TDProtoClass<ServerCallAnswerCandidate> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * ICE candidate for call answer
    * @param candidate DOCUMENTATION MISSING
    * @param sdpMLineIndex DOCUMENTATION MISSING
    */
@@ -7052,7 +7052,7 @@ export interface ServerCallAnswerParamsJSON {
 
 export class ServerCallAnswerParams implements TDProtoClass<ServerCallAnswerParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the server.call.answer event
    * @param jid Chat or contact id
    * @param jsep SDP data
    * @param uid Call id
@@ -7176,7 +7176,7 @@ export interface ServerCallBuzzParamsJSON {
 
 export class ServerCallBuzzParams implements TDProtoClass<ServerCallBuzzParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the server.call.buzz event
    * @param actor Short call creator information
    * @param buzzTimeout Number of seconds for stop buzzing
    * @param chat Short chat information
@@ -7314,7 +7314,7 @@ export interface ServerCallBuzzcancelParamsJSON {
 
 export class ServerCallBuzzcancelParams implements TDProtoClass<ServerCallBuzzcancelParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the server.call.buzzcancel event
    * @param jid Chat or contact id
    * @param team Team id
    * @param uid Call id
@@ -7420,7 +7420,7 @@ export interface ServerCallCheckFingerprintParamsJSON {
 
 export class ServerCallCheckFingerprintParams implements TDProtoClass<ServerCallCheckFingerprintParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the server.call.checkfingerprint event
    * @param fingerprint DOCUMENTATION MISSING
    */
   constructor (
@@ -7517,7 +7517,7 @@ export interface ServerCallLeaveParamsJSON {
 
 export class ServerCallLeaveParams implements TDProtoClass<ServerCallLeaveParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the server.call.leave event
    * @param jid Chat or contact id
    * @param uid Call uid
    */
@@ -7619,7 +7619,7 @@ export interface ServerCallMuteallParamsJSON {
 
 export class ServerCallMuteallParams implements TDProtoClass<ServerCallMuteallParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the server.call.muteall event
    * @param jid Chat or contact id
    * @param muted Mute state
    */
@@ -7722,7 +7722,7 @@ export interface ServerCallRejectParamsJSON {
 
 export class ServerCallRejectParams implements TDProtoClass<ServerCallRejectParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the server.call.reject event
    * @param jid Chat or contact id
    * @param reason Reason, if any
    * @param uid Call id
@@ -7830,7 +7830,7 @@ export interface ServerCallRestartParamsJSON {
 
 export class ServerCallRestartParams implements TDProtoClass<ServerCallRestartParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the server.call.restart event
    * @param jid Chat or contact id
    * @param team Team id
    * @param uid Call id
@@ -7938,7 +7938,7 @@ export interface ServerCallSdpParamsJSON {
 
 export class ServerCallSdpParams implements TDProtoClass<ServerCallSdpParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the server.call.sdp event
    * @param jid Chat or contact id
    * @param jsep SDP data
    * @param uid Call id
@@ -8045,7 +8045,7 @@ export interface ServerCallSoundParamsJSON {
 
 export class ServerCallSoundParams implements TDProtoClass<ServerCallSoundParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the server.call.sound event
    * @param jid Chat or contact id
    * @param muted Mute state
    */
@@ -8202,7 +8202,7 @@ export interface ServerCallTalkingParamsJSON {
 
 export class ServerCallTalkingParams implements TDProtoClass<ServerCallTalkingParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the server.call.talking event
    * @param actor Actor id
    * @param jid Chat or contact id
    * @param talking Is talking
@@ -8312,7 +8312,7 @@ export interface ServerChatComposingParamsJSON {
 
 export class ServerChatComposingParams implements TDProtoClass<ServerChatComposingParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the server.chat.composing event
    * @param actor Actor id
    * @param composing true = start typing / audio recording, false = stop
    * @param jid Chat or contact id
@@ -8430,7 +8430,7 @@ export interface ServerChatDeletedParamsJSON {
 
 export class ServerChatDeletedParams implements TDProtoClass<ServerChatDeletedParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the server.chat.deleted event
    * @param badge Total number of unreads
    * @param chats List of deleted chats
    * @param teamUnread Current team counters
@@ -8539,7 +8539,7 @@ export interface ServerChatDraftParamsJSON {
 
 export class ServerChatDraftParams implements TDProtoClass<ServerChatDraftParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the server.chat.draft event
    * @param draft Draft text
    * @param draftGentime Draft version
    * @param draftNum Deprecated
@@ -8652,7 +8652,7 @@ export interface ServerChatLastreadParamsJSON {
 
 export class ServerChatLastreadParams implements TDProtoClass<ServerChatLastreadParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the server.chat.lastread event
    * @param badge Total number of unreads
    * @param chats Chat counters
    * @param teamUnread Current team counters
@@ -8760,7 +8760,7 @@ export interface ServerChatUpdatedParamsJSON {
 
 export class ServerChatUpdatedParams implements TDProtoClass<ServerChatUpdatedParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the server.chat.updated event
    * @param badge Total number of unreads
    * @param chats Chat counters
    * @param teamUnread Current team counters
@@ -8866,7 +8866,7 @@ export interface ServerConfirmParamsJSON {
 
 export class ServerConfirmParams implements TDProtoClass<ServerConfirmParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the server.confirm event
    * @param confirmId Unique id generated by server
    */
   constructor (
@@ -8962,7 +8962,7 @@ export interface ServerContactUpdatedParamsJSON {
 
 export class ServerContactUpdatedParams implements TDProtoClass<ServerContactUpdatedParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the server.contact.updated event
    * @param contacts Contact info
    */
   constructor (
@@ -9058,7 +9058,7 @@ export interface ServerDebugParamsJSON {
 
 export class ServerDebugParams implements TDProtoClass<ServerDebugParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the server.debug event
    * @param text Debug message
    */
   constructor (
@@ -9154,7 +9154,7 @@ export interface ServerLoginParamsJSON {
 
 export class ServerLoginParams implements TDProtoClass<ServerLoginParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the server.login event
    * @param deviceName Device name
    */
   constructor (
@@ -9304,7 +9304,7 @@ export interface ServerMessageReceivedParamsJSON {
 
 export class ServerMessageReceivedParams implements TDProtoClass<ServerMessageReceivedParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the server.message.received event
    * @param messages received message data
    */
   constructor (
@@ -9404,7 +9404,7 @@ export interface ServerMessageUpdatedParamsJSON {
 
 export class ServerMessageUpdatedParams implements TDProtoClass<ServerMessageUpdatedParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the server.message.updated event
    * @param badge Total number of unreads, if changed
    * @param chatCounters Chat counters
    * @param delayed true = silently message update, false = new message
@@ -9521,7 +9521,7 @@ export interface ServerOnlineParamsJSON {
 
 export class ServerOnlineParams implements TDProtoClass<ServerOnlineParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the server.online event
    * @param contacts Online team members
    * @param calls Active calls
    */
@@ -9623,7 +9623,7 @@ export interface ServerPanicParamsJSON {
 
 export class ServerPanicParams implements TDProtoClass<ServerPanicParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the server.panic event
    * @param code Error code
    * @param debug Debug message
    */
@@ -9728,7 +9728,7 @@ export interface ServerProcessingParamsJSON {
 
 export class ServerProcessingParams implements TDProtoClass<ServerProcessingParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the server.processing event
    * @param action Action name
    * @param hasError Has error
    * @param message Message
@@ -9844,7 +9844,7 @@ export interface ServerRemindDeletedParamsJSON {
 
 export class ServerRemindDeletedParams implements TDProtoClass<ServerRemindDeletedParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the server.remind.deleted event
    * @param reminds Remind information
    */
   constructor (
@@ -9940,7 +9940,7 @@ export interface ServerRemindFiredParamsJSON {
 
 export class ServerRemindFiredParams implements TDProtoClass<ServerRemindFiredParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the server.remind.fired event
    * @param reminds Remind information
    */
   constructor (
@@ -10036,7 +10036,7 @@ export interface ServerRemindUpdatedParamsJSON {
 
 export class ServerRemindUpdatedParams implements TDProtoClass<ServerRemindUpdatedParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the server.remind.updated event
    * @param reminds Remind information
    */
   constructor (
@@ -10134,7 +10134,7 @@ export interface ServerSectionDeletedParamsJSON {
 
 export class ServerSectionDeletedParams implements TDProtoClass<ServerSectionDeletedParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the server.section.deleted event
    * @param chatType Chat type
    * @param gentime Deprecated
    * @param sections Section/project info
@@ -10242,7 +10242,7 @@ export interface ServerSectionUpdatedParamsJSON {
 
 export class ServerSectionUpdatedParams implements TDProtoClass<ServerSectionUpdatedParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the server.section.updated event
    * @param chatType Chat type
    * @param gentime deprecated
    * @param sections Section/project info
@@ -10348,7 +10348,7 @@ export interface ServerTagDeletedParamsJSON {
 
 export class ServerTagDeletedParams implements TDProtoClass<ServerTagDeletedParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the server.tag.deleted event
    * @param tags Tags info
    */
   constructor (
@@ -10444,7 +10444,7 @@ export interface ServerTagUpdatedParamsJSON {
 
 export class ServerTagUpdatedParams implements TDProtoClass<ServerTagUpdatedParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the server.tag.updated event
    * @param tags Tags info
    */
   constructor (
@@ -10541,7 +10541,7 @@ export interface ServerTeamCountersParamsJSON {
 
 export class ServerTeamCountersParams implements TDProtoClass<ServerTeamCountersParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the server.team.counters event
    * @param badge Total number of unreads
    * @param teams Counters
    */
@@ -10642,7 +10642,7 @@ export interface ServerTeamDeletedParamsJSON {
 
 export class ServerTeamDeletedParams implements TDProtoClass<ServerTeamDeletedParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the server.team.deleted event
    * @param teams Teams info
    */
   constructor (
@@ -10738,7 +10738,7 @@ export interface ServerTeamUpdatedParamsJSON {
 
 export class ServerTeamUpdatedParams implements TDProtoClass<ServerTeamUpdatedParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the server.team.updated event
    * @param teams DOCUMENTATION MISSING
    */
   constructor (
@@ -10834,7 +10834,7 @@ export interface ServerTimeParamsJSON {
 
 export class ServerTimeParams implements TDProtoClass<ServerTimeParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the server.time event
    * @param time Current time
    */
   constructor (
@@ -10984,7 +10984,7 @@ export interface ServerUploadUpdatedParamsJSON {
 
 export class ServerUploadUpdatedParams implements TDProtoClass<ServerUploadUpdatedParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the server.upload.updated event
    * @param uploads Uploads data
    */
   constructor (
@@ -11082,7 +11082,7 @@ export interface ServerWarningParamsJSON {
 
 export class ServerWarningParams implements TDProtoClass<ServerWarningParams> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Params of the server.warning event
    * @param message Message
    * @param orig Debug information
    */
@@ -11357,7 +11357,7 @@ export interface StickerJSON {
 
 export class Sticker implements TDProtoClass<Sticker> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Single sticker
    * @param icon100 DOCUMENTATION MISSING
    * @param icon128 DOCUMENTATION MISSING
    * @param icon200 DOCUMENTATION MISSING
@@ -11429,7 +11429,7 @@ export interface StickerpackJSON {
 
 export class Stickerpack implements TDProtoClass<Stickerpack> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Collection of stickers
    * @param name DOCUMENTATION MISSING
    * @param stickers DOCUMENTATION MISSING
    * @param title DOCUMENTATION MISSING
@@ -12031,7 +12031,7 @@ export interface TaskItemsJSON {
 
 export class TaskItems implements TDProtoClass<TaskItems> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Task item
    * @param checked DOCUMENTATION MISSING
    * @param name DOCUMENTATION MISSING
    */
@@ -12085,7 +12085,7 @@ export interface TaskPreviewJSON {
 
 export class TaskPreview implements TDProtoClass<TaskPreview> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * Task Preview
    * @param assignee DOCUMENTATION MISSING
    * @param deadline DOCUMENTATION MISSING
    * @param description DOCUMENTATION MISSING
@@ -13581,7 +13581,7 @@ export interface UserAuthJSON {
 
 export class UserAuth implements TDProtoClass<UserAuth> {
   /**
-   * MISSING CLASS DOCUMENTATION
+   * User authentication
    * @param created DOCUMENTATION MISSING
    * @param kind type of auth
    * @param uid DOCUMENTATION MISSING
