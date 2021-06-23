@@ -2954,6 +2954,7 @@ export interface ContactJSON {
   can_create_task?: boolean;
   can_delete?: boolean;
   can_delete_any_message?: boolean;
+  can_import_tasks?: boolean;
   can_join_public_groups?: boolean;
   can_join_public_tasks?: boolean;
   can_manage_color_rules?: boolean;
@@ -3016,6 +3017,7 @@ export class Contact implements TDProtoClass<Contact> {
    * @param canCreateTask Can I call create task for this contact
    * @param canDelete Can I remove this contact from team
    * @param canDeleteAnyMessage Deprecated: use CanDeleteAnyMessage in chat object
+   * @param canImportTasks Can I import tasks in this team
    * @param canJoinPublicGroups Can I view/join public group in this team
    * @param canJoinPublicTasks Can I view/join public tasks in this team
    * @param canManageColorRules Can I manage color rules in this team
@@ -3074,6 +3076,7 @@ export class Contact implements TDProtoClass<Contact> {
     public canCreateTask?: boolean,
     public canDelete?: boolean,
     public canDeleteAnyMessage?: boolean,
+    public canImportTasks?: boolean,
     public canJoinPublicGroups?: boolean,
     public canJoinPublicTasks?: boolean,
     public canManageColorRules?: boolean,
@@ -3134,6 +3137,7 @@ export class Contact implements TDProtoClass<Contact> {
       raw.can_create_task,
       raw.can_delete,
       raw.can_delete_any_message,
+      raw.can_import_tasks,
       raw.can_join_public_groups,
       raw.can_join_public_tasks,
       raw.can_manage_color_rules,
@@ -3194,6 +3198,7 @@ export class Contact implements TDProtoClass<Contact> {
     'canCreateTask',
     'canDelete',
     'canDeleteAnyMessage',
+    'canImportTasks',
     'canJoinPublicGroups',
     'canJoinPublicTasks',
     'canManageColorRules',
@@ -3254,6 +3259,7 @@ export class Contact implements TDProtoClass<Contact> {
     canCreateTask: () => ({ can_create_task: this.canCreateTask }),
     canDelete: () => ({ can_delete: this.canDelete }),
     canDeleteAnyMessage: () => ({ can_delete_any_message: this.canDeleteAnyMessage }),
+    canImportTasks: () => ({ can_import_tasks: this.canImportTasks }),
     canJoinPublicGroups: () => ({ can_join_public_groups: this.canJoinPublicGroups }),
     canJoinPublicTasks: () => ({ can_join_public_tasks: this.canJoinPublicTasks }),
     canManageColorRules: () => ({ can_manage_color_rules: this.canManageColorRules }),
