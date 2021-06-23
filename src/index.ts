@@ -2958,6 +2958,7 @@ export interface ContactJSON {
   can_join_public_tasks?: boolean;
   can_manage_color_rules?: boolean;
   can_manage_integrations?: boolean;
+  can_manage_projects?: boolean;
   can_manage_sections?: boolean;
   can_manage_tags?: boolean;
   can_send_message?: boolean;
@@ -3019,7 +3020,8 @@ export class Contact implements TDProtoClass<Contact> {
    * @param canJoinPublicTasks Can I view/join public tasks in this team
    * @param canManageColorRules Can I manage color rules in this team
    * @param canManageIntegrations Can I manage integrations in this team
-   * @param canManageSections Can I manage sections in this team
+   * @param canManageProjects Can I manage task projects in this team
+   * @param canManageSections Can I manage contact sections in this team
    * @param canManageTags Can I manage tags in this team
    * @param canSendMessage Can I send message to this contact
    * @param cantSendMessageReason Why I can't send message to this chat (if can't)
@@ -3076,6 +3078,7 @@ export class Contact implements TDProtoClass<Contact> {
     public canJoinPublicTasks?: boolean,
     public canManageColorRules?: boolean,
     public canManageIntegrations?: boolean,
+    public canManageProjects?: boolean,
     public canManageSections?: boolean,
     public canManageTags?: boolean,
     public canSendMessage?: boolean,
@@ -3135,6 +3138,7 @@ export class Contact implements TDProtoClass<Contact> {
       raw.can_join_public_tasks,
       raw.can_manage_color_rules,
       raw.can_manage_integrations,
+      raw.can_manage_projects,
       raw.can_manage_sections,
       raw.can_manage_tags,
       raw.can_send_message,
@@ -3194,6 +3198,7 @@ export class Contact implements TDProtoClass<Contact> {
     'canJoinPublicTasks',
     'canManageColorRules',
     'canManageIntegrations',
+    'canManageProjects',
     'canManageSections',
     'canManageTags',
     'canSendMessage',
@@ -3253,6 +3258,7 @@ export class Contact implements TDProtoClass<Contact> {
     canJoinPublicTasks: () => ({ can_join_public_tasks: this.canJoinPublicTasks }),
     canManageColorRules: () => ({ can_manage_color_rules: this.canManageColorRules }),
     canManageIntegrations: () => ({ can_manage_integrations: this.canManageIntegrations }),
+    canManageProjects: () => ({ can_manage_projects: this.canManageProjects }),
     canManageSections: () => ({ can_manage_sections: this.canManageSections }),
     canManageTags: () => ({ can_manage_tags: this.canManageTags }),
     canSendMessage: () => ({ can_send_message: this.canSendMessage }),
