@@ -4559,8 +4559,8 @@ export class GroupAccessRequest implements TDProtoClass<GroupAccessRequest> {
 export interface GroupMembershipJSON {
   /* eslint-disable camelcase */
   jid: JID;
-  status: GroupStatus;
   can_remove?: boolean;
+  status?: GroupStatus;
   /* eslint-enable camelcase */
 }
 
@@ -4568,34 +4568,34 @@ export class GroupMembership implements TDProtoClass<GroupMembership> {
   /**
    * Group chat membership status
    * @param jid Contact id
-   * @param status Status in group
    * @param canRemove Can I remove this member
+   * @param status Status in group
    */
   constructor (
     public jid: JID,
-    public status: GroupStatus,
     public canRemove?: boolean,
+    public status?: GroupStatus,
   ) {}
 
   public static fromJSON (raw: GroupMembershipJSON): GroupMembership {
     return new GroupMembership(
       raw.jid,
-      raw.status,
       raw.can_remove,
+      raw.status,
     )
   }
 
   public mappableFields = [
     'jid',
-    'status',
     'canRemove',
+    'status',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
     jid: () => ({ jid: this.jid }),
-    status: () => ({ status: this.status }),
     canRemove: () => ({ can_remove: this.canRemove }),
+    status: () => ({ status: this.status }),
     /* eslint-enable camelcase */
   }
 
