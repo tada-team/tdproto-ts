@@ -3999,6 +3999,7 @@ export interface FeaturesJSON {
   max_participants_per_call?: number;
   oauth_services?: OAuthServiceJSON[];
   only_one_device_per_call?: boolean;
+  theme_settings?: ThemeJSON;
   web_login_background?: string;
   /* eslint-enable camelcase */
 }
@@ -4083,6 +4084,7 @@ export class Features implements TDProtoClass<Features> {
    * @param maxParticipantsPerCall Maximum number of participants per call
    * @param oauthServices External services
    * @param onlyOneDevicePerCall Disallow call from multiply devices. Experimental
+   * @param themeSettings Theme settings containing colors for app and web
    * @param webLoginBackground WebBackground image url, if any
    */
   constructor (
@@ -4163,6 +4165,7 @@ export class Features implements TDProtoClass<Features> {
     public maxParticipantsPerCall?: number,
     public oauthServices?: OAuthService[],
     public onlyOneDevicePerCall?: boolean,
+    public themeSettings?: Theme,
     public webLoginBackground?: string,
   ) {}
 
@@ -4245,6 +4248,7 @@ export class Features implements TDProtoClass<Features> {
       raw.max_participants_per_call,
       raw.oauth_services && raw.oauth_services.map(OAuthService.fromJSON),
       raw.only_one_device_per_call,
+      raw.theme_settings && Theme.fromJSON(raw.theme_settings),
       raw.web_login_background,
     )
   }
@@ -4327,6 +4331,7 @@ export class Features implements TDProtoClass<Features> {
     'maxParticipantsPerCall',
     'oauthServices',
     'onlyOneDevicePerCall',
+    'themeSettings',
     'webLoginBackground',
   ] as const
 
@@ -4409,6 +4414,7 @@ export class Features implements TDProtoClass<Features> {
     maxParticipantsPerCall: () => ({ max_participants_per_call: this.maxParticipantsPerCall }),
     oauthServices: () => ({ oauth_services: this.oauthServices?.map(u => u.toJSON()) }),
     onlyOneDevicePerCall: () => ({ only_one_device_per_call: this.onlyOneDevicePerCall }),
+    themeSettings: () => ({ theme_settings: this.themeSettings?.toJSON() }),
     webLoginBackground: () => ({ web_login_background: this.webLoginBackground }),
     /* eslint-enable camelcase */
   }
