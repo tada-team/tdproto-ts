@@ -6170,6 +6170,54 @@ export class MessageReactionDetail implements TDProtoClass<MessageReactionDetail
   }
 }
 
+export interface MyReactionsJSON {
+  /* eslint-disable camelcase */
+  all: ReactionJSON[];
+  top: ReactionJSON[];
+  /* eslint-enable camelcase */
+}
+
+export class MyReactions implements TDProtoClass<MyReactions> {
+  /**
+   * Reactions to messages: frequently used and all available
+   * @param all All available reactions
+   * @param top My frequently used reactions
+   */
+  constructor (
+    public all: Reaction[],
+    public top: Reaction[],
+  ) {}
+
+  public static fromJSON (raw: MyReactionsJSON): MyReactions {
+    return new MyReactions(
+      raw.all.map(Reaction.fromJSON),
+      raw.top.map(Reaction.fromJSON),
+    )
+  }
+
+  public mappableFields = [
+    'all',
+    'top',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    all: () => ({ all: this.all.map(u => u.toJSON()) }),
+    top: () => ({ top: this.top.map(u => u.toJSON()) }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): MyReactionsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<MyReactionsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface OAuthServiceJSON {
   /* eslint-disable camelcase */
   name: string;
