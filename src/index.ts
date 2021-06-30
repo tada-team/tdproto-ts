@@ -5156,6 +5156,66 @@ export class Integrations implements TDProtoClass<Integrations> {
   }
 }
 
+export interface InvitableUserJSON {
+  /* eslint-disable camelcase */
+  display_name: string;
+  icons: IconDataJSON;
+  uid: string;
+  node?: string;
+  /* eslint-enable camelcase */
+}
+
+export class InvitableUser implements TDProtoClass<InvitableUser> {
+  /**
+   * Account from other team, Active Directory or server
+   * @param displayName Full name
+   * @param icons Icons
+   * @param uid Account id
+   * @param node Node uid for external users
+   */
+  constructor (
+    public displayName: string,
+    public icons: IconData,
+    public uid: string,
+    public node?: string,
+  ) {}
+
+  public static fromJSON (raw: InvitableUserJSON): InvitableUser {
+    return new InvitableUser(
+      raw.display_name,
+      IconData.fromJSON(raw.icons),
+      raw.uid,
+      raw.node,
+    )
+  }
+
+  public mappableFields = [
+    'displayName',
+    'icons',
+    'uid',
+    'node',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    displayName: () => ({ display_name: this.displayName }),
+    icons: () => ({ icons: this.icons.toJSON() }),
+    uid: () => ({ uid: this.uid }),
+    node: () => ({ node: this.node }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): InvitableUserJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<InvitableUserJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface InvitationJSON {
   /* eslint-disable camelcase */
   created: ISODateTimeString;
