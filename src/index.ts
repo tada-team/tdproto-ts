@@ -2981,6 +2981,7 @@ export interface ContactJSON {
   last_activity?: ISODateTimeString;
   mood?: string;
   munread_first?: boolean;
+  node?: string;
   patronymic?: string;
   quiet_time_finish?: string;
   quiet_time_start?: string;
@@ -3044,6 +3045,7 @@ export class Contact implements TDProtoClass<Contact> {
    * @param lastActivity Last activity in this team (iso datetime)
    * @param mood Mood in this team
    * @param munreadFirst Show unread chats first in feed in mobile app
+   * @param node Node uid for external users
    * @param patronymic Patronymic, if any
    * @param quietTimeFinish Quiet time finish
    * @param quietTimeStart Quiet time start
@@ -3103,6 +3105,7 @@ export class Contact implements TDProtoClass<Contact> {
     public lastActivity?: ISODateTimeString,
     public mood?: string,
     public munreadFirst?: boolean,
+    public node?: string,
     public patronymic?: string,
     public quietTimeFinish?: string,
     public quietTimeStart?: string,
@@ -3164,6 +3167,7 @@ export class Contact implements TDProtoClass<Contact> {
       raw.last_activity,
       raw.mood,
       raw.munread_first,
+      raw.node,
       raw.patronymic,
       raw.quiet_time_finish,
       raw.quiet_time_start,
@@ -3225,6 +3229,7 @@ export class Contact implements TDProtoClass<Contact> {
     'lastActivity',
     'mood',
     'munreadFirst',
+    'node',
     'patronymic',
     'quietTimeFinish',
     'quietTimeStart',
@@ -3286,6 +3291,7 @@ export class Contact implements TDProtoClass<Contact> {
     lastActivity: () => ({ last_activity: this.lastActivity }),
     mood: () => ({ mood: this.mood }),
     munreadFirst: () => ({ munread_first: this.munreadFirst }),
+    node: () => ({ node: this.node }),
     patronymic: () => ({ patronymic: this.patronymic }),
     quietTimeFinish: () => ({ quiet_time_finish: this.quietTimeFinish }),
     quietTimeStart: () => ({ quiet_time_start: this.quietTimeStart }),
@@ -6215,6 +6221,60 @@ export class MyReactions implements TDProtoClass<MyReactions> {
 
   public toJSON (): MyReactionsJSON
   public toJSON (fields: Array<this['mappableFields'][number]>): Partial<MyReactionsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface NodeJSON {
+  /* eslint-disable camelcase */
+  enabled: boolean;
+  title: string;
+  uid: string;
+  /* eslint-enable camelcase */
+}
+
+export class Node implements TDProtoClass<Node> {
+  /**
+   * Node (for external users)
+   * @param enabled Synchronization with node works
+   * @param title Node title
+   * @param uid Node uid
+   */
+  constructor (
+    public enabled: boolean,
+    public title: string,
+    public uid: string,
+  ) {}
+
+  public static fromJSON (raw: NodeJSON): Node {
+    return new Node(
+      raw.enabled,
+      raw.title,
+      raw.uid,
+    )
+  }
+
+  public mappableFields = [
+    'enabled',
+    'title',
+    'uid',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    enabled: () => ({ enabled: this.enabled }),
+    title: () => ({ title: this.title }),
+    uid: () => ({ uid: this.uid }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): NodeJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<NodeJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
