@@ -3930,6 +3930,7 @@ export interface FeaturesJSON {
   /* eslint-disable camelcase */
   afk_age: number;
   android_app: string;
+  android_corp_app: string;
   app_schemes: string[];
   app_title: string;
   build: string;
@@ -3951,6 +3952,7 @@ export interface FeaturesJSON {
   ice_servers: ICEServerJSON[];
   installation_type: string;
   ios_app: string;
+  ios_corp_app: string;
   is_testing: boolean;
   max_color_rule_description_length: number;
   max_group_title_length: number;
@@ -4015,6 +4017,7 @@ export class Features implements TDProtoClass<Features> {
    * Server information. Readonly
    * @param afkAge Max inactivity seconds
    * @param androidApp Link to Google Play
+   * @param androidCorpApp Link to Google Play for corporate app
    * @param appSchemes Local applications urls
    * @param appTitle Application title
    * @param build Build/revision of server side
@@ -4036,6 +4039,7 @@ export class Features implements TDProtoClass<Features> {
    * @param iceServers ICE servers for WebRTC
    * @param installationType Name of installation
    * @param iosApp Link to AppStore
+   * @param iosCorpApp Link to AppStore for corporate app
    * @param isTesting Testing installation
    * @param maxColorRuleDescriptionLength Maximum length for ColorRule description
    * @param maxGroupTitleLength Maximum chars for group chat name
@@ -4096,6 +4100,7 @@ export class Features implements TDProtoClass<Features> {
   constructor (
     public afkAge: number,
     public androidApp: string,
+    public androidCorpApp: string,
     public appSchemes: string[],
     public appTitle: string,
     public build: string,
@@ -4117,6 +4122,7 @@ export class Features implements TDProtoClass<Features> {
     public iceServers: ICEServer[],
     public installationType: string,
     public iosApp: string,
+    public iosCorpApp: string,
     public isTesting: boolean,
     public maxColorRuleDescriptionLength: number,
     public maxGroupTitleLength: number,
@@ -4179,6 +4185,7 @@ export class Features implements TDProtoClass<Features> {
     return new Features(
       raw.afk_age,
       raw.android_app,
+      raw.android_corp_app,
       raw.app_schemes,
       raw.app_title,
       raw.build,
@@ -4200,6 +4207,7 @@ export class Features implements TDProtoClass<Features> {
       raw.ice_servers.map(ICEServer.fromJSON),
       raw.installation_type,
       raw.ios_app,
+      raw.ios_corp_app,
       raw.is_testing,
       raw.max_color_rule_description_length,
       raw.max_group_title_length,
@@ -4262,6 +4270,7 @@ export class Features implements TDProtoClass<Features> {
   public mappableFields = [
     'afkAge',
     'androidApp',
+    'androidCorpApp',
     'appSchemes',
     'appTitle',
     'build',
@@ -4283,6 +4292,7 @@ export class Features implements TDProtoClass<Features> {
     'iceServers',
     'installationType',
     'iosApp',
+    'iosCorpApp',
     'isTesting',
     'maxColorRuleDescriptionLength',
     'maxGroupTitleLength',
@@ -4345,6 +4355,7 @@ export class Features implements TDProtoClass<Features> {
     /* eslint-disable camelcase */
     afkAge: () => ({ afk_age: this.afkAge }),
     androidApp: () => ({ android_app: this.androidApp }),
+    androidCorpApp: () => ({ android_corp_app: this.androidCorpApp }),
     appSchemes: () => ({ app_schemes: this.appSchemes }),
     appTitle: () => ({ app_title: this.appTitle }),
     build: () => ({ build: this.build }),
@@ -4366,6 +4377,7 @@ export class Features implements TDProtoClass<Features> {
     iceServers: () => ({ ice_servers: this.iceServers.map(u => u.toJSON()) }),
     installationType: () => ({ installation_type: this.installationType }),
     iosApp: () => ({ ios_app: this.iosApp }),
+    iosCorpApp: () => ({ ios_corp_app: this.iosCorpApp }),
     isTesting: () => ({ is_testing: this.isTesting }),
     maxColorRuleDescriptionLength: () => ({ max_color_rule_description_length: this.maxColorRuleDescriptionLength }),
     maxGroupTitleLength: () => ({ max_group_title_length: this.maxGroupTitleLength }),
