@@ -14058,62 +14058,92 @@ export class Wallpaper implements TDProtoClass<Wallpaper> {
 
 export interface WebBaseJSON {
   /* eslint-disable camelcase */
+  attention: RGBColor;
+  attention_light: RGBColor;
   back_light: RGBColor;
   brand: RGBColor;
   brand_dark: RGBColor;
   brand_light: RGBColor;
   error: RGBColor;
   error_light: RGBColor;
+  fade: RGBColor;
+  success: RGBColor;
+  success_light: RGBColor;
   /* eslint-enable camelcase */
 }
 
 export class WebBase implements TDProtoClass<WebBase> {
   /**
    * WebBase base colors for web
+   * @param attention DOCUMENTATION MISSING
+   * @param attentionLight DOCUMENTATION MISSING
    * @param backLight DOCUMENTATION MISSING
    * @param brand DOCUMENTATION MISSING
    * @param brandDark DOCUMENTATION MISSING
    * @param brandLight DOCUMENTATION MISSING
    * @param error DOCUMENTATION MISSING
    * @param errorLight DOCUMENTATION MISSING
+   * @param fade DOCUMENTATION MISSING
+   * @param success DOCUMENTATION MISSING
+   * @param successLight DOCUMENTATION MISSING
    */
   constructor (
+    public attention: RGBColor,
+    public attentionLight: RGBColor,
     public backLight: RGBColor,
     public brand: RGBColor,
     public brandDark: RGBColor,
     public brandLight: RGBColor,
     public error: RGBColor,
     public errorLight: RGBColor,
+    public fade: RGBColor,
+    public success: RGBColor,
+    public successLight: RGBColor,
   ) {}
 
   public static fromJSON (raw: WebBaseJSON): WebBase {
     return new WebBase(
+      raw.attention,
+      raw.attention_light,
       raw.back_light,
       raw.brand,
       raw.brand_dark,
       raw.brand_light,
       raw.error,
       raw.error_light,
+      raw.fade,
+      raw.success,
+      raw.success_light,
     )
   }
 
   public mappableFields = [
+    'attention',
+    'attentionLight',
     'backLight',
     'brand',
     'brandDark',
     'brandLight',
     'error',
     'errorLight',
+    'fade',
+    'success',
+    'successLight',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
+    attention: () => ({ attention: this.attention }),
+    attentionLight: () => ({ attention_light: this.attentionLight }),
     backLight: () => ({ back_light: this.backLight }),
     brand: () => ({ brand: this.brand }),
     brandDark: () => ({ brand_dark: this.brandDark }),
     brandLight: () => ({ brand_light: this.brandLight }),
     error: () => ({ error: this.error }),
     errorLight: () => ({ error_light: this.errorLight }),
+    fade: () => ({ fade: this.fade }),
+    success: () => ({ success: this.success }),
+    successLight: () => ({ success_light: this.successLight }),
     /* eslint-enable camelcase */
   }
 
