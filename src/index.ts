@@ -319,7 +319,7 @@ export interface ButtonColorsJSON {
 
 export class ButtonColors implements TDProtoClass<ButtonColors> {
   /**
-   * Button colors for app
+   * ButtonColors button colors for app
    * @param brandActive Brand active color
    * @param brandDisable Brand disable color
    * @param brandStatic Brand static color
@@ -4462,7 +4462,7 @@ export interface FontColorsJSON {
 
 export class FontColors implements TDProtoClass<FontColors> {
   /**
-   * Font colors for app
+   * FontColors font colors for app
    * @param brandButton Brand button color
    * @param bubbleReceived Bubble received color
    * @param bubbleSent Bubble sent color
@@ -4686,7 +4686,7 @@ export interface IconColorsJSON {
 
 export class IconColors implements TDProtoClass<IconColors> {
   /**
-   * Icon colors for app
+   * IconColors icon colors for app
    * @param brand Brand color
    * @param other Other color
    * @param title Title color
@@ -4813,7 +4813,7 @@ export interface InputColorsJSON {
 
 export class InputColors implements TDProtoClass<InputColors> {
   /**
-   * Input colors for app
+   * InputColors input colors for app
    * @param active Active color
    * @param disable Disable color
    * @param error Error color
@@ -5661,7 +5661,7 @@ export interface MessageColorsJSON {
 
 export class MessageColors implements TDProtoClass<MessageColors> {
   /**
-   * Message colors for app
+   * MessageColors message colors for app
    * @param allocated Allocated color
    * @param bubbleImportant Bubble important color
    * @param bubbleReceived Bubble received color
@@ -11767,7 +11767,7 @@ export interface SwitcherColorsJSON {
 
 export class SwitcherColors implements TDProtoClass<SwitcherColors> {
   /**
-   * Switcher colors for app
+   * SwitcherColors switcher colors for app
    * @param off Off color
    * @param on On color
    */
@@ -13147,6 +13147,7 @@ export interface ThemeJSON {
   switcher: SwitcherColorsJSON;
   tab_background: RGBColor;
   title_background: RGBColor;
+  web_base: WebBaseJSON;
   /* eslint-enable camelcase */
 }
 
@@ -13190,6 +13191,7 @@ export class Theme implements TDProtoClass<Theme> {
    * @param switcher Switcher colors for app
    * @param tabBackground Tab background color for app
    * @param titleBackground Title background color for app
+   * @param webBase WebBase colors for web
    */
   constructor (
     public AccentColor: RGBColor,
@@ -13229,6 +13231,7 @@ export class Theme implements TDProtoClass<Theme> {
     public switcher: SwitcherColors,
     public tabBackground: RGBColor,
     public titleBackground: RGBColor,
+    public webBase: WebBase,
   ) {}
 
   public static fromJSON (raw: ThemeJSON): Theme {
@@ -13270,6 +13273,7 @@ export class Theme implements TDProtoClass<Theme> {
       SwitcherColors.fromJSON(raw.switcher),
       raw.tab_background,
       raw.title_background,
+      WebBase.fromJSON(raw.web_base),
     )
   }
 
@@ -13311,6 +13315,7 @@ export class Theme implements TDProtoClass<Theme> {
     'switcher',
     'tabBackground',
     'titleBackground',
+    'webBase',
   ] as const
 
   readonly #mapper = {
@@ -13352,6 +13357,7 @@ export class Theme implements TDProtoClass<Theme> {
     switcher: () => ({ switcher: this.switcher.toJSON() }),
     tabBackground: () => ({ tab_background: this.tabBackground }),
     titleBackground: () => ({ title_background: this.titleBackground }),
+    webBase: () => ({ web_base: this.webBase.toJSON() }),
     /* eslint-enable camelcase */
   }
 
@@ -14041,6 +14047,78 @@ export class Wallpaper implements TDProtoClass<Wallpaper> {
 
   public toJSON (): WallpaperJSON
   public toJSON (fields: Array<this['mappableFields'][number]>): Partial<WallpaperJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface WebBaseJSON {
+  /* eslint-disable camelcase */
+  back_light: RGBColor;
+  brand: RGBColor;
+  brand_dark: RGBColor;
+  brand_light: RGBColor;
+  error: RGBColor;
+  error_light: RGBColor;
+  /* eslint-enable camelcase */
+}
+
+export class WebBase implements TDProtoClass<WebBase> {
+  /**
+   * WebBase base colors for web
+   * @param backLight DOCUMENTATION MISSING
+   * @param brand DOCUMENTATION MISSING
+   * @param brandDark DOCUMENTATION MISSING
+   * @param brandLight DOCUMENTATION MISSING
+   * @param error DOCUMENTATION MISSING
+   * @param errorLight DOCUMENTATION MISSING
+   */
+  constructor (
+    public backLight: RGBColor,
+    public brand: RGBColor,
+    public brandDark: RGBColor,
+    public brandLight: RGBColor,
+    public error: RGBColor,
+    public errorLight: RGBColor,
+  ) {}
+
+  public static fromJSON (raw: WebBaseJSON): WebBase {
+    return new WebBase(
+      raw.back_light,
+      raw.brand,
+      raw.brand_dark,
+      raw.brand_light,
+      raw.error,
+      raw.error_light,
+    )
+  }
+
+  public mappableFields = [
+    'backLight',
+    'brand',
+    'brandDark',
+    'brandLight',
+    'error',
+    'errorLight',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    backLight: () => ({ back_light: this.backLight }),
+    brand: () => ({ brand: this.brand }),
+    brandDark: () => ({ brand_dark: this.brandDark }),
+    brandLight: () => ({ brand_light: this.brandLight }),
+    error: () => ({ error: this.error }),
+    errorLight: () => ({ error_light: this.errorLight }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): WebBaseJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<WebBaseJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
