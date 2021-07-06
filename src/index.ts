@@ -3938,6 +3938,7 @@ export interface FeaturesJSON {
   calls_record: boolean;
   calls_version: number;
   custom_server: boolean;
+  custom_theme: boolean;
   desktop_version: string;
   firebase_api_key: string;
   firebase_app_id: string;
@@ -4007,7 +4008,6 @@ export interface FeaturesJSON {
   max_participants_per_call?: number;
   oauth_services?: OAuthServiceJSON[];
   only_one_device_per_call?: boolean;
-  theme_settings?: ThemeJSON;
   web_login_background?: string;
   /* eslint-enable camelcase */
 }
@@ -4025,6 +4025,7 @@ export class Features implements TDProtoClass<Features> {
    * @param callsRecord Calls record enabled
    * @param callsVersion Calls version. 0 = disabled, 1 = audio only, 2 = audio+video
    * @param customServer True for premise installation
+   * @param customTheme True if server has custom theme
    * @param desktopVersion Desktop application version
    * @param firebaseApiKey Firebase settings for web-push notifications
    * @param firebaseAppId Firebase settings for web-push notifications
@@ -4094,7 +4095,6 @@ export class Features implements TDProtoClass<Features> {
    * @param maxParticipantsPerCall Maximum number of participants per call
    * @param oauthServices External services
    * @param onlyOneDevicePerCall Disallow call from multiply devices. Experimental
-   * @param themeSettings Theme settings containing colors for app and web
    * @param webLoginBackground WebBackground image url, if any
    */
   constructor (
@@ -4108,6 +4108,7 @@ export class Features implements TDProtoClass<Features> {
     public callsRecord: boolean,
     public callsVersion: number,
     public customServer: boolean,
+    public customTheme: boolean,
     public desktopVersion: string,
     public firebaseApiKey: string,
     public firebaseAppId: string,
@@ -4177,7 +4178,6 @@ export class Features implements TDProtoClass<Features> {
     public maxParticipantsPerCall?: number,
     public oauthServices?: OAuthService[],
     public onlyOneDevicePerCall?: boolean,
-    public themeSettings?: Theme,
     public webLoginBackground?: string,
   ) {}
 
@@ -4193,6 +4193,7 @@ export class Features implements TDProtoClass<Features> {
       raw.calls_record,
       raw.calls_version,
       raw.custom_server,
+      raw.custom_theme,
       raw.desktop_version,
       raw.firebase_api_key,
       raw.firebase_app_id,
@@ -4262,7 +4263,6 @@ export class Features implements TDProtoClass<Features> {
       raw.max_participants_per_call,
       raw.oauth_services && raw.oauth_services.map(OAuthService.fromJSON),
       raw.only_one_device_per_call,
-      raw.theme_settings && Theme.fromJSON(raw.theme_settings),
       raw.web_login_background,
     )
   }
@@ -4278,6 +4278,7 @@ export class Features implements TDProtoClass<Features> {
     'callsRecord',
     'callsVersion',
     'customServer',
+    'customTheme',
     'desktopVersion',
     'firebaseApiKey',
     'firebaseAppId',
@@ -4347,7 +4348,6 @@ export class Features implements TDProtoClass<Features> {
     'maxParticipantsPerCall',
     'oauthServices',
     'onlyOneDevicePerCall',
-    'themeSettings',
     'webLoginBackground',
   ] as const
 
@@ -4363,6 +4363,7 @@ export class Features implements TDProtoClass<Features> {
     callsRecord: () => ({ calls_record: this.callsRecord }),
     callsVersion: () => ({ calls_version: this.callsVersion }),
     customServer: () => ({ custom_server: this.customServer }),
+    customTheme: () => ({ custom_theme: this.customTheme }),
     desktopVersion: () => ({ desktop_version: this.desktopVersion }),
     firebaseApiKey: () => ({ firebase_api_key: this.firebaseApiKey }),
     firebaseAppId: () => ({ firebase_app_id: this.firebaseAppId }),
@@ -4432,7 +4433,6 @@ export class Features implements TDProtoClass<Features> {
     maxParticipantsPerCall: () => ({ max_participants_per_call: this.maxParticipantsPerCall }),
     oauthServices: () => ({ oauth_services: this.oauthServices?.map(u => u.toJSON()) }),
     onlyOneDevicePerCall: () => ({ only_one_device_per_call: this.onlyOneDevicePerCall }),
-    themeSettings: () => ({ theme_settings: this.themeSettings?.toJSON() }),
     webLoginBackground: () => ({ web_login_background: this.webLoginBackground }),
     /* eslint-enable camelcase */
   }
