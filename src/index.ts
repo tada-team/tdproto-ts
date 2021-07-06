@@ -12150,6 +12150,7 @@ export class TaskFilter implements TDProtoClass<TaskFilter> {
 
 export interface TaskItemJSON {
   /* eslint-disable camelcase */
+  gentime: number;
   text: string;
   can_toggle?: boolean;
   checked?: boolean;
@@ -12162,6 +12163,7 @@ export interface TaskItemJSON {
 export class TaskItem implements TDProtoClass<TaskItem> {
   /**
    * Task checklist item
+   * @param gentime Object version
    * @param text Text or "#{OtherTaskNumber}"
    * @param canToggle Can I toggle this item
    * @param checked Item checked
@@ -12170,6 +12172,7 @@ export class TaskItem implements TDProtoClass<TaskItem> {
    * @param uid Id
    */
   constructor (
+    public readonly gentime: number,
     public text: string,
     public canToggle?: boolean,
     public checked?: boolean,
@@ -12180,6 +12183,7 @@ export class TaskItem implements TDProtoClass<TaskItem> {
 
   public static fromJSON (raw: TaskItemJSON): TaskItem {
     return new TaskItem(
+      raw.gentime,
       raw.text,
       raw.can_toggle,
       raw.checked,
@@ -12190,6 +12194,7 @@ export class TaskItem implements TDProtoClass<TaskItem> {
   }
 
   public mappableFields = [
+    'gentime',
     'text',
     'canToggle',
     'checked',
@@ -12200,6 +12205,7 @@ export class TaskItem implements TDProtoClass<TaskItem> {
 
   readonly #mapper = {
     /* eslint-disable camelcase */
+    gentime: () => ({ gentime: this.gentime }),
     text: () => ({ text: this.text }),
     canToggle: () => ({ can_toggle: this.canToggle }),
     checked: () => ({ checked: this.checked }),
