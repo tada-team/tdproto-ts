@@ -12634,7 +12634,7 @@ export class Team implements TDProtoClass<Team> {
     public name: string,
     public readonly needConfirmation: boolean,
     public readonly uid: string,
-    public readonly unread: TeamUnread,
+    public unread: TeamUnread,
     public readonly userFields: string[],
     public readonly badProfile?: boolean,
     public readonly changeableStatuses?: TeamStatus[],
