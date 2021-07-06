@@ -3997,6 +3997,7 @@ export interface FeaturesJSON {
   userver: string;
   wiki_pages: boolean;
   allow_admin_mute?: boolean;
+  amplitude_api_key?: string;
   app_login_background?: string;
   auth_2fa?: boolean;
   auth_by_password?: boolean;
@@ -4084,6 +4085,7 @@ export class Features implements TDProtoClass<Features> {
    * @param userver Static files server address
    * @param wikiPages Wiki pages in chats. Experimental
    * @param allowAdminMute Wiki pages in chats. Experimental
+   * @param amplitudeApiKey Amplitude api key
    * @param appLoginBackground AppBackground image url, if any
    * @param auth2fa Two-factor authentication (2FA) enabled
    * @param authByPassword Password authentication enabled
@@ -4167,6 +4169,7 @@ export class Features implements TDProtoClass<Features> {
     public userver: string,
     public wikiPages: boolean,
     public allowAdminMute?: boolean,
+    public amplitudeApiKey?: string,
     public appLoginBackground?: string,
     public auth2fa?: boolean,
     public authByPassword?: boolean,
@@ -4252,6 +4255,7 @@ export class Features implements TDProtoClass<Features> {
       raw.userver,
       raw.wiki_pages,
       raw.allow_admin_mute,
+      raw.amplitude_api_key,
       raw.app_login_background,
       raw.auth_2fa,
       raw.auth_by_password,
@@ -4337,6 +4341,7 @@ export class Features implements TDProtoClass<Features> {
     'userver',
     'wikiPages',
     'allowAdminMute',
+    'amplitudeApiKey',
     'appLoginBackground',
     'auth2fa',
     'authByPassword',
@@ -4422,6 +4427,7 @@ export class Features implements TDProtoClass<Features> {
     userver: () => ({ userver: this.userver }),
     wikiPages: () => ({ wiki_pages: this.wikiPages }),
     allowAdminMute: () => ({ allow_admin_mute: this.allowAdminMute }),
+    amplitudeApiKey: () => ({ amplitude_api_key: this.amplitudeApiKey }),
     appLoginBackground: () => ({ app_login_background: this.appLoginBackground }),
     auth2fa: () => ({ auth_2fa: this.auth2fa }),
     authByPassword: () => ({ auth_by_password: this.authByPassword }),
