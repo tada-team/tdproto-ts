@@ -12642,7 +12642,7 @@ export class Team implements TDProtoClass<Team> {
     public readonly icons: IconData,
     public readonly lastActive: boolean,
     public maxMessageUpdateAge: number,
-    public readonly me: Contact,
+    public me: Contact,
     public name: string,
     public readonly needConfirmation: boolean,
     public readonly uid: string,
