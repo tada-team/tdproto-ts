@@ -11700,6 +11700,7 @@ export interface SubtaskJSON {
   num: number;
   title: string;
   public?: boolean;
+  task_status?: string;
   /* eslint-enable camelcase */
 }
 
@@ -11712,6 +11713,7 @@ export class Subtask implements TDProtoClass<Subtask> {
    * @param num Task number in this team
    * @param title Task title. Generated from number and description
    * @param isPublic Can other team member see this task/group chat
+   * @param taskStatus Subtask task status
    */
   constructor (
     public assignee: JID,
@@ -11720,6 +11722,7 @@ export class Subtask implements TDProtoClass<Subtask> {
     public num: number,
     public title: string,
     public isPublic?: boolean,
+    public taskStatus?: string,
   ) {}
 
   public static fromJSON (raw: SubtaskJSON): Subtask {
@@ -11730,6 +11733,7 @@ export class Subtask implements TDProtoClass<Subtask> {
       raw.num,
       raw.title,
       raw.public,
+      raw.task_status,
     )
   }
 
@@ -11740,6 +11744,7 @@ export class Subtask implements TDProtoClass<Subtask> {
     'num',
     'title',
     'isPublic',
+    'taskStatus',
   ] as const
 
   readonly #mapper = {
@@ -11750,6 +11755,7 @@ export class Subtask implements TDProtoClass<Subtask> {
     num: () => ({ num: this.num }),
     title: () => ({ title: this.title }),
     isPublic: () => ({ public: this.isPublic }),
+    taskStatus: () => ({ task_status: this.taskStatus }),
     /* eslint-enable camelcase */
   }
 
