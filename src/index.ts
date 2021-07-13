@@ -7076,6 +7076,7 @@ export interface RespJSON {
   /* eslint-disable camelcase */
   ok: boolean;
   _time?: string;
+  details?: Record<string, string>;
   error?: Err;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   result?: any;
@@ -7087,12 +7088,14 @@ export class Resp implements TDProtoClass<Resp> {
    * Server responce
    * @param ok DOCUMENTATION MISSING
    * @param _time DOCUMENTATION MISSING
+   * @param details DOCUMENTATION MISSING
    * @param error DOCUMENTATION MISSING
    * @param result DOCUMENTATION MISSING
    */
   constructor (
     public ok: boolean,
     public _time?: string,
+    public details?: Record<string, string>,
     public error?: Err,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public result?: any,
@@ -7102,6 +7105,7 @@ export class Resp implements TDProtoClass<Resp> {
     return new Resp(
       raw.ok,
       raw._time,
+      raw.details,
       raw.error,
       raw.result,
     )
@@ -7110,6 +7114,7 @@ export class Resp implements TDProtoClass<Resp> {
   public mappableFields = [
     'ok',
     '_time',
+    'details',
     'error',
     'result',
   ] as const
@@ -7118,6 +7123,7 @@ export class Resp implements TDProtoClass<Resp> {
     /* eslint-disable camelcase */
     ok: () => ({ ok: this.ok }),
     _time: () => ({ _time: this._time }),
+    details: () => ({ details: this.details }),
     error: () => ({ error: this.error }),
     result: () => ({ result: this.result }),
     /* eslint-enable camelcase */
