@@ -58,6 +58,8 @@ export type UploadMediaType =
    | 'audio'
    | 'imagefile'
 
+export type Err = string
+
 export type ISODateTimeString = string
 
 export type JID = string
@@ -7061,6 +7063,68 @@ export class Remind implements TDProtoClass<Remind> {
 
   public toJSON (): RemindJSON
   public toJSON (fields: Array<this['mappableFields'][number]>): Partial<RemindJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface RespJSON {
+  /* eslint-disable camelcase */
+  ok: boolean;
+  _time?: string;
+  error?: Err;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  result?: any;
+  /* eslint-enable camelcase */
+}
+
+export class Resp implements TDProtoClass<Resp> {
+  /**
+   * Server responce
+   * @param ok DOCUMENTATION MISSING
+   * @param _time DOCUMENTATION MISSING
+   * @param error DOCUMENTATION MISSING
+   * @param result DOCUMENTATION MISSING
+   */
+  constructor (
+    public ok: boolean,
+    public _time?: string,
+    public error?: Err,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    public result?: any,
+  ) {}
+
+  public static fromJSON (raw: RespJSON): Resp {
+    return new Resp(
+      raw.ok,
+      raw._time,
+      raw.error,
+      raw.result,
+    )
+  }
+
+  public mappableFields = [
+    'ok',
+    '_time',
+    'error',
+    'result',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    ok: () => ({ ok: this.ok }),
+    _time: () => ({ _time: this._time }),
+    error: () => ({ error: this.error }),
+    result: () => ({ result: this.result }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): RespJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<RespJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
