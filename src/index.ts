@@ -11938,6 +11938,7 @@ export class Tag implements TDProtoClass<Tag> {
 
 export interface TariffJSON {
   /* eslint-disable camelcase */
+  MaxUploadFilesize: number;
   cloud_space: number;
   key: string;
   max_members_in_team: number;
@@ -11950,6 +11951,7 @@ export interface TariffJSON {
 export class Tariff implements TDProtoClass<Tariff> {
   /**
    * Tariff for teams
+   * @param MaxUploadFilesize maximum file size for uploading
    * @param cloudSpace Cloud space reserved for storing team users uploads in megabytes
    * @param key Key for updating tariff in team
    * @param maxMembersInTeam Maximum allowed number of members in a team
@@ -11958,6 +11960,7 @@ export class Tariff implements TDProtoClass<Tariff> {
    * @param nameRu Name of tariff on russian
    */
   constructor (
+    public MaxUploadFilesize: number,
     public cloudSpace: number,
     public key: string,
     public maxMembersInTeam: number,
@@ -11968,6 +11971,7 @@ export class Tariff implements TDProtoClass<Tariff> {
 
   public static fromJSON (raw: TariffJSON): Tariff {
     return new Tariff(
+      raw.MaxUploadFilesize,
       raw.cloud_space,
       raw.key,
       raw.max_members_in_team,
@@ -11978,6 +11982,7 @@ export class Tariff implements TDProtoClass<Tariff> {
   }
 
   public mappableFields = [
+    'MaxUploadFilesize',
     'cloudSpace',
     'key',
     'maxMembersInTeam',
@@ -11988,6 +11993,7 @@ export class Tariff implements TDProtoClass<Tariff> {
 
   readonly #mapper = {
     /* eslint-disable camelcase */
+    MaxUploadFilesize: () => ({ MaxUploadFilesize: this.MaxUploadFilesize }),
     cloudSpace: () => ({ cloud_space: this.cloudSpace }),
     key: () => ({ key: this.key }),
     maxMembersInTeam: () => ({ max_members_in_team: this.maxMembersInTeam }),
