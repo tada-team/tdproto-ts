@@ -11936,6 +11936,78 @@ export class Tag implements TDProtoClass<Tag> {
   }
 }
 
+export interface TariffJSON {
+  /* eslint-disable camelcase */
+  cloud_space: number;
+  key: string;
+  max_members_in_team: number;
+  max_participants_per_call: number;
+  name_en: string;
+  name_ru: string;
+  /* eslint-enable camelcase */
+}
+
+export class Tariff implements TDProtoClass<Tariff> {
+  /**
+   * Tariff for teams
+   * @param cloudSpace Cloud space reserved for storing team users uploads in megabytes
+   * @param key Key for updating tariff in team
+   * @param maxMembersInTeam Maximum allowed number of members in a team
+   * @param maxParticipantsPerCall Maximum number of participants per call
+   * @param nameEn Name of tariff on english
+   * @param nameRu Name of tariff on russian
+   */
+  constructor (
+    public cloudSpace: number,
+    public key: string,
+    public maxMembersInTeam: number,
+    public maxParticipantsPerCall: number,
+    public nameEn: string,
+    public nameRu: string,
+  ) {}
+
+  public static fromJSON (raw: TariffJSON): Tariff {
+    return new Tariff(
+      raw.cloud_space,
+      raw.key,
+      raw.max_members_in_team,
+      raw.max_participants_per_call,
+      raw.name_en,
+      raw.name_ru,
+    )
+  }
+
+  public mappableFields = [
+    'cloudSpace',
+    'key',
+    'maxMembersInTeam',
+    'maxParticipantsPerCall',
+    'nameEn',
+    'nameRu',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    cloudSpace: () => ({ cloud_space: this.cloudSpace }),
+    key: () => ({ key: this.key }),
+    maxMembersInTeam: () => ({ max_members_in_team: this.maxMembersInTeam }),
+    maxParticipantsPerCall: () => ({ max_participants_per_call: this.maxParticipantsPerCall }),
+    nameEn: () => ({ name_en: this.nameEn }),
+    nameRu: () => ({ name_ru: this.nameRu }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): TariffJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<TariffJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface TaskJSON {
   /* eslint-disable camelcase */
   assignee?: JID;
