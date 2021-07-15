@@ -4005,6 +4005,7 @@ export interface FeaturesJSON {
   auth_by_password?: boolean;
   auth_by_qr_code?: boolean;
   auth_by_sms?: boolean;
+  custom_app_icon_name?: string;
   default_wallpaper?: WallpaperJSON;
   installation_title?: string;
   landing_url?: string;
@@ -4093,6 +4094,7 @@ export class Features implements TDProtoClass<Features> {
    * @param authByPassword Password authentication enabled
    * @param authByQrCode QR-code / link authentication enabled
    * @param authBySms SMS authentication enabled
+   * @param customAppIconName Custom application icon name, if any
    * @param defaultWallpaper Default wallpaper url for mobile apps, if any
    * @param installationTitle Installation title, used on login screen
    * @param landingUrl Landing page address, if any
@@ -4177,6 +4179,7 @@ export class Features implements TDProtoClass<Features> {
     public authByPassword?: boolean,
     public authByQrCode?: boolean,
     public authBySms?: boolean,
+    public customAppIconName?: string,
     public defaultWallpaper?: Wallpaper,
     public installationTitle?: string,
     public landingUrl?: string,
@@ -4263,6 +4266,7 @@ export class Features implements TDProtoClass<Features> {
       raw.auth_by_password,
       raw.auth_by_qr_code,
       raw.auth_by_sms,
+      raw.custom_app_icon_name,
       raw.default_wallpaper && Wallpaper.fromJSON(raw.default_wallpaper),
       raw.installation_title,
       raw.landing_url,
@@ -4349,6 +4353,7 @@ export class Features implements TDProtoClass<Features> {
     'authByPassword',
     'authByQrCode',
     'authBySms',
+    'customAppIconName',
     'defaultWallpaper',
     'installationTitle',
     'landingUrl',
@@ -4435,6 +4440,7 @@ export class Features implements TDProtoClass<Features> {
     authByPassword: () => ({ auth_by_password: this.authByPassword }),
     authByQrCode: () => ({ auth_by_qr_code: this.authByQrCode }),
     authBySms: () => ({ auth_by_sms: this.authBySms }),
+    customAppIconName: () => ({ custom_app_icon_name: this.customAppIconName }),
     defaultWallpaper: () => ({ default_wallpaper: this.defaultWallpaper?.toJSON() }),
     installationTitle: () => ({ installation_title: this.installationTitle }),
     landingUrl: () => ({ landing_url: this.landingUrl }),
