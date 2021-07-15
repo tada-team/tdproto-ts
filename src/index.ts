@@ -11938,68 +11938,68 @@ export class Tag implements TDProtoClass<Tag> {
 
 export interface TariffJSON {
   /* eslint-disable camelcase */
-  MaxUploadFilesize: number;
-  cloud_space: number;
-  key: string;
-  max_members_in_team: number;
-  max_participants_per_call: number;
-  name_en: string;
-  name_ru: string;
+  title_en: string;
+  title_ru: string;
+  uid: string;
+  cloud_space?: number;
+  max_members_in_team?: number;
+  max_participants_per_call?: number;
+  max_upload_filesize?: number;
   /* eslint-enable camelcase */
 }
 
 export class Tariff implements TDProtoClass<Tariff> {
   /**
    * Tariff for teams
-   * @param MaxUploadFilesize maximum file size for uploading
+   * @param titleEn Title of tariff on enlish
+   * @param titleRu Title of tariff on russian
+   * @param uid Tariff id
    * @param cloudSpace Cloud space reserved for storing team users uploads in megabytes
-   * @param key Key for updating tariff in team
    * @param maxMembersInTeam Maximum allowed number of members in a team
    * @param maxParticipantsPerCall Maximum number of participants per call
-   * @param nameEn Name of tariff on english
-   * @param nameRu Name of tariff on russian
+   * @param maxUploadFilesize maximum file size for uploading
    */
   constructor (
-    public MaxUploadFilesize: number,
-    public cloudSpace: number,
-    public key: string,
-    public maxMembersInTeam: number,
-    public maxParticipantsPerCall: number,
-    public nameEn: string,
-    public nameRu: string,
+    public titleEn: string,
+    public titleRu: string,
+    public uid: string,
+    public cloudSpace?: number,
+    public maxMembersInTeam?: number,
+    public maxParticipantsPerCall?: number,
+    public maxUploadFilesize?: number,
   ) {}
 
   public static fromJSON (raw: TariffJSON): Tariff {
     return new Tariff(
-      raw.MaxUploadFilesize,
+      raw.title_en,
+      raw.title_ru,
+      raw.uid,
       raw.cloud_space,
-      raw.key,
       raw.max_members_in_team,
       raw.max_participants_per_call,
-      raw.name_en,
-      raw.name_ru,
+      raw.max_upload_filesize,
     )
   }
 
   public mappableFields = [
-    'MaxUploadFilesize',
+    'titleEn',
+    'titleRu',
+    'uid',
     'cloudSpace',
-    'key',
     'maxMembersInTeam',
     'maxParticipantsPerCall',
-    'nameEn',
-    'nameRu',
+    'maxUploadFilesize',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    MaxUploadFilesize: () => ({ MaxUploadFilesize: this.MaxUploadFilesize }),
+    titleEn: () => ({ title_en: this.titleEn }),
+    titleRu: () => ({ title_ru: this.titleRu }),
+    uid: () => ({ uid: this.uid }),
     cloudSpace: () => ({ cloud_space: this.cloudSpace }),
-    key: () => ({ key: this.key }),
     maxMembersInTeam: () => ({ max_members_in_team: this.maxMembersInTeam }),
     maxParticipantsPerCall: () => ({ max_participants_per_call: this.maxParticipantsPerCall }),
-    nameEn: () => ({ name_en: this.nameEn }),
-    nameRu: () => ({ name_ru: this.nameRu }),
+    maxUploadFilesize: () => ({ max_upload_filesize: this.maxUploadFilesize }),
     /* eslint-enable camelcase */
   }
 
