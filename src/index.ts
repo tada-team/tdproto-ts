@@ -4005,10 +4005,12 @@ export interface FeaturesJSON {
   auth_by_password?: boolean;
   auth_by_qr_code?: boolean;
   auth_by_sms?: boolean;
+  custom_app_icon_name?: string;
   default_wallpaper?: WallpaperJSON;
   installation_title?: string;
   landing_url?: string;
   max_participants_per_call?: number;
+  multi_nodes?: boolean;
   oauth_services?: OAuthServiceJSON[];
   only_one_device_per_call?: boolean;
   web_login_background?: string;
@@ -4093,10 +4095,12 @@ export class Features implements TDProtoClass<Features> {
    * @param authByPassword Password authentication enabled
    * @param authByQrCode QR-code / link authentication enabled
    * @param authBySms SMS authentication enabled
+   * @param customAppIconName Custom application icon name, if any
    * @param defaultWallpaper Default wallpaper url for mobile apps, if any
    * @param installationTitle Installation title, used on login screen
    * @param landingUrl Landing page address, if any
    * @param maxParticipantsPerCall Maximum number of participants per call
+   * @param multiNodes Multi nodes mode (federation) enabled
    * @param oauthServices External services
    * @param onlyOneDevicePerCall Disallow call from multiply devices. Experimental
    * @param webLoginBackground WebBackground image url, if any
@@ -4177,10 +4181,12 @@ export class Features implements TDProtoClass<Features> {
     public authByPassword?: boolean,
     public authByQrCode?: boolean,
     public authBySms?: boolean,
+    public customAppIconName?: string,
     public defaultWallpaper?: Wallpaper,
     public installationTitle?: string,
     public landingUrl?: string,
     public maxParticipantsPerCall?: number,
+    public multiNodes?: boolean,
     public oauthServices?: OAuthService[],
     public onlyOneDevicePerCall?: boolean,
     public webLoginBackground?: string,
@@ -4263,10 +4269,12 @@ export class Features implements TDProtoClass<Features> {
       raw.auth_by_password,
       raw.auth_by_qr_code,
       raw.auth_by_sms,
+      raw.custom_app_icon_name,
       raw.default_wallpaper && Wallpaper.fromJSON(raw.default_wallpaper),
       raw.installation_title,
       raw.landing_url,
       raw.max_participants_per_call,
+      raw.multi_nodes,
       raw.oauth_services && raw.oauth_services.map(OAuthService.fromJSON),
       raw.only_one_device_per_call,
       raw.web_login_background,
@@ -4349,10 +4357,12 @@ export class Features implements TDProtoClass<Features> {
     'authByPassword',
     'authByQrCode',
     'authBySms',
+    'customAppIconName',
     'defaultWallpaper',
     'installationTitle',
     'landingUrl',
     'maxParticipantsPerCall',
+    'multiNodes',
     'oauthServices',
     'onlyOneDevicePerCall',
     'webLoginBackground',
@@ -4435,10 +4445,12 @@ export class Features implements TDProtoClass<Features> {
     authByPassword: () => ({ auth_by_password: this.authByPassword }),
     authByQrCode: () => ({ auth_by_qr_code: this.authByQrCode }),
     authBySms: () => ({ auth_by_sms: this.authBySms }),
+    customAppIconName: () => ({ custom_app_icon_name: this.customAppIconName }),
     defaultWallpaper: () => ({ default_wallpaper: this.defaultWallpaper?.toJSON() }),
     installationTitle: () => ({ installation_title: this.installationTitle }),
     landingUrl: () => ({ landing_url: this.landingUrl }),
     maxParticipantsPerCall: () => ({ max_participants_per_call: this.maxParticipantsPerCall }),
+    multiNodes: () => ({ multi_nodes: this.multiNodes }),
     oauthServices: () => ({ oauth_services: this.oauthServices?.map(u => u.toJSON()) }),
     onlyOneDevicePerCall: () => ({ only_one_device_per_call: this.onlyOneDevicePerCall }),
     webLoginBackground: () => ({ web_login_background: this.webLoginBackground }),
@@ -11938,68 +11950,68 @@ export class Tag implements TDProtoClass<Tag> {
 
 export interface TariffJSON {
   /* eslint-disable camelcase */
-  MaxUploadFilesize: number;
-  cloud_space: number;
-  key: string;
-  max_members_in_team: number;
-  max_participants_per_call: number;
-  name_en: string;
-  name_ru: string;
+  title_en: string;
+  title_ru: string;
+  uid: string;
+  cloud_space?: number;
+  max_members_in_team?: number;
+  max_participants_per_call?: number;
+  max_upload_filesize?: number;
   /* eslint-enable camelcase */
 }
 
 export class Tariff implements TDProtoClass<Tariff> {
   /**
    * Tariff for teams
-   * @param MaxUploadFilesize maximum file size for uploading
+   * @param titleEn Title of tariff on enlish
+   * @param titleRu Title of tariff on russian
+   * @param uid Tariff id
    * @param cloudSpace Cloud space reserved for storing team users uploads in megabytes
-   * @param key Key for updating tariff in team
    * @param maxMembersInTeam Maximum allowed number of members in a team
    * @param maxParticipantsPerCall Maximum number of participants per call
-   * @param nameEn Name of tariff on english
-   * @param nameRu Name of tariff on russian
+   * @param maxUploadFilesize maximum file size for uploading
    */
   constructor (
-    public MaxUploadFilesize: number,
-    public cloudSpace: number,
-    public key: string,
-    public maxMembersInTeam: number,
-    public maxParticipantsPerCall: number,
-    public nameEn: string,
-    public nameRu: string,
+    public titleEn: string,
+    public titleRu: string,
+    public uid: string,
+    public cloudSpace?: number,
+    public maxMembersInTeam?: number,
+    public maxParticipantsPerCall?: number,
+    public maxUploadFilesize?: number,
   ) {}
 
   public static fromJSON (raw: TariffJSON): Tariff {
     return new Tariff(
-      raw.MaxUploadFilesize,
+      raw.title_en,
+      raw.title_ru,
+      raw.uid,
       raw.cloud_space,
-      raw.key,
       raw.max_members_in_team,
       raw.max_participants_per_call,
-      raw.name_en,
-      raw.name_ru,
+      raw.max_upload_filesize,
     )
   }
 
   public mappableFields = [
-    'MaxUploadFilesize',
+    'titleEn',
+    'titleRu',
+    'uid',
     'cloudSpace',
-    'key',
     'maxMembersInTeam',
     'maxParticipantsPerCall',
-    'nameEn',
-    'nameRu',
+    'maxUploadFilesize',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    MaxUploadFilesize: () => ({ MaxUploadFilesize: this.MaxUploadFilesize }),
+    titleEn: () => ({ title_en: this.titleEn }),
+    titleRu: () => ({ title_ru: this.titleRu }),
+    uid: () => ({ uid: this.uid }),
     cloudSpace: () => ({ cloud_space: this.cloudSpace }),
-    key: () => ({ key: this.key }),
     maxMembersInTeam: () => ({ max_members_in_team: this.maxMembersInTeam }),
     maxParticipantsPerCall: () => ({ max_participants_per_call: this.maxParticipantsPerCall }),
-    nameEn: () => ({ name_en: this.nameEn }),
-    nameRu: () => ({ name_ru: this.nameRu }),
+    maxUploadFilesize: () => ({ max_upload_filesize: this.maxUploadFilesize }),
     /* eslint-enable camelcase */
   }
 
