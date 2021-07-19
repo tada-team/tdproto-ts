@@ -4010,6 +4010,7 @@ export interface FeaturesJSON {
   installation_title?: string;
   landing_url?: string;
   max_participants_per_call?: number;
+  multi_nodes?: boolean;
   oauth_services?: OAuthServiceJSON[];
   only_one_device_per_call?: boolean;
   web_login_background?: string;
@@ -4099,6 +4100,7 @@ export class Features implements TDProtoClass<Features> {
    * @param installationTitle Installation title, used on login screen
    * @param landingUrl Landing page address, if any
    * @param maxParticipantsPerCall Maximum number of participants per call
+   * @param multiNodes Multi nodes mode (federation) enabled
    * @param oauthServices External services
    * @param onlyOneDevicePerCall Disallow call from multiply devices. Experimental
    * @param webLoginBackground WebBackground image url, if any
@@ -4184,6 +4186,7 @@ export class Features implements TDProtoClass<Features> {
     public installationTitle?: string,
     public landingUrl?: string,
     public maxParticipantsPerCall?: number,
+    public multiNodes?: boolean,
     public oauthServices?: OAuthService[],
     public onlyOneDevicePerCall?: boolean,
     public webLoginBackground?: string,
@@ -4271,6 +4274,7 @@ export class Features implements TDProtoClass<Features> {
       raw.installation_title,
       raw.landing_url,
       raw.max_participants_per_call,
+      raw.multi_nodes,
       raw.oauth_services && raw.oauth_services.map(OAuthService.fromJSON),
       raw.only_one_device_per_call,
       raw.web_login_background,
@@ -4358,6 +4362,7 @@ export class Features implements TDProtoClass<Features> {
     'installationTitle',
     'landingUrl',
     'maxParticipantsPerCall',
+    'multiNodes',
     'oauthServices',
     'onlyOneDevicePerCall',
     'webLoginBackground',
@@ -4445,6 +4450,7 @@ export class Features implements TDProtoClass<Features> {
     installationTitle: () => ({ installation_title: this.installationTitle }),
     landingUrl: () => ({ landing_url: this.landingUrl }),
     maxParticipantsPerCall: () => ({ max_participants_per_call: this.maxParticipantsPerCall }),
+    multiNodes: () => ({ multi_nodes: this.multiNodes }),
     oauthServices: () => ({ oauth_services: this.oauthServices?.map(u => u.toJSON()) }),
     onlyOneDevicePerCall: () => ({ only_one_device_per_call: this.onlyOneDevicePerCall }),
     webLoginBackground: () => ({ web_login_background: this.webLoginBackground }),
