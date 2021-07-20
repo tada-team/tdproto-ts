@@ -7090,6 +7090,7 @@ export interface RespJSON {
   _time?: string;
   details?: Record<string, string>;
   error?: Err;
+  reason?: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   result?: any;
   /* eslint-enable camelcase */
@@ -7102,6 +7103,7 @@ export class Resp implements TDProtoClass<Resp> {
    * @param _time DOCUMENTATION MISSING
    * @param details DOCUMENTATION MISSING
    * @param error DOCUMENTATION MISSING
+   * @param reason DOCUMENTATION MISSING
    * @param result DOCUMENTATION MISSING
    */
   constructor (
@@ -7109,6 +7111,7 @@ export class Resp implements TDProtoClass<Resp> {
     public _time?: string,
     public details?: Record<string, string>,
     public error?: Err,
+    public reason?: string,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public result?: any,
   ) {}
@@ -7119,6 +7122,7 @@ export class Resp implements TDProtoClass<Resp> {
       raw._time,
       raw.details,
       raw.error,
+      raw.reason,
       raw.result,
     )
   }
@@ -7128,6 +7132,7 @@ export class Resp implements TDProtoClass<Resp> {
     '_time',
     'details',
     'error',
+    'reason',
     'result',
   ] as const
 
@@ -7137,6 +7142,7 @@ export class Resp implements TDProtoClass<Resp> {
     _time: () => ({ _time: this._time }),
     details: () => ({ details: this.details }),
     error: () => ({ error: this.error }),
+    reason: () => ({ reason: this.reason }),
     result: () => ({ result: this.result }),
     /* eslint-enable camelcase */
   }
