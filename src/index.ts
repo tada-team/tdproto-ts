@@ -3965,6 +3965,7 @@ export interface FeaturesJSON {
   max_message_search_limit: number;
   max_message_uploads: number;
   max_mood_length: number;
+  max_project_length: number;
   max_role_length: number;
   max_section_length: number;
   max_tag_length: number;
@@ -4055,8 +4056,9 @@ export class Features implements TDProtoClass<Features> {
    * @param maxMessageSearchLimit Maximum search result
    * @param maxMessageUploads Maximum number of message uploads
    * @param maxMoodLength Maximum chars for mood in team
+   * @param maxProjectLength Maximum length for project
    * @param maxRoleLength Maximum chars for role in team
-   * @param maxSectionLength Maximum length for project and contact's sections names
+   * @param maxSectionLength Maximum length for contact's sections names
    * @param maxTagLength Maximum length for tags
    * @param maxTaskTitleLength Maximum length for task title
    * @param maxTeams Maximum teams for one account
@@ -4141,6 +4143,7 @@ export class Features implements TDProtoClass<Features> {
     public maxMessageSearchLimit: number,
     public maxMessageUploads: number,
     public maxMoodLength: number,
+    public maxProjectLength: number,
     public maxRoleLength: number,
     public maxSectionLength: number,
     public maxTagLength: number,
@@ -4229,6 +4232,7 @@ export class Features implements TDProtoClass<Features> {
       raw.max_message_search_limit,
       raw.max_message_uploads,
       raw.max_mood_length,
+      raw.max_project_length,
       raw.max_role_length,
       raw.max_section_length,
       raw.max_tag_length,
@@ -4317,6 +4321,7 @@ export class Features implements TDProtoClass<Features> {
     'maxMessageSearchLimit',
     'maxMessageUploads',
     'maxMoodLength',
+    'maxProjectLength',
     'maxRoleLength',
     'maxSectionLength',
     'maxTagLength',
@@ -4405,6 +4410,7 @@ export class Features implements TDProtoClass<Features> {
     maxMessageSearchLimit: () => ({ max_message_search_limit: this.maxMessageSearchLimit }),
     maxMessageUploads: () => ({ max_message_uploads: this.maxMessageUploads }),
     maxMoodLength: () => ({ max_mood_length: this.maxMoodLength }),
+    maxProjectLength: () => ({ max_project_length: this.maxProjectLength }),
     maxRoleLength: () => ({ max_role_length: this.maxRoleLength }),
     maxSectionLength: () => ({ max_section_length: this.maxSectionLength }),
     maxTagLength: () => ({ max_tag_length: this.maxTagLength }),
