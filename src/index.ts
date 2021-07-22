@@ -7096,6 +7096,7 @@ export interface RespJSON {
   _time?: string;
   details?: Record<string, string>;
   error?: Err;
+  markup?: MarkupEntityJSON[];
   reason?: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   result?: any;
@@ -7109,7 +7110,8 @@ export class Resp implements TDProtoClass<Resp> {
    * @param _time DOCUMENTATION MISSING
    * @param details DOCUMENTATION MISSING
    * @param error DOCUMENTATION MISSING
-   * @param reason DOCUMENTATION MISSING
+   * @param markup Entities for reason. Experimental
+   * @param reason Reason answers why not ok or has error
    * @param result DOCUMENTATION MISSING
    */
   constructor (
@@ -7117,6 +7119,7 @@ export class Resp implements TDProtoClass<Resp> {
     public _time?: string,
     public details?: Record<string, string>,
     public error?: Err,
+    public markup?: MarkupEntity[],
     public reason?: string,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public result?: any,
@@ -7128,6 +7131,7 @@ export class Resp implements TDProtoClass<Resp> {
       raw._time,
       raw.details,
       raw.error,
+      raw.markup && raw.markup.map(MarkupEntity.fromJSON),
       raw.reason,
       raw.result,
     )
@@ -7138,6 +7142,7 @@ export class Resp implements TDProtoClass<Resp> {
     '_time',
     'details',
     'error',
+    'markup',
     'reason',
     'result',
   ] as const
@@ -7148,6 +7153,7 @@ export class Resp implements TDProtoClass<Resp> {
     _time: () => ({ _time: this._time }),
     details: () => ({ details: this.details }),
     error: () => ({ error: this.error }),
+    markup: () => ({ markup: this.markup?.map(u => u.toJSON()) }),
     reason: () => ({ reason: this.reason }),
     result: () => ({ result: this.result }),
     /* eslint-enable camelcase */
