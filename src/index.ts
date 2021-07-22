@@ -11975,8 +11975,8 @@ export interface TariffJSON {
 export class Tariff implements TDProtoClass<Tariff> {
   /**
    * Tariff for teams
-   * @param titleEn Title of tariff on enlish
-   * @param titleRu Title of tariff on russian
+   * @param titleEn Title of tariff in enlish
+   * @param titleRu Title of tariff in russian
    * @param uid Tariff id
    * @param cloudSpace Cloud space reserved for storing team users uploads in megabytes
    * @param maxMembersInTeam Maximum allowed number of members in a team
