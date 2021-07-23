@@ -7105,14 +7105,14 @@ export interface RespJSON {
 
 export class Resp implements TDProtoClass<Resp> {
   /**
-   * Server responce
-   * @param ok DOCUMENTATION MISSING
-   * @param _time DOCUMENTATION MISSING
-   * @param details DOCUMENTATION MISSING
-   * @param error DOCUMENTATION MISSING
-   * @param markup Entities for reason. Experimental
-   * @param reason Reason answers why not ok or has error
-   * @param result DOCUMENTATION MISSING
+   * Server response
+   * @param ok Request status
+   * @param _time Server side work time
+   * @param details Error (only if ok is false and Error is 'InvalidData')
+   * @param error Error (only if ok is false)
+   * @param markup Reason markup (only if ok is false and Error is `AccessDenied`)
+   * @param reason Reason (only if ok is false and Error is `AccessDenied`)
+   * @param result Result only if ok is true)
    */
   constructor (
     public ok: boolean,
