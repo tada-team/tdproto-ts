@@ -12793,7 +12793,7 @@ export class Team implements TDProtoClass<Team> {
    * @param needConfirmation Need confirmation after invite to this team
    * @param uid Team id
    * @param unread Unread message counters
-   * @param userFields Username fields ordering
+   * @param userFields Username fields ordering. Possible values: "family_name", "given_name", "patronymic"
    * @param badProfile My profile in this team isn't full
    * @param changeableStatuses What status I can set to other team members
    * @param contacts Team contacts. Used only for team creation
