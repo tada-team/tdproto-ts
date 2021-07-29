@@ -3017,7 +3017,7 @@ export class Contact implements TDProtoClass<Contact> {
    * @param canAddToTeam Can I add new members to this team
    * @param canCall Can I call to this contact
    * @param canCreateGroup Can I create group chats in this team
-   * @param canCreateTask Can I call create task for this contact
+   * @param canCreateTask Can I create task for this contact
    * @param canDelete Can I remove this contact from team
    * @param canDeleteAnyMessage Deprecated: use CanDeleteAnyMessage in chat object
    * @param canImportTasks Can I import tasks in this team
