@@ -2937,6 +2937,7 @@ export interface ContactJSON {
   contact_email: string;
   contact_phone: string;
   display_name: string;
+  gentime: number;
   icons: IconDataJSON;
   jid: JID;
   role: string;
@@ -3001,6 +3002,7 @@ export class Contact implements TDProtoClass<Contact> {
    * @param contactEmail Contact email in this team
    * @param contactPhone Contact phone in this team
    * @param displayName Full name in chats
+   * @param gentime Object version
    * @param icons Icons data
    * @param jid Contact Id
    * @param role Role in this team
@@ -3019,7 +3021,7 @@ export class Contact implements TDProtoClass<Contact> {
    * @param canCreateGroup Can I create group chats in this team
    * @param canCreateTask Can I create task for this contact
    * @param canDelete Can I remove this contact from team
-   * @param canDeleteAnyMessage Deprecated: use CanDeleteAnyMessage in chat object
+   * @param canDeleteAnyMessage Deprecated
    * @param canImportTasks Can I import tasks in this team
    * @param canJoinPublicGroups Can I view/join public group in this team
    * @param canJoinPublicTasks Can I view/join public tasks in this team
@@ -3061,6 +3063,7 @@ export class Contact implements TDProtoClass<Contact> {
     public contactEmail: string,
     public contactPhone: string,
     public displayName: string,
+    public gentime: number,
     public icons: IconData,
     public jid: JID,
     public role: string,
@@ -3123,6 +3126,7 @@ export class Contact implements TDProtoClass<Contact> {
       raw.contact_email,
       raw.contact_phone,
       raw.display_name,
+      raw.gentime,
       IconData.fromJSON(raw.icons),
       raw.jid,
       raw.role,
@@ -3185,6 +3189,7 @@ export class Contact implements TDProtoClass<Contact> {
     'contactEmail',
     'contactPhone',
     'displayName',
+    'gentime',
     'icons',
     'jid',
     'role',
@@ -3247,6 +3252,7 @@ export class Contact implements TDProtoClass<Contact> {
     contactEmail: () => ({ contact_email: this.contactEmail }),
     contactPhone: () => ({ contact_phone: this.contactPhone }),
     displayName: () => ({ display_name: this.displayName }),
+    gentime: () => ({ gentime: this.gentime }),
     icons: () => ({ icons: this.icons.toJSON() }),
     jid: () => ({ jid: this.jid }),
     role: () => ({ role: this.role }),
@@ -3463,6 +3469,7 @@ export class ContactPreview implements TDProtoClass<ContactPreview> {
 export interface ContactShortJSON {
   /* eslint-disable camelcase */
   display_name: string;
+  gentime: number;
   icons: IconDataJSON;
   jid: JID;
   short_name: string;
@@ -3473,12 +3480,14 @@ export class ContactShort implements TDProtoClass<ContactShort> {
   /**
    * Short contact representation
    * @param displayName Full name in chats
+   * @param gentime Object version
    * @param icons Icons data
    * @param jid Contact Id
    * @param shortName Short name in chats
    */
   constructor (
     public displayName: string,
+    public gentime: number,
     public icons: IconData,
     public jid: JID,
     public shortName: string,
@@ -3487,6 +3496,7 @@ export class ContactShort implements TDProtoClass<ContactShort> {
   public static fromJSON (raw: ContactShortJSON): ContactShort {
     return new ContactShort(
       raw.display_name,
+      raw.gentime,
       IconData.fromJSON(raw.icons),
       raw.jid,
       raw.short_name,
@@ -3495,6 +3505,7 @@ export class ContactShort implements TDProtoClass<ContactShort> {
 
   public mappableFields = [
     'displayName',
+    'gentime',
     'icons',
     'jid',
     'shortName',
@@ -3503,6 +3514,7 @@ export class ContactShort implements TDProtoClass<ContactShort> {
   readonly #mapper = {
     /* eslint-disable camelcase */
     displayName: () => ({ display_name: this.displayName }),
+    gentime: () => ({ gentime: this.gentime }),
     icons: () => ({ icons: this.icons.toJSON() }),
     jid: () => ({ jid: this.jid }),
     shortName: () => ({ short_name: this.shortName }),
