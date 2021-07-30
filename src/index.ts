@@ -5200,22 +5200,25 @@ export interface InvitableUserJSON {
   icons: IconDataJSON;
   uid: string;
   node?: string;
+  teams?: string[];
   /* eslint-enable camelcase */
 }
 
 export class InvitableUser implements TDProtoClass<InvitableUser> {
   /**
-   * Account from other team, Active Directory or server
+   * Account from other team, Active Directory or node
    * @param displayName Full name
    * @param icons Icons
    * @param uid Account id
    * @param node Node uid for external users
+   * @param teams Common team uids, if any
    */
   constructor (
     public displayName: string,
     public icons: IconData,
     public uid: string,
     public node?: string,
+    public teams?: string[],
   ) {}
 
   public static fromJSON (raw: InvitableUserJSON): InvitableUser {
@@ -5224,6 +5227,7 @@ export class InvitableUser implements TDProtoClass<InvitableUser> {
       IconData.fromJSON(raw.icons),
       raw.uid,
       raw.node,
+      raw.teams,
     )
   }
 
@@ -5232,6 +5236,7 @@ export class InvitableUser implements TDProtoClass<InvitableUser> {
     'icons',
     'uid',
     'node',
+    'teams',
   ] as const
 
   readonly #mapper = {
@@ -5240,6 +5245,7 @@ export class InvitableUser implements TDProtoClass<InvitableUser> {
     icons: () => ({ icons: this.icons.toJSON() }),
     uid: () => ({ uid: this.uid }),
     node: () => ({ node: this.node }),
+    teams: () => ({ teams: this.teams }),
     /* eslint-enable camelcase */
   }
 
