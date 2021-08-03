@@ -2937,6 +2937,7 @@ export interface ContactJSON {
   contact_email: string;
   contact_phone: string;
   display_name: string;
+  gentime: number;
   icons: IconDataJSON;
   jid: JID;
   role: string;
@@ -3001,6 +3002,7 @@ export class Contact implements TDProtoClass<Contact> {
    * @param contactEmail Contact email in this team
    * @param contactPhone Contact phone in this team
    * @param displayName Full name in chats
+   * @param gentime Object version
    * @param icons Icons data
    * @param jid Contact Id
    * @param role Role in this team
@@ -3017,9 +3019,9 @@ export class Contact implements TDProtoClass<Contact> {
    * @param canAddToTeam Can I add new members to this team
    * @param canCall Can I call to this contact
    * @param canCreateGroup Can I create group chats in this team
-   * @param canCreateTask Can I call create task for this contact
+   * @param canCreateTask Can I create task for this contact
    * @param canDelete Can I remove this contact from team
-   * @param canDeleteAnyMessage Deprecated: use CanDeleteAnyMessage in chat object
+   * @param canDeleteAnyMessage Deprecated
    * @param canImportTasks Can I import tasks in this team
    * @param canJoinPublicGroups Can I view/join public group in this team
    * @param canJoinPublicTasks Can I view/join public tasks in this team
@@ -3061,6 +3063,7 @@ export class Contact implements TDProtoClass<Contact> {
     public contactEmail: string,
     public contactPhone: string,
     public displayName: string,
+    public gentime: number,
     public icons: IconData,
     public jid: JID,
     public role: string,
@@ -3123,6 +3126,7 @@ export class Contact implements TDProtoClass<Contact> {
       raw.contact_email,
       raw.contact_phone,
       raw.display_name,
+      raw.gentime,
       IconData.fromJSON(raw.icons),
       raw.jid,
       raw.role,
@@ -3185,6 +3189,7 @@ export class Contact implements TDProtoClass<Contact> {
     'contactEmail',
     'contactPhone',
     'displayName',
+    'gentime',
     'icons',
     'jid',
     'role',
@@ -3247,6 +3252,7 @@ export class Contact implements TDProtoClass<Contact> {
     contactEmail: () => ({ contact_email: this.contactEmail }),
     contactPhone: () => ({ contact_phone: this.contactPhone }),
     displayName: () => ({ display_name: this.displayName }),
+    gentime: () => ({ gentime: this.gentime }),
     icons: () => ({ icons: this.icons.toJSON() }),
     jid: () => ({ jid: this.jid }),
     role: () => ({ role: this.role }),
@@ -3463,6 +3469,7 @@ export class ContactPreview implements TDProtoClass<ContactPreview> {
 export interface ContactShortJSON {
   /* eslint-disable camelcase */
   display_name: string;
+  gentime: number;
   icons: IconDataJSON;
   jid: JID;
   short_name: string;
@@ -3473,12 +3480,14 @@ export class ContactShort implements TDProtoClass<ContactShort> {
   /**
    * Short contact representation
    * @param displayName Full name in chats
+   * @param gentime Object version
    * @param icons Icons data
    * @param jid Contact Id
    * @param shortName Short name in chats
    */
   constructor (
     public displayName: string,
+    public gentime: number,
     public icons: IconData,
     public jid: JID,
     public shortName: string,
@@ -3487,6 +3496,7 @@ export class ContactShort implements TDProtoClass<ContactShort> {
   public static fromJSON (raw: ContactShortJSON): ContactShort {
     return new ContactShort(
       raw.display_name,
+      raw.gentime,
       IconData.fromJSON(raw.icons),
       raw.jid,
       raw.short_name,
@@ -3495,6 +3505,7 @@ export class ContactShort implements TDProtoClass<ContactShort> {
 
   public mappableFields = [
     'displayName',
+    'gentime',
     'icons',
     'jid',
     'shortName',
@@ -3503,6 +3514,7 @@ export class ContactShort implements TDProtoClass<ContactShort> {
   readonly #mapper = {
     /* eslint-disable camelcase */
     displayName: () => ({ display_name: this.displayName }),
+    gentime: () => ({ gentime: this.gentime }),
     icons: () => ({ icons: this.icons.toJSON() }),
     jid: () => ({ jid: this.jid }),
     shortName: () => ({ short_name: this.shortName }),
@@ -3965,6 +3977,7 @@ export interface FeaturesJSON {
   max_message_search_limit: number;
   max_message_uploads: number;
   max_mood_length: number;
+  max_project_length: number;
   max_role_length: number;
   max_section_length: number;
   max_tag_length: number;
@@ -4055,8 +4068,9 @@ export class Features implements TDProtoClass<Features> {
    * @param maxMessageSearchLimit Maximum search result
    * @param maxMessageUploads Maximum number of message uploads
    * @param maxMoodLength Maximum chars for mood in team
+   * @param maxProjectLength Maximum length for project
    * @param maxRoleLength Maximum chars for role in team
-   * @param maxSectionLength Maximum length for project and contact's sections names
+   * @param maxSectionLength Maximum length for contact's sections names
    * @param maxTagLength Maximum length for tags
    * @param maxTaskTitleLength Maximum length for task title
    * @param maxTeams Maximum teams for one account
@@ -4141,6 +4155,7 @@ export class Features implements TDProtoClass<Features> {
     public maxMessageSearchLimit: number,
     public maxMessageUploads: number,
     public maxMoodLength: number,
+    public maxProjectLength: number,
     public maxRoleLength: number,
     public maxSectionLength: number,
     public maxTagLength: number,
@@ -4229,6 +4244,7 @@ export class Features implements TDProtoClass<Features> {
       raw.max_message_search_limit,
       raw.max_message_uploads,
       raw.max_mood_length,
+      raw.max_project_length,
       raw.max_role_length,
       raw.max_section_length,
       raw.max_tag_length,
@@ -4317,6 +4333,7 @@ export class Features implements TDProtoClass<Features> {
     'maxMessageSearchLimit',
     'maxMessageUploads',
     'maxMoodLength',
+    'maxProjectLength',
     'maxRoleLength',
     'maxSectionLength',
     'maxTagLength',
@@ -4405,6 +4422,7 @@ export class Features implements TDProtoClass<Features> {
     maxMessageSearchLimit: () => ({ max_message_search_limit: this.maxMessageSearchLimit }),
     maxMessageUploads: () => ({ max_message_uploads: this.maxMessageUploads }),
     maxMoodLength: () => ({ max_mood_length: this.maxMoodLength }),
+    maxProjectLength: () => ({ max_project_length: this.maxProjectLength }),
     maxRoleLength: () => ({ max_role_length: this.maxRoleLength }),
     maxSectionLength: () => ({ max_section_length: this.maxSectionLength }),
     maxTagLength: () => ({ max_tag_length: this.maxTagLength }),
@@ -5194,22 +5212,25 @@ export interface InvitableUserJSON {
   icons: IconDataJSON;
   uid: string;
   node?: string;
+  teams?: string[];
   /* eslint-enable camelcase */
 }
 
 export class InvitableUser implements TDProtoClass<InvitableUser> {
   /**
-   * Account from other team, Active Directory or server
+   * Account from other team, Active Directory or node
    * @param displayName Full name
    * @param icons Icons
    * @param uid Account id
    * @param node Node uid for external users
+   * @param teams Common team uids, if any
    */
   constructor (
     public displayName: string,
     public icons: IconData,
     public uid: string,
     public node?: string,
+    public teams?: string[],
   ) {}
 
   public static fromJSON (raw: InvitableUserJSON): InvitableUser {
@@ -5218,6 +5239,7 @@ export class InvitableUser implements TDProtoClass<InvitableUser> {
       IconData.fromJSON(raw.icons),
       raw.uid,
       raw.node,
+      raw.teams,
     )
   }
 
@@ -5226,6 +5248,7 @@ export class InvitableUser implements TDProtoClass<InvitableUser> {
     'icons',
     'uid',
     'node',
+    'teams',
   ] as const
 
   readonly #mapper = {
@@ -5234,6 +5257,7 @@ export class InvitableUser implements TDProtoClass<InvitableUser> {
     icons: () => ({ icons: this.icons.toJSON() }),
     uid: () => ({ uid: this.uid }),
     node: () => ({ node: this.node }),
+    teams: () => ({ teams: this.teams }),
     /* eslint-enable camelcase */
   }
 
@@ -7090,6 +7114,8 @@ export interface RespJSON {
   _time?: string;
   details?: Record<string, string>;
   error?: Err;
+  markup?: MarkupEntityJSON[];
+  reason?: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   result?: any;
   /* eslint-enable camelcase */
@@ -7097,18 +7123,22 @@ export interface RespJSON {
 
 export class Resp implements TDProtoClass<Resp> {
   /**
-   * Server responce
-   * @param ok DOCUMENTATION MISSING
-   * @param _time DOCUMENTATION MISSING
-   * @param details DOCUMENTATION MISSING
-   * @param error DOCUMENTATION MISSING
-   * @param result DOCUMENTATION MISSING
+   * Server response
+   * @param ok Request status
+   * @param _time Server side work time
+   * @param details Error (only if ok is false and Error is 'InvalidData')
+   * @param error Error (only if ok is false)
+   * @param markup Reason markup (only if ok is false and Error is `AccessDenied`)
+   * @param reason Reason (only if ok is false and Error is `AccessDenied`)
+   * @param result Result only if ok is true)
    */
   constructor (
     public ok: boolean,
     public _time?: string,
     public details?: Record<string, string>,
     public error?: Err,
+    public markup?: MarkupEntity[],
+    public reason?: string,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public result?: any,
   ) {}
@@ -7119,6 +7149,8 @@ export class Resp implements TDProtoClass<Resp> {
       raw._time,
       raw.details,
       raw.error,
+      raw.markup && raw.markup.map(MarkupEntity.fromJSON),
+      raw.reason,
       raw.result,
     )
   }
@@ -7128,6 +7160,8 @@ export class Resp implements TDProtoClass<Resp> {
     '_time',
     'details',
     'error',
+    'markup',
+    'reason',
     'result',
   ] as const
 
@@ -7137,6 +7171,8 @@ export class Resp implements TDProtoClass<Resp> {
     _time: () => ({ _time: this._time }),
     details: () => ({ details: this.details }),
     error: () => ({ error: this.error }),
+    markup: () => ({ markup: this.markup?.map(u => u.toJSON()) }),
+    reason: () => ({ reason: this.reason }),
     result: () => ({ result: this.result }),
     /* eslint-enable camelcase */
   }
@@ -11963,8 +11999,8 @@ export interface TariffJSON {
 export class Tariff implements TDProtoClass<Tariff> {
   /**
    * Tariff for teams
-   * @param titleEn Title of tariff on enlish
-   * @param titleRu Title of tariff on russian
+   * @param titleEn Title of tariff in enlish
+   * @param titleRu Title of tariff in russian
    * @param uid Tariff id
    * @param cloudSpace Cloud space reserved for storing team users uploads in megabytes
    * @param maxMembersInTeam Maximum allowed number of members in a team
@@ -12775,7 +12811,7 @@ export class Team implements TDProtoClass<Team> {
    * @param needConfirmation Need confirmation after invite to this team
    * @param uid Team id
    * @param unread Unread message counters
-   * @param userFields Username fields ordering
+   * @param userFields Username fields ordering. Possible values: "family_name", "given_name", "patronymic"
    * @param badProfile My profile in this team isn't full
    * @param changeableStatuses What status I can set to other team members
    * @param contacts Team contacts. Used only for team creation
@@ -13831,6 +13867,7 @@ export interface UserJSON {
   alt_send: boolean;
   always_send_pushes: boolean;
   asterisk_mention: boolean;
+  icons: IconDataJSON;
   munread_first: boolean;
   quiet_time_finish: string;
   quiet_time_start: string;
@@ -13851,6 +13888,7 @@ export class User implements TDProtoClass<User> {
    * @param altSend Use Ctrl/Cmd + Enter instead Enter
    * @param alwaysSendPushes Send pushes even user is online
    * @param asteriskMention Use * as @ for mentions
+   * @param icons Icon data
    * @param munreadFirst Show unread chats in chat list first on mobiles
    * @param quietTimeFinish Finish silently time (no pushes, no sounds)
    * @param quietTimeStart Start silently time (no pushes, no sounds)
@@ -13867,6 +13905,7 @@ export class User implements TDProtoClass<User> {
     public altSend: boolean,
     public alwaysSendPushes: boolean,
     public asteriskMention: boolean,
+    public icons: IconData,
     public munreadFirst: boolean,
     public quietTimeFinish: string,
     public quietTimeStart: string,
@@ -13885,6 +13924,7 @@ export class User implements TDProtoClass<User> {
       raw.alt_send,
       raw.always_send_pushes,
       raw.asterisk_mention,
+      IconData.fromJSON(raw.icons),
       raw.munread_first,
       raw.quiet_time_finish,
       raw.quiet_time_start,
@@ -13903,6 +13943,7 @@ export class User implements TDProtoClass<User> {
     'altSend',
     'alwaysSendPushes',
     'asteriskMention',
+    'icons',
     'munreadFirst',
     'quietTimeFinish',
     'quietTimeStart',
@@ -13921,6 +13962,7 @@ export class User implements TDProtoClass<User> {
     altSend: () => ({ alt_send: this.altSend }),
     alwaysSendPushes: () => ({ always_send_pushes: this.alwaysSendPushes }),
     asteriskMention: () => ({ asterisk_mention: this.asteriskMention }),
+    icons: () => ({ icons: this.icons.toJSON() }),
     munreadFirst: () => ({ munread_first: this.munreadFirst }),
     quietTimeFinish: () => ({ quiet_time_finish: this.quietTimeFinish }),
     quietTimeStart: () => ({ quiet_time_start: this.quietTimeStart }),
@@ -14048,6 +14090,7 @@ export interface UserWithMeJSON {
   always_send_pushes: boolean;
   asterisk_mention: boolean;
   devices: PushDeviceJSON[];
+  icons: IconDataJSON;
   munread_first: boolean;
   quiet_time_finish: string;
   quiet_time_start: string;
@@ -14071,6 +14114,7 @@ export class UserWithMe implements TDProtoClass<UserWithMe> {
    * @param alwaysSendPushes Send pushes even user is online
    * @param asteriskMention Use * as @ for mentions
    * @param devices Registered push devices
+   * @param icons Icon data
    * @param munreadFirst Show unread chats in chat list first on mobiles
    * @param quietTimeFinish Finish silently time (no pushes, no sounds)
    * @param quietTimeStart Start silently time (no pushes, no sounds)
@@ -14090,6 +14134,7 @@ export class UserWithMe implements TDProtoClass<UserWithMe> {
     public alwaysSendPushes: boolean,
     public asteriskMention: boolean,
     public devices: PushDevice[],
+    public icons: IconData,
     public munreadFirst: boolean,
     public quietTimeFinish: string,
     public quietTimeStart: string,
@@ -14111,6 +14156,7 @@ export class UserWithMe implements TDProtoClass<UserWithMe> {
       raw.always_send_pushes,
       raw.asterisk_mention,
       raw.devices.map(PushDevice.fromJSON),
+      IconData.fromJSON(raw.icons),
       raw.munread_first,
       raw.quiet_time_finish,
       raw.quiet_time_start,
@@ -14132,6 +14178,7 @@ export class UserWithMe implements TDProtoClass<UserWithMe> {
     'alwaysSendPushes',
     'asteriskMention',
     'devices',
+    'icons',
     'munreadFirst',
     'quietTimeFinish',
     'quietTimeStart',
@@ -14153,6 +14200,7 @@ export class UserWithMe implements TDProtoClass<UserWithMe> {
     alwaysSendPushes: () => ({ always_send_pushes: this.alwaysSendPushes }),
     asteriskMention: () => ({ asterisk_mention: this.asteriskMention }),
     devices: () => ({ devices: this.devices.map(u => u.toJSON()) }),
+    icons: () => ({ icons: this.icons.toJSON() }),
     munreadFirst: () => ({ munread_first: this.munreadFirst }),
     quietTimeFinish: () => ({ quiet_time_finish: this.quietTimeFinish }),
     quietTimeStart: () => ({ quiet_time_start: this.quietTimeStart }),
