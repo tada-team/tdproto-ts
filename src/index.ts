@@ -2974,6 +2974,7 @@ export interface ContactJSON {
   custom_fields?: ContactCustomFieldsJSON;
   debug_show_activity?: boolean;
   default_lang?: string;
+  dnd_until?: ISODateTimeString;
   dropall_enabled?: boolean;
   family_name?: string;
   given_name?: string;
@@ -3039,6 +3040,7 @@ export class Contact implements TDProtoClass<Contact> {
    * @param customFields Extra contact fields
    * @param debugShowActivity Enable debug messages in UI
    * @param defaultLang Default language code
+   * @param dndUntil DND mode enabled until
    * @param dropallEnabled Enable remove all messages experimental features
    * @param familyName Family name
    * @param givenName Given name
@@ -3100,6 +3102,7 @@ export class Contact implements TDProtoClass<Contact> {
     public customFields?: ContactCustomFields,
     public debugShowActivity?: boolean,
     public defaultLang?: string,
+    public dndUntil?: ISODateTimeString,
     public dropallEnabled?: boolean,
     public familyName?: string,
     public givenName?: string,
@@ -3163,6 +3166,7 @@ export class Contact implements TDProtoClass<Contact> {
       raw.custom_fields && ContactCustomFields.fromJSON(raw.custom_fields),
       raw.debug_show_activity,
       raw.default_lang,
+      raw.dnd_until,
       raw.dropall_enabled,
       raw.family_name,
       raw.given_name,
@@ -3226,6 +3230,7 @@ export class Contact implements TDProtoClass<Contact> {
     'customFields',
     'debugShowActivity',
     'defaultLang',
+    'dndUntil',
     'dropallEnabled',
     'familyName',
     'givenName',
@@ -3289,6 +3294,7 @@ export class Contact implements TDProtoClass<Contact> {
     customFields: () => ({ custom_fields: this.customFields?.toJSON() }),
     debugShowActivity: () => ({ debug_show_activity: this.debugShowActivity }),
     defaultLang: () => ({ default_lang: this.defaultLang }),
+    dndUntil: () => ({ dnd_until: this.dndUntil }),
     dropallEnabled: () => ({ dropall_enabled: this.dropallEnabled }),
     familyName: () => ({ family_name: this.familyName }),
     givenName: () => ({ given_name: this.givenName }),
@@ -6513,6 +6519,7 @@ export interface OnlineContactJSON {
   jid: JID;
   mobile: boolean;
   afk?: boolean;
+  dnd?: boolean;
   /* eslint-enable camelcase */
 }
 
@@ -6522,11 +6529,13 @@ export class OnlineContact implements TDProtoClass<OnlineContact> {
    * @param jid Contact id
    * @param mobile Is mobile client
    * @param afk Is away from keyboard
+   * @param dnd DND mode enabled
    */
   constructor (
     public jid: JID,
     public mobile: boolean,
     public afk?: boolean,
+    public dnd?: boolean,
   ) {}
 
   public static fromJSON (raw: OnlineContactJSON): OnlineContact {
@@ -6534,6 +6543,7 @@ export class OnlineContact implements TDProtoClass<OnlineContact> {
       raw.jid,
       raw.mobile,
       raw.afk,
+      raw.dnd,
     )
   }
 
@@ -6541,6 +6551,7 @@ export class OnlineContact implements TDProtoClass<OnlineContact> {
     'jid',
     'mobile',
     'afk',
+    'dnd',
   ] as const
 
   readonly #mapper = {
@@ -6548,6 +6559,7 @@ export class OnlineContact implements TDProtoClass<OnlineContact> {
     jid: () => ({ jid: this.jid }),
     mobile: () => ({ mobile: this.mobile }),
     afk: () => ({ afk: this.afk }),
+    dnd: () => ({ dnd: this.dnd }),
     /* eslint-enable camelcase */
   }
 
