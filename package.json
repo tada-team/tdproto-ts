@@ -1,6 +1,6 @@
 {
   "name": "@tada-team/tdproto-ts",
-  "version": "0.6.15",
+  "version": "0.6.16",
   "description": "Tada messenger protocol for use in JS/TS projects",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
