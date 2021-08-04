@@ -13885,6 +13885,7 @@ export interface UserJSON {
   alt_send: boolean;
   always_send_pushes: boolean;
   asterisk_mention: boolean;
+  hide_pushes_content: boolean;
   icons: IconDataJSON;
   munread_first: boolean;
   quiet_time_finish: string;
@@ -13906,6 +13907,7 @@ export class User implements TDProtoClass<User> {
    * @param altSend Use Ctrl/Cmd + Enter instead Enter
    * @param alwaysSendPushes Send pushes even user is online
    * @param asteriskMention Use * as @ for mentions
+   * @param hidePushesContent Hide pushes body
    * @param icons Icon data
    * @param munreadFirst Show unread chats in chat list first on mobiles
    * @param quietTimeFinish Finish silently time (no pushes, no sounds)
@@ -13923,6 +13925,7 @@ export class User implements TDProtoClass<User> {
     public altSend: boolean,
     public alwaysSendPushes: boolean,
     public asteriskMention: boolean,
+    public hidePushesContent: boolean,
     public icons: IconData,
     public munreadFirst: boolean,
     public quietTimeFinish: string,
@@ -13942,6 +13945,7 @@ export class User implements TDProtoClass<User> {
       raw.alt_send,
       raw.always_send_pushes,
       raw.asterisk_mention,
+      raw.hide_pushes_content,
       IconData.fromJSON(raw.icons),
       raw.munread_first,
       raw.quiet_time_finish,
@@ -13961,6 +13965,7 @@ export class User implements TDProtoClass<User> {
     'altSend',
     'alwaysSendPushes',
     'asteriskMention',
+    'hidePushesContent',
     'icons',
     'munreadFirst',
     'quietTimeFinish',
@@ -13980,6 +13985,7 @@ export class User implements TDProtoClass<User> {
     altSend: () => ({ alt_send: this.altSend }),
     alwaysSendPushes: () => ({ always_send_pushes: this.alwaysSendPushes }),
     asteriskMention: () => ({ asterisk_mention: this.asteriskMention }),
+    hidePushesContent: () => ({ hide_pushes_content: this.hidePushesContent }),
     icons: () => ({ icons: this.icons.toJSON() }),
     munreadFirst: () => ({ munread_first: this.munreadFirst }),
     quietTimeFinish: () => ({ quiet_time_finish: this.quietTimeFinish }),
@@ -14108,6 +14114,7 @@ export interface UserWithMeJSON {
   always_send_pushes: boolean;
   asterisk_mention: boolean;
   devices: PushDeviceJSON[];
+  hide_pushes_content: boolean;
   icons: IconDataJSON;
   munread_first: boolean;
   quiet_time_finish: string;
@@ -14132,6 +14139,7 @@ export class UserWithMe implements TDProtoClass<UserWithMe> {
    * @param alwaysSendPushes Send pushes even user is online
    * @param asteriskMention Use * as @ for mentions
    * @param devices Registered push devices
+   * @param hidePushesContent Hide pushes body
    * @param icons Icon data
    * @param munreadFirst Show unread chats in chat list first on mobiles
    * @param quietTimeFinish Finish silently time (no pushes, no sounds)
@@ -14152,6 +14160,7 @@ export class UserWithMe implements TDProtoClass<UserWithMe> {
     public alwaysSendPushes: boolean,
     public asteriskMention: boolean,
     public devices: PushDevice[],
+    public hidePushesContent: boolean,
     public icons: IconData,
     public munreadFirst: boolean,
     public quietTimeFinish: string,
@@ -14174,6 +14183,7 @@ export class UserWithMe implements TDProtoClass<UserWithMe> {
       raw.always_send_pushes,
       raw.asterisk_mention,
       raw.devices.map(PushDevice.fromJSON),
+      raw.hide_pushes_content,
       IconData.fromJSON(raw.icons),
       raw.munread_first,
       raw.quiet_time_finish,
@@ -14196,6 +14206,7 @@ export class UserWithMe implements TDProtoClass<UserWithMe> {
     'alwaysSendPushes',
     'asteriskMention',
     'devices',
+    'hidePushesContent',
     'icons',
     'munreadFirst',
     'quietTimeFinish',
@@ -14218,6 +14229,7 @@ export class UserWithMe implements TDProtoClass<UserWithMe> {
     alwaysSendPushes: () => ({ always_send_pushes: this.alwaysSendPushes }),
     asteriskMention: () => ({ asterisk_mention: this.asteriskMention }),
     devices: () => ({ devices: this.devices.map(u => u.toJSON()) }),
+    hidePushesContent: () => ({ hide_pushes_content: this.hidePushesContent }),
     icons: () => ({ icons: this.icons.toJSON() }),
     munreadFirst: () => ({ munread_first: this.munreadFirst }),
     quietTimeFinish: () => ({ quiet_time_finish: this.quietTimeFinish }),
