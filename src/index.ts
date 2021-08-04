@@ -2938,6 +2938,7 @@ export interface ContactJSON {
   contact_phone: string;
   display_name: string;
   gentime: number;
+  hide_pushes_content: boolean;
   icons: IconDataJSON;
   jid: JID;
   role: string;
@@ -3004,6 +3005,7 @@ export class Contact implements TDProtoClass<Contact> {
    * @param contactPhone Contact phone in this team
    * @param displayName Full name in chats
    * @param gentime Object version
+   * @param hidePushesContent Hide pushes body
    * @param icons Icons data
    * @param jid Contact Id
    * @param role Role in this team
@@ -3066,6 +3068,7 @@ export class Contact implements TDProtoClass<Contact> {
     public contactPhone: string,
     public displayName: string,
     public gentime: number,
+    public hidePushesContent: boolean,
     public icons: IconData,
     public jid: JID,
     public role: string,
@@ -3130,6 +3133,7 @@ export class Contact implements TDProtoClass<Contact> {
       raw.contact_phone,
       raw.display_name,
       raw.gentime,
+      raw.hide_pushes_content,
       IconData.fromJSON(raw.icons),
       raw.jid,
       raw.role,
@@ -3194,6 +3198,7 @@ export class Contact implements TDProtoClass<Contact> {
     'contactPhone',
     'displayName',
     'gentime',
+    'hidePushesContent',
     'icons',
     'jid',
     'role',
@@ -3258,6 +3263,7 @@ export class Contact implements TDProtoClass<Contact> {
     contactPhone: () => ({ contact_phone: this.contactPhone }),
     displayName: () => ({ display_name: this.displayName }),
     gentime: () => ({ gentime: this.gentime }),
+    hidePushesContent: () => ({ hide_pushes_content: this.hidePushesContent }),
     icons: () => ({ icons: this.icons.toJSON() }),
     jid: () => ({ jid: this.jid }),
     role: () => ({ role: this.role }),
