@@ -12788,6 +12788,7 @@ export interface TeamJSON {
   uid: string;
   unread: TeamUnreadJSON;
   user_fields: string[];
+  available_tariffs?: string[];
   bad_profile?: boolean;
   changeable_statuses?: TeamStatus[];
   contacts?: ContactJSON[];
@@ -12824,6 +12825,7 @@ export class Team implements TDProtoClass<Team> {
    * @param uid Team id
    * @param unread Unread message counters
    * @param userFields Username fields ordering. Possible values: "family_name", "given_name", "patronymic"
+   * @param availableTariffs Team's available tariff by includig archive ones
    * @param badProfile My profile in this team isn't full
    * @param changeableStatuses What status I can set to other team members
    * @param contacts Team contacts. Used only for team creation
@@ -12856,6 +12858,7 @@ export class Team implements TDProtoClass<Team> {
     public readonly uid: string,
     public unread: TeamUnread,
     public readonly userFields: string[],
+    public availableTariffs?: string[],
     public readonly badProfile?: boolean,
     public readonly changeableStatuses?: TeamStatus[],
     public readonly contacts?: Contact[],
@@ -12890,6 +12893,7 @@ export class Team implements TDProtoClass<Team> {
       raw.uid,
       TeamUnread.fromJSON(raw.unread),
       raw.user_fields,
+      raw.available_tariffs,
       raw.bad_profile,
       raw.changeable_statuses,
       raw.contacts && raw.contacts.map(Contact.fromJSON),
@@ -12924,6 +12928,7 @@ export class Team implements TDProtoClass<Team> {
     'uid',
     'unread',
     'userFields',
+    'availableTariffs',
     'badProfile',
     'changeableStatuses',
     'contacts',
@@ -12958,6 +12963,7 @@ export class Team implements TDProtoClass<Team> {
     uid: () => ({ uid: this.uid }),
     unread: () => ({ unread: this.unread.toJSON() }),
     userFields: () => ({ user_fields: this.userFields }),
+    availableTariffs: () => ({ available_tariffs: this.availableTariffs }),
     badProfile: () => ({ bad_profile: this.badProfile }),
     changeableStatuses: () => ({ changeable_statuses: this.changeableStatuses }),
     contacts: () => ({ contacts: this.contacts?.map(u => u.toJSON()) }),
