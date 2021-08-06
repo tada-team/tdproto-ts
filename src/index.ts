@@ -12011,6 +12011,7 @@ export interface TariffJSON {
   max_members_in_team?: number;
   max_participants_per_call?: number;
   max_upload_filesize?: number;
+  price?: string;
   /* eslint-enable camelcase */
 }
 
@@ -12024,6 +12025,7 @@ export class Tariff implements TDProtoClass<Tariff> {
    * @param maxMembersInTeam Maximum allowed number of members in a team
    * @param maxParticipantsPerCall Maximum number of participants per call
    * @param maxUploadFilesize maximum file size for uploading
+   * @param price Price of tariff
    */
   constructor (
     public titleEn: string,
@@ -12033,6 +12035,7 @@ export class Tariff implements TDProtoClass<Tariff> {
     public maxMembersInTeam?: number,
     public maxParticipantsPerCall?: number,
     public maxUploadFilesize?: number,
+    public price?: string,
   ) {}
 
   public static fromJSON (raw: TariffJSON): Tariff {
@@ -12044,6 +12047,7 @@ export class Tariff implements TDProtoClass<Tariff> {
       raw.max_members_in_team,
       raw.max_participants_per_call,
       raw.max_upload_filesize,
+      raw.price,
     )
   }
 
@@ -12055,6 +12059,7 @@ export class Tariff implements TDProtoClass<Tariff> {
     'maxMembersInTeam',
     'maxParticipantsPerCall',
     'maxUploadFilesize',
+    'price',
   ] as const
 
   readonly #mapper = {
@@ -12066,6 +12071,7 @@ export class Tariff implements TDProtoClass<Tariff> {
     maxMembersInTeam: () => ({ max_members_in_team: this.maxMembersInTeam }),
     maxParticipantsPerCall: () => ({ max_participants_per_call: this.maxParticipantsPerCall }),
     maxUploadFilesize: () => ({ max_upload_filesize: this.maxUploadFilesize }),
+    price: () => ({ price: this.price }),
     /* eslint-enable camelcase */
   }
 
