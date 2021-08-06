@@ -2975,9 +2975,9 @@ export interface ContactJSON {
   custom_fields?: ContactCustomFieldsJSON;
   debug_show_activity?: boolean;
   default_lang?: string;
-  dnd_until?: ISODateTimeString;
   dropall_enabled?: boolean;
   family_name?: string;
+  focus_until?: ISODateTimeString;
   given_name?: string;
   group_mshort_view?: boolean;
   group_notifications_enabled?: boolean;
@@ -3042,9 +3042,9 @@ export class Contact implements TDProtoClass<Contact> {
    * @param customFields Extra contact fields
    * @param debugShowActivity Enable debug messages in UI
    * @param defaultLang Default language code
-   * @param dndUntil DND mode enabled until
    * @param dropallEnabled Enable remove all messages experimental features
    * @param familyName Family name
+   * @param focusUntil Focus mode enabled until
    * @param givenName Given name
    * @param groupMshortView Short view in group list in mobile app
    * @param groupNotificationsEnabled Push notifications for group chats
@@ -3105,9 +3105,9 @@ export class Contact implements TDProtoClass<Contact> {
     public customFields?: ContactCustomFields,
     public debugShowActivity?: boolean,
     public defaultLang?: string,
-    public dndUntil?: ISODateTimeString,
     public dropallEnabled?: boolean,
     public familyName?: string,
+    public focusUntil?: ISODateTimeString,
     public givenName?: string,
     public groupMshortView?: boolean,
     public groupNotificationsEnabled?: boolean,
@@ -3170,9 +3170,9 @@ export class Contact implements TDProtoClass<Contact> {
       raw.custom_fields && ContactCustomFields.fromJSON(raw.custom_fields),
       raw.debug_show_activity,
       raw.default_lang,
-      raw.dnd_until,
       raw.dropall_enabled,
       raw.family_name,
+      raw.focus_until,
       raw.given_name,
       raw.group_mshort_view,
       raw.group_notifications_enabled,
@@ -3235,9 +3235,9 @@ export class Contact implements TDProtoClass<Contact> {
     'customFields',
     'debugShowActivity',
     'defaultLang',
-    'dndUntil',
     'dropallEnabled',
     'familyName',
+    'focusUntil',
     'givenName',
     'groupMshortView',
     'groupNotificationsEnabled',
@@ -3300,9 +3300,9 @@ export class Contact implements TDProtoClass<Contact> {
     customFields: () => ({ custom_fields: this.customFields?.toJSON() }),
     debugShowActivity: () => ({ debug_show_activity: this.debugShowActivity }),
     defaultLang: () => ({ default_lang: this.defaultLang }),
-    dndUntil: () => ({ dnd_until: this.dndUntil }),
     dropallEnabled: () => ({ dropall_enabled: this.dropallEnabled }),
     familyName: () => ({ family_name: this.familyName }),
+    focusUntil: () => ({ focus_until: this.focusUntil }),
     givenName: () => ({ given_name: this.givenName }),
     groupMshortView: () => ({ group_mshort_view: this.groupMshortView }),
     groupNotificationsEnabled: () => ({ group_notifications_enabled: this.groupNotificationsEnabled }),
@@ -6525,7 +6525,7 @@ export interface OnlineContactJSON {
   jid: JID;
   mobile: boolean;
   afk?: boolean;
-  dnd?: boolean;
+  focused?: boolean;
   /* eslint-enable camelcase */
 }
 
@@ -6535,13 +6535,13 @@ export class OnlineContact implements TDProtoClass<OnlineContact> {
    * @param jid Contact id
    * @param mobile Is mobile client
    * @param afk Is away from keyboard
-   * @param dnd DND mode enabled
+   * @param focused Focus mode enabled
    */
   constructor (
     public jid: JID,
     public mobile: boolean,
     public afk?: boolean,
-    public dnd?: boolean,
+    public focused?: boolean,
   ) {}
 
   public static fromJSON (raw: OnlineContactJSON): OnlineContact {
@@ -6549,7 +6549,7 @@ export class OnlineContact implements TDProtoClass<OnlineContact> {
       raw.jid,
       raw.mobile,
       raw.afk,
-      raw.dnd,
+      raw.focused,
     )
   }
 
@@ -6557,7 +6557,7 @@ export class OnlineContact implements TDProtoClass<OnlineContact> {
     'jid',
     'mobile',
     'afk',
-    'dnd',
+    'focused',
   ] as const
 
   readonly #mapper = {
@@ -6565,7 +6565,7 @@ export class OnlineContact implements TDProtoClass<OnlineContact> {
     jid: () => ({ jid: this.jid }),
     mobile: () => ({ mobile: this.mobile }),
     afk: () => ({ afk: this.afk }),
-    dnd: () => ({ dnd: this.dnd }),
+    focused: () => ({ focused: this.focused }),
     /* eslint-enable camelcase */
   }
 
