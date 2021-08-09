@@ -11848,7 +11848,7 @@ export class Subtask implements TDProtoClass<Subtask> {
    * @param jid Task id
    * @param num Task number in this team
    * @param title Task title. Generated from number and description
-   * @param isPublic Can other team member see this task/group chat
+   * @param isPublic Is task or group public for non-guests
    * @param taskStatus Subtask task status
    */
   constructor (
@@ -12117,7 +12117,7 @@ export class Task implements TDProtoClass<Task> {
    * @param deadline Deadline time, if any
    * @param description Task description
    * @param importance Task importance
-   * @param isPublic Is task public
+   * @param isPublic Is task or group public for non-guests
    * @param items Items of the task
    * @param linkedMessages Linked messages
    * @param observers User who follow the task
