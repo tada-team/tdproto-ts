@@ -3904,6 +3904,84 @@ export class Dist implements TDProtoClass<Dist> {
   }
 }
 
+export interface EasyApiMessageJSON {
+  /* eslint-disable camelcase */
+  convert_linebreaks: boolean;
+  important: boolean;
+  key: string;
+  message: string;
+  message_id: string;
+  nopreview: boolean;
+  silently: boolean;
+  /* eslint-enable camelcase */
+}
+
+export class EasyApiMessage implements TDProtoClass<EasyApiMessage> {
+  /**
+   * Simple api for integrations /api/message or /tasks/[team]/[num]/message
+   * @param convertLinebreaks Convert "\\n" to "\n"
+   * @param important Mark message as important
+   * @param key Comma separated api keys (for /api/message calls only)
+   * @param message Message text. Required
+   * @param messageId Message uuid. Optional
+   * @param nopreview Disable links preview
+   * @param silently Disable counters and push notifications
+   */
+  constructor (
+    public convertLinebreaks: boolean,
+    public important: boolean,
+    public key: string,
+    public message: string,
+    public messageId: string,
+    public nopreview: boolean,
+    public silently: boolean,
+  ) {}
+
+  public static fromJSON (raw: EasyApiMessageJSON): EasyApiMessage {
+    return new EasyApiMessage(
+      raw.convert_linebreaks,
+      raw.important,
+      raw.key,
+      raw.message,
+      raw.message_id,
+      raw.nopreview,
+      raw.silently,
+    )
+  }
+
+  public mappableFields = [
+    'convertLinebreaks',
+    'important',
+    'key',
+    'message',
+    'messageId',
+    'nopreview',
+    'silently',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    convertLinebreaks: () => ({ convert_linebreaks: this.convertLinebreaks }),
+    important: () => ({ important: this.important }),
+    key: () => ({ key: this.key }),
+    message: () => ({ message: this.message }),
+    messageId: () => ({ message_id: this.messageId }),
+    nopreview: () => ({ nopreview: this.nopreview }),
+    silently: () => ({ silently: this.silently }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): EasyApiMessageJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<EasyApiMessageJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface EmojiJSON {
   /* eslint-disable camelcase */
   char: string;
@@ -11537,6 +11615,132 @@ export class Session implements TDProtoClass<Session> {
 
   public toJSON (): SessionJSON
   public toJSON (fields: Array<this['mappableFields'][number]>): Partial<SessionJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface SharpLinkJSON {
+  /* eslint-disable camelcase */
+  key: string;
+  meta: SharpLinkMetaJSON;
+  title: string;
+  /* eslint-enable camelcase */
+}
+
+export class SharpLink implements TDProtoClass<SharpLink> {
+  /**
+   * #-link autocomplete information
+   * @param key What should be inserted to the chat
+   * @param meta Internal details
+   * @param title What should be visible by user
+   */
+  constructor (
+    public key: string,
+    public meta: SharpLinkMeta,
+    public title: string,
+  ) {}
+
+  public static fromJSON (raw: SharpLinkJSON): SharpLink {
+    return new SharpLink(
+      raw.key,
+      SharpLinkMeta.fromJSON(raw.meta),
+      raw.title,
+    )
+  }
+
+  public mappableFields = [
+    'key',
+    'meta',
+    'title',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    key: () => ({ key: this.key }),
+    meta: () => ({ meta: this.meta.toJSON() }),
+    title: () => ({ title: this.title }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): SharpLinkJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<SharpLinkJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface SharpLinkMetaJSON {
+  /* eslint-disable camelcase */
+  chat_type: ChatType;
+  jid: JID;
+  done?: boolean;
+  public?: boolean;
+  num?: number;
+  task_status?: string;
+  /* eslint-enable camelcase */
+}
+
+export class SharpLinkMeta implements TDProtoClass<SharpLinkMeta> {
+  /**
+   * #-link autocomplete details
+   * @param chatType Chat type
+   * @param jid Chat id
+   * @param done Deprecated: use `TaskStatus == "done"` comparsion
+   * @param isPublic Is task or group public for non-guests
+   * @param num Task number (for tasks)
+   * @param taskStatus Task status (for tasks)
+   */
+  constructor (
+    public chatType: ChatType,
+    public jid: JID,
+    public done?: boolean,
+    public isPublic?: boolean,
+    public num?: number,
+    public taskStatus?: string,
+  ) {}
+
+  public static fromJSON (raw: SharpLinkMetaJSON): SharpLinkMeta {
+    return new SharpLinkMeta(
+      raw.chat_type,
+      raw.jid,
+      raw.done,
+      raw.public,
+      raw.num,
+      raw.task_status,
+    )
+  }
+
+  public mappableFields = [
+    'chatType',
+    'jid',
+    'done',
+    'isPublic',
+    'num',
+    'taskStatus',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    chatType: () => ({ chat_type: this.chatType }),
+    jid: () => ({ jid: this.jid }),
+    done: () => ({ done: this.done }),
+    isPublic: () => ({ public: this.isPublic }),
+    num: () => ({ num: this.num }),
+    taskStatus: () => ({ task_status: this.taskStatus }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): SharpLinkMetaJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<SharpLinkMetaJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
