@@ -308,6 +308,60 @@ export class BaseEvent implements TDProtoClass<BaseEvent> {
   }
 }
 
+export interface BotCommandJSON {
+  /* eslint-disable camelcase */
+  args: string[];
+  key: string;
+  title: string;
+  /* eslint-enable camelcase */
+}
+
+export class BotCommand implements TDProtoClass<BotCommand> {
+  /**
+   * Bot commands information
+   * @param args Command options, if any
+   * @param key What should be inserted to the chat
+   * @param title What should be visible by user
+   */
+  constructor (
+    public args: string[],
+    public key: string,
+    public title: string,
+  ) {}
+
+  public static fromJSON (raw: BotCommandJSON): BotCommand {
+    return new BotCommand(
+      raw.args,
+      raw.key,
+      raw.title,
+    )
+  }
+
+  public mappableFields = [
+    'args',
+    'key',
+    'title',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    args: () => ({ args: this.args }),
+    key: () => ({ key: this.key }),
+    title: () => ({ title: this.title }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): BotCommandJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<BotCommandJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface ButtonColorsJSON {
   /* eslint-disable camelcase */
   brand_active: RGBColor;
