@@ -11581,6 +11581,7 @@ export interface SharpLinkJSON {
   key: string;
   meta: SharpLinkMetaJSON;
   title: string;
+  icons?: IconDataJSON;
   /* eslint-enable camelcase */
 }
 
@@ -11590,11 +11591,13 @@ export class SharpLink implements TDProtoClass<SharpLink> {
    * @param key What should be inserted to the chat
    * @param meta Internal details
    * @param title What should be visible by user
+   * @param icons Icon data, if any
    */
   constructor (
     public key: string,
     public meta: SharpLinkMeta,
     public title: string,
+    public icons?: IconData,
   ) {}
 
   public static fromJSON (raw: SharpLinkJSON): SharpLink {
@@ -11602,6 +11605,7 @@ export class SharpLink implements TDProtoClass<SharpLink> {
       raw.key,
       SharpLinkMeta.fromJSON(raw.meta),
       raw.title,
+      raw.icons && IconData.fromJSON(raw.icons),
     )
   }
 
@@ -11609,6 +11613,7 @@ export class SharpLink implements TDProtoClass<SharpLink> {
     'key',
     'meta',
     'title',
+    'icons',
   ] as const
 
   readonly #mapper = {
@@ -11616,6 +11621,7 @@ export class SharpLink implements TDProtoClass<SharpLink> {
     key: () => ({ key: this.key }),
     meta: () => ({ meta: this.meta.toJSON() }),
     title: () => ({ title: this.title }),
+    icons: () => ({ icons: this.icons?.toJSON() }),
     /* eslint-enable camelcase */
   }
 
