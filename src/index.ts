@@ -4260,7 +4260,7 @@ export class Features implements TDProtoClass<Features> {
    * @param maxParticipantsPerCall Maximum number of participants per call
    * @param multiNodes Multi nodes mode (federation) enabled
    * @param oauthServices External services
-   * @param onlyOneDevicePerCall Disallow call from multiply devices. Experimental
+   * @param onlyOneDevicePerCall Disallow call from multiple devices. Experimental
    * @param webLoginBackground WebBackground image url, if any
    */
   constructor (
