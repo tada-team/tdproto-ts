@@ -8,6 +8,7 @@ interface TDProtoClass<T> {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type UiSettings = Record<string, any>
+export type UiSettingsData = Record<string, any>
 
 export type ChatType =
    | 'direct'
@@ -4126,6 +4127,7 @@ export interface FeaturesJSON {
   max_section_length: number;
   max_tag_length: number;
   max_task_title_length: number;
+  max_team_title_length: number;
   max_teams: number;
   max_upload_mb: number;
   max_url_length: number;
@@ -4217,6 +4219,7 @@ export class Features implements TDProtoClass<Features> {
    * @param maxSectionLength Maximum length for contact's sections names
    * @param maxTagLength Maximum length for tags
    * @param maxTaskTitleLength Maximum length for task title
+   * @param maxTeamTitleLength Maximum chars for team name
    * @param maxTeams Maximum teams for one account
    * @param maxUploadMb Maximum size of user's upload
    * @param maxUrlLength Maximum length for urls
@@ -4304,6 +4307,7 @@ export class Features implements TDProtoClass<Features> {
     public maxSectionLength: number,
     public maxTagLength: number,
     public maxTaskTitleLength: number,
+    public maxTeamTitleLength: number,
     public maxTeams: number,
     public maxUploadMb: number,
     public maxUrlLength: number,
@@ -4393,6 +4397,7 @@ export class Features implements TDProtoClass<Features> {
       raw.max_section_length,
       raw.max_tag_length,
       raw.max_task_title_length,
+      raw.max_team_title_length,
       raw.max_teams,
       raw.max_upload_mb,
       raw.max_url_length,
@@ -4482,6 +4487,7 @@ export class Features implements TDProtoClass<Features> {
     'maxSectionLength',
     'maxTagLength',
     'maxTaskTitleLength',
+    'maxTeamTitleLength',
     'maxTeams',
     'maxUploadMb',
     'maxUrlLength',
@@ -4571,6 +4577,7 @@ export class Features implements TDProtoClass<Features> {
     maxSectionLength: () => ({ max_section_length: this.maxSectionLength }),
     maxTagLength: () => ({ max_tag_length: this.maxTagLength }),
     maxTaskTitleLength: () => ({ max_task_title_length: this.maxTaskTitleLength }),
+    maxTeamTitleLength: () => ({ max_team_title_length: this.maxTeamTitleLength }),
     maxTeams: () => ({ max_teams: this.maxTeams }),
     maxUploadMb: () => ({ max_upload_mb: this.maxUploadMb }),
     maxUrlLength: () => ({ max_url_length: this.maxUrlLength }),
@@ -11241,7 +11248,7 @@ export class ServerTimeParams implements TDProtoClass<ServerTimeParams> {
 export interface ServerUiSettingsJSON {
   /* eslint-disable camelcase */
   event: string;
-  params: UiSettings;
+  params: ServerUiSettingsParamsJSON;
   confirm_id?: string;
   /* eslint-enable camelcase */
 }
@@ -11255,14 +11262,14 @@ export class ServerUiSettings implements TDProtoClass<ServerUiSettings> {
    */
   constructor (
     public event: string,
-    public params: UiSettings,
+    public params: ServerUiSettingsParams,
     public confirmId?: string,
   ) {}
 
   public static fromJSON (raw: ServerUiSettingsJSON): ServerUiSettings {
     return new ServerUiSettings(
       raw.event,
-      raw.params,
+      ServerUiSettingsParams.fromJSON(raw.params),
       raw.confirm_id,
     )
   }
@@ -11276,13 +11283,61 @@ export class ServerUiSettings implements TDProtoClass<ServerUiSettings> {
   readonly #mapper = {
     /* eslint-disable camelcase */
     event: () => ({ event: this.event }),
-    params: () => ({ params: this.params }),
+    params: () => ({ params: this.params.toJSON() }),
     confirmId: () => ({ confirm_id: this.confirmId }),
     /* eslint-enable camelcase */
   }
 
   public toJSON (): ServerUiSettingsJSON
   public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerUiSettingsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerUiSettingsParamsJSON {
+  /* eslint-disable camelcase */
+  data: UiSettingsData;
+  namespace: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerUiSettingsParams implements TDProtoClass<ServerUiSettingsParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param data UiSettingsData
+   * @param namespace Namespace. For example: web, app
+   */
+  constructor (
+    public data: UiSettingsData,
+    public namespace: string,
+  ) {}
+
+  public static fromJSON (raw: ServerUiSettingsParamsJSON): ServerUiSettingsParams {
+    return new ServerUiSettingsParams(
+      raw.data,
+      raw.namespace,
+    )
+  }
+
+  public mappableFields = [
+    'data',
+    'namespace',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    data: () => ({ data: this.data }),
+    namespace: () => ({ namespace: this.namespace }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerUiSettingsParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerUiSettingsParamsJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -12546,6 +12601,7 @@ export interface TaskItemJSON {
   /* eslint-disable camelcase */
   gentime: number;
   text: string;
+  can_change?: boolean;
   can_toggle?: boolean;
   checked?: boolean;
   sort_ordering?: number;
@@ -12559,6 +12615,7 @@ export class TaskItem implements TDProtoClass<TaskItem> {
    * Task checklist item
    * @param gentime Object version
    * @param text Text or "#{OtherTaskNumber}"
+   * @param canChange Can I change this item
    * @param canToggle Can I toggle this item
    * @param checked Item checked
    * @param sortOrdering Sort ordering
@@ -12568,6 +12625,7 @@ export class TaskItem implements TDProtoClass<TaskItem> {
   constructor (
     public readonly gentime: number,
     public text: string,
+    public canChange?: boolean,
     public canToggle?: boolean,
     public checked?: boolean,
     public sortOrdering?: number,
@@ -12579,6 +12637,7 @@ export class TaskItem implements TDProtoClass<TaskItem> {
     return new TaskItem(
       raw.gentime,
       raw.text,
+      raw.can_change,
       raw.can_toggle,
       raw.checked,
       raw.sort_ordering,
@@ -12590,6 +12649,7 @@ export class TaskItem implements TDProtoClass<TaskItem> {
   public mappableFields = [
     'gentime',
     'text',
+    'canChange',
     'canToggle',
     'checked',
     'sortOrdering',
@@ -12601,6 +12661,7 @@ export class TaskItem implements TDProtoClass<TaskItem> {
     /* eslint-disable camelcase */
     gentime: () => ({ gentime: this.gentime }),
     text: () => ({ text: this.text }),
+    canChange: () => ({ can_change: this.canChange }),
     canToggle: () => ({ can_toggle: this.canToggle }),
     checked: () => ({ checked: this.checked }),
     sortOrdering: () => ({ sort_ordering: this.sortOrdering }),
