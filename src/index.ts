@@ -6966,6 +6966,66 @@ export class PaginatedUploadShortMessages implements TDProtoClass<PaginatedUploa
   }
 }
 
+export interface PaymentJSON {
+  /* eslint-disable camelcase */
+  confirmation_url: string;
+  tariff_uid: string;
+  team_uid: string;
+  user_uid: string;
+  /* eslint-enable camelcase */
+}
+
+export class Payment implements TDProtoClass<Payment> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param confirmationUrl DOCUMENTATION MISSING
+   * @param tariffUid DOCUMENTATION MISSING
+   * @param teamUid DOCUMENTATION MISSING
+   * @param userUid DOCUMENTATION MISSING
+   */
+  constructor (
+    public confirmationUrl: string,
+    public tariffUid: string,
+    public teamUid: string,
+    public userUid: string,
+  ) {}
+
+  public static fromJSON (raw: PaymentJSON): Payment {
+    return new Payment(
+      raw.confirmation_url,
+      raw.tariff_uid,
+      raw.team_uid,
+      raw.user_uid,
+    )
+  }
+
+  public mappableFields = [
+    'confirmationUrl',
+    'tariffUid',
+    'teamUid',
+    'userUid',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    confirmationUrl: () => ({ confirmation_url: this.confirmationUrl }),
+    tariffUid: () => ({ tariff_uid: this.tariffUid }),
+    teamUid: () => ({ team_uid: this.teamUid }),
+    userUid: () => ({ user_uid: this.userUid }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): PaymentJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<PaymentJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface PdfVersionJSON {
   /* eslint-disable camelcase */
   url: string;
@@ -12046,6 +12106,72 @@ export class Stickerpack implements TDProtoClass<Stickerpack> {
   }
 }
 
+export interface SubscriptionJSON {
+  /* eslint-disable camelcase */
+  uid: string;
+  activated?: string;
+  expires?: string;
+  tariff_uid?: string;
+  user_uid?: string;
+  /* eslint-enable camelcase */
+}
+
+export class Subscription implements TDProtoClass<Subscription> {
+  /**
+   * Subscription - an entity that signifies the fact of subscribing to the tariff of any team for a certain period (not defined, in the case of the default tariff)
+   * @param uid Subscription id
+   * @param activated Subscription activation time
+   * @param expires Subscription expiration time
+   * @param tariffUid ID of the tariff for which the subscription is valid
+   * @param userUid ID of the user who subscribed
+   */
+  constructor (
+    public uid: string,
+    public activated?: string,
+    public expires?: string,
+    public tariffUid?: string,
+    public userUid?: string,
+  ) {}
+
+  public static fromJSON (raw: SubscriptionJSON): Subscription {
+    return new Subscription(
+      raw.uid,
+      raw.activated,
+      raw.expires,
+      raw.tariff_uid,
+      raw.user_uid,
+    )
+  }
+
+  public mappableFields = [
+    'uid',
+    'activated',
+    'expires',
+    'tariffUid',
+    'userUid',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    uid: () => ({ uid: this.uid }),
+    activated: () => ({ activated: this.activated }),
+    expires: () => ({ expires: this.expires }),
+    tariffUid: () => ({ tariff_uid: this.tariffUid }),
+    userUid: () => ({ user_uid: this.userUid }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): SubscriptionJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<SubscriptionJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface SubtaskJSON {
   /* eslint-disable camelcase */
   assignee: JID;
@@ -13034,6 +13160,7 @@ export interface TeamJSON {
   is_archive?: boolean;
   pinned?: boolean;
   single_group?: JID;
+  subscription?: SubscriptionJSON;
   task_importance_max?: number;
   task_importance_min?: number;
   task_importance_rev?: boolean;
@@ -13071,6 +13198,7 @@ export class Team implements TDProtoClass<Team> {
    * @param isArchive Team deleted
    * @param pinned Team pinned
    * @param singleGroup For single group teams, jid of chat
+   * @param subscription Сurrent team subscription
    * @param taskImportanceMax Maximum value of task importance. Default is 5
    * @param taskImportanceMin Minimal value of task importance. Default is 1
    * @param taskImportanceRev Bigger number = bigger importance. Default: lower number = bigger importance
@@ -13104,6 +13232,7 @@ export class Team implements TDProtoClass<Team> {
     public readonly isArchive?: boolean,
     public pinned?: boolean,
     public readonly singleGroup?: JID,
+    public subscription?: Subscription,
     public taskImportanceMax?: number,
     public taskImportanceMin?: number,
     public taskImportanceRev?: boolean,
@@ -13139,6 +13268,7 @@ export class Team implements TDProtoClass<Team> {
       raw.is_archive,
       raw.pinned,
       raw.single_group,
+      raw.subscription && Subscription.fromJSON(raw.subscription),
       raw.task_importance_max,
       raw.task_importance_min,
       raw.task_importance_rev,
@@ -13174,6 +13304,7 @@ export class Team implements TDProtoClass<Team> {
     'isArchive',
     'pinned',
     'singleGroup',
+    'subscription',
     'taskImportanceMax',
     'taskImportanceMin',
     'taskImportanceRev',
@@ -13209,6 +13340,7 @@ export class Team implements TDProtoClass<Team> {
     isArchive: () => ({ is_archive: this.isArchive }),
     pinned: () => ({ pinned: this.pinned }),
     singleGroup: () => ({ single_group: this.singleGroup }),
+    subscription: () => ({ subscription: this.subscription?.toJSON() }),
     taskImportanceMax: () => ({ task_importance_max: this.taskImportanceMax }),
     taskImportanceMin: () => ({ task_importance_min: this.taskImportanceMin }),
     taskImportanceRev: () => ({ task_importance_rev: this.taskImportanceRev }),
