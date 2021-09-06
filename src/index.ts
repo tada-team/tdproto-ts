@@ -3392,6 +3392,7 @@ export class Contact implements TDProtoClass<Contact> {
 
 export interface ContactCustomFieldsJSON {
   /* eslint-disable camelcase */
+  ad_uid?: string;
   company?: string;
   department?: string;
   mobile_phone?: string;
@@ -3403,6 +3404,7 @@ export interface ContactCustomFieldsJSON {
 export class ContactCustomFields implements TDProtoClass<ContactCustomFields> {
   /**
    * Extra contact fields
+   * @param adUid AD UID
    * @param company Company
    * @param department Department
    * @param mobilePhone MobilePhone
@@ -3410,6 +3412,7 @@ export class ContactCustomFields implements TDProtoClass<ContactCustomFields> {
    * @param title Title
    */
   constructor (
+    public adUid?: string,
     public company?: string,
     public department?: string,
     public mobilePhone?: string,
@@ -3419,6 +3422,7 @@ export class ContactCustomFields implements TDProtoClass<ContactCustomFields> {
 
   public static fromJSON (raw: ContactCustomFieldsJSON): ContactCustomFields {
     return new ContactCustomFields(
+      raw.ad_uid,
       raw.company,
       raw.department,
       raw.mobile_phone,
@@ -3428,6 +3432,7 @@ export class ContactCustomFields implements TDProtoClass<ContactCustomFields> {
   }
 
   public mappableFields = [
+    'adUid',
     'company',
     'department',
     'mobilePhone',
@@ -3437,6 +3442,7 @@ export class ContactCustomFields implements TDProtoClass<ContactCustomFields> {
 
   readonly #mapper = {
     /* eslint-disable camelcase */
+    adUid: () => ({ ad_uid: this.adUid }),
     company: () => ({ company: this.company }),
     department: () => ({ department: this.department }),
     mobilePhone: () => ({ mobile_phone: this.mobilePhone }),
