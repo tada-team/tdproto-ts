@@ -2994,7 +2994,6 @@ export interface ContactJSON {
   contact_phone: string;
   display_name: string;
   gentime: number;
-  hide_pushes_content: boolean;
   icons: IconDataJSON;
   jid: JID;
   role: string;
@@ -3038,6 +3037,7 @@ export interface ContactJSON {
   group_mshort_view?: boolean;
   group_notifications_enabled?: boolean;
   group_short_view?: boolean;
+  hide_pushes_content?: boolean;
   is_archive?: boolean;
   last_activity?: ISODateTimeString;
   mood?: string;
@@ -3061,7 +3061,6 @@ export class Contact implements TDProtoClass<Contact> {
    * @param contactPhone Contact phone in this team
    * @param displayName Full name in chats
    * @param gentime Object version
-   * @param hidePushesContent Hide pushes body
    * @param icons Icons data
    * @param jid Contact Id
    * @param role Role in this team
@@ -3105,6 +3104,7 @@ export class Contact implements TDProtoClass<Contact> {
    * @param groupMshortView Short view in group list in mobile app
    * @param groupNotificationsEnabled Push notifications for group chats
    * @param groupShortView Short view in group list
+   * @param hidePushesContent Hide pushes body
    * @param isArchive Contact deleted
    * @param lastActivity Last activity in this team (iso datetime)
    * @param mood Mood in this team
@@ -3124,7 +3124,6 @@ export class Contact implements TDProtoClass<Contact> {
     public contactPhone: string,
     public displayName: string,
     public gentime: number,
-    public hidePushesContent: boolean,
     public icons: IconData,
     public jid: JID,
     public role: string,
@@ -3168,6 +3167,7 @@ export class Contact implements TDProtoClass<Contact> {
     public groupMshortView?: boolean,
     public groupNotificationsEnabled?: boolean,
     public groupShortView?: boolean,
+    public hidePushesContent?: boolean,
     public isArchive?: boolean,
     public lastActivity?: ISODateTimeString,
     public mood?: string,
@@ -3189,7 +3189,6 @@ export class Contact implements TDProtoClass<Contact> {
       raw.contact_phone,
       raw.display_name,
       raw.gentime,
-      raw.hide_pushes_content,
       IconData.fromJSON(raw.icons),
       raw.jid,
       raw.role,
@@ -3233,6 +3232,7 @@ export class Contact implements TDProtoClass<Contact> {
       raw.group_mshort_view,
       raw.group_notifications_enabled,
       raw.group_short_view,
+      raw.hide_pushes_content,
       raw.is_archive,
       raw.last_activity,
       raw.mood,
@@ -3254,7 +3254,6 @@ export class Contact implements TDProtoClass<Contact> {
     'contactPhone',
     'displayName',
     'gentime',
-    'hidePushesContent',
     'icons',
     'jid',
     'role',
@@ -3298,6 +3297,7 @@ export class Contact implements TDProtoClass<Contact> {
     'groupMshortView',
     'groupNotificationsEnabled',
     'groupShortView',
+    'hidePushesContent',
     'isArchive',
     'lastActivity',
     'mood',
@@ -3319,7 +3319,6 @@ export class Contact implements TDProtoClass<Contact> {
     contactPhone: () => ({ contact_phone: this.contactPhone }),
     displayName: () => ({ display_name: this.displayName }),
     gentime: () => ({ gentime: this.gentime }),
-    hidePushesContent: () => ({ hide_pushes_content: this.hidePushesContent }),
     icons: () => ({ icons: this.icons.toJSON() }),
     jid: () => ({ jid: this.jid }),
     role: () => ({ role: this.role }),
@@ -3363,6 +3362,7 @@ export class Contact implements TDProtoClass<Contact> {
     groupMshortView: () => ({ group_mshort_view: this.groupMshortView }),
     groupNotificationsEnabled: () => ({ group_notifications_enabled: this.groupNotificationsEnabled }),
     groupShortView: () => ({ group_short_view: this.groupShortView }),
+    hidePushesContent: () => ({ hide_pushes_content: this.hidePushesContent }),
     isArchive: () => ({ is_archive: this.isArchive }),
     lastActivity: () => ({ last_activity: this.lastActivity }),
     mood: () => ({ mood: this.mood }),
