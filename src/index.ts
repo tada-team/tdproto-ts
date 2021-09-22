@@ -4120,6 +4120,7 @@ export interface FeaturesJSON {
   installation_type: string;
   ios_app: string;
   ios_corp_app: string;
+  is_pin_code_required: boolean;
   is_testing: boolean;
   max_color_rule_description_length: number;
   max_group_title_length: number;
@@ -4148,6 +4149,7 @@ export interface FeaturesJSON {
   min_ios_version: string;
   min_search_length: number;
   mobile_calls: boolean;
+  pin_code_wrong_limit: number;
   readonly_groups: boolean;
   resend_timeout: number;
   safari_push_id: string;
@@ -4174,13 +4176,11 @@ export interface FeaturesJSON {
   custom_app_icon_name?: string;
   default_wallpaper?: WallpaperJSON;
   installation_title?: string;
-  is_pin_code_required?: boolean;
   landing_url?: string;
   max_participants_per_call?: number;
   multi_nodes?: boolean;
   oauth_services?: OAuthServiceJSON[];
   only_one_device_per_call?: boolean;
-  pin_code_wrong_limit?: number;
   web_login_background?: string;
   /* eslint-enable camelcase */
 }
@@ -4214,6 +4214,7 @@ export class Features implements TDProtoClass<Features> {
    * @param installationType Name of installation
    * @param iosApp Link to AppStore
    * @param iosCorpApp Link to AppStore for corporate app
+   * @param isPinCodeRequired Mandatory setting of the pin code in the application
    * @param isTesting Testing installation
    * @param maxColorRuleDescriptionLength Maximum length for ColorRule description
    * @param maxGroupTitleLength Maximum chars for group chat name
@@ -4242,6 +4243,7 @@ export class Features implements TDProtoClass<Features> {
    * @param minIosVersion Minimal iOS application version required for this server. Used for breaking changes
    * @param minSearchLength Minimal chars number for starting global search
    * @param mobileCalls Calls functions enabled for mobile applications
+   * @param pinCodeWrongLimit Max number of attempts to enter an invalid PIN code
    * @param readonlyGroups Deprecated
    * @param resendTimeout Resend message in n seconds if no confirmation from server given
    * @param safariPushId Safari push id for web-push notifications
@@ -4268,13 +4270,11 @@ export class Features implements TDProtoClass<Features> {
    * @param customAppIconName Custom application icon name, if any
    * @param defaultWallpaper Default wallpaper url for mobile apps, if any
    * @param installationTitle Installation title, used on login screen
-   * @param isPinCodeRequired Mandatory setting of the pin code in the application
    * @param landingUrl Landing page address, if any
    * @param maxParticipantsPerCall Maximum number of participants per call
    * @param multiNodes Multi nodes mode (federation) enabled
    * @param oauthServices External services
    * @param onlyOneDevicePerCall Disallow call from multiple devices. Experimental
-   * @param pinCodeWrongLimit Max number of attempts to enter an invalid PIN code
    * @param webLoginBackground WebBackground image url, if any
    */
   constructor (
@@ -4304,6 +4304,7 @@ export class Features implements TDProtoClass<Features> {
     public installationType: string,
     public iosApp: string,
     public iosCorpApp: string,
+    public isPinCodeRequired: boolean,
     public isTesting: boolean,
     public maxColorRuleDescriptionLength: number,
     public maxGroupTitleLength: number,
@@ -4332,6 +4333,7 @@ export class Features implements TDProtoClass<Features> {
     public minIosVersion: string,
     public minSearchLength: number,
     public mobileCalls: boolean,
+    public pinCodeWrongLimit: number,
     public readonlyGroups: boolean,
     public resendTimeout: number,
     public safariPushId: string,
@@ -4358,13 +4360,11 @@ export class Features implements TDProtoClass<Features> {
     public customAppIconName?: string,
     public defaultWallpaper?: Wallpaper,
     public installationTitle?: string,
-    public isPinCodeRequired?: boolean,
     public landingUrl?: string,
     public maxParticipantsPerCall?: number,
     public multiNodes?: boolean,
     public oauthServices?: OAuthService[],
     public onlyOneDevicePerCall?: boolean,
-    public pinCodeWrongLimit?: number,
     public webLoginBackground?: string,
   ) {}
 
@@ -4396,6 +4396,7 @@ export class Features implements TDProtoClass<Features> {
       raw.installation_type,
       raw.ios_app,
       raw.ios_corp_app,
+      raw.is_pin_code_required,
       raw.is_testing,
       raw.max_color_rule_description_length,
       raw.max_group_title_length,
@@ -4424,6 +4425,7 @@ export class Features implements TDProtoClass<Features> {
       raw.min_ios_version,
       raw.min_search_length,
       raw.mobile_calls,
+      raw.pin_code_wrong_limit,
       raw.readonly_groups,
       raw.resend_timeout,
       raw.safari_push_id,
@@ -4450,13 +4452,11 @@ export class Features implements TDProtoClass<Features> {
       raw.custom_app_icon_name,
       raw.default_wallpaper && Wallpaper.fromJSON(raw.default_wallpaper),
       raw.installation_title,
-      raw.is_pin_code_required,
       raw.landing_url,
       raw.max_participants_per_call,
       raw.multi_nodes,
       raw.oauth_services && raw.oauth_services.map(OAuthService.fromJSON),
       raw.only_one_device_per_call,
-      raw.pin_code_wrong_limit,
       raw.web_login_background,
     )
   }
@@ -4488,6 +4488,7 @@ export class Features implements TDProtoClass<Features> {
     'installationType',
     'iosApp',
     'iosCorpApp',
+    'isPinCodeRequired',
     'isTesting',
     'maxColorRuleDescriptionLength',
     'maxGroupTitleLength',
@@ -4516,6 +4517,7 @@ export class Features implements TDProtoClass<Features> {
     'minIosVersion',
     'minSearchLength',
     'mobileCalls',
+    'pinCodeWrongLimit',
     'readonlyGroups',
     'resendTimeout',
     'safariPushId',
@@ -4542,13 +4544,11 @@ export class Features implements TDProtoClass<Features> {
     'customAppIconName',
     'defaultWallpaper',
     'installationTitle',
-    'isPinCodeRequired',
     'landingUrl',
     'maxParticipantsPerCall',
     'multiNodes',
     'oauthServices',
     'onlyOneDevicePerCall',
-    'pinCodeWrongLimit',
     'webLoginBackground',
   ] as const
 
@@ -4580,6 +4580,7 @@ export class Features implements TDProtoClass<Features> {
     installationType: () => ({ installation_type: this.installationType }),
     iosApp: () => ({ ios_app: this.iosApp }),
     iosCorpApp: () => ({ ios_corp_app: this.iosCorpApp }),
+    isPinCodeRequired: () => ({ is_pin_code_required: this.isPinCodeRequired }),
     isTesting: () => ({ is_testing: this.isTesting }),
     maxColorRuleDescriptionLength: () => ({ max_color_rule_description_length: this.maxColorRuleDescriptionLength }),
     maxGroupTitleLength: () => ({ max_group_title_length: this.maxGroupTitleLength }),
@@ -4608,6 +4609,7 @@ export class Features implements TDProtoClass<Features> {
     minIosVersion: () => ({ min_ios_version: this.minIosVersion }),
     minSearchLength: () => ({ min_search_length: this.minSearchLength }),
     mobileCalls: () => ({ mobile_calls: this.mobileCalls }),
+    pinCodeWrongLimit: () => ({ pin_code_wrong_limit: this.pinCodeWrongLimit }),
     readonlyGroups: () => ({ readonly_groups: this.readonlyGroups }),
     resendTimeout: () => ({ resend_timeout: this.resendTimeout }),
     safariPushId: () => ({ safari_push_id: this.safariPushId }),
@@ -4634,13 +4636,11 @@ export class Features implements TDProtoClass<Features> {
     customAppIconName: () => ({ custom_app_icon_name: this.customAppIconName }),
     defaultWallpaper: () => ({ default_wallpaper: this.defaultWallpaper?.toJSON() }),
     installationTitle: () => ({ installation_title: this.installationTitle }),
-    isPinCodeRequired: () => ({ is_pin_code_required: this.isPinCodeRequired }),
     landingUrl: () => ({ landing_url: this.landingUrl }),
     maxParticipantsPerCall: () => ({ max_participants_per_call: this.maxParticipantsPerCall }),
     multiNodes: () => ({ multi_nodes: this.multiNodes }),
     oauthServices: () => ({ oauth_services: this.oauthServices?.map(u => u.toJSON()) }),
     onlyOneDevicePerCall: () => ({ only_one_device_per_call: this.onlyOneDevicePerCall }),
-    pinCodeWrongLimit: () => ({ pin_code_wrong_limit: this.pinCodeWrongLimit }),
     webLoginBackground: () => ({ web_login_background: this.webLoginBackground }),
     /* eslint-enable camelcase */
   }
