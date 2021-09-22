@@ -4174,11 +4174,13 @@ export interface FeaturesJSON {
   custom_app_icon_name?: string;
   default_wallpaper?: WallpaperJSON;
   installation_title?: string;
+  is_pin_code_required?: boolean;
   landing_url?: string;
   max_participants_per_call?: number;
   multi_nodes?: boolean;
   oauth_services?: OAuthServiceJSON[];
   only_one_device_per_call?: boolean;
+  pin_code_wrong_limit?: number;
   web_login_background?: string;
   /* eslint-enable camelcase */
 }
@@ -4266,11 +4268,13 @@ export class Features implements TDProtoClass<Features> {
    * @param customAppIconName Custom application icon name, if any
    * @param defaultWallpaper Default wallpaper url for mobile apps, if any
    * @param installationTitle Installation title, used on login screen
+   * @param isPinCodeRequired Mandatory setting of the pin code in the application
    * @param landingUrl Landing page address, if any
    * @param maxParticipantsPerCall Maximum number of participants per call
    * @param multiNodes Multi nodes mode (federation) enabled
    * @param oauthServices External services
    * @param onlyOneDevicePerCall Disallow call from multiple devices. Experimental
+   * @param pinCodeWrongLimit Max number of attempts to enter an invalid PIN code
    * @param webLoginBackground WebBackground image url, if any
    */
   constructor (
@@ -4354,11 +4358,13 @@ export class Features implements TDProtoClass<Features> {
     public customAppIconName?: string,
     public defaultWallpaper?: Wallpaper,
     public installationTitle?: string,
+    public isPinCodeRequired?: boolean,
     public landingUrl?: string,
     public maxParticipantsPerCall?: number,
     public multiNodes?: boolean,
     public oauthServices?: OAuthService[],
     public onlyOneDevicePerCall?: boolean,
+    public pinCodeWrongLimit?: number,
     public webLoginBackground?: string,
   ) {}
 
@@ -4444,11 +4450,13 @@ export class Features implements TDProtoClass<Features> {
       raw.custom_app_icon_name,
       raw.default_wallpaper && Wallpaper.fromJSON(raw.default_wallpaper),
       raw.installation_title,
+      raw.is_pin_code_required,
       raw.landing_url,
       raw.max_participants_per_call,
       raw.multi_nodes,
       raw.oauth_services && raw.oauth_services.map(OAuthService.fromJSON),
       raw.only_one_device_per_call,
+      raw.pin_code_wrong_limit,
       raw.web_login_background,
     )
   }
@@ -4534,11 +4542,13 @@ export class Features implements TDProtoClass<Features> {
     'customAppIconName',
     'defaultWallpaper',
     'installationTitle',
+    'isPinCodeRequired',
     'landingUrl',
     'maxParticipantsPerCall',
     'multiNodes',
     'oauthServices',
     'onlyOneDevicePerCall',
+    'pinCodeWrongLimit',
     'webLoginBackground',
   ] as const
 
@@ -4624,11 +4634,13 @@ export class Features implements TDProtoClass<Features> {
     customAppIconName: () => ({ custom_app_icon_name: this.customAppIconName }),
     defaultWallpaper: () => ({ default_wallpaper: this.defaultWallpaper?.toJSON() }),
     installationTitle: () => ({ installation_title: this.installationTitle }),
+    isPinCodeRequired: () => ({ is_pin_code_required: this.isPinCodeRequired }),
     landingUrl: () => ({ landing_url: this.landingUrl }),
     maxParticipantsPerCall: () => ({ max_participants_per_call: this.maxParticipantsPerCall }),
     multiNodes: () => ({ multi_nodes: this.multiNodes }),
     oauthServices: () => ({ oauth_services: this.oauthServices?.map(u => u.toJSON()) }),
     onlyOneDevicePerCall: () => ({ only_one_device_per_call: this.onlyOneDevicePerCall }),
+    pinCodeWrongLimit: () => ({ pin_code_wrong_limit: this.pinCodeWrongLimit }),
     webLoginBackground: () => ({ web_login_background: this.webLoginBackground }),
     /* eslint-enable camelcase */
   }
