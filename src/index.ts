@@ -4106,6 +4106,9 @@ export interface FeaturesJSON {
   custom_server: boolean;
   custom_theme: boolean;
   desktop_version: string;
+  file_extension_blacklist: string[];
+  file_extension_whitelist: string[];
+  file_extension_whitelist_priority: boolean;
   firebase_api_key: string;
   firebase_app_id: string;
   firebase_auth_domain: string;
@@ -4200,6 +4203,9 @@ export class Features implements TDProtoClass<Features> {
    * @param customServer True for premise installation
    * @param customTheme True if server has custom theme
    * @param desktopVersion Desktop application version
+   * @param fileExtensionBlacklist File Extension Blacklist
+   * @param fileExtensionWhitelist File Extension Whitelist
+   * @param fileExtensionWhitelistPriority File Extension Whitelist Priority
    * @param firebaseApiKey Firebase settings for web-push notifications
    * @param firebaseAppId Firebase settings for web-push notifications
    * @param firebaseAuthDomain Firebase settings for web-push notifications
@@ -4290,6 +4296,9 @@ export class Features implements TDProtoClass<Features> {
     public customServer: boolean,
     public customTheme: boolean,
     public desktopVersion: string,
+    public fileExtensionBlacklist: string[],
+    public fileExtensionWhitelist: string[],
+    public fileExtensionWhitelistPriority: boolean,
     public firebaseApiKey: string,
     public firebaseAppId: string,
     public firebaseAuthDomain: string,
@@ -4382,6 +4391,9 @@ export class Features implements TDProtoClass<Features> {
       raw.custom_server,
       raw.custom_theme,
       raw.desktop_version,
+      raw.file_extension_blacklist,
+      raw.file_extension_whitelist,
+      raw.file_extension_whitelist_priority,
       raw.firebase_api_key,
       raw.firebase_app_id,
       raw.firebase_auth_domain,
@@ -4474,6 +4486,9 @@ export class Features implements TDProtoClass<Features> {
     'customServer',
     'customTheme',
     'desktopVersion',
+    'fileExtensionBlacklist',
+    'fileExtensionWhitelist',
+    'fileExtensionWhitelistPriority',
     'firebaseApiKey',
     'firebaseAppId',
     'firebaseAuthDomain',
@@ -4566,6 +4581,9 @@ export class Features implements TDProtoClass<Features> {
     customServer: () => ({ custom_server: this.customServer }),
     customTheme: () => ({ custom_theme: this.customTheme }),
     desktopVersion: () => ({ desktop_version: this.desktopVersion }),
+    fileExtensionBlacklist: () => ({ file_extension_blacklist: this.fileExtensionBlacklist }),
+    fileExtensionWhitelist: () => ({ file_extension_whitelist: this.fileExtensionWhitelist }),
+    fileExtensionWhitelistPriority: () => ({ file_extension_whitelist_priority: this.fileExtensionWhitelistPriority }),
     firebaseApiKey: () => ({ firebase_api_key: this.firebaseApiKey }),
     firebaseAppId: () => ({ firebase_app_id: this.firebaseAppId }),
     firebaseAuthDomain: () => ({ firebase_auth_domain: this.firebaseAuthDomain }),
