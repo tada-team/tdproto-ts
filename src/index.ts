@@ -2994,7 +2994,6 @@ export interface ContactJSON {
   contact_phone: string;
   display_name: string;
   gentime: number;
-  hide_pushes_content: boolean;
   icons: IconDataJSON;
   jid: JID;
   role: string;
@@ -3038,6 +3037,7 @@ export interface ContactJSON {
   group_mshort_view?: boolean;
   group_notifications_enabled?: boolean;
   group_short_view?: boolean;
+  hide_pushes_content?: boolean;
   is_archive?: boolean;
   last_activity?: ISODateTimeString;
   mood?: string;
@@ -3061,7 +3061,6 @@ export class Contact implements TDProtoClass<Contact> {
    * @param contactPhone Contact phone in this team
    * @param displayName Full name in chats
    * @param gentime Object version
-   * @param hidePushesContent Hide pushes body
    * @param icons Icons data
    * @param jid Contact Id
    * @param role Role in this team
@@ -3105,6 +3104,7 @@ export class Contact implements TDProtoClass<Contact> {
    * @param groupMshortView Short view in group list in mobile app
    * @param groupNotificationsEnabled Push notifications for group chats
    * @param groupShortView Short view in group list
+   * @param hidePushesContent Hide pushes body
    * @param isArchive Contact deleted
    * @param lastActivity Last activity in this team (iso datetime)
    * @param mood Mood in this team
@@ -3124,7 +3124,6 @@ export class Contact implements TDProtoClass<Contact> {
     public contactPhone: string,
     public displayName: string,
     public gentime: number,
-    public hidePushesContent: boolean,
     public icons: IconData,
     public jid: JID,
     public role: string,
@@ -3168,6 +3167,7 @@ export class Contact implements TDProtoClass<Contact> {
     public groupMshortView?: boolean,
     public groupNotificationsEnabled?: boolean,
     public groupShortView?: boolean,
+    public hidePushesContent?: boolean,
     public isArchive?: boolean,
     public lastActivity?: ISODateTimeString,
     public mood?: string,
@@ -3189,7 +3189,6 @@ export class Contact implements TDProtoClass<Contact> {
       raw.contact_phone,
       raw.display_name,
       raw.gentime,
-      raw.hide_pushes_content,
       IconData.fromJSON(raw.icons),
       raw.jid,
       raw.role,
@@ -3233,6 +3232,7 @@ export class Contact implements TDProtoClass<Contact> {
       raw.group_mshort_view,
       raw.group_notifications_enabled,
       raw.group_short_view,
+      raw.hide_pushes_content,
       raw.is_archive,
       raw.last_activity,
       raw.mood,
@@ -3254,7 +3254,6 @@ export class Contact implements TDProtoClass<Contact> {
     'contactPhone',
     'displayName',
     'gentime',
-    'hidePushesContent',
     'icons',
     'jid',
     'role',
@@ -3298,6 +3297,7 @@ export class Contact implements TDProtoClass<Contact> {
     'groupMshortView',
     'groupNotificationsEnabled',
     'groupShortView',
+    'hidePushesContent',
     'isArchive',
     'lastActivity',
     'mood',
@@ -3319,7 +3319,6 @@ export class Contact implements TDProtoClass<Contact> {
     contactPhone: () => ({ contact_phone: this.contactPhone }),
     displayName: () => ({ display_name: this.displayName }),
     gentime: () => ({ gentime: this.gentime }),
-    hidePushesContent: () => ({ hide_pushes_content: this.hidePushesContent }),
     icons: () => ({ icons: this.icons.toJSON() }),
     jid: () => ({ jid: this.jid }),
     role: () => ({ role: this.role }),
@@ -3363,6 +3362,7 @@ export class Contact implements TDProtoClass<Contact> {
     groupMshortView: () => ({ group_mshort_view: this.groupMshortView }),
     groupNotificationsEnabled: () => ({ group_notifications_enabled: this.groupNotificationsEnabled }),
     groupShortView: () => ({ group_short_view: this.groupShortView }),
+    hidePushesContent: () => ({ hide_pushes_content: this.hidePushesContent }),
     isArchive: () => ({ is_archive: this.isArchive }),
     lastActivity: () => ({ last_activity: this.lastActivity }),
     mood: () => ({ mood: this.mood }),
@@ -3392,6 +3392,7 @@ export class Contact implements TDProtoClass<Contact> {
 
 export interface ContactCustomFieldsJSON {
   /* eslint-disable camelcase */
+  ad_uid?: string;
   company?: string;
   department?: string;
   mobile_phone?: string;
@@ -3403,6 +3404,7 @@ export interface ContactCustomFieldsJSON {
 export class ContactCustomFields implements TDProtoClass<ContactCustomFields> {
   /**
    * Extra contact fields
+   * @param adUid AD UID
    * @param company Company
    * @param department Department
    * @param mobilePhone MobilePhone
@@ -3410,6 +3412,7 @@ export class ContactCustomFields implements TDProtoClass<ContactCustomFields> {
    * @param title Title
    */
   constructor (
+    public adUid?: string,
     public company?: string,
     public department?: string,
     public mobilePhone?: string,
@@ -3419,6 +3422,7 @@ export class ContactCustomFields implements TDProtoClass<ContactCustomFields> {
 
   public static fromJSON (raw: ContactCustomFieldsJSON): ContactCustomFields {
     return new ContactCustomFields(
+      raw.ad_uid,
       raw.company,
       raw.department,
       raw.mobile_phone,
@@ -3428,6 +3432,7 @@ export class ContactCustomFields implements TDProtoClass<ContactCustomFields> {
   }
 
   public mappableFields = [
+    'adUid',
     'company',
     'department',
     'mobilePhone',
@@ -3437,6 +3442,7 @@ export class ContactCustomFields implements TDProtoClass<ContactCustomFields> {
 
   readonly #mapper = {
     /* eslint-disable camelcase */
+    adUid: () => ({ ad_uid: this.adUid }),
     company: () => ({ company: this.company }),
     department: () => ({ department: this.department }),
     mobilePhone: () => ({ mobile_phone: this.mobilePhone }),
@@ -4100,6 +4106,9 @@ export interface FeaturesJSON {
   custom_server: boolean;
   custom_theme: boolean;
   desktop_version: string;
+  file_extension_blacklist: string[];
+  file_extension_whitelist: string[];
+  file_extension_whitelist_priority: boolean;
   firebase_api_key: string;
   firebase_app_id: string;
   firebase_auth_domain: string;
@@ -4114,6 +4123,7 @@ export interface FeaturesJSON {
   installation_type: string;
   ios_app: string;
   ios_corp_app: string;
+  is_pin_code_required: boolean;
   is_testing: boolean;
   max_color_rule_description_length: number;
   max_group_title_length: number;
@@ -4142,6 +4152,7 @@ export interface FeaturesJSON {
   min_ios_version: string;
   min_search_length: number;
   mobile_calls: boolean;
+  pin_code_wrong_limit: number;
   readonly_groups: boolean;
   resend_timeout: number;
   safari_push_id: string;
@@ -4192,6 +4203,9 @@ export class Features implements TDProtoClass<Features> {
    * @param customServer True for premise installation
    * @param customTheme True if server has custom theme
    * @param desktopVersion Desktop application version
+   * @param fileExtensionBlacklist File Extension Blacklist
+   * @param fileExtensionWhitelist File Extension Whitelist
+   * @param fileExtensionWhitelistPriority File Extension Whitelist Priority
    * @param firebaseApiKey Firebase settings for web-push notifications
    * @param firebaseAppId Firebase settings for web-push notifications
    * @param firebaseAuthDomain Firebase settings for web-push notifications
@@ -4206,6 +4220,7 @@ export class Features implements TDProtoClass<Features> {
    * @param installationType Name of installation
    * @param iosApp Link to AppStore
    * @param iosCorpApp Link to AppStore for corporate app
+   * @param isPinCodeRequired Mandatory setting of the pin code in the application
    * @param isTesting Testing installation
    * @param maxColorRuleDescriptionLength Maximum length for ColorRule description
    * @param maxGroupTitleLength Maximum chars for group chat name
@@ -4234,6 +4249,7 @@ export class Features implements TDProtoClass<Features> {
    * @param minIosVersion Minimal iOS application version required for this server. Used for breaking changes
    * @param minSearchLength Minimal chars number for starting global search
    * @param mobileCalls Calls functions enabled for mobile applications
+   * @param pinCodeWrongLimit Max number of attempts to enter an invalid PIN code
    * @param readonlyGroups Deprecated
    * @param resendTimeout Resend message in n seconds if no confirmation from server given
    * @param safariPushId Safari push id for web-push notifications
@@ -4280,6 +4296,9 @@ export class Features implements TDProtoClass<Features> {
     public customServer: boolean,
     public customTheme: boolean,
     public desktopVersion: string,
+    public fileExtensionBlacklist: string[],
+    public fileExtensionWhitelist: string[],
+    public fileExtensionWhitelistPriority: boolean,
     public firebaseApiKey: string,
     public firebaseAppId: string,
     public firebaseAuthDomain: string,
@@ -4294,6 +4313,7 @@ export class Features implements TDProtoClass<Features> {
     public installationType: string,
     public iosApp: string,
     public iosCorpApp: string,
+    public isPinCodeRequired: boolean,
     public isTesting: boolean,
     public maxColorRuleDescriptionLength: number,
     public maxGroupTitleLength: number,
@@ -4322,6 +4342,7 @@ export class Features implements TDProtoClass<Features> {
     public minIosVersion: string,
     public minSearchLength: number,
     public mobileCalls: boolean,
+    public pinCodeWrongLimit: number,
     public readonlyGroups: boolean,
     public resendTimeout: number,
     public safariPushId: string,
@@ -4370,6 +4391,9 @@ export class Features implements TDProtoClass<Features> {
       raw.custom_server,
       raw.custom_theme,
       raw.desktop_version,
+      raw.file_extension_blacklist,
+      raw.file_extension_whitelist,
+      raw.file_extension_whitelist_priority,
       raw.firebase_api_key,
       raw.firebase_app_id,
       raw.firebase_auth_domain,
@@ -4384,6 +4408,7 @@ export class Features implements TDProtoClass<Features> {
       raw.installation_type,
       raw.ios_app,
       raw.ios_corp_app,
+      raw.is_pin_code_required,
       raw.is_testing,
       raw.max_color_rule_description_length,
       raw.max_group_title_length,
@@ -4412,6 +4437,7 @@ export class Features implements TDProtoClass<Features> {
       raw.min_ios_version,
       raw.min_search_length,
       raw.mobile_calls,
+      raw.pin_code_wrong_limit,
       raw.readonly_groups,
       raw.resend_timeout,
       raw.safari_push_id,
@@ -4460,6 +4486,9 @@ export class Features implements TDProtoClass<Features> {
     'customServer',
     'customTheme',
     'desktopVersion',
+    'fileExtensionBlacklist',
+    'fileExtensionWhitelist',
+    'fileExtensionWhitelistPriority',
     'firebaseApiKey',
     'firebaseAppId',
     'firebaseAuthDomain',
@@ -4474,6 +4503,7 @@ export class Features implements TDProtoClass<Features> {
     'installationType',
     'iosApp',
     'iosCorpApp',
+    'isPinCodeRequired',
     'isTesting',
     'maxColorRuleDescriptionLength',
     'maxGroupTitleLength',
@@ -4502,6 +4532,7 @@ export class Features implements TDProtoClass<Features> {
     'minIosVersion',
     'minSearchLength',
     'mobileCalls',
+    'pinCodeWrongLimit',
     'readonlyGroups',
     'resendTimeout',
     'safariPushId',
@@ -4550,6 +4581,9 @@ export class Features implements TDProtoClass<Features> {
     customServer: () => ({ custom_server: this.customServer }),
     customTheme: () => ({ custom_theme: this.customTheme }),
     desktopVersion: () => ({ desktop_version: this.desktopVersion }),
+    fileExtensionBlacklist: () => ({ file_extension_blacklist: this.fileExtensionBlacklist }),
+    fileExtensionWhitelist: () => ({ file_extension_whitelist: this.fileExtensionWhitelist }),
+    fileExtensionWhitelistPriority: () => ({ file_extension_whitelist_priority: this.fileExtensionWhitelistPriority }),
     firebaseApiKey: () => ({ firebase_api_key: this.firebaseApiKey }),
     firebaseAppId: () => ({ firebase_app_id: this.firebaseAppId }),
     firebaseAuthDomain: () => ({ firebase_auth_domain: this.firebaseAuthDomain }),
@@ -4564,6 +4598,7 @@ export class Features implements TDProtoClass<Features> {
     installationType: () => ({ installation_type: this.installationType }),
     iosApp: () => ({ ios_app: this.iosApp }),
     iosCorpApp: () => ({ ios_corp_app: this.iosCorpApp }),
+    isPinCodeRequired: () => ({ is_pin_code_required: this.isPinCodeRequired }),
     isTesting: () => ({ is_testing: this.isTesting }),
     maxColorRuleDescriptionLength: () => ({ max_color_rule_description_length: this.maxColorRuleDescriptionLength }),
     maxGroupTitleLength: () => ({ max_group_title_length: this.maxGroupTitleLength }),
@@ -4592,6 +4627,7 @@ export class Features implements TDProtoClass<Features> {
     minIosVersion: () => ({ min_ios_version: this.minIosVersion }),
     minSearchLength: () => ({ min_search_length: this.minSearchLength }),
     mobileCalls: () => ({ mobile_calls: this.mobileCalls }),
+    pinCodeWrongLimit: () => ({ pin_code_wrong_limit: this.pinCodeWrongLimit }),
     readonlyGroups: () => ({ readonly_groups: this.readonlyGroups }),
     resendTimeout: () => ({ resend_timeout: this.resendTimeout }),
     safariPushId: () => ({ safari_push_id: this.safariPushId }),
