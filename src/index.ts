@@ -3672,6 +3672,360 @@ export class Country implements TDProtoClass<Country> {
   }
 }
 
+export interface DLPBasicDataJSON {
+  /* eslint-disable camelcase */
+  description: string;
+  name: string;
+  number: number;
+  uuid: string;
+  /* eslint-enable camelcase */
+}
+
+export class DLPBasicData implements TDProtoClass<DLPBasicData> {
+  /**
+   * DLPBasicData structure for basic data (used for team, group, task, etc.)
+   * @param description DOCUMENTATION MISSING
+   * @param name DOCUMENTATION MISSING
+   * @param number DOCUMENTATION MISSING
+   * @param uuid DOCUMENTATION MISSING
+   */
+  constructor (
+    public description: string,
+    public name: string,
+    public number: number,
+    public uuid: string,
+  ) {}
+
+  public static fromJSON (raw: DLPBasicDataJSON): DLPBasicData {
+    return new DLPBasicData(
+      raw.description,
+      raw.name,
+      raw.number,
+      raw.uuid,
+    )
+  }
+
+  public mappableFields = [
+    'description',
+    'name',
+    'number',
+    'uuid',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    description: () => ({ description: this.description }),
+    name: () => ({ name: this.name }),
+    number: () => ({ number: this.number }),
+    uuid: () => ({ uuid: this.uuid }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): DLPBasicDataJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<DLPBasicDataJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface DLPEventJSON {
+  /* eslint-disable camelcase */
+  direct_data: DLPUserDataJSON;
+  event_channel: ChatType;
+  event_time: string;
+  file_data: DLPFileDataJSON;
+  group_data: DLPBasicDataJSON;
+  media_type: Mediatype;
+  message_data: DLPMessageDataJSON;
+  sender_data: DLPUserDataJSON;
+  task_data: DLPBasicDataJSON;
+  team_data: DLPBasicDataJSON;
+  uuid: string;
+  /* eslint-enable camelcase */
+}
+
+export class DLPEvent implements TDProtoClass<DLPEvent> {
+  /**
+   * DLPEvent structure to store all information about event
+   * @param directData DOCUMENTATION MISSING
+   * @param eventChannel DOCUMENTATION MISSING
+   * @param eventTime DOCUMENTATION MISSING
+   * @param fileData DOCUMENTATION MISSING
+   * @param groupData DOCUMENTATION MISSING
+   * @param mediaType DOCUMENTATION MISSING
+   * @param messageData DOCUMENTATION MISSING
+   * @param senderData DOCUMENTATION MISSING
+   * @param taskData DOCUMENTATION MISSING
+   * @param teamData DOCUMENTATION MISSING
+   * @param uuid DOCUMENTATION MISSING
+   */
+  constructor (
+    public directData: DLPUserData,
+    public eventChannel: ChatType,
+    public eventTime: string,
+    public fileData: DLPFileData,
+    public groupData: DLPBasicData,
+    public mediaType: Mediatype,
+    public messageData: DLPMessageData,
+    public senderData: DLPUserData,
+    public taskData: DLPBasicData,
+    public teamData: DLPBasicData,
+    public uuid: string,
+  ) {}
+
+  public static fromJSON (raw: DLPEventJSON): DLPEvent {
+    return new DLPEvent(
+      DLPUserData.fromJSON(raw.direct_data),
+      raw.event_channel,
+      raw.event_time,
+      DLPFileData.fromJSON(raw.file_data),
+      DLPBasicData.fromJSON(raw.group_data),
+      raw.media_type,
+      DLPMessageData.fromJSON(raw.message_data),
+      DLPUserData.fromJSON(raw.sender_data),
+      DLPBasicData.fromJSON(raw.task_data),
+      DLPBasicData.fromJSON(raw.team_data),
+      raw.uuid,
+    )
+  }
+
+  public mappableFields = [
+    'directData',
+    'eventChannel',
+    'eventTime',
+    'fileData',
+    'groupData',
+    'mediaType',
+    'messageData',
+    'senderData',
+    'taskData',
+    'teamData',
+    'uuid',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    directData: () => ({ direct_data: this.directData.toJSON() }),
+    eventChannel: () => ({ event_channel: this.eventChannel }),
+    eventTime: () => ({ event_time: this.eventTime }),
+    fileData: () => ({ file_data: this.fileData.toJSON() }),
+    groupData: () => ({ group_data: this.groupData.toJSON() }),
+    mediaType: () => ({ media_type: this.mediaType }),
+    messageData: () => ({ message_data: this.messageData.toJSON() }),
+    senderData: () => ({ sender_data: this.senderData.toJSON() }),
+    taskData: () => ({ task_data: this.taskData.toJSON() }),
+    teamData: () => ({ team_data: this.teamData.toJSON() }),
+    uuid: () => ({ uuid: this.uuid }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): DLPEventJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<DLPEventJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface DLPFileDataJSON {
+  /* eslint-disable camelcase */
+  comment: string;
+  link: string;
+  /* eslint-enable camelcase */
+}
+
+export class DLPFileData implements TDProtoClass<DLPFileData> {
+  /**
+   * DLPFileData structure to store information about file event
+   * @param comment Content []byte `json:"content"` // TODO
+   * @param link DOCUMENTATION MISSING
+   */
+  constructor (
+    public comment: string,
+    public link: string,
+  ) {}
+
+  public static fromJSON (raw: DLPFileDataJSON): DLPFileData {
+    return new DLPFileData(
+      raw.comment,
+      raw.link,
+    )
+  }
+
+  public mappableFields = [
+    'comment',
+    'link',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    comment: () => ({ comment: this.comment }),
+    link: () => ({ link: this.link }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): DLPFileDataJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<DLPFileDataJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface DLPMessageDataJSON {
+  /* eslint-disable camelcase */
+  comment: string;
+  text: string;
+  /* eslint-enable camelcase */
+}
+
+export class DLPMessageData implements TDProtoClass<DLPMessageData> {
+  /**
+   * DLPMessageData structure to store information about message
+   * @param comment DOCUMENTATION MISSING
+   * @param text DOCUMENTATION MISSING
+   */
+  constructor (
+    public comment: string,
+    public text: string,
+  ) {}
+
+  public static fromJSON (raw: DLPMessageDataJSON): DLPMessageData {
+    return new DLPMessageData(
+      raw.comment,
+      raw.text,
+    )
+  }
+
+  public mappableFields = [
+    'comment',
+    'text',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    comment: () => ({ comment: this.comment }),
+    text: () => ({ text: this.text }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): DLPMessageDataJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<DLPMessageDataJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface DLPUserDataJSON {
+  /* eslint-disable camelcase */
+  contact_email: string;
+  contact_phone: string;
+  contact_uuid: string;
+  first_name: string;
+  is_bot: boolean;
+  last_name: string;
+  middle_name: string;
+  name: string;
+  role: string;
+  uuid: string;
+  /* eslint-enable camelcase */
+}
+
+export class DLPUserData implements TDProtoClass<DLPUserData> {
+  /**
+   * DLPUserData structure to store sender/receiver user information
+   * @param contactEmail DOCUMENTATION MISSING
+   * @param contactPhone DOCUMENTATION MISSING
+   * @param contactUuid DOCUMENTATION MISSING
+   * @param firstName DOCUMENTATION MISSING
+   * @param isBot DOCUMENTATION MISSING
+   * @param lastName DOCUMENTATION MISSING
+   * @param middleName DOCUMENTATION MISSING
+   * @param name DOCUMENTATION MISSING
+   * @param role DOCUMENTATION MISSING
+   * @param uuid DOCUMENTATION MISSING
+   */
+  constructor (
+    public contactEmail: string,
+    public contactPhone: string,
+    public contactUuid: string,
+    public firstName: string,
+    public isBot: boolean,
+    public lastName: string,
+    public middleName: string,
+    public name: string,
+    public role: string,
+    public uuid: string,
+  ) {}
+
+  public static fromJSON (raw: DLPUserDataJSON): DLPUserData {
+    return new DLPUserData(
+      raw.contact_email,
+      raw.contact_phone,
+      raw.contact_uuid,
+      raw.first_name,
+      raw.is_bot,
+      raw.last_name,
+      raw.middle_name,
+      raw.name,
+      raw.role,
+      raw.uuid,
+    )
+  }
+
+  public mappableFields = [
+    'contactEmail',
+    'contactPhone',
+    'contactUuid',
+    'firstName',
+    'isBot',
+    'lastName',
+    'middleName',
+    'name',
+    'role',
+    'uuid',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    contactEmail: () => ({ contact_email: this.contactEmail }),
+    contactPhone: () => ({ contact_phone: this.contactPhone }),
+    contactUuid: () => ({ contact_uuid: this.contactUuid }),
+    firstName: () => ({ first_name: this.firstName }),
+    isBot: () => ({ is_bot: this.isBot }),
+    lastName: () => ({ last_name: this.lastName }),
+    middleName: () => ({ middle_name: this.middleName }),
+    name: () => ({ name: this.name }),
+    role: () => ({ role: this.role }),
+    uuid: () => ({ uuid: this.uuid }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): DLPUserDataJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<DLPUserDataJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface DeletedChatJSON {
   /* eslint-disable camelcase */
   chat_type: ChatType;
