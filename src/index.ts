@@ -3404,7 +3404,7 @@ export interface ContactCustomFieldsJSON {
 export class ContactCustomFields implements TDProtoClass<ContactCustomFields> {
   /**
    * Extra contact fields
-   * @param adUid AD UID
+   * @param adUid User UUID in Active Directory
    * @param company Company
    * @param department Department
    * @param mobilePhone MobilePhone
