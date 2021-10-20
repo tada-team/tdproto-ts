@@ -4460,9 +4460,6 @@ export interface FeaturesJSON {
   custom_server: boolean;
   custom_theme: boolean;
   desktop_version: string;
-  file_extension_blacklist: string[];
-  file_extension_whitelist: string[];
-  file_extension_whitelist_priority: boolean;
   firebase_api_key: string;
   firebase_app_id: string;
   firebase_auth_domain: string;
@@ -4532,6 +4529,9 @@ export interface FeaturesJSON {
   auth_by_sms?: boolean;
   custom_app_icon_name?: string;
   default_wallpaper?: WallpaperJSON;
+  file_extension_blacklist?: string[];
+  file_extension_whitelist?: string[];
+  file_extension_whitelist_priority?: boolean;
   installation_title?: string;
   landing_url?: string;
   max_participants_per_call?: number;
@@ -4557,9 +4557,6 @@ export class Features implements TDProtoClass<Features> {
    * @param customServer True for premise installation
    * @param customTheme True if server has custom theme
    * @param desktopVersion Desktop application version
-   * @param fileExtensionBlacklist File Extension Blacklist
-   * @param fileExtensionWhitelist File Extension Whitelist
-   * @param fileExtensionWhitelistPriority File Extension Whitelist Priority
    * @param firebaseApiKey Firebase settings for web-push notifications
    * @param firebaseAppId Firebase settings for web-push notifications
    * @param firebaseAuthDomain Firebase settings for web-push notifications
@@ -4629,6 +4626,9 @@ export class Features implements TDProtoClass<Features> {
    * @param authBySms SMS authentication enabled
    * @param customAppIconName Custom application icon name, if any
    * @param defaultWallpaper Default wallpaper url for mobile apps, if any
+   * @param fileExtensionBlacklist File Extension Blacklist
+   * @param fileExtensionWhitelist File Extension Whitelist
+   * @param fileExtensionWhitelistPriority File Extension Whitelist Priority
    * @param installationTitle Installation title, used on login screen
    * @param landingUrl Landing page address, if any
    * @param maxParticipantsPerCall Maximum number of participants per call
@@ -4650,9 +4650,6 @@ export class Features implements TDProtoClass<Features> {
     public customServer: boolean,
     public customTheme: boolean,
     public desktopVersion: string,
-    public fileExtensionBlacklist: string[],
-    public fileExtensionWhitelist: string[],
-    public fileExtensionWhitelistPriority: boolean,
     public firebaseApiKey: string,
     public firebaseAppId: string,
     public firebaseAuthDomain: string,
@@ -4722,6 +4719,9 @@ export class Features implements TDProtoClass<Features> {
     public authBySms?: boolean,
     public customAppIconName?: string,
     public defaultWallpaper?: Wallpaper,
+    public fileExtensionBlacklist?: string[],
+    public fileExtensionWhitelist?: string[],
+    public fileExtensionWhitelistPriority?: boolean,
     public installationTitle?: string,
     public landingUrl?: string,
     public maxParticipantsPerCall?: number,
@@ -4745,9 +4745,6 @@ export class Features implements TDProtoClass<Features> {
       raw.custom_server,
       raw.custom_theme,
       raw.desktop_version,
-      raw.file_extension_blacklist,
-      raw.file_extension_whitelist,
-      raw.file_extension_whitelist_priority,
       raw.firebase_api_key,
       raw.firebase_app_id,
       raw.firebase_auth_domain,
@@ -4817,6 +4814,9 @@ export class Features implements TDProtoClass<Features> {
       raw.auth_by_sms,
       raw.custom_app_icon_name,
       raw.default_wallpaper && Wallpaper.fromJSON(raw.default_wallpaper),
+      raw.file_extension_blacklist,
+      raw.file_extension_whitelist,
+      raw.file_extension_whitelist_priority,
       raw.installation_title,
       raw.landing_url,
       raw.max_participants_per_call,
@@ -4840,9 +4840,6 @@ export class Features implements TDProtoClass<Features> {
     'customServer',
     'customTheme',
     'desktopVersion',
-    'fileExtensionBlacklist',
-    'fileExtensionWhitelist',
-    'fileExtensionWhitelistPriority',
     'firebaseApiKey',
     'firebaseAppId',
     'firebaseAuthDomain',
@@ -4912,6 +4909,9 @@ export class Features implements TDProtoClass<Features> {
     'authBySms',
     'customAppIconName',
     'defaultWallpaper',
+    'fileExtensionBlacklist',
+    'fileExtensionWhitelist',
+    'fileExtensionWhitelistPriority',
     'installationTitle',
     'landingUrl',
     'maxParticipantsPerCall',
@@ -4935,9 +4935,6 @@ export class Features implements TDProtoClass<Features> {
     customServer: () => ({ custom_server: this.customServer }),
     customTheme: () => ({ custom_theme: this.customTheme }),
     desktopVersion: () => ({ desktop_version: this.desktopVersion }),
-    fileExtensionBlacklist: () => ({ file_extension_blacklist: this.fileExtensionBlacklist }),
-    fileExtensionWhitelist: () => ({ file_extension_whitelist: this.fileExtensionWhitelist }),
-    fileExtensionWhitelistPriority: () => ({ file_extension_whitelist_priority: this.fileExtensionWhitelistPriority }),
     firebaseApiKey: () => ({ firebase_api_key: this.firebaseApiKey }),
     firebaseAppId: () => ({ firebase_app_id: this.firebaseAppId }),
     firebaseAuthDomain: () => ({ firebase_auth_domain: this.firebaseAuthDomain }),
@@ -5007,6 +5004,9 @@ export class Features implements TDProtoClass<Features> {
     authBySms: () => ({ auth_by_sms: this.authBySms }),
     customAppIconName: () => ({ custom_app_icon_name: this.customAppIconName }),
     defaultWallpaper: () => ({ default_wallpaper: this.defaultWallpaper?.toJSON() }),
+    fileExtensionBlacklist: () => ({ file_extension_blacklist: this.fileExtensionBlacklist }),
+    fileExtensionWhitelist: () => ({ file_extension_whitelist: this.fileExtensionWhitelist }),
+    fileExtensionWhitelistPriority: () => ({ file_extension_whitelist_priority: this.fileExtensionWhitelistPriority }),
     installationTitle: () => ({ installation_title: this.installationTitle }),
     landingUrl: () => ({ landing_url: this.landingUrl }),
     maxParticipantsPerCall: () => ({ max_participants_per_call: this.maxParticipantsPerCall }),
