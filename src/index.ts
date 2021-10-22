@@ -588,6 +588,7 @@ export interface CallOnlinerJSON {
   jid: JID;
   muted: boolean;
   role: string;
+  enabled_video?: boolean;
   /* eslint-enable camelcase */
 }
 
@@ -600,6 +601,7 @@ export class CallOnliner implements TDProtoClass<CallOnliner> {
    * @param jid Contact id
    * @param muted Microphone muted. Computed from devices muted states
    * @param role Contact role
+   * @param enabledVideo Video state
    */
   constructor (
     public devices: CallDevice[],
@@ -608,6 +610,7 @@ export class CallOnliner implements TDProtoClass<CallOnliner> {
     public jid: JID,
     public muted: boolean,
     public role: string,
+    public enabledVideo?: boolean,
   ) {}
 
   public static fromJSON (raw: CallOnlinerJSON): CallOnliner {
@@ -618,6 +621,7 @@ export class CallOnliner implements TDProtoClass<CallOnliner> {
       raw.jid,
       raw.muted,
       raw.role,
+      raw.enabled_video,
     )
   }
 
@@ -628,6 +632,7 @@ export class CallOnliner implements TDProtoClass<CallOnliner> {
     'jid',
     'muted',
     'role',
+    'enabledVideo',
   ] as const
 
   readonly #mapper = {
@@ -638,6 +643,7 @@ export class CallOnliner implements TDProtoClass<CallOnliner> {
     jid: () => ({ jid: this.jid }),
     muted: () => ({ muted: this.muted }),
     role: () => ({ role: this.role }),
+    enabledVideo: () => ({ enabled_video: this.enabledVideo }),
     /* eslint-enable camelcase */
   }
 
@@ -1788,6 +1794,9 @@ export interface ClientCallOfferParamsJSON {
   muted: boolean;
   sdp: string;
   trickle: boolean;
+  call_type?: string;
+  enabled_audio?: boolean;
+  enabled_video?: boolean;
   /* eslint-enable camelcase */
 }
 
@@ -1795,15 +1804,21 @@ export class ClientCallOfferParams implements TDProtoClass<ClientCallOfferParams
   /**
    * Params of the client.call.offer event
    * @param jid Chat or contact id
-   * @param muted Mute state
+   * @param muted Mute state Deprecated: use EnabledAudio
    * @param sdp SDP (session description protocol) data
    * @param trickle Is trickle mode enabled
+   * @param callType CallType is a type of call("audio" - audio room, "video" - video room). default = "audio"
+   * @param enabledAudio Audio state
+   * @param enabledVideo Video state
    */
   constructor (
     public jid: JID,
     public muted: boolean,
     public sdp: string,
     public trickle: boolean,
+    public callType?: string,
+    public enabledAudio?: boolean,
+    public enabledVideo?: boolean,
   ) {}
 
   public static fromJSON (raw: ClientCallOfferParamsJSON): ClientCallOfferParams {
@@ -1812,6 +1827,9 @@ export class ClientCallOfferParams implements TDProtoClass<ClientCallOfferParams
       raw.muted,
       raw.sdp,
       raw.trickle,
+      raw.call_type,
+      raw.enabled_audio,
+      raw.enabled_video,
     )
   }
 
@@ -1820,6 +1838,9 @@ export class ClientCallOfferParams implements TDProtoClass<ClientCallOfferParams
     'muted',
     'sdp',
     'trickle',
+    'callType',
+    'enabledAudio',
+    'enabledVideo',
   ] as const
 
   readonly #mapper = {
@@ -1828,6 +1849,9 @@ export class ClientCallOfferParams implements TDProtoClass<ClientCallOfferParams
     muted: () => ({ muted: this.muted }),
     sdp: () => ({ sdp: this.sdp }),
     trickle: () => ({ trickle: this.trickle }),
+    callType: () => ({ call_type: this.callType }),
+    enabledAudio: () => ({ enabled_audio: this.enabledAudio }),
+    enabledVideo: () => ({ enabled_video: this.enabledVideo }),
     /* eslint-enable camelcase */
   }
 
@@ -2259,6 +2283,108 @@ export class ClientCallTrickleParams implements TDProtoClass<ClientCallTricklePa
 
   public toJSON (): ClientCallTrickleParamsJSON
   public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientCallTrickleParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ClientCallVideoJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ClientCallVideoParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ClientCallVideo implements TDProtoClass<ClientCallVideo> {
+  /**
+   * Change video state in call
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ClientCallVideoParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ClientCallVideoJSON): ClientCallVideo {
+    return new ClientCallVideo(
+      raw.event,
+      ClientCallVideoParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ClientCallVideoJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientCallVideoJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ClientCallVideoParamsJSON {
+  /* eslint-disable camelcase */
+  enabled: boolean;
+  jid: JID;
+  /* eslint-enable camelcase */
+}
+
+export class ClientCallVideoParams implements TDProtoClass<ClientCallVideoParams> {
+  /**
+   * Params of the client.call.video event
+   * @param enabled Enable video state
+   * @param jid Chat or contact id
+   */
+  constructor (
+    public enabled: boolean,
+    public jid: JID,
+  ) {}
+
+  public static fromJSON (raw: ClientCallVideoParamsJSON): ClientCallVideoParams {
+    return new ClientCallVideoParams(
+      raw.enabled,
+      raw.jid,
+    )
+  }
+
+  public mappableFields = [
+    'enabled',
+    'jid',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    enabled: () => ({ enabled: this.enabled }),
+    jid: () => ({ jid: this.jid }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ClientCallVideoParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientCallVideoParamsJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -6994,6 +7120,7 @@ export interface OnlineCallJSON {
   /* eslint-disable camelcase */
   jid: JID;
   uid: string;
+  call_type?: string;
   online_count?: number;
   start?: ISODateTimeString;
   /* eslint-enable camelcase */
@@ -7004,12 +7131,14 @@ export class OnlineCall implements TDProtoClass<OnlineCall> {
    * Active call status
    * @param jid Chat or contact id
    * @param uid Call id
+   * @param callType CallType is a type of call("audio" - audio room, "video" - video room)
    * @param onlineCount Number participants in call
    * @param start Call start
    */
   constructor (
     public jid: JID,
     public uid: string,
+    public callType?: string,
     public onlineCount?: number,
     public start?: ISODateTimeString,
   ) {}
@@ -7018,6 +7147,7 @@ export class OnlineCall implements TDProtoClass<OnlineCall> {
     return new OnlineCall(
       raw.jid,
       raw.uid,
+      raw.call_type,
       raw.online_count,
       raw.start,
     )
@@ -7026,6 +7156,7 @@ export class OnlineCall implements TDProtoClass<OnlineCall> {
   public mappableFields = [
     'jid',
     'uid',
+    'callType',
     'onlineCount',
     'start',
   ] as const
@@ -7034,6 +7165,7 @@ export class OnlineCall implements TDProtoClass<OnlineCall> {
     /* eslint-disable camelcase */
     jid: () => ({ jid: this.jid }),
     uid: () => ({ uid: this.uid }),
+    callType: () => ({ call_type: this.callType }),
     onlineCount: () => ({ online_count: this.onlineCount }),
     start: () => ({ start: this.start }),
     /* eslint-enable camelcase */
@@ -8101,6 +8233,7 @@ export interface ServerCallBuzzParamsJSON {
   team: string;
   teaminfo: TeamShortJSON;
   uid: string;
+  call_type?: string;
   /* eslint-enable camelcase */
 }
 
@@ -8116,6 +8249,7 @@ export class ServerCallBuzzParams implements TDProtoClass<ServerCallBuzzParams> 
    * @param team Deprecated
    * @param teaminfo Short team information
    * @param uid Call id
+   * @param callType CallType is a type of call("audio" - audio room, "video" - video room)
    */
   constructor (
     public actor: ContactShort,
@@ -8127,6 +8261,7 @@ export class ServerCallBuzzParams implements TDProtoClass<ServerCallBuzzParams> 
     public team: string,
     public teaminfo: TeamShort,
     public uid: string,
+    public callType?: string,
   ) {}
 
   public static fromJSON (raw: ServerCallBuzzParamsJSON): ServerCallBuzzParams {
@@ -8140,6 +8275,7 @@ export class ServerCallBuzzParams implements TDProtoClass<ServerCallBuzzParams> 
       raw.team,
       TeamShort.fromJSON(raw.teaminfo),
       raw.uid,
+      raw.call_type,
     )
   }
 
@@ -8153,6 +8289,7 @@ export class ServerCallBuzzParams implements TDProtoClass<ServerCallBuzzParams> 
     'team',
     'teaminfo',
     'uid',
+    'callType',
   ] as const
 
   readonly #mapper = {
@@ -8166,6 +8303,7 @@ export class ServerCallBuzzParams implements TDProtoClass<ServerCallBuzzParams> 
     team: () => ({ team: this.team }),
     teaminfo: () => ({ teaminfo: this.teaminfo.toJSON() }),
     uid: () => ({ uid: this.uid }),
+    callType: () => ({ call_type: this.callType }),
     /* eslint-enable camelcase */
   }
 
