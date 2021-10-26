@@ -4660,6 +4660,7 @@ export interface FeaturesJSON {
   file_extension_whitelist?: string[];
   file_extension_whitelist_priority?: boolean;
   installation_title?: string;
+  is_captcha_enabled?: boolean;
   landing_url?: string;
   max_participants_per_call?: number;
   multi_nodes?: boolean;
@@ -4758,6 +4759,7 @@ export class Features implements TDProtoClass<Features> {
    * @param fileExtensionWhitelist File Extension Whitelist
    * @param fileExtensionWhitelistPriority File Extension Whitelist Priority
    * @param installationTitle Installation title, used on login screen
+   * @param isCaptchaEnabled Captcha enabled
    * @param landingUrl Landing page address, if any
    * @param maxParticipantsPerCall Maximum number of participants per call
    * @param multiNodes Multi nodes mode (federation) enabled
@@ -4852,6 +4854,7 @@ export class Features implements TDProtoClass<Features> {
     public fileExtensionWhitelist?: string[],
     public fileExtensionWhitelistPriority?: boolean,
     public installationTitle?: string,
+    public isCaptchaEnabled?: boolean,
     public landingUrl?: string,
     public maxParticipantsPerCall?: number,
     public multiNodes?: boolean,
@@ -4948,6 +4951,7 @@ export class Features implements TDProtoClass<Features> {
       raw.file_extension_whitelist,
       raw.file_extension_whitelist_priority,
       raw.installation_title,
+      raw.is_captcha_enabled,
       raw.landing_url,
       raw.max_participants_per_call,
       raw.multi_nodes,
@@ -5044,6 +5048,7 @@ export class Features implements TDProtoClass<Features> {
     'fileExtensionWhitelist',
     'fileExtensionWhitelistPriority',
     'installationTitle',
+    'isCaptchaEnabled',
     'landingUrl',
     'maxParticipantsPerCall',
     'multiNodes',
@@ -5140,6 +5145,7 @@ export class Features implements TDProtoClass<Features> {
     fileExtensionWhitelist: () => ({ file_extension_whitelist: this.fileExtensionWhitelist }),
     fileExtensionWhitelistPriority: () => ({ file_extension_whitelist_priority: this.fileExtensionWhitelistPriority }),
     installationTitle: () => ({ installation_title: this.installationTitle }),
+    isCaptchaEnabled: () => ({ is_captcha_enabled: this.isCaptchaEnabled }),
     landingUrl: () => ({ landing_url: this.landingUrl }),
     maxParticipantsPerCall: () => ({ max_participants_per_call: this.maxParticipantsPerCall }),
     multiNodes: () => ({ multi_nodes: this.multiNodes }),
