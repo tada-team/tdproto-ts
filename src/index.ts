@@ -12958,6 +12958,132 @@ export class Tariff implements TDProtoClass<Tariff> {
   }
 }
 
+export interface TariffBillingJSON {
+  /* eslint-disable camelcase */
+  tariff_id: number;
+  billing_free?: boolean;
+  billing_full_time?: boolean;
+  close_date?: string;
+  cost_workplace?: string;
+  currency?: string;
+  default_tariff?: boolean;
+  disk_space_quota?: string;
+  free_workplace?: number;
+  max_video_user?: number;
+  max_voice_user?: number;
+  open_date?: string;
+  period_days?: number;
+  recalc_change_tariff?: boolean;
+  tariff_name?: string;
+  /* eslint-enable camelcase */
+}
+
+export class TariffBilling implements TDProtoClass<TariffBilling> {
+  /**
+   * TariffBilling struct of billing api
+   * @param tariffId Tariff id
+   * @param billingFree Flag of availability of free seats when exceeding FreeWorkplace
+   * @param billingFullTime Flag of accounting without looking at the number of days before the billing period
+   * @param closeDate Date of closing tariff
+   * @param costWorkplace Cost of one workplace
+   * @param currency Currency of tariff in ISO
+   * @param defaultTariff Default tariff flag that is set when registering an account
+   * @param diskSpaceQuota Disk space limit per user
+   * @param freeWorkplace Count of free workspaces
+   * @param maxVideoUser Maximum count of users in video conference
+   * @param maxVoiceUser Maximum count of users in voice conference
+   * @param openDate Date of opening tariff
+   * @param periodDays Number of paid days
+   * @param recalcChangeTariff Flag for accounting for unspent days when switching to a new tariff
+   * @param tariffName Name of tariff on russian
+   */
+  constructor (
+    public tariffId: number,
+    public billingFree?: boolean,
+    public billingFullTime?: boolean,
+    public closeDate?: string,
+    public costWorkplace?: string,
+    public currency?: string,
+    public defaultTariff?: boolean,
+    public diskSpaceQuota?: string,
+    public freeWorkplace?: number,
+    public maxVideoUser?: number,
+    public maxVoiceUser?: number,
+    public openDate?: string,
+    public periodDays?: number,
+    public recalcChangeTariff?: boolean,
+    public tariffName?: string,
+  ) {}
+
+  public static fromJSON (raw: TariffBillingJSON): TariffBilling {
+    return new TariffBilling(
+      raw.tariff_id,
+      raw.billing_free,
+      raw.billing_full_time,
+      raw.close_date,
+      raw.cost_workplace,
+      raw.currency,
+      raw.default_tariff,
+      raw.disk_space_quota,
+      raw.free_workplace,
+      raw.max_video_user,
+      raw.max_voice_user,
+      raw.open_date,
+      raw.period_days,
+      raw.recalc_change_tariff,
+      raw.tariff_name,
+    )
+  }
+
+  public mappableFields = [
+    'tariffId',
+    'billingFree',
+    'billingFullTime',
+    'closeDate',
+    'costWorkplace',
+    'currency',
+    'defaultTariff',
+    'diskSpaceQuota',
+    'freeWorkplace',
+    'maxVideoUser',
+    'maxVoiceUser',
+    'openDate',
+    'periodDays',
+    'recalcChangeTariff',
+    'tariffName',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    tariffId: () => ({ tariff_id: this.tariffId }),
+    billingFree: () => ({ billing_free: this.billingFree }),
+    billingFullTime: () => ({ billing_full_time: this.billingFullTime }),
+    closeDate: () => ({ close_date: this.closeDate }),
+    costWorkplace: () => ({ cost_workplace: this.costWorkplace }),
+    currency: () => ({ currency: this.currency }),
+    defaultTariff: () => ({ default_tariff: this.defaultTariff }),
+    diskSpaceQuota: () => ({ disk_space_quota: this.diskSpaceQuota }),
+    freeWorkplace: () => ({ free_workplace: this.freeWorkplace }),
+    maxVideoUser: () => ({ max_video_user: this.maxVideoUser }),
+    maxVoiceUser: () => ({ max_voice_user: this.maxVoiceUser }),
+    openDate: () => ({ open_date: this.openDate }),
+    periodDays: () => ({ period_days: this.periodDays }),
+    recalcChangeTariff: () => ({ recalc_change_tariff: this.recalcChangeTariff }),
+    tariffName: () => ({ tariff_name: this.tariffName }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): TariffBillingJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<TariffBillingJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface TaskJSON {
   /* eslint-disable camelcase */
   assignee?: JID;
