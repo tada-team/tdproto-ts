@@ -4660,12 +4660,13 @@ export interface FeaturesJSON {
   file_extension_whitelist?: string[];
   file_extension_whitelist_priority?: boolean;
   installation_title?: string;
-  is_captcha_enabled?: boolean;
+  is_recaptcha_enabled?: boolean;
   landing_url?: string;
   max_participants_per_call?: number;
   multi_nodes?: boolean;
   oauth_services?: OAuthServiceJSON[];
   only_one_device_per_call?: boolean;
+  recaptcha_web_key?: boolean;
   web_login_background?: string;
   /* eslint-enable camelcase */
 }
@@ -4759,12 +4760,13 @@ export class Features implements TDProtoClass<Features> {
    * @param fileExtensionWhitelist File Extension Whitelist
    * @param fileExtensionWhitelistPriority File Extension Whitelist Priority
    * @param installationTitle Installation title, used on login screen
-   * @param isCaptchaEnabled Captcha enabled
+   * @param isRecaptchaEnabled Captcha enabled
    * @param landingUrl Landing page address, if any
    * @param maxParticipantsPerCall Maximum number of participants per call
    * @param multiNodes Multi nodes mode (federation) enabled
    * @param oauthServices External services
    * @param onlyOneDevicePerCall Disallow call from multiple devices. Experimental
+   * @param recaptchaWebKey ReCaptcha Web Key
    * @param webLoginBackground WebBackground image url, if any
    */
   constructor (
@@ -4854,12 +4856,13 @@ export class Features implements TDProtoClass<Features> {
     public fileExtensionWhitelist?: string[],
     public fileExtensionWhitelistPriority?: boolean,
     public installationTitle?: string,
-    public isCaptchaEnabled?: boolean,
+    public isRecaptchaEnabled?: boolean,
     public landingUrl?: string,
     public maxParticipantsPerCall?: number,
     public multiNodes?: boolean,
     public oauthServices?: OAuthService[],
     public onlyOneDevicePerCall?: boolean,
+    public recaptchaWebKey?: boolean,
     public webLoginBackground?: string,
   ) {}
 
@@ -4951,12 +4954,13 @@ export class Features implements TDProtoClass<Features> {
       raw.file_extension_whitelist,
       raw.file_extension_whitelist_priority,
       raw.installation_title,
-      raw.is_captcha_enabled,
+      raw.is_recaptcha_enabled,
       raw.landing_url,
       raw.max_participants_per_call,
       raw.multi_nodes,
       raw.oauth_services && raw.oauth_services.map(OAuthService.fromJSON),
       raw.only_one_device_per_call,
+      raw.recaptcha_web_key,
       raw.web_login_background,
     )
   }
@@ -5048,12 +5052,13 @@ export class Features implements TDProtoClass<Features> {
     'fileExtensionWhitelist',
     'fileExtensionWhitelistPriority',
     'installationTitle',
-    'isCaptchaEnabled',
+    'isRecaptchaEnabled',
     'landingUrl',
     'maxParticipantsPerCall',
     'multiNodes',
     'oauthServices',
     'onlyOneDevicePerCall',
+    'recaptchaWebKey',
     'webLoginBackground',
   ] as const
 
@@ -5145,12 +5150,13 @@ export class Features implements TDProtoClass<Features> {
     fileExtensionWhitelist: () => ({ file_extension_whitelist: this.fileExtensionWhitelist }),
     fileExtensionWhitelistPriority: () => ({ file_extension_whitelist_priority: this.fileExtensionWhitelistPriority }),
     installationTitle: () => ({ installation_title: this.installationTitle }),
-    isCaptchaEnabled: () => ({ is_captcha_enabled: this.isCaptchaEnabled }),
+    isRecaptchaEnabled: () => ({ is_recaptcha_enabled: this.isRecaptchaEnabled }),
     landingUrl: () => ({ landing_url: this.landingUrl }),
     maxParticipantsPerCall: () => ({ max_participants_per_call: this.maxParticipantsPerCall }),
     multiNodes: () => ({ multi_nodes: this.multiNodes }),
     oauthServices: () => ({ oauth_services: this.oauthServices?.map(u => u.toJSON()) }),
     onlyOneDevicePerCall: () => ({ only_one_device_per_call: this.onlyOneDevicePerCall }),
+    recaptchaWebKey: () => ({ recaptcha_web_key: this.recaptchaWebKey }),
     webLoginBackground: () => ({ web_login_background: this.webLoginBackground }),
     /* eslint-enable camelcase */
   }
