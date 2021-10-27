@@ -4666,7 +4666,7 @@ export interface FeaturesJSON {
   multi_nodes?: boolean;
   oauth_services?: OAuthServiceJSON[];
   only_one_device_per_call?: boolean;
-  recaptcha_web_key?: boolean;
+  recaptcha_web_key?: string;
   web_login_background?: string;
   /* eslint-enable camelcase */
 }
@@ -4862,7 +4862,7 @@ export class Features implements TDProtoClass<Features> {
     public multiNodes?: boolean,
     public oauthServices?: OAuthService[],
     public onlyOneDevicePerCall?: boolean,
-    public recaptchaWebKey?: boolean,
+    public recaptchaWebKey?: string,
     public webLoginBackground?: string,
   ) {}
 
