@@ -4666,7 +4666,8 @@ export interface FeaturesJSON {
   multi_nodes?: boolean;
   oauth_services?: OAuthServiceJSON[];
   only_one_device_per_call?: boolean;
-  recaptcha_web_key?: string;
+  recaptcha_web_key_v2?: string;
+  recaptcha_web_key_v3?: string;
   web_login_background?: string;
   /* eslint-enable camelcase */
 }
@@ -4766,7 +4767,8 @@ export class Features implements TDProtoClass<Features> {
    * @param multiNodes Multi nodes mode (federation) enabled
    * @param oauthServices External services
    * @param onlyOneDevicePerCall Disallow call from multiple devices. Experimental
-   * @param recaptchaWebKey ReCaptcha Web Key
+   * @param recaptchaWebKeyV2 ReCaptcha Web Key V2
+   * @param recaptchaWebKeyV3 ReCaptcha Web Key V3
    * @param webLoginBackground WebBackground image url, if any
    */
   constructor (
@@ -4862,7 +4864,8 @@ export class Features implements TDProtoClass<Features> {
     public multiNodes?: boolean,
     public oauthServices?: OAuthService[],
     public onlyOneDevicePerCall?: boolean,
-    public recaptchaWebKey?: string,
+    public recaptchaWebKeyV2?: string,
+    public recaptchaWebKeyV3?: string,
     public webLoginBackground?: string,
   ) {}
 
@@ -4960,7 +4963,8 @@ export class Features implements TDProtoClass<Features> {
       raw.multi_nodes,
       raw.oauth_services && raw.oauth_services.map(OAuthService.fromJSON),
       raw.only_one_device_per_call,
-      raw.recaptcha_web_key,
+      raw.recaptcha_web_key_v2,
+      raw.recaptcha_web_key_v3,
       raw.web_login_background,
     )
   }
@@ -5058,7 +5062,8 @@ export class Features implements TDProtoClass<Features> {
     'multiNodes',
     'oauthServices',
     'onlyOneDevicePerCall',
-    'recaptchaWebKey',
+    'recaptchaWebKeyV2',
+    'recaptchaWebKeyV3',
     'webLoginBackground',
   ] as const
 
@@ -5156,7 +5161,8 @@ export class Features implements TDProtoClass<Features> {
     multiNodes: () => ({ multi_nodes: this.multiNodes }),
     oauthServices: () => ({ oauth_services: this.oauthServices?.map(u => u.toJSON()) }),
     onlyOneDevicePerCall: () => ({ only_one_device_per_call: this.onlyOneDevicePerCall }),
-    recaptchaWebKey: () => ({ recaptcha_web_key: this.recaptchaWebKey }),
+    recaptchaWebKeyV2: () => ({ recaptcha_web_key_v2: this.recaptchaWebKeyV2 }),
+    recaptchaWebKeyV3: () => ({ recaptcha_web_key_v3: this.recaptchaWebKeyV3 }),
     webLoginBackground: () => ({ web_login_background: this.webLoginBackground }),
     /* eslint-enable camelcase */
   }
