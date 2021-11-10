@@ -11,6 +11,10 @@ export type UiSettings = Record<string, any>
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type UiSettingsData = Record<string, any>
 
+export type CallType =
+   | 'audio'
+   | 'video'
+
 export type ChatType =
    | 'direct'
    | 'group'
@@ -1118,11 +1122,11 @@ export interface CallOnlinerJSON {
   /* eslint-disable camelcase */
   devices: CallDeviceJSON[];
   display_name: string;
+  enabled_video: boolean;
   icon: string;
   jid: JID;
   muted: boolean;
   role: string;
-  enabled_video?: boolean;
   /* eslint-enable camelcase */
 }
 
@@ -1131,53 +1135,53 @@ export class CallOnliner implements TDProtoClass<CallOnliner> {
    * Call participant
    * @param devices Member devices, strictly one for now
    * @param displayName Contact name
+   * @param enabledVideo Video state
    * @param icon Contact icon
    * @param jid Contact id
    * @param muted Microphone muted. Computed from devices muted states
    * @param role Contact role
-   * @param enabledVideo Video state
    */
   constructor (
     public devices: CallDevice[],
     public displayName: string,
+    public enabledVideo: boolean,
     public icon: string,
     public jid: JID,
     public muted: boolean,
     public role: string,
-    public enabledVideo?: boolean,
   ) {}
 
   public static fromJSON (raw: CallOnlinerJSON): CallOnliner {
     return new CallOnliner(
       raw.devices.map(CallDevice.fromJSON),
       raw.display_name,
+      raw.enabled_video,
       raw.icon,
       raw.jid,
       raw.muted,
       raw.role,
-      raw.enabled_video,
     )
   }
 
   public mappableFields = [
     'devices',
     'displayName',
+    'enabledVideo',
     'icon',
     'jid',
     'muted',
     'role',
-    'enabledVideo',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
     devices: () => ({ devices: this.devices.map(u => u.toJSON()) }),
     displayName: () => ({ display_name: this.displayName }),
+    enabledVideo: () => ({ enabled_video: this.enabledVideo }),
     icon: () => ({ icon: this.icon }),
     jid: () => ({ jid: this.jid }),
     muted: () => ({ muted: this.muted }),
     role: () => ({ role: this.role }),
-    enabledVideo: () => ({ enabled_video: this.enabledVideo }),
     /* eslint-enable camelcase */
   }
 
@@ -2328,7 +2332,7 @@ export interface ClientCallOfferParamsJSON {
   muted: boolean;
   sdp: string;
   trickle: boolean;
-  call_type?: string;
+  call_type?: CallType;
   enabled_audio?: boolean;
   enabled_video?: boolean;
   /* eslint-enable camelcase */
@@ -2350,7 +2354,7 @@ export class ClientCallOfferParams implements TDProtoClass<ClientCallOfferParams
     public muted: boolean,
     public sdp: string,
     public trickle: boolean,
-    public callType?: string,
+    public callType?: CallType,
     public enabledAudio?: boolean,
     public enabledVideo?: boolean,
   ) {}
@@ -5907,8 +5911,10 @@ export interface FeaturesJSON {
   app_title: string;
   build: string;
   calls: boolean;
+  calls_audio_enabled: boolean;
   calls_record: boolean;
   calls_version: number;
+  calls_video_enabled: boolean;
   custom_server: boolean;
   custom_theme: boolean;
   desktop_version: string;
@@ -6008,8 +6014,10 @@ export class Features implements TDProtoClass<Features> {
    * @param appTitle Application title
    * @param build Build/revision of server side
    * @param calls Deprecated
+   * @param callsAudioEnabled CallsAudioEnabled enabled or disabled audio calls
    * @param callsRecord Calls record enabled
-   * @param callsVersion Calls version. 0 = disabled, 1 = audio only, 2 = audio+video
+   * @param callsVersion Calls version. 0 = disabled, 1 = audio only, 2 = audio+video deprecated: use CallsAudioEnabled and CallsVideoEnabled
+   * @param callsVideoEnabled CallsVideoEnabled enabled or disabled video calls
    * @param customServer True for premise installation
    * @param customTheme True if server has custom theme
    * @param desktopVersion Desktop application version
@@ -6105,8 +6113,10 @@ export class Features implements TDProtoClass<Features> {
     public appTitle: string,
     public build: string,
     public calls: boolean,
+    public callsAudioEnabled: boolean,
     public callsRecord: boolean,
     public callsVersion: number,
+    public callsVideoEnabled: boolean,
     public customServer: boolean,
     public customTheme: boolean,
     public desktopVersion: string,
@@ -6204,8 +6214,10 @@ export class Features implements TDProtoClass<Features> {
       raw.app_title,
       raw.build,
       raw.calls,
+      raw.calls_audio_enabled,
       raw.calls_record,
       raw.calls_version,
+      raw.calls_video_enabled,
       raw.custom_server,
       raw.custom_theme,
       raw.desktop_version,
@@ -6303,8 +6315,10 @@ export class Features implements TDProtoClass<Features> {
     'appTitle',
     'build',
     'calls',
+    'callsAudioEnabled',
     'callsRecord',
     'callsVersion',
+    'callsVideoEnabled',
     'customServer',
     'customTheme',
     'desktopVersion',
@@ -6402,8 +6416,10 @@ export class Features implements TDProtoClass<Features> {
     appTitle: () => ({ app_title: this.appTitle }),
     build: () => ({ build: this.build }),
     calls: () => ({ calls: this.calls }),
+    callsAudioEnabled: () => ({ calls_audio_enabled: this.callsAudioEnabled }),
     callsRecord: () => ({ calls_record: this.callsRecord }),
     callsVersion: () => ({ calls_version: this.callsVersion }),
+    callsVideoEnabled: () => ({ calls_video_enabled: this.callsVideoEnabled }),
     customServer: () => ({ custom_server: this.customServer }),
     customTheme: () => ({ custom_theme: this.customTheme }),
     desktopVersion: () => ({ desktop_version: this.desktopVersion }),
@@ -8972,9 +8988,9 @@ export class OAuthService implements TDProtoClass<OAuthService> {
 
 export interface OnlineCallJSON {
   /* eslint-disable camelcase */
+  call_type: CallType;
   jid: JID;
   uid: string;
-  call_type?: string;
   online_count?: number;
   start?: ISODateTimeString;
   /* eslint-enable camelcase */
@@ -8983,43 +8999,43 @@ export interface OnlineCallJSON {
 export class OnlineCall implements TDProtoClass<OnlineCall> {
   /**
    * Active call status
+   * @param callType CallType is a type of call("audio" - audio room, "video" - video room)
    * @param jid Chat or contact id
    * @param uid Call id
-   * @param callType CallType is a type of call("audio" - audio room, "video" - video room)
    * @param onlineCount Number participants in call
    * @param start Call start
    */
   constructor (
+    public callType: CallType,
     public jid: JID,
     public uid: string,
-    public callType?: string,
     public onlineCount?: number,
     public start?: ISODateTimeString,
   ) {}
 
   public static fromJSON (raw: OnlineCallJSON): OnlineCall {
     return new OnlineCall(
+      raw.call_type,
       raw.jid,
       raw.uid,
-      raw.call_type,
       raw.online_count,
       raw.start,
     )
   }
 
   public mappableFields = [
+    'callType',
     'jid',
     'uid',
-    'callType',
     'onlineCount',
     'start',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
+    callType: () => ({ call_type: this.callType }),
     jid: () => ({ jid: this.jid }),
     uid: () => ({ uid: this.uid }),
-    callType: () => ({ call_type: this.callType }),
     onlineCount: () => ({ online_count: this.onlineCount }),
     start: () => ({ start: this.start }),
     /* eslint-enable camelcase */
@@ -10242,6 +10258,7 @@ export interface ServerCallBuzzParamsJSON {
   /* eslint-disable camelcase */
   actor: ContactShortJSON;
   buzz_timeout: number;
+  call_type: CallType;
   chat: ChatShortJSON;
   display_name: string;
   icons: IconDataJSON;
@@ -10249,7 +10266,6 @@ export interface ServerCallBuzzParamsJSON {
   team: string;
   teaminfo: TeamShortJSON;
   uid: string;
-  call_type?: string;
   /* eslint-enable camelcase */
 }
 
@@ -10258,6 +10274,7 @@ export class ServerCallBuzzParams implements TDProtoClass<ServerCallBuzzParams> 
    * Params of the server.call.buzz event
    * @param actor Short call creator information
    * @param buzzTimeout Number of seconds for stop buzzing
+   * @param callType CallType is a type of call("audio" - audio room, "video" - video room)
    * @param chat Short chat information
    * @param displayName Chat title
    * @param icons Chat icons
@@ -10265,11 +10282,11 @@ export class ServerCallBuzzParams implements TDProtoClass<ServerCallBuzzParams> 
    * @param team Deprecated
    * @param teaminfo Short team information
    * @param uid Call id
-   * @param callType CallType is a type of call("audio" - audio room, "video" - video room)
    */
   constructor (
     public actor: ContactShort,
     public buzzTimeout: number,
+    public callType: CallType,
     public chat: ChatShort,
     public displayName: string,
     public icons: IconData,
@@ -10277,13 +10294,13 @@ export class ServerCallBuzzParams implements TDProtoClass<ServerCallBuzzParams> 
     public team: string,
     public teaminfo: TeamShort,
     public uid: string,
-    public callType?: string,
   ) {}
 
   public static fromJSON (raw: ServerCallBuzzParamsJSON): ServerCallBuzzParams {
     return new ServerCallBuzzParams(
       ContactShort.fromJSON(raw.actor),
       raw.buzz_timeout,
+      raw.call_type,
       ChatShort.fromJSON(raw.chat),
       raw.display_name,
       IconData.fromJSON(raw.icons),
@@ -10291,13 +10308,13 @@ export class ServerCallBuzzParams implements TDProtoClass<ServerCallBuzzParams> 
       raw.team,
       TeamShort.fromJSON(raw.teaminfo),
       raw.uid,
-      raw.call_type,
     )
   }
 
   public mappableFields = [
     'actor',
     'buzzTimeout',
+    'callType',
     'chat',
     'displayName',
     'icons',
@@ -10305,13 +10322,13 @@ export class ServerCallBuzzParams implements TDProtoClass<ServerCallBuzzParams> 
     'team',
     'teaminfo',
     'uid',
-    'callType',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
     actor: () => ({ actor: this.actor.toJSON() }),
     buzzTimeout: () => ({ buzz_timeout: this.buzzTimeout }),
+    callType: () => ({ call_type: this.callType }),
     chat: () => ({ chat: this.chat.toJSON() }),
     displayName: () => ({ display_name: this.displayName }),
     icons: () => ({ icons: this.icons.toJSON() }),
@@ -10319,7 +10336,6 @@ export class ServerCallBuzzParams implements TDProtoClass<ServerCallBuzzParams> 
     team: () => ({ team: this.team }),
     teaminfo: () => ({ teaminfo: this.teaminfo.toJSON() }),
     uid: () => ({ uid: this.uid }),
-    callType: () => ({ call_type: this.callType }),
     /* eslint-enable camelcase */
   }
 
