@@ -6016,7 +6016,7 @@ export class Features implements TDProtoClass<Features> {
    * @param calls Deprecated
    * @param callsAudioEnabled CallsAudioEnabled enabled or disabled audio calls
    * @param callsRecord Calls record enabled
-   * @param callsVersion Calls version. 0 = disabled, 1 = audio only, 2 = audio+video deprecated: use CallsAudioEnabled and CallsVideoEnabled
+   * @param callsVersion Calls version. 0 = disabled, 1 = audio only, 2 = audio+video Deprecated: use CallsAudioEnabled and CallsVideoEnabled
    * @param callsVideoEnabled CallsVideoEnabled enabled or disabled video calls
    * @param customServer True for premise installation
    * @param customTheme True if server has custom theme
