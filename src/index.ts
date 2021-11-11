@@ -51,6 +51,15 @@ export type Mediatype =
    | 'contact'
    | 'pdf'
 
+export type PersonalAccountStatus =
+   | 'Active'
+   | 'Suspended'
+   | 'Blocked'
+
+export type TariffStatus =
+   | 'Active'
+   | 'Archive'
+
 export type TeamStatus =
    | 'owner'
    | 'admin'
@@ -130,7 +139,7 @@ export class TeamUnread implements TDProtoClass<TeamUnread> {
 
 export interface ActivatePersonalAccountRequestJSON {
   /* eslint-disable camelcase */
-  personal_account_id: number;
+  personal_account_id?: number;
   /* eslint-enable camelcase */
 }
 
@@ -140,7 +149,7 @@ export class ActivatePersonalAccountRequest implements TDProtoClass<ActivatePers
    * @param personalAccountId DOCUMENTATION MISSING
    */
   constructor (
-    public personalAccountId: number,
+    public personalAccountId?: number,
   ) {}
 
   public static fromJSON (raw: ActivatePersonalAccountRequestJSON): ActivatePersonalAccountRequest {
@@ -766,7 +775,7 @@ export class BaseEvent implements TDProtoClass<BaseEvent> {
 
 export interface BlockPersonalAccountRequestJSON {
   /* eslint-disable camelcase */
-  personal_account_id: number;
+  personal_account_id?: number;
   /* eslint-enable camelcase */
 }
 
@@ -776,7 +785,7 @@ export class BlockPersonalAccountRequest implements TDProtoClass<BlockPersonalAc
    * @param personalAccountId DOCUMENTATION MISSING
    */
   constructor (
-    public personalAccountId: number,
+    public personalAccountId?: number,
   ) {}
 
   public static fromJSON (raw: BlockPersonalAccountRequestJSON): BlockPersonalAccountRequest {
@@ -3540,38 +3549,38 @@ export class ClientPing implements TDProtoClass<ClientPing> {
 
 export interface CloseTariffRequestJSON {
   /* eslint-disable camelcase */
-  tariff_id: number;
   close_date?: string;
+  tariff_id?: number;
   /* eslint-enable camelcase */
 }
 
 export class CloseTariffRequest implements TDProtoClass<CloseTariffRequest> {
   /**
    * CloseTariffRequest request on close(archive) tariff
-   * @param tariffId DOCUMENTATION MISSING
    * @param closeDate DOCUMENTATION MISSING
+   * @param tariffId DOCUMENTATION MISSING
    */
   constructor (
-    public tariffId: number,
     public closeDate?: string,
+    public tariffId?: number,
   ) {}
 
   public static fromJSON (raw: CloseTariffRequestJSON): CloseTariffRequest {
     return new CloseTariffRequest(
-      raw.tariff_id,
       raw.close_date,
+      raw.tariff_id,
     )
   }
 
   public mappableFields = [
-    'tariffId',
     'closeDate',
+    'tariffId',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    tariffId: () => ({ tariff_id: this.tariffId }),
     closeDate: () => ({ close_date: this.closeDate }),
+    tariffId: () => ({ tariff_id: this.tariffId }),
     /* eslint-enable camelcase */
   }
 
@@ -4430,6 +4439,8 @@ export interface CreatePersonalAccountRequestJSON {
   /* eslint-disable camelcase */
   owner_uuid: string;
   team_uuid: string;
+  full_name?: string;
+  phone?: string;
   /* eslint-enable camelcase */
 }
 
@@ -4438,28 +4449,38 @@ export class CreatePersonalAccountRequest implements TDProtoClass<CreatePersonal
    * CreatePersonalAccountRequest request on create personal account
    * @param ownerUuid DOCUMENTATION MISSING
    * @param teamUuid DOCUMENTATION MISSING
+   * @param fullName DOCUMENTATION MISSING
+   * @param phone DOCUMENTATION MISSING
    */
   constructor (
     public ownerUuid: string,
     public teamUuid: string,
+    public fullName?: string,
+    public phone?: string,
   ) {}
 
   public static fromJSON (raw: CreatePersonalAccountRequestJSON): CreatePersonalAccountRequest {
     return new CreatePersonalAccountRequest(
       raw.owner_uuid,
       raw.team_uuid,
+      raw.full_name,
+      raw.phone,
     )
   }
 
   public mappableFields = [
     'ownerUuid',
     'teamUuid',
+    'fullName',
+    'phone',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
     ownerUuid: () => ({ owner_uuid: this.ownerUuid }),
     teamUuid: () => ({ team_uuid: this.teamUuid }),
+    fullName: () => ({ full_name: this.fullName }),
+    phone: () => ({ phone: this.phone }),
     /* eslint-enable camelcase */
   }
 
@@ -4482,13 +4503,15 @@ export interface CreatePersonalAccountResponseJSON {
   next_billing_date: string;
   owner_uuid: string;
   paid_workplaces: number;
-  personal_account_id: number;
-  status: string;
+  status: PersonalAccountStatus;
   tariff_id: number;
   tariff_name: string;
   team_count: number;
   users_count: number;
   workplace_count: number;
+  full_name?: string;
+  personal_account_id?: number;
+  phone?: string;
   /* eslint-enable camelcase */
 }
 
@@ -4501,13 +4524,15 @@ export class CreatePersonalAccountResponse implements TDProtoClass<CreatePersona
    * @param nextBillingDate Date of next debiting funds
    * @param ownerUuid ID User who owns this personal account
    * @param paidWorkplaces Count of paid workplaces on personal account
-   * @param personalAccountId PersonalAccountBilling ID
    * @param status Status of personal account
    * @param tariffId ID Tariff on this personal account
    * @param tariffName Name Tariff on this personal account
    * @param teamCount Count of teams on personal account
    * @param usersCount Count of user on personal account
    * @param workplaceCount Count of workplaces on personal account
+   * @param fullName Full name of owner personal account
+   * @param personalAccountId PersonalAccountBilling ID
+   * @param phone Phone number of owner account
    */
   constructor (
     public discountAmount: number,
@@ -4516,13 +4541,15 @@ export class CreatePersonalAccountResponse implements TDProtoClass<CreatePersona
     public nextBillingDate: string,
     public ownerUuid: string,
     public paidWorkplaces: number,
-    public personalAccountId: number,
-    public status: string,
+    public status: PersonalAccountStatus,
     public tariffId: number,
     public tariffName: string,
     public teamCount: number,
     public usersCount: number,
     public workplaceCount: number,
+    public fullName?: string,
+    public personalAccountId?: number,
+    public phone?: string,
   ) {}
 
   public static fromJSON (raw: CreatePersonalAccountResponseJSON): CreatePersonalAccountResponse {
@@ -4533,13 +4560,15 @@ export class CreatePersonalAccountResponse implements TDProtoClass<CreatePersona
       raw.next_billing_date,
       raw.owner_uuid,
       raw.paid_workplaces,
-      raw.personal_account_id,
       raw.status,
       raw.tariff_id,
       raw.tariff_name,
       raw.team_count,
       raw.users_count,
       raw.workplace_count,
+      raw.full_name,
+      raw.personal_account_id,
+      raw.phone,
     )
   }
 
@@ -4550,13 +4579,15 @@ export class CreatePersonalAccountResponse implements TDProtoClass<CreatePersona
     'nextBillingDate',
     'ownerUuid',
     'paidWorkplaces',
-    'personalAccountId',
     'status',
     'tariffId',
     'tariffName',
     'teamCount',
     'usersCount',
     'workplaceCount',
+    'fullName',
+    'personalAccountId',
+    'phone',
   ] as const
 
   readonly #mapper = {
@@ -4567,13 +4598,15 @@ export class CreatePersonalAccountResponse implements TDProtoClass<CreatePersona
     nextBillingDate: () => ({ next_billing_date: this.nextBillingDate }),
     ownerUuid: () => ({ owner_uuid: this.ownerUuid }),
     paidWorkplaces: () => ({ paid_workplaces: this.paidWorkplaces }),
-    personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
     status: () => ({ status: this.status }),
     tariffId: () => ({ tariff_id: this.tariffId }),
     tariffName: () => ({ tariff_name: this.tariffName }),
     teamCount: () => ({ team_count: this.teamCount }),
     usersCount: () => ({ users_count: this.usersCount }),
     workplaceCount: () => ({ workplace_count: this.workplaceCount }),
+    fullName: () => ({ full_name: this.fullName }),
+    personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
+    phone: () => ({ phone: this.phone }),
     /* eslint-enable camelcase */
   }
 
@@ -4590,7 +4623,6 @@ export class CreatePersonalAccountResponse implements TDProtoClass<CreatePersona
 
 export interface CreateTariffRequestJSON {
   /* eslint-disable camelcase */
-  tariff_id: number;
   billing_free?: boolean;
   billing_full_time?: boolean;
   close_date?: string;
@@ -4604,7 +4636,8 @@ export interface CreateTariffRequestJSON {
   open_date?: string;
   period_days?: number;
   recalc_change_tariff?: boolean;
-  status?: string;
+  status?: TariffStatus;
+  tariff_id?: number;
   tariff_name?: string;
   /* eslint-enable camelcase */
 }
@@ -4612,7 +4645,6 @@ export interface CreateTariffRequestJSON {
 export class CreateTariffRequest implements TDProtoClass<CreateTariffRequest> {
   /**
    * CreateTariffRequest request on create tariff
-   * @param tariffId Tariff id
    * @param billingFree Flag of availability of free seats when exceeding FreeWorkplace
    * @param billingFullTime Flag of accounting without looking at the number of days before the billing period
    * @param closeDate Date of closing tariff
@@ -4627,10 +4659,10 @@ export class CreateTariffRequest implements TDProtoClass<CreateTariffRequest> {
    * @param periodDays Number of paid days
    * @param recalcChangeTariff Flag for accounting for unspent days when switching to a new tariff
    * @param status Status of tariff
+   * @param tariffId Tariff id
    * @param tariffName Name of tariff
    */
   constructor (
-    public tariffId: number,
     public billingFree?: boolean,
     public billingFullTime?: boolean,
     public closeDate?: string,
@@ -4644,13 +4676,13 @@ export class CreateTariffRequest implements TDProtoClass<CreateTariffRequest> {
     public openDate?: string,
     public periodDays?: number,
     public recalcChangeTariff?: boolean,
-    public status?: string,
+    public status?: TariffStatus,
+    public tariffId?: number,
     public tariffName?: string,
   ) {}
 
   public static fromJSON (raw: CreateTariffRequestJSON): CreateTariffRequest {
     return new CreateTariffRequest(
-      raw.tariff_id,
       raw.billing_free,
       raw.billing_full_time,
       raw.close_date,
@@ -4665,12 +4697,12 @@ export class CreateTariffRequest implements TDProtoClass<CreateTariffRequest> {
       raw.period_days,
       raw.recalc_change_tariff,
       raw.status,
+      raw.tariff_id,
       raw.tariff_name,
     )
   }
 
   public mappableFields = [
-    'tariffId',
     'billingFree',
     'billingFullTime',
     'closeDate',
@@ -4685,12 +4717,12 @@ export class CreateTariffRequest implements TDProtoClass<CreateTariffRequest> {
     'periodDays',
     'recalcChangeTariff',
     'status',
+    'tariffId',
     'tariffName',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    tariffId: () => ({ tariff_id: this.tariffId }),
     billingFree: () => ({ billing_free: this.billingFree }),
     billingFullTime: () => ({ billing_full_time: this.billingFullTime }),
     closeDate: () => ({ close_date: this.closeDate }),
@@ -4705,6 +4737,7 @@ export class CreateTariffRequest implements TDProtoClass<CreateTariffRequest> {
     periodDays: () => ({ period_days: this.periodDays }),
     recalcChangeTariff: () => ({ recalc_change_tariff: this.recalcChangeTariff }),
     status: () => ({ status: this.status }),
+    tariffId: () => ({ tariff_id: this.tariffId }),
     tariffName: () => ({ tariff_name: this.tariffName }),
     /* eslint-enable camelcase */
   }
@@ -4722,7 +4755,6 @@ export class CreateTariffRequest implements TDProtoClass<CreateTariffRequest> {
 
 export interface CreateTariffResponseJSON {
   /* eslint-disable camelcase */
-  tariff_id: number;
   billing_free?: boolean;
   billing_full_time?: boolean;
   close_date?: string;
@@ -4736,7 +4768,8 @@ export interface CreateTariffResponseJSON {
   open_date?: string;
   period_days?: number;
   recalc_change_tariff?: boolean;
-  status?: string;
+  status?: TariffStatus;
+  tariff_id?: number;
   tariff_name?: string;
   /* eslint-enable camelcase */
 }
@@ -4744,7 +4777,6 @@ export interface CreateTariffResponseJSON {
 export class CreateTariffResponse implements TDProtoClass<CreateTariffResponse> {
   /**
    * CreateTariffResponse response on create tariff
-   * @param tariffId Tariff id
    * @param billingFree Flag of availability of free seats when exceeding FreeWorkplace
    * @param billingFullTime Flag of accounting without looking at the number of days before the billing period
    * @param closeDate Date of closing tariff
@@ -4759,10 +4791,10 @@ export class CreateTariffResponse implements TDProtoClass<CreateTariffResponse> 
    * @param periodDays Number of paid days
    * @param recalcChangeTariff Flag for accounting for unspent days when switching to a new tariff
    * @param status Status of tariff
+   * @param tariffId Tariff id
    * @param tariffName Name of tariff
    */
   constructor (
-    public tariffId: number,
     public billingFree?: boolean,
     public billingFullTime?: boolean,
     public closeDate?: string,
@@ -4776,13 +4808,13 @@ export class CreateTariffResponse implements TDProtoClass<CreateTariffResponse> 
     public openDate?: string,
     public periodDays?: number,
     public recalcChangeTariff?: boolean,
-    public status?: string,
+    public status?: TariffStatus,
+    public tariffId?: number,
     public tariffName?: string,
   ) {}
 
   public static fromJSON (raw: CreateTariffResponseJSON): CreateTariffResponse {
     return new CreateTariffResponse(
-      raw.tariff_id,
       raw.billing_free,
       raw.billing_full_time,
       raw.close_date,
@@ -4797,12 +4829,12 @@ export class CreateTariffResponse implements TDProtoClass<CreateTariffResponse> 
       raw.period_days,
       raw.recalc_change_tariff,
       raw.status,
+      raw.tariff_id,
       raw.tariff_name,
     )
   }
 
   public mappableFields = [
-    'tariffId',
     'billingFree',
     'billingFullTime',
     'closeDate',
@@ -4817,12 +4849,12 @@ export class CreateTariffResponse implements TDProtoClass<CreateTariffResponse> 
     'periodDays',
     'recalcChangeTariff',
     'status',
+    'tariffId',
     'tariffName',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    tariffId: () => ({ tariff_id: this.tariffId }),
     billingFree: () => ({ billing_free: this.billingFree }),
     billingFullTime: () => ({ billing_full_time: this.billingFullTime }),
     closeDate: () => ({ close_date: this.closeDate }),
@@ -4837,6 +4869,7 @@ export class CreateTariffResponse implements TDProtoClass<CreateTariffResponse> 
     periodDays: () => ({ period_days: this.periodDays }),
     recalcChangeTariff: () => ({ recalc_change_tariff: this.recalcChangeTariff }),
     status: () => ({ status: this.status }),
+    tariffId: () => ({ tariff_id: this.tariffId }),
     tariffName: () => ({ tariff_name: this.tariffName }),
     /* eslint-enable camelcase */
   }
@@ -6642,7 +6675,7 @@ export class GetActiveTariffsListResponse implements TDProtoClass<GetActiveTarif
 
 export interface GetPersonalAccountByIDRequestJSON {
   /* eslint-disable camelcase */
-  personal_account_id: number;
+  personal_account_id?: number;
   /* eslint-enable camelcase */
 }
 
@@ -6652,7 +6685,7 @@ export class GetPersonalAccountByIDRequest implements TDProtoClass<GetPersonalAc
    * @param personalAccountId DOCUMENTATION MISSING
    */
   constructor (
-    public personalAccountId: number,
+    public personalAccountId?: number,
   ) {}
 
   public static fromJSON (raw: GetPersonalAccountByIDRequestJSON): GetPersonalAccountByIDRequest {
@@ -6690,13 +6723,15 @@ export interface GetPersonalAccountByIDResponseJSON {
   next_billing_date: string;
   owner_uuid: string;
   paid_workplaces: number;
-  personal_account_id: number;
-  status: string;
+  status: PersonalAccountStatus;
   tariff_id: number;
   tariff_name: string;
   team_count: number;
   users_count: number;
   workplace_count: number;
+  full_name?: string;
+  personal_account_id?: number;
+  phone?: string;
   /* eslint-enable camelcase */
 }
 
@@ -6709,13 +6744,15 @@ export class GetPersonalAccountByIDResponse implements TDProtoClass<GetPersonalA
    * @param nextBillingDate Date of next debiting funds
    * @param ownerUuid ID User who owns this personal account
    * @param paidWorkplaces Count of paid workplaces on personal account
-   * @param personalAccountId PersonalAccountBilling ID
    * @param status Status of personal account
    * @param tariffId ID Tariff on this personal account
    * @param tariffName Name Tariff on this personal account
    * @param teamCount Count of teams on personal account
    * @param usersCount Count of user on personal account
    * @param workplaceCount Count of workplaces on personal account
+   * @param fullName Full name of owner personal account
+   * @param personalAccountId PersonalAccountBilling ID
+   * @param phone Phone number of owner account
    */
   constructor (
     public discountAmount: number,
@@ -6724,13 +6761,15 @@ export class GetPersonalAccountByIDResponse implements TDProtoClass<GetPersonalA
     public nextBillingDate: string,
     public ownerUuid: string,
     public paidWorkplaces: number,
-    public personalAccountId: number,
-    public status: string,
+    public status: PersonalAccountStatus,
     public tariffId: number,
     public tariffName: string,
     public teamCount: number,
     public usersCount: number,
     public workplaceCount: number,
+    public fullName?: string,
+    public personalAccountId?: number,
+    public phone?: string,
   ) {}
 
   public static fromJSON (raw: GetPersonalAccountByIDResponseJSON): GetPersonalAccountByIDResponse {
@@ -6741,13 +6780,15 @@ export class GetPersonalAccountByIDResponse implements TDProtoClass<GetPersonalA
       raw.next_billing_date,
       raw.owner_uuid,
       raw.paid_workplaces,
-      raw.personal_account_id,
       raw.status,
       raw.tariff_id,
       raw.tariff_name,
       raw.team_count,
       raw.users_count,
       raw.workplace_count,
+      raw.full_name,
+      raw.personal_account_id,
+      raw.phone,
     )
   }
 
@@ -6758,13 +6799,15 @@ export class GetPersonalAccountByIDResponse implements TDProtoClass<GetPersonalA
     'nextBillingDate',
     'ownerUuid',
     'paidWorkplaces',
-    'personalAccountId',
     'status',
     'tariffId',
     'tariffName',
     'teamCount',
     'usersCount',
     'workplaceCount',
+    'fullName',
+    'personalAccountId',
+    'phone',
   ] as const
 
   readonly #mapper = {
@@ -6775,13 +6818,15 @@ export class GetPersonalAccountByIDResponse implements TDProtoClass<GetPersonalA
     nextBillingDate: () => ({ next_billing_date: this.nextBillingDate }),
     ownerUuid: () => ({ owner_uuid: this.ownerUuid }),
     paidWorkplaces: () => ({ paid_workplaces: this.paidWorkplaces }),
-    personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
     status: () => ({ status: this.status }),
     tariffId: () => ({ tariff_id: this.tariffId }),
     tariffName: () => ({ tariff_name: this.tariffName }),
     teamCount: () => ({ team_count: this.teamCount }),
     usersCount: () => ({ users_count: this.usersCount }),
     workplaceCount: () => ({ workplace_count: this.workplaceCount }),
+    fullName: () => ({ full_name: this.fullName }),
+    personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
+    phone: () => ({ phone: this.phone }),
     /* eslint-enable camelcase */
   }
 
@@ -6846,7 +6891,7 @@ export class GetPersonalAccountsListRequest implements TDProtoClass<GetPersonalA
 
 export interface GetPersonalAccountsListResponseJSON {
   /* eslint-disable camelcase */
-  personal_accounts: PersonalAccountBillingJSON[];
+  personal_accounts?: PersonalAccountBillingJSON[];
   /* eslint-enable camelcase */
 }
 
@@ -6856,12 +6901,12 @@ export class GetPersonalAccountsListResponse implements TDProtoClass<GetPersonal
    * @param personalAccounts DOCUMENTATION MISSING
    */
   constructor (
-    public personalAccounts: PersonalAccountBilling[],
+    public personalAccounts?: PersonalAccountBilling[],
   ) {}
 
   public static fromJSON (raw: GetPersonalAccountsListResponseJSON): GetPersonalAccountsListResponse {
     return new GetPersonalAccountsListResponse(
-      raw.personal_accounts.map(PersonalAccountBilling.fromJSON),
+      raw.personal_accounts && raw.personal_accounts.map(PersonalAccountBilling.fromJSON),
     )
   }
 
@@ -6871,7 +6916,7 @@ export class GetPersonalAccountsListResponse implements TDProtoClass<GetPersonal
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    personalAccounts: () => ({ personal_accounts: this.personalAccounts.map(u => u.toJSON()) }),
+    personalAccounts: () => ({ personal_accounts: this.personalAccounts?.map(u => u.toJSON()) }),
     /* eslint-enable camelcase */
   }
 
@@ -6888,7 +6933,7 @@ export class GetPersonalAccountsListResponse implements TDProtoClass<GetPersonal
 
 export interface GetTariffByIdRequestJSON {
   /* eslint-disable camelcase */
-  id: number;
+  id?: number;
   /* eslint-enable camelcase */
 }
 
@@ -6898,7 +6943,7 @@ export class GetTariffByIdRequest implements TDProtoClass<GetTariffByIdRequest> 
    * @param id DOCUMENTATION MISSING
    */
   constructor (
-    public id: number,
+    public id?: number,
   ) {}
 
   public static fromJSON (raw: GetTariffByIdRequestJSON): GetTariffByIdRequest {
@@ -6930,7 +6975,6 @@ export class GetTariffByIdRequest implements TDProtoClass<GetTariffByIdRequest> 
 
 export interface GetTariffByIdResponseJSON {
   /* eslint-disable camelcase */
-  tariff_id: number;
   billing_free?: boolean;
   billing_full_time?: boolean;
   close_date?: string;
@@ -6944,7 +6988,8 @@ export interface GetTariffByIdResponseJSON {
   open_date?: string;
   period_days?: number;
   recalc_change_tariff?: boolean;
-  status?: string;
+  status?: TariffStatus;
+  tariff_id?: number;
   tariff_name?: string;
   /* eslint-enable camelcase */
 }
@@ -6952,7 +6997,6 @@ export interface GetTariffByIdResponseJSON {
 export class GetTariffByIdResponse implements TDProtoClass<GetTariffByIdResponse> {
   /**
    * GetTariffByIdResponse response on get tariff by ID
-   * @param tariffId Tariff id
    * @param billingFree Flag of availability of free seats when exceeding FreeWorkplace
    * @param billingFullTime Flag of accounting without looking at the number of days before the billing period
    * @param closeDate Date of closing tariff
@@ -6967,10 +7011,10 @@ export class GetTariffByIdResponse implements TDProtoClass<GetTariffByIdResponse
    * @param periodDays Number of paid days
    * @param recalcChangeTariff Flag for accounting for unspent days when switching to a new tariff
    * @param status Status of tariff
+   * @param tariffId Tariff id
    * @param tariffName Name of tariff
    */
   constructor (
-    public tariffId: number,
     public billingFree?: boolean,
     public billingFullTime?: boolean,
     public closeDate?: string,
@@ -6984,13 +7028,13 @@ export class GetTariffByIdResponse implements TDProtoClass<GetTariffByIdResponse
     public openDate?: string,
     public periodDays?: number,
     public recalcChangeTariff?: boolean,
-    public status?: string,
+    public status?: TariffStatus,
+    public tariffId?: number,
     public tariffName?: string,
   ) {}
 
   public static fromJSON (raw: GetTariffByIdResponseJSON): GetTariffByIdResponse {
     return new GetTariffByIdResponse(
-      raw.tariff_id,
       raw.billing_free,
       raw.billing_full_time,
       raw.close_date,
@@ -7005,12 +7049,12 @@ export class GetTariffByIdResponse implements TDProtoClass<GetTariffByIdResponse
       raw.period_days,
       raw.recalc_change_tariff,
       raw.status,
+      raw.tariff_id,
       raw.tariff_name,
     )
   }
 
   public mappableFields = [
-    'tariffId',
     'billingFree',
     'billingFullTime',
     'closeDate',
@@ -7025,12 +7069,12 @@ export class GetTariffByIdResponse implements TDProtoClass<GetTariffByIdResponse
     'periodDays',
     'recalcChangeTariff',
     'status',
+    'tariffId',
     'tariffName',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    tariffId: () => ({ tariff_id: this.tariffId }),
     billingFree: () => ({ billing_free: this.billingFree }),
     billingFullTime: () => ({ billing_full_time: this.billingFullTime }),
     closeDate: () => ({ close_date: this.closeDate }),
@@ -7045,6 +7089,7 @@ export class GetTariffByIdResponse implements TDProtoClass<GetTariffByIdResponse
     periodDays: () => ({ period_days: this.periodDays }),
     recalcChangeTariff: () => ({ recalc_change_tariff: this.recalcChangeTariff }),
     status: () => ({ status: this.status }),
+    tariffId: () => ({ tariff_id: this.tariffId }),
     tariffName: () => ({ tariff_name: this.tariffName }),
     /* eslint-enable camelcase */
   }
@@ -9522,13 +9567,15 @@ export interface PersonalAccountBillingJSON {
   next_billing_date: string;
   owner_uuid: string;
   paid_workplaces: number;
-  personal_account_id: number;
-  status: string;
+  status: PersonalAccountStatus;
   tariff_id: number;
   tariff_name: string;
   team_count: number;
   users_count: number;
   workplace_count: number;
+  full_name?: string;
+  personal_account_id?: number;
+  phone?: string;
   /* eslint-enable camelcase */
 }
 
@@ -9541,13 +9588,15 @@ export class PersonalAccountBilling implements TDProtoClass<PersonalAccountBilli
    * @param nextBillingDate Date of next debiting funds
    * @param ownerUuid ID User who owns this personal account
    * @param paidWorkplaces Count of paid workplaces on personal account
-   * @param personalAccountId PersonalAccountBilling ID
    * @param status Status of personal account
    * @param tariffId ID Tariff on this personal account
    * @param tariffName Name Tariff on this personal account
    * @param teamCount Count of teams on personal account
    * @param usersCount Count of user on personal account
    * @param workplaceCount Count of workplaces on personal account
+   * @param fullName Full name of owner personal account
+   * @param personalAccountId PersonalAccountBilling ID
+   * @param phone Phone number of owner account
    */
   constructor (
     public discountAmount: number,
@@ -9556,13 +9605,15 @@ export class PersonalAccountBilling implements TDProtoClass<PersonalAccountBilli
     public nextBillingDate: string,
     public ownerUuid: string,
     public paidWorkplaces: number,
-    public personalAccountId: number,
-    public status: string,
+    public status: PersonalAccountStatus,
     public tariffId: number,
     public tariffName: string,
     public teamCount: number,
     public usersCount: number,
     public workplaceCount: number,
+    public fullName?: string,
+    public personalAccountId?: number,
+    public phone?: string,
   ) {}
 
   public static fromJSON (raw: PersonalAccountBillingJSON): PersonalAccountBilling {
@@ -9573,13 +9624,15 @@ export class PersonalAccountBilling implements TDProtoClass<PersonalAccountBilli
       raw.next_billing_date,
       raw.owner_uuid,
       raw.paid_workplaces,
-      raw.personal_account_id,
       raw.status,
       raw.tariff_id,
       raw.tariff_name,
       raw.team_count,
       raw.users_count,
       raw.workplace_count,
+      raw.full_name,
+      raw.personal_account_id,
+      raw.phone,
     )
   }
 
@@ -9590,13 +9643,15 @@ export class PersonalAccountBilling implements TDProtoClass<PersonalAccountBilli
     'nextBillingDate',
     'ownerUuid',
     'paidWorkplaces',
-    'personalAccountId',
     'status',
     'tariffId',
     'tariffName',
     'teamCount',
     'usersCount',
     'workplaceCount',
+    'fullName',
+    'personalAccountId',
+    'phone',
   ] as const
 
   readonly #mapper = {
@@ -9607,13 +9662,15 @@ export class PersonalAccountBilling implements TDProtoClass<PersonalAccountBilli
     nextBillingDate: () => ({ next_billing_date: this.nextBillingDate }),
     ownerUuid: () => ({ owner_uuid: this.ownerUuid }),
     paidWorkplaces: () => ({ paid_workplaces: this.paidWorkplaces }),
-    personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
     status: () => ({ status: this.status }),
     tariffId: () => ({ tariff_id: this.tariffId }),
     tariffName: () => ({ tariff_name: this.tariffName }),
     teamCount: () => ({ team_count: this.teamCount }),
     usersCount: () => ({ users_count: this.usersCount }),
     workplaceCount: () => ({ workplace_count: this.workplaceCount }),
+    fullName: () => ({ full_name: this.fullName }),
+    personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
+    phone: () => ({ phone: this.phone }),
     /* eslint-enable camelcase */
   }
 
@@ -14254,7 +14311,7 @@ export class Session implements TDProtoClass<Session> {
 
 export interface SetTariffAsDefaultRequestJSON {
   /* eslint-disable camelcase */
-  tariff_id: number;
+  tariff_id?: number;
   /* eslint-enable camelcase */
 }
 
@@ -14264,7 +14321,7 @@ export class SetTariffAsDefaultRequest implements TDProtoClass<SetTariffAsDefaul
    * @param tariffId DOCUMENTATION MISSING
    */
   constructor (
-    public tariffId: number,
+    public tariffId?: number,
   ) {}
 
   public static fromJSON (raw: SetTariffAsDefaultRequestJSON): SetTariffAsDefaultRequest {
@@ -14896,7 +14953,7 @@ export class Subtask implements TDProtoClass<Subtask> {
 
 export interface SuspendPersonalAccountRequestJSON {
   /* eslint-disable camelcase */
-  personal_account_id: number;
+  personal_account_id?: number;
   /* eslint-enable camelcase */
 }
 
@@ -14906,7 +14963,7 @@ export class SuspendPersonalAccountRequest implements TDProtoClass<SuspendPerson
    * @param personalAccountId DOCUMENTATION MISSING
    */
   constructor (
-    public personalAccountId: number,
+    public personalAccountId?: number,
   ) {}
 
   public static fromJSON (raw: SuspendPersonalAccountRequestJSON): SuspendPersonalAccountRequest {
@@ -15160,7 +15217,6 @@ export class Tariff implements TDProtoClass<Tariff> {
 
 export interface TariffBillingJSON {
   /* eslint-disable camelcase */
-  tariff_id: number;
   billing_free?: boolean;
   billing_full_time?: boolean;
   close_date?: string;
@@ -15174,7 +15230,8 @@ export interface TariffBillingJSON {
   open_date?: string;
   period_days?: number;
   recalc_change_tariff?: boolean;
-  status?: string;
+  status?: TariffStatus;
+  tariff_id?: number;
   tariff_name?: string;
   /* eslint-enable camelcase */
 }
@@ -15182,7 +15239,6 @@ export interface TariffBillingJSON {
 export class TariffBilling implements TDProtoClass<TariffBilling> {
   /**
    * TariffBilling struct of billing api
-   * @param tariffId Tariff id
    * @param billingFree Flag of availability of free seats when exceeding FreeWorkplace
    * @param billingFullTime Flag of accounting without looking at the number of days before the billing period
    * @param closeDate Date of closing tariff
@@ -15197,10 +15253,10 @@ export class TariffBilling implements TDProtoClass<TariffBilling> {
    * @param periodDays Number of paid days
    * @param recalcChangeTariff Flag for accounting for unspent days when switching to a new tariff
    * @param status Status of tariff
+   * @param tariffId Tariff id
    * @param tariffName Name of tariff
    */
   constructor (
-    public tariffId: number,
     public billingFree?: boolean,
     public billingFullTime?: boolean,
     public closeDate?: string,
@@ -15214,13 +15270,13 @@ export class TariffBilling implements TDProtoClass<TariffBilling> {
     public openDate?: string,
     public periodDays?: number,
     public recalcChangeTariff?: boolean,
-    public status?: string,
+    public status?: TariffStatus,
+    public tariffId?: number,
     public tariffName?: string,
   ) {}
 
   public static fromJSON (raw: TariffBillingJSON): TariffBilling {
     return new TariffBilling(
-      raw.tariff_id,
       raw.billing_free,
       raw.billing_full_time,
       raw.close_date,
@@ -15235,12 +15291,12 @@ export class TariffBilling implements TDProtoClass<TariffBilling> {
       raw.period_days,
       raw.recalc_change_tariff,
       raw.status,
+      raw.tariff_id,
       raw.tariff_name,
     )
   }
 
   public mappableFields = [
-    'tariffId',
     'billingFree',
     'billingFullTime',
     'closeDate',
@@ -15255,12 +15311,12 @@ export class TariffBilling implements TDProtoClass<TariffBilling> {
     'periodDays',
     'recalcChangeTariff',
     'status',
+    'tariffId',
     'tariffName',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    tariffId: () => ({ tariff_id: this.tariffId }),
     billingFree: () => ({ billing_free: this.billingFree }),
     billingFullTime: () => ({ billing_full_time: this.billingFullTime }),
     closeDate: () => ({ close_date: this.closeDate }),
@@ -15275,6 +15331,7 @@ export class TariffBilling implements TDProtoClass<TariffBilling> {
     periodDays: () => ({ period_days: this.periodDays }),
     recalcChangeTariff: () => ({ recalc_change_tariff: this.recalcChangeTariff }),
     status: () => ({ status: this.status }),
+    tariffId: () => ({ tariff_id: this.tariffId }),
     tariffName: () => ({ tariff_name: this.tariffName }),
     /* eslint-enable camelcase */
   }
@@ -16888,7 +16945,7 @@ export class Theme implements TDProtoClass<Theme> {
 
 export interface UnblockPersonalAccountRequestJSON {
   /* eslint-disable camelcase */
-  personal_account_id: number;
+  personal_account_id?: number;
   /* eslint-enable camelcase */
 }
 
@@ -16898,7 +16955,7 @@ export class UnblockPersonalAccountRequest implements TDProtoClass<UnblockPerson
    * @param personalAccountId DOCUMENTATION MISSING
    */
   constructor (
-    public personalAccountId: number,
+    public personalAccountId?: number,
   ) {}
 
   public static fromJSON (raw: UnblockPersonalAccountRequestJSON): UnblockPersonalAccountRequest {
