@@ -20,6 +20,11 @@ export type ChatType =
    | 'group'
    | 'task'
 
+export type Currency =
+   | 'EUR'
+   | 'RUB'
+   | 'USD'
+
 export type GroupStatus =
    | 'admin'
    | 'member'
@@ -3550,7 +3555,6 @@ export class ClientPing implements TDProtoClass<ClientPing> {
 export interface CloseTariffRequestJSON {
   /* eslint-disable camelcase */
   close_date?: string;
-  tariff_id?: number;
   /* eslint-enable camelcase */
 }
 
@@ -3558,29 +3562,24 @@ export class CloseTariffRequest implements TDProtoClass<CloseTariffRequest> {
   /**
    * CloseTariffRequest request on close(archive) tariff
    * @param closeDate DOCUMENTATION MISSING
-   * @param tariffId DOCUMENTATION MISSING
    */
   constructor (
     public closeDate?: string,
-    public tariffId?: number,
   ) {}
 
   public static fromJSON (raw: CloseTariffRequestJSON): CloseTariffRequest {
     return new CloseTariffRequest(
       raw.close_date,
-      raw.tariff_id,
     )
   }
 
   public mappableFields = [
     'closeDate',
-    'tariffId',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
     closeDate: () => ({ close_date: this.closeDate }),
-    tariffId: () => ({ tariff_id: this.tariffId }),
     /* eslint-enable camelcase */
   }
 
@@ -4623,259 +4622,115 @@ export class CreatePersonalAccountResponse implements TDProtoClass<CreatePersona
 
 export interface CreateTariffRequestJSON {
   /* eslint-disable camelcase */
+  currency: Currency;
+  period_days: number;
+  tariff_name: string;
   billing_free?: boolean;
   billing_full_time?: boolean;
   close_date?: string;
   cost_workplace?: string;
-  currency?: string;
   default_tariff?: boolean;
   disk_space_quota?: string;
   free_workplace?: number;
   max_video_user?: number;
   max_voice_user?: number;
   open_date?: string;
-  period_days?: number;
   recalc_change_tariff?: boolean;
-  status?: TariffStatus;
-  tariff_id?: number;
-  tariff_name?: string;
   /* eslint-enable camelcase */
 }
 
 export class CreateTariffRequest implements TDProtoClass<CreateTariffRequest> {
   /**
    * CreateTariffRequest request on create tariff
+   * @param currency Currency of tariff
+   * @param periodDays Number of paid days
+   * @param tariffName Name of tariff
    * @param billingFree Flag of availability of free seats when exceeding FreeWorkplace
    * @param billingFullTime Flag of accounting without looking at the number of days before the billing period
    * @param closeDate Date of closing tariff
    * @param costWorkplace Cost of one workplace
-   * @param currency Currency of tariff in ISO
    * @param defaultTariff Default tariff flag that is set when registering an account
    * @param diskSpaceQuota Disk space limit per user
    * @param freeWorkplace Count of free workspaces
    * @param maxVideoUser Maximum count of users in video conference
    * @param maxVoiceUser Maximum count of users in voice conference
    * @param openDate Date of opening tariff
-   * @param periodDays Number of paid days
    * @param recalcChangeTariff Flag for accounting for unspent days when switching to a new tariff
-   * @param status Status of tariff
-   * @param tariffId Tariff id
-   * @param tariffName Name of tariff
    */
   constructor (
+    public currency: Currency,
+    public periodDays: number,
+    public tariffName: string,
     public billingFree?: boolean,
     public billingFullTime?: boolean,
     public closeDate?: string,
     public costWorkplace?: string,
-    public currency?: string,
     public defaultTariff?: boolean,
     public diskSpaceQuota?: string,
     public freeWorkplace?: number,
     public maxVideoUser?: number,
     public maxVoiceUser?: number,
     public openDate?: string,
-    public periodDays?: number,
     public recalcChangeTariff?: boolean,
-    public status?: TariffStatus,
-    public tariffId?: number,
-    public tariffName?: string,
   ) {}
 
   public static fromJSON (raw: CreateTariffRequestJSON): CreateTariffRequest {
     return new CreateTariffRequest(
+      raw.currency,
+      raw.period_days,
+      raw.tariff_name,
       raw.billing_free,
       raw.billing_full_time,
       raw.close_date,
       raw.cost_workplace,
-      raw.currency,
       raw.default_tariff,
       raw.disk_space_quota,
       raw.free_workplace,
       raw.max_video_user,
       raw.max_voice_user,
       raw.open_date,
-      raw.period_days,
       raw.recalc_change_tariff,
-      raw.status,
-      raw.tariff_id,
-      raw.tariff_name,
     )
   }
 
   public mappableFields = [
+    'currency',
+    'periodDays',
+    'tariffName',
     'billingFree',
     'billingFullTime',
     'closeDate',
     'costWorkplace',
-    'currency',
     'defaultTariff',
     'diskSpaceQuota',
     'freeWorkplace',
     'maxVideoUser',
     'maxVoiceUser',
     'openDate',
-    'periodDays',
     'recalcChangeTariff',
-    'status',
-    'tariffId',
-    'tariffName',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
+    currency: () => ({ currency: this.currency }),
+    periodDays: () => ({ period_days: this.periodDays }),
+    tariffName: () => ({ tariff_name: this.tariffName }),
     billingFree: () => ({ billing_free: this.billingFree }),
     billingFullTime: () => ({ billing_full_time: this.billingFullTime }),
     closeDate: () => ({ close_date: this.closeDate }),
     costWorkplace: () => ({ cost_workplace: this.costWorkplace }),
-    currency: () => ({ currency: this.currency }),
     defaultTariff: () => ({ default_tariff: this.defaultTariff }),
     diskSpaceQuota: () => ({ disk_space_quota: this.diskSpaceQuota }),
     freeWorkplace: () => ({ free_workplace: this.freeWorkplace }),
     maxVideoUser: () => ({ max_video_user: this.maxVideoUser }),
     maxVoiceUser: () => ({ max_voice_user: this.maxVoiceUser }),
     openDate: () => ({ open_date: this.openDate }),
-    periodDays: () => ({ period_days: this.periodDays }),
     recalcChangeTariff: () => ({ recalc_change_tariff: this.recalcChangeTariff }),
-    status: () => ({ status: this.status }),
-    tariffId: () => ({ tariff_id: this.tariffId }),
-    tariffName: () => ({ tariff_name: this.tariffName }),
     /* eslint-enable camelcase */
   }
 
   public toJSON (): CreateTariffRequestJSON
   public toJSON (fields: Array<this['mappableFields'][number]>): Partial<CreateTariffRequestJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface CreateTariffResponseJSON {
-  /* eslint-disable camelcase */
-  billing_free?: boolean;
-  billing_full_time?: boolean;
-  close_date?: string;
-  cost_workplace?: string;
-  currency?: string;
-  default_tariff?: boolean;
-  disk_space_quota?: string;
-  free_workplace?: number;
-  max_video_user?: number;
-  max_voice_user?: number;
-  open_date?: string;
-  period_days?: number;
-  recalc_change_tariff?: boolean;
-  status?: TariffStatus;
-  tariff_id?: number;
-  tariff_name?: string;
-  /* eslint-enable camelcase */
-}
-
-export class CreateTariffResponse implements TDProtoClass<CreateTariffResponse> {
-  /**
-   * CreateTariffResponse response on create tariff
-   * @param billingFree Flag of availability of free seats when exceeding FreeWorkplace
-   * @param billingFullTime Flag of accounting without looking at the number of days before the billing period
-   * @param closeDate Date of closing tariff
-   * @param costWorkplace Cost of one workplace
-   * @param currency Currency of tariff in ISO
-   * @param defaultTariff Default tariff flag that is set when registering an account
-   * @param diskSpaceQuota Disk space limit per user
-   * @param freeWorkplace Count of free workspaces
-   * @param maxVideoUser Maximum count of users in video conference
-   * @param maxVoiceUser Maximum count of users in voice conference
-   * @param openDate Date of opening tariff
-   * @param periodDays Number of paid days
-   * @param recalcChangeTariff Flag for accounting for unspent days when switching to a new tariff
-   * @param status Status of tariff
-   * @param tariffId Tariff id
-   * @param tariffName Name of tariff
-   */
-  constructor (
-    public billingFree?: boolean,
-    public billingFullTime?: boolean,
-    public closeDate?: string,
-    public costWorkplace?: string,
-    public currency?: string,
-    public defaultTariff?: boolean,
-    public diskSpaceQuota?: string,
-    public freeWorkplace?: number,
-    public maxVideoUser?: number,
-    public maxVoiceUser?: number,
-    public openDate?: string,
-    public periodDays?: number,
-    public recalcChangeTariff?: boolean,
-    public status?: TariffStatus,
-    public tariffId?: number,
-    public tariffName?: string,
-  ) {}
-
-  public static fromJSON (raw: CreateTariffResponseJSON): CreateTariffResponse {
-    return new CreateTariffResponse(
-      raw.billing_free,
-      raw.billing_full_time,
-      raw.close_date,
-      raw.cost_workplace,
-      raw.currency,
-      raw.default_tariff,
-      raw.disk_space_quota,
-      raw.free_workplace,
-      raw.max_video_user,
-      raw.max_voice_user,
-      raw.open_date,
-      raw.period_days,
-      raw.recalc_change_tariff,
-      raw.status,
-      raw.tariff_id,
-      raw.tariff_name,
-    )
-  }
-
-  public mappableFields = [
-    'billingFree',
-    'billingFullTime',
-    'closeDate',
-    'costWorkplace',
-    'currency',
-    'defaultTariff',
-    'diskSpaceQuota',
-    'freeWorkplace',
-    'maxVideoUser',
-    'maxVoiceUser',
-    'openDate',
-    'periodDays',
-    'recalcChangeTariff',
-    'status',
-    'tariffId',
-    'tariffName',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    billingFree: () => ({ billing_free: this.billingFree }),
-    billingFullTime: () => ({ billing_full_time: this.billingFullTime }),
-    closeDate: () => ({ close_date: this.closeDate }),
-    costWorkplace: () => ({ cost_workplace: this.costWorkplace }),
-    currency: () => ({ currency: this.currency }),
-    defaultTariff: () => ({ default_tariff: this.defaultTariff }),
-    diskSpaceQuota: () => ({ disk_space_quota: this.diskSpaceQuota }),
-    freeWorkplace: () => ({ free_workplace: this.freeWorkplace }),
-    maxVideoUser: () => ({ max_video_user: this.maxVideoUser }),
-    maxVoiceUser: () => ({ max_voice_user: this.maxVoiceUser }),
-    openDate: () => ({ open_date: this.openDate }),
-    periodDays: () => ({ period_days: this.periodDays }),
-    recalcChangeTariff: () => ({ recalc_change_tariff: this.recalcChangeTariff }),
-    status: () => ({ status: this.status }),
-    tariffId: () => ({ tariff_id: this.tariffId }),
-    tariffName: () => ({ tariff_name: this.tariffName }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): CreateTariffResponseJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<CreateTariffResponseJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -6922,180 +6777,6 @@ export class GetPersonalAccountsListResponse implements TDProtoClass<GetPersonal
 
   public toJSON (): GetPersonalAccountsListResponseJSON
   public toJSON (fields: Array<this['mappableFields'][number]>): Partial<GetPersonalAccountsListResponseJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface GetTariffByIdRequestJSON {
-  /* eslint-disable camelcase */
-  id?: number;
-  /* eslint-enable camelcase */
-}
-
-export class GetTariffByIdRequest implements TDProtoClass<GetTariffByIdRequest> {
-  /**
-   * GetTariffByIdRequest request on get tariff by ID
-   * @param id DOCUMENTATION MISSING
-   */
-  constructor (
-    public id?: number,
-  ) {}
-
-  public static fromJSON (raw: GetTariffByIdRequestJSON): GetTariffByIdRequest {
-    return new GetTariffByIdRequest(
-      raw.id,
-    )
-  }
-
-  public mappableFields = [
-    'id',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    id: () => ({ id: this.id }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): GetTariffByIdRequestJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<GetTariffByIdRequestJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface GetTariffByIdResponseJSON {
-  /* eslint-disable camelcase */
-  billing_free?: boolean;
-  billing_full_time?: boolean;
-  close_date?: string;
-  cost_workplace?: string;
-  currency?: string;
-  default_tariff?: boolean;
-  disk_space_quota?: string;
-  free_workplace?: number;
-  max_video_user?: number;
-  max_voice_user?: number;
-  open_date?: string;
-  period_days?: number;
-  recalc_change_tariff?: boolean;
-  status?: TariffStatus;
-  tariff_id?: number;
-  tariff_name?: string;
-  /* eslint-enable camelcase */
-}
-
-export class GetTariffByIdResponse implements TDProtoClass<GetTariffByIdResponse> {
-  /**
-   * GetTariffByIdResponse response on get tariff by ID
-   * @param billingFree Flag of availability of free seats when exceeding FreeWorkplace
-   * @param billingFullTime Flag of accounting without looking at the number of days before the billing period
-   * @param closeDate Date of closing tariff
-   * @param costWorkplace Cost of one workplace
-   * @param currency Currency of tariff in ISO
-   * @param defaultTariff Default tariff flag that is set when registering an account
-   * @param diskSpaceQuota Disk space limit per user
-   * @param freeWorkplace Count of free workspaces
-   * @param maxVideoUser Maximum count of users in video conference
-   * @param maxVoiceUser Maximum count of users in voice conference
-   * @param openDate Date of opening tariff
-   * @param periodDays Number of paid days
-   * @param recalcChangeTariff Flag for accounting for unspent days when switching to a new tariff
-   * @param status Status of tariff
-   * @param tariffId Tariff id
-   * @param tariffName Name of tariff
-   */
-  constructor (
-    public billingFree?: boolean,
-    public billingFullTime?: boolean,
-    public closeDate?: string,
-    public costWorkplace?: string,
-    public currency?: string,
-    public defaultTariff?: boolean,
-    public diskSpaceQuota?: string,
-    public freeWorkplace?: number,
-    public maxVideoUser?: number,
-    public maxVoiceUser?: number,
-    public openDate?: string,
-    public periodDays?: number,
-    public recalcChangeTariff?: boolean,
-    public status?: TariffStatus,
-    public tariffId?: number,
-    public tariffName?: string,
-  ) {}
-
-  public static fromJSON (raw: GetTariffByIdResponseJSON): GetTariffByIdResponse {
-    return new GetTariffByIdResponse(
-      raw.billing_free,
-      raw.billing_full_time,
-      raw.close_date,
-      raw.cost_workplace,
-      raw.currency,
-      raw.default_tariff,
-      raw.disk_space_quota,
-      raw.free_workplace,
-      raw.max_video_user,
-      raw.max_voice_user,
-      raw.open_date,
-      raw.period_days,
-      raw.recalc_change_tariff,
-      raw.status,
-      raw.tariff_id,
-      raw.tariff_name,
-    )
-  }
-
-  public mappableFields = [
-    'billingFree',
-    'billingFullTime',
-    'closeDate',
-    'costWorkplace',
-    'currency',
-    'defaultTariff',
-    'diskSpaceQuota',
-    'freeWorkplace',
-    'maxVideoUser',
-    'maxVoiceUser',
-    'openDate',
-    'periodDays',
-    'recalcChangeTariff',
-    'status',
-    'tariffId',
-    'tariffName',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    billingFree: () => ({ billing_free: this.billingFree }),
-    billingFullTime: () => ({ billing_full_time: this.billingFullTime }),
-    closeDate: () => ({ close_date: this.closeDate }),
-    costWorkplace: () => ({ cost_workplace: this.costWorkplace }),
-    currency: () => ({ currency: this.currency }),
-    defaultTariff: () => ({ default_tariff: this.defaultTariff }),
-    diskSpaceQuota: () => ({ disk_space_quota: this.diskSpaceQuota }),
-    freeWorkplace: () => ({ free_workplace: this.freeWorkplace }),
-    maxVideoUser: () => ({ max_video_user: this.maxVideoUser }),
-    maxVoiceUser: () => ({ max_voice_user: this.maxVoiceUser }),
-    openDate: () => ({ open_date: this.openDate }),
-    periodDays: () => ({ period_days: this.periodDays }),
-    recalcChangeTariff: () => ({ recalc_change_tariff: this.recalcChangeTariff }),
-    status: () => ({ status: this.status }),
-    tariffId: () => ({ tariff_id: this.tariffId }),
-    tariffName: () => ({ tariff_name: this.tariffName }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): GetTariffByIdResponseJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<GetTariffByIdResponseJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -14309,48 +13990,6 @@ export class Session implements TDProtoClass<Session> {
   }
 }
 
-export interface SetTariffAsDefaultRequestJSON {
-  /* eslint-disable camelcase */
-  tariff_id?: number;
-  /* eslint-enable camelcase */
-}
-
-export class SetTariffAsDefaultRequest implements TDProtoClass<SetTariffAsDefaultRequest> {
-  /**
-   * SetTariffAsDefaultRequest request on set tariff as default
-   * @param tariffId DOCUMENTATION MISSING
-   */
-  constructor (
-    public tariffId?: number,
-  ) {}
-
-  public static fromJSON (raw: SetTariffAsDefaultRequestJSON): SetTariffAsDefaultRequest {
-    return new SetTariffAsDefaultRequest(
-      raw.tariff_id,
-    )
-  }
-
-  public mappableFields = [
-    'tariffId',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    tariffId: () => ({ tariff_id: this.tariffId }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): SetTariffAsDefaultRequestJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<SetTariffAsDefaultRequestJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
 export interface SetTariffAsDefaultResponseJSON {
   /* eslint-disable camelcase */
   success: boolean;
@@ -15217,22 +14856,22 @@ export class Tariff implements TDProtoClass<Tariff> {
 
 export interface TariffBillingJSON {
   /* eslint-disable camelcase */
-  billing_free?: boolean;
-  billing_full_time?: boolean;
+  billing_free: boolean;
+  billing_full_time: boolean;
+  cost_workplace: string;
+  currency: Currency;
+  default_tariff: boolean;
+  disk_space_quota: string;
+  free_workplace: number;
+  max_video_user: number;
+  max_voice_user: number;
+  open_date: string;
+  period_days: number;
+  recalc_change_tariff: boolean;
+  status: TariffStatus;
+  tariff_id: number;
+  tariff_name: string;
   close_date?: string;
-  cost_workplace?: string;
-  currency?: string;
-  default_tariff?: boolean;
-  disk_space_quota?: string;
-  free_workplace?: number;
-  max_video_user?: number;
-  max_voice_user?: number;
-  open_date?: string;
-  period_days?: number;
-  recalc_change_tariff?: boolean;
-  status?: TariffStatus;
-  tariff_id?: number;
-  tariff_name?: string;
   /* eslint-enable camelcase */
 }
 
@@ -15241,9 +14880,8 @@ export class TariffBilling implements TDProtoClass<TariffBilling> {
    * TariffBilling struct of billing api
    * @param billingFree Flag of availability of free seats when exceeding FreeWorkplace
    * @param billingFullTime Flag of accounting without looking at the number of days before the billing period
-   * @param closeDate Date of closing tariff
    * @param costWorkplace Cost of one workplace
-   * @param currency Currency of tariff in ISO
+   * @param currency Currency of tariff
    * @param defaultTariff Default tariff flag that is set when registering an account
    * @param diskSpaceQuota Disk space limit per user
    * @param freeWorkplace Count of free workspaces
@@ -15255,31 +14893,31 @@ export class TariffBilling implements TDProtoClass<TariffBilling> {
    * @param status Status of tariff
    * @param tariffId Tariff id
    * @param tariffName Name of tariff
+   * @param closeDate Date of closing tariff
    */
   constructor (
-    public billingFree?: boolean,
-    public billingFullTime?: boolean,
+    public billingFree: boolean,
+    public billingFullTime: boolean,
+    public costWorkplace: string,
+    public currency: Currency,
+    public defaultTariff: boolean,
+    public diskSpaceQuota: string,
+    public freeWorkplace: number,
+    public maxVideoUser: number,
+    public maxVoiceUser: number,
+    public openDate: string,
+    public periodDays: number,
+    public recalcChangeTariff: boolean,
+    public status: TariffStatus,
+    public tariffId: number,
+    public tariffName: string,
     public closeDate?: string,
-    public costWorkplace?: string,
-    public currency?: string,
-    public defaultTariff?: boolean,
-    public diskSpaceQuota?: string,
-    public freeWorkplace?: number,
-    public maxVideoUser?: number,
-    public maxVoiceUser?: number,
-    public openDate?: string,
-    public periodDays?: number,
-    public recalcChangeTariff?: boolean,
-    public status?: TariffStatus,
-    public tariffId?: number,
-    public tariffName?: string,
   ) {}
 
   public static fromJSON (raw: TariffBillingJSON): TariffBilling {
     return new TariffBilling(
       raw.billing_free,
       raw.billing_full_time,
-      raw.close_date,
       raw.cost_workplace,
       raw.currency,
       raw.default_tariff,
@@ -15293,13 +14931,13 @@ export class TariffBilling implements TDProtoClass<TariffBilling> {
       raw.status,
       raw.tariff_id,
       raw.tariff_name,
+      raw.close_date,
     )
   }
 
   public mappableFields = [
     'billingFree',
     'billingFullTime',
-    'closeDate',
     'costWorkplace',
     'currency',
     'defaultTariff',
@@ -15313,13 +14951,13 @@ export class TariffBilling implements TDProtoClass<TariffBilling> {
     'status',
     'tariffId',
     'tariffName',
+    'closeDate',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
     billingFree: () => ({ billing_free: this.billingFree }),
     billingFullTime: () => ({ billing_full_time: this.billingFullTime }),
-    closeDate: () => ({ close_date: this.closeDate }),
     costWorkplace: () => ({ cost_workplace: this.costWorkplace }),
     currency: () => ({ currency: this.currency }),
     defaultTariff: () => ({ default_tariff: this.defaultTariff }),
@@ -15333,6 +14971,7 @@ export class TariffBilling implements TDProtoClass<TariffBilling> {
     status: () => ({ status: this.status }),
     tariffId: () => ({ tariff_id: this.tariffId }),
     tariffName: () => ({ tariff_name: this.tariffName }),
+    closeDate: () => ({ close_date: this.closeDate }),
     /* eslint-enable camelcase */
   }
 
