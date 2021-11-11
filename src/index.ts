@@ -15131,6 +15131,90 @@ export class Tag implements TDProtoClass<Tag> {
   }
 }
 
+export interface TariffJSON {
+  /* eslint-disable camelcase */
+  title_en: string;
+  title_ru: string;
+  uid: string;
+  cloud_space?: number;
+  max_members_in_team?: number;
+  max_participants_per_call?: number;
+  max_upload_filesize?: number;
+  price?: string;
+  /* eslint-enable camelcase */
+}
+
+export class Tariff implements TDProtoClass<Tariff> {
+  /**
+   * Tariff for teams
+   * @param titleEn Title of tariff in enlish
+   * @param titleRu Title of tariff in russian
+   * @param uid Tariff id
+   * @param cloudSpace Cloud space reserved for storing team users uploads in megabytes
+   * @param maxMembersInTeam Maximum allowed number of members in a team
+   * @param maxParticipantsPerCall Maximum number of participants per call
+   * @param maxUploadFilesize maximum file size for uploading
+   * @param price Price of tariff
+   */
+  constructor (
+    public titleEn: string,
+    public titleRu: string,
+    public uid: string,
+    public cloudSpace?: number,
+    public maxMembersInTeam?: number,
+    public maxParticipantsPerCall?: number,
+    public maxUploadFilesize?: number,
+    public price?: string,
+  ) {}
+
+  public static fromJSON (raw: TariffJSON): Tariff {
+    return new Tariff(
+      raw.title_en,
+      raw.title_ru,
+      raw.uid,
+      raw.cloud_space,
+      raw.max_members_in_team,
+      raw.max_participants_per_call,
+      raw.max_upload_filesize,
+      raw.price,
+    )
+  }
+
+  public mappableFields = [
+    'titleEn',
+    'titleRu',
+    'uid',
+    'cloudSpace',
+    'maxMembersInTeam',
+    'maxParticipantsPerCall',
+    'maxUploadFilesize',
+    'price',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    titleEn: () => ({ title_en: this.titleEn }),
+    titleRu: () => ({ title_ru: this.titleRu }),
+    uid: () => ({ uid: this.uid }),
+    cloudSpace: () => ({ cloud_space: this.cloudSpace }),
+    maxMembersInTeam: () => ({ max_members_in_team: this.maxMembersInTeam }),
+    maxParticipantsPerCall: () => ({ max_participants_per_call: this.maxParticipantsPerCall }),
+    maxUploadFilesize: () => ({ max_upload_filesize: this.maxUploadFilesize }),
+    price: () => ({ price: this.price }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): TariffJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<TariffJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface TariffBillingJSON {
   /* eslint-disable camelcase */
   billing_free?: boolean;
