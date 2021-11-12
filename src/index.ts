@@ -3560,7 +3560,7 @@ export interface CloseTariffRequestJSON {
 
 export class CloseTariffRequest implements TDProtoClass<CloseTariffRequest> {
   /**
-   * CloseTariffRequest request on close(archive) tariff
+   * Request to close (archive) the tariff
    * @param closeDate DOCUMENTATION MISSING
    */
   constructor (
@@ -3602,7 +3602,7 @@ export interface CloseTariffResponseJSON {
 
 export class CloseTariffResponse implements TDProtoClass<CloseTariffResponse> {
   /**
-   * CloseTariffResponse response on close(archive) tariff
+   * Response from closing (archiving) the tariff
    * @param success DOCUMENTATION MISSING
    */
   constructor (
@@ -4625,53 +4625,53 @@ export interface CreateTariffRequestJSON {
   currency: Currency;
   period_days: number;
   tariff_name: string;
-  billing_free?: boolean;
-  billing_full_time?: boolean;
   close_date?: string;
   cost_workplace?: string;
-  default_tariff?: boolean;
-  disk_space_quota?: string;
-  free_workplace?: number;
+  disk_space_quota_mb?: string;
+  free_workplaces?: number;
+  is_billing_free?: boolean;
+  is_billing_full_time?: boolean;
+  is_default_tariff?: boolean;
+  is_recalc_change_tariff?: boolean;
   max_video_user?: number;
   max_voice_user?: number;
   open_date?: string;
-  recalc_change_tariff?: boolean;
   /* eslint-enable camelcase */
 }
 
 export class CreateTariffRequest implements TDProtoClass<CreateTariffRequest> {
   /**
-   * CreateTariffRequest request on create tariff
+   * Request to create the tariff
    * @param currency Currency of tariff
    * @param periodDays Number of paid days
    * @param tariffName Name of tariff
-   * @param billingFree Flag of availability of free seats when exceeding FreeWorkplace
-   * @param billingFullTime Flag of accounting without looking at the number of days before the billing period
    * @param closeDate Date of closing tariff
    * @param costWorkplace Cost of one workplace
-   * @param defaultTariff Default tariff flag that is set when registering an account
-   * @param diskSpaceQuota Disk space limit per user
-   * @param freeWorkplace Count of free workspaces
+   * @param diskSpaceQuotaMb Disk space limit per user
+   * @param freeWorkplaces Count of free workspaces
+   * @param isBillingFree Flag of availability of free seats when exceeding FreeWorkplace
+   * @param isBillingFullTime Flag of accounting without looking at the number of days before the billing period
+   * @param isDefaultTariff Default tariff flag that is set when registering an account
+   * @param isRecalcChangeTariff Flag for accounting for unspent days when switching to a new tariff
    * @param maxVideoUser Maximum count of users in video conference
    * @param maxVoiceUser Maximum count of users in voice conference
    * @param openDate Date of opening tariff
-   * @param recalcChangeTariff Flag for accounting for unspent days when switching to a new tariff
    */
   constructor (
     public currency: Currency,
     public periodDays: number,
     public tariffName: string,
-    public billingFree?: boolean,
-    public billingFullTime?: boolean,
     public closeDate?: string,
     public costWorkplace?: string,
-    public defaultTariff?: boolean,
-    public diskSpaceQuota?: string,
-    public freeWorkplace?: number,
+    public diskSpaceQuotaMb?: string,
+    public freeWorkplaces?: number,
+    public isBillingFree?: boolean,
+    public isBillingFullTime?: boolean,
+    public isDefaultTariff?: boolean,
+    public isRecalcChangeTariff?: boolean,
     public maxVideoUser?: number,
     public maxVoiceUser?: number,
     public openDate?: string,
-    public recalcChangeTariff?: boolean,
   ) {}
 
   public static fromJSON (raw: CreateTariffRequestJSON): CreateTariffRequest {
@@ -4679,17 +4679,17 @@ export class CreateTariffRequest implements TDProtoClass<CreateTariffRequest> {
       raw.currency,
       raw.period_days,
       raw.tariff_name,
-      raw.billing_free,
-      raw.billing_full_time,
       raw.close_date,
       raw.cost_workplace,
-      raw.default_tariff,
-      raw.disk_space_quota,
-      raw.free_workplace,
+      raw.disk_space_quota_mb,
+      raw.free_workplaces,
+      raw.is_billing_free,
+      raw.is_billing_full_time,
+      raw.is_default_tariff,
+      raw.is_recalc_change_tariff,
       raw.max_video_user,
       raw.max_voice_user,
       raw.open_date,
-      raw.recalc_change_tariff,
     )
   }
 
@@ -4697,17 +4697,17 @@ export class CreateTariffRequest implements TDProtoClass<CreateTariffRequest> {
     'currency',
     'periodDays',
     'tariffName',
-    'billingFree',
-    'billingFullTime',
     'closeDate',
     'costWorkplace',
-    'defaultTariff',
-    'diskSpaceQuota',
-    'freeWorkplace',
+    'diskSpaceQuotaMb',
+    'freeWorkplaces',
+    'isBillingFree',
+    'isBillingFullTime',
+    'isDefaultTariff',
+    'isRecalcChangeTariff',
     'maxVideoUser',
     'maxVoiceUser',
     'openDate',
-    'recalcChangeTariff',
   ] as const
 
   readonly #mapper = {
@@ -4715,17 +4715,17 @@ export class CreateTariffRequest implements TDProtoClass<CreateTariffRequest> {
     currency: () => ({ currency: this.currency }),
     periodDays: () => ({ period_days: this.periodDays }),
     tariffName: () => ({ tariff_name: this.tariffName }),
-    billingFree: () => ({ billing_free: this.billingFree }),
-    billingFullTime: () => ({ billing_full_time: this.billingFullTime }),
     closeDate: () => ({ close_date: this.closeDate }),
     costWorkplace: () => ({ cost_workplace: this.costWorkplace }),
-    defaultTariff: () => ({ default_tariff: this.defaultTariff }),
-    diskSpaceQuota: () => ({ disk_space_quota: this.diskSpaceQuota }),
-    freeWorkplace: () => ({ free_workplace: this.freeWorkplace }),
+    diskSpaceQuotaMb: () => ({ disk_space_quota_mb: this.diskSpaceQuotaMb }),
+    freeWorkplaces: () => ({ free_workplaces: this.freeWorkplaces }),
+    isBillingFree: () => ({ is_billing_free: this.isBillingFree }),
+    isBillingFullTime: () => ({ is_billing_full_time: this.isBillingFullTime }),
+    isDefaultTariff: () => ({ is_default_tariff: this.isDefaultTariff }),
+    isRecalcChangeTariff: () => ({ is_recalc_change_tariff: this.isRecalcChangeTariff }),
     maxVideoUser: () => ({ max_video_user: this.maxVideoUser }),
     maxVoiceUser: () => ({ max_voice_user: this.maxVoiceUser }),
     openDate: () => ({ open_date: this.openDate }),
-    recalcChangeTariff: () => ({ recalc_change_tariff: this.recalcChangeTariff }),
     /* eslint-enable camelcase */
   }
 
@@ -6494,7 +6494,7 @@ export interface GetActiveTariffsListResponseJSON {
 
 export class GetActiveTariffsListResponse implements TDProtoClass<GetActiveTariffsListResponse> {
   /**
-   * GetActiveTariffsListResponse response on get active tariffs list
+   * Response from getting a list of active tariffs
    * @param tariffs DOCUMENTATION MISSING
    */
   constructor (
@@ -6794,7 +6794,7 @@ export interface GetTariffsListResponseJSON {
 
 export class GetTariffsListResponse implements TDProtoClass<GetTariffsListResponse> {
   /**
-   * GetTariffsListResponse response on get tariffs list
+   * Response from getting a list of tariffs
    * @param tariffs DOCUMENTATION MISSING
    */
   constructor (
@@ -13998,7 +13998,7 @@ export interface SetTariffAsDefaultResponseJSON {
 
 export class SetTariffAsDefaultResponse implements TDProtoClass<SetTariffAsDefaultResponse> {
   /**
-   * SetTariffAsDefaultResponse response on set tariff as default
+   * Response from setting the tariff as default
    * @param success DOCUMENTATION MISSING
    */
   constructor (
@@ -14856,18 +14856,18 @@ export class Tariff implements TDProtoClass<Tariff> {
 
 export interface TariffBillingJSON {
   /* eslint-disable camelcase */
-  billing_free: boolean;
-  billing_full_time: boolean;
   cost_workplace: string;
   currency: Currency;
-  default_tariff: boolean;
-  disk_space_quota: string;
-  free_workplace: number;
+  disk_space_quota_mb: string;
+  free_workplaces: number;
+  is_billing_free: boolean;
+  is_billing_full_time: boolean;
+  is_default_tariff: boolean;
+  is_recalc_change_tariff: boolean;
   max_video_user: number;
   max_voice_user: number;
   open_date: string;
   period_days: number;
-  recalc_change_tariff: boolean;
   status: TariffStatus;
   tariff_id: number;
   tariff_name: string;
@@ -14877,37 +14877,37 @@ export interface TariffBillingJSON {
 
 export class TariffBilling implements TDProtoClass<TariffBilling> {
   /**
-   * TariffBilling struct of billing api
-   * @param billingFree Flag of availability of free seats when exceeding FreeWorkplace
-   * @param billingFullTime Flag of accounting without looking at the number of days before the billing period
+   * Tariff struct of billing API
    * @param costWorkplace Cost of one workplace
    * @param currency Currency of tariff
-   * @param defaultTariff Default tariff flag that is set when registering an account
-   * @param diskSpaceQuota Disk space limit per user
-   * @param freeWorkplace Count of free workspaces
+   * @param diskSpaceQuotaMb Disk space limit per user
+   * @param freeWorkplaces Count of free workspaces
+   * @param isBillingFree Flag of availability of free seats when exceeding FreeWorkplace
+   * @param isBillingFullTime Flag of accounting without looking at the number of days before the billing period
+   * @param isDefaultTariff Default tariff flag that is set when registering an account
+   * @param isRecalcChangeTariff Flag for accounting for unspent days when switching to a new tariff
    * @param maxVideoUser Maximum count of users in video conference
    * @param maxVoiceUser Maximum count of users in voice conference
    * @param openDate Date of opening tariff
    * @param periodDays Number of paid days
-   * @param recalcChangeTariff Flag for accounting for unspent days when switching to a new tariff
    * @param status Status of tariff
    * @param tariffId Tariff id
    * @param tariffName Name of tariff
    * @param closeDate Date of closing tariff
    */
   constructor (
-    public billingFree: boolean,
-    public billingFullTime: boolean,
     public costWorkplace: string,
     public currency: Currency,
-    public defaultTariff: boolean,
-    public diskSpaceQuota: string,
-    public freeWorkplace: number,
+    public diskSpaceQuotaMb: string,
+    public freeWorkplaces: number,
+    public isBillingFree: boolean,
+    public isBillingFullTime: boolean,
+    public isDefaultTariff: boolean,
+    public isRecalcChangeTariff: boolean,
     public maxVideoUser: number,
     public maxVoiceUser: number,
     public openDate: string,
     public periodDays: number,
-    public recalcChangeTariff: boolean,
     public status: TariffStatus,
     public tariffId: number,
     public tariffName: string,
@@ -14916,18 +14916,18 @@ export class TariffBilling implements TDProtoClass<TariffBilling> {
 
   public static fromJSON (raw: TariffBillingJSON): TariffBilling {
     return new TariffBilling(
-      raw.billing_free,
-      raw.billing_full_time,
       raw.cost_workplace,
       raw.currency,
-      raw.default_tariff,
-      raw.disk_space_quota,
-      raw.free_workplace,
+      raw.disk_space_quota_mb,
+      raw.free_workplaces,
+      raw.is_billing_free,
+      raw.is_billing_full_time,
+      raw.is_default_tariff,
+      raw.is_recalc_change_tariff,
       raw.max_video_user,
       raw.max_voice_user,
       raw.open_date,
       raw.period_days,
-      raw.recalc_change_tariff,
       raw.status,
       raw.tariff_id,
       raw.tariff_name,
@@ -14936,18 +14936,18 @@ export class TariffBilling implements TDProtoClass<TariffBilling> {
   }
 
   public mappableFields = [
-    'billingFree',
-    'billingFullTime',
     'costWorkplace',
     'currency',
-    'defaultTariff',
-    'diskSpaceQuota',
-    'freeWorkplace',
+    'diskSpaceQuotaMb',
+    'freeWorkplaces',
+    'isBillingFree',
+    'isBillingFullTime',
+    'isDefaultTariff',
+    'isRecalcChangeTariff',
     'maxVideoUser',
     'maxVoiceUser',
     'openDate',
     'periodDays',
-    'recalcChangeTariff',
     'status',
     'tariffId',
     'tariffName',
@@ -14956,18 +14956,18 @@ export class TariffBilling implements TDProtoClass<TariffBilling> {
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    billingFree: () => ({ billing_free: this.billingFree }),
-    billingFullTime: () => ({ billing_full_time: this.billingFullTime }),
     costWorkplace: () => ({ cost_workplace: this.costWorkplace }),
     currency: () => ({ currency: this.currency }),
-    defaultTariff: () => ({ default_tariff: this.defaultTariff }),
-    diskSpaceQuota: () => ({ disk_space_quota: this.diskSpaceQuota }),
-    freeWorkplace: () => ({ free_workplace: this.freeWorkplace }),
+    diskSpaceQuotaMb: () => ({ disk_space_quota_mb: this.diskSpaceQuotaMb }),
+    freeWorkplaces: () => ({ free_workplaces: this.freeWorkplaces }),
+    isBillingFree: () => ({ is_billing_free: this.isBillingFree }),
+    isBillingFullTime: () => ({ is_billing_full_time: this.isBillingFullTime }),
+    isDefaultTariff: () => ({ is_default_tariff: this.isDefaultTariff }),
+    isRecalcChangeTariff: () => ({ is_recalc_change_tariff: this.isRecalcChangeTariff }),
     maxVideoUser: () => ({ max_video_user: this.maxVideoUser }),
     maxVoiceUser: () => ({ max_voice_user: this.maxVoiceUser }),
     openDate: () => ({ open_date: this.openDate }),
     periodDays: () => ({ period_days: this.periodDays }),
-    recalcChangeTariff: () => ({ recalc_change_tariff: this.recalcChangeTariff }),
     status: () => ({ status: this.status }),
     tariffId: () => ({ tariff_id: this.tariffId }),
     tariffName: () => ({ tariff_name: this.tariffName }),
