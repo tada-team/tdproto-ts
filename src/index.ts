@@ -144,7 +144,7 @@ export class TeamUnread implements TDProtoClass<TeamUnread> {
 
 export interface ActivatePersonalAccountRequestJSON {
   /* eslint-disable camelcase */
-  personal_account_id?: string;
+  personal_account_id?: number;
   /* eslint-enable camelcase */
 }
 
@@ -154,7 +154,7 @@ export class ActivatePersonalAccountRequest implements TDProtoClass<ActivatePers
    * @param personalAccountId DOCUMENTATION MISSING
    */
   constructor (
-    public personalAccountId?: string,
+    public personalAccountId?: number,
   ) {}
 
   public static fromJSON (raw: ActivatePersonalAccountRequestJSON): ActivatePersonalAccountRequest {
@@ -229,7 +229,7 @@ export class ActivatePersonalAccountResponse implements TDProtoClass<ActivatePer
 export interface ActivateWorkplacesOnPersonalAccountRequestJSON {
   /* eslint-disable camelcase */
   count_workplaces?: number;
-  personal_account_id?: string;
+  personal_account_id?: number;
   /* eslint-enable camelcase */
 }
 
@@ -241,7 +241,7 @@ export class ActivateWorkplacesOnPersonalAccountRequest implements TDProtoClass<
    */
   constructor (
     public countWorkplaces?: number,
-    public personalAccountId?: string,
+    public personalAccountId?: number,
   ) {}
 
   public static fromJSON (raw: ActivateWorkplacesOnPersonalAccountRequestJSON): ActivateWorkplacesOnPersonalAccountRequest {
@@ -409,7 +409,7 @@ export class ActiveUserDailyStat implements TDProtoClass<ActiveUserDailyStat> {
 export interface AddTeamOnPersonalAccountRequestJSON {
   /* eslint-disable camelcase */
   delete_date?: string;
-  personal_account_id?: string;
+  personal_account_id?: number;
   team_uuid?: string;
   /* eslint-enable camelcase */
 }
@@ -423,7 +423,7 @@ export class AddTeamOnPersonalAccountRequest implements TDProtoClass<AddTeamOnPe
    */
   constructor (
     public deleteDate?: string,
-    public personalAccountId?: string,
+    public personalAccountId?: number,
     public teamUuid?: string,
   ) {}
 
@@ -504,7 +504,7 @@ export class AddTeamOnPersonalAccountResponse implements TDProtoClass<AddTeamOnP
 
 export interface AddUserInWorkplaceRequestJSON {
   /* eslint-disable camelcase */
-  personal_account_id?: string;
+  personal_account_id?: number;
   user_uuid?: string;
   /* eslint-enable camelcase */
 }
@@ -516,7 +516,7 @@ export class AddUserInWorkplaceRequest implements TDProtoClass<AddUserInWorkplac
    * @param userUuid DOCUMENTATION MISSING
    */
   constructor (
-    public personalAccountId?: string,
+    public personalAccountId?: number,
     public userUuid?: string,
   ) {}
 
@@ -595,7 +595,7 @@ export class AddUserInWorkplaceResponse implements TDProtoClass<AddUserInWorkpla
 export interface AddWorkplacesOnPersonalAccountRequestJSON {
   /* eslint-disable camelcase */
   count_workplaces?: number;
-  personal_account_id?: string;
+  personal_account_id?: number;
   /* eslint-enable camelcase */
 }
 
@@ -607,7 +607,7 @@ export class AddWorkplacesOnPersonalAccountRequest implements TDProtoClass<AddWo
    */
   constructor (
     public countWorkplaces?: number,
-    public personalAccountId?: string,
+    public personalAccountId?: number,
   ) {}
 
   public static fromJSON (raw: AddWorkplacesOnPersonalAccountRequestJSON): AddWorkplacesOnPersonalAccountRequest {
@@ -780,7 +780,7 @@ export class BaseEvent implements TDProtoClass<BaseEvent> {
 
 export interface BlockPersonalAccountRequestJSON {
   /* eslint-disable camelcase */
-  personal_account_id?: string;
+  personal_account_id?: number;
   /* eslint-enable camelcase */
 }
 
@@ -790,7 +790,7 @@ export class BlockPersonalAccountRequest implements TDProtoClass<BlockPersonalAc
    * @param personalAccountId DOCUMENTATION MISSING
    */
   constructor (
-    public personalAccountId?: string,
+    public personalAccountId?: number,
   ) {}
 
   public static fromJSON (raw: BlockPersonalAccountRequestJSON): BlockPersonalAccountRequest {
@@ -1040,9 +1040,9 @@ export interface CallEventJSON {
   /* eslint-disable camelcase */
   audiorecord: boolean;
   created: ISODateTimeString;
-  gentime: string;
+  gentime: number;
   jid: JID;
-  timestamp: string;
+  timestamp: number;
   uid: string;
   buzz?: boolean;
   finish?: ISODateTimeString;
@@ -1068,9 +1068,9 @@ export class CallEvent implements TDProtoClass<CallEvent> {
   constructor (
     public audiorecord: boolean,
     public created: ISODateTimeString,
-    public gentime: string,
+    public gentime: number,
     public jid: JID,
-    public timestamp: string,
+    public timestamp: number,
     public uid: string,
     public buzz?: boolean,
     public finish?: ISODateTimeString,
@@ -1215,12 +1215,12 @@ export interface ChatJSON {
   chat_type: ChatType;
   created: ISODateTimeString;
   display_name: string;
-  gentime: string;
+  gentime: number;
   icons: IconDataJSON;
   jid: JID;
   assignee?: JID;
   autocleanup_age?: number;
-  base_gentime?: string;
+  base_gentime?: number;
   can_add_member?: boolean;
   can_call?: boolean;
   can_change_member_status?: boolean;
@@ -1244,8 +1244,8 @@ export interface ChatJSON {
   done?: ISODateTimeString;
   done_reason?: string;
   draft?: string;
-  draft_gentime?: string;
-  draft_num?: string;
+  draft_gentime?: number;
+  draft_num?: number;
   feed?: boolean;
   hidden?: boolean;
   importance?: number;
@@ -1364,12 +1364,12 @@ export class Chat implements TDProtoClass<Chat> {
     public chatType: ChatType,
     public created: ISODateTimeString,
     public displayName: string,
-    public gentime: string,
+    public gentime: number,
     public icons: IconData,
     public jid: JID,
     public assignee?: JID,
     public autocleanupAge?: number,
-    public baseGentime?: string,
+    public baseGentime?: number,
     public canAddMember?: boolean,
     public canCall?: boolean,
     public canChangeMemberStatus?: boolean,
@@ -1393,8 +1393,8 @@ export class Chat implements TDProtoClass<Chat> {
     public done?: ISODateTimeString,
     public doneReason?: string,
     public draft?: string,
-    public draftGentime?: string,
-    public draftNum?: string,
+    public draftGentime?: number,
+    public draftNum?: number,
     public feed?: boolean,
     public hidden?: boolean,
     public importance?: number,
@@ -1671,7 +1671,7 @@ export class Chat implements TDProtoClass<Chat> {
 export interface ChatCountersJSON {
   /* eslint-disable camelcase */
   chat_type: ChatType;
-  gentime: string;
+  gentime: number;
   jid: JID;
   last_read_message_id: string;
   num_unread: number;
@@ -1693,7 +1693,7 @@ export class ChatCounters implements TDProtoClass<ChatCounters> {
    */
   constructor (
     public chatType: ChatType,
-    public gentime: string,
+    public gentime: number,
     public jid: JID,
     public lastReadMessageId: string,
     public numUnread: number,
@@ -3755,7 +3755,7 @@ export interface ContactJSON {
   contact_email: string;
   contact_phone: string;
   display_name: string;
-  gentime: string;
+  gentime: number;
   icons: IconDataJSON;
   jid: JID;
   role: string;
@@ -3885,7 +3885,7 @@ export class Contact implements TDProtoClass<Contact> {
     public contactEmail: string,
     public contactPhone: string,
     public displayName: string,
-    public gentime: string,
+    public gentime: number,
     public icons: IconData,
     public jid: JID,
     public role: string,
@@ -4305,7 +4305,7 @@ export class ContactPreview implements TDProtoClass<ContactPreview> {
 export interface ContactShortJSON {
   /* eslint-disable camelcase */
   display_name: string;
-  gentime: string;
+  gentime: number;
   icons: IconDataJSON;
   jid: JID;
   short_name: string;
@@ -4323,7 +4323,7 @@ export class ContactShort implements TDProtoClass<ContactShort> {
    */
   constructor (
     public displayName: string,
-    public gentime: string,
+    public gentime: number,
     public icons: IconData,
     public jid: JID,
     public shortName: string,
@@ -4497,19 +4497,19 @@ export class CreatePersonalAccountRequest implements TDProtoClass<CreatePersonal
 export interface CreatePersonalAccountResponseJSON {
   /* eslint-disable camelcase */
   discount_amount: number;
-  discount_id: string;
+  discount_id: number;
   free_workplaces: number;
   next_billing_date: string;
   owner_uuid: string;
   paid_workplaces: number;
   status: PersonalAccountStatus;
-  tariff_id: string;
+  tariff_id: number;
   tariff_name: string;
   team_count: number;
   users_count: number;
   workplace_count: number;
   full_name?: string;
-  personal_account_id?: string;
+  personal_account_id?: number;
   phone?: string;
   /* eslint-enable camelcase */
 }
@@ -4535,19 +4535,19 @@ export class CreatePersonalAccountResponse implements TDProtoClass<CreatePersona
    */
   constructor (
     public discountAmount: number,
-    public discountId: string,
+    public discountId: number,
     public freeWorkplaces: number,
     public nextBillingDate: string,
     public ownerUuid: string,
     public paidWorkplaces: number,
     public status: PersonalAccountStatus,
-    public tariffId: string,
+    public tariffId: number,
     public tariffName: string,
     public teamCount: number,
     public usersCount: number,
     public workplaceCount: number,
     public fullName?: string,
-    public personalAccountId?: string,
+    public personalAccountId?: number,
     public phone?: string,
   ) {}
 
@@ -5097,7 +5097,7 @@ export class DLPUserData implements TDProtoClass<DLPUserData> {
 export interface DeleteTeamFromPersonalAccountRequestJSON {
   /* eslint-disable camelcase */
   delete_date?: string;
-  personal_account_id?: string;
+  personal_account_id?: number;
   team_uuid?: string;
   /* eslint-enable camelcase */
 }
@@ -5111,7 +5111,7 @@ export class DeleteTeamFromPersonalAccountRequest implements TDProtoClass<Delete
    */
   constructor (
     public deleteDate?: string,
-    public personalAccountId?: string,
+    public personalAccountId?: number,
     public teamUuid?: string,
   ) {}
 
@@ -5192,7 +5192,7 @@ export class DeleteTeamFromPersonalAccountResponse implements TDProtoClass<Delet
 
 export interface DeleteUserFromWorkplaceRequestJSON {
   /* eslint-disable camelcase */
-  personal_account_id?: string;
+  personal_account_id?: number;
   user_uuid?: string;
   /* eslint-enable camelcase */
 }
@@ -5204,7 +5204,7 @@ export class DeleteUserFromWorkplaceRequest implements TDProtoClass<DeleteUserFr
    * @param userUuid DOCUMENTATION MISSING
    */
   constructor (
-    public personalAccountId?: string,
+    public personalAccountId?: number,
     public userUuid?: string,
   ) {}
 
@@ -5283,7 +5283,7 @@ export class DeleteUserFromWorkplaceResponse implements TDProtoClass<DeleteUserF
 export interface DeleteWorkplacesOnPersonalAccountRequestJSON {
   /* eslint-disable camelcase */
   count_workplaces?: number;
-  personal_account_id?: string;
+  personal_account_id?: number;
   /* eslint-enable camelcase */
 }
 
@@ -5295,7 +5295,7 @@ export class DeleteWorkplacesOnPersonalAccountRequest implements TDProtoClass<De
    */
   constructor (
     public countWorkplaces?: number,
-    public personalAccountId?: string,
+    public personalAccountId?: number,
   ) {}
 
   public static fromJSON (raw: DeleteWorkplacesOnPersonalAccountRequestJSON): DeleteWorkplacesOnPersonalAccountRequest {
@@ -5373,7 +5373,7 @@ export class DeleteWorkplacesOnPersonalAccountResponse implements TDProtoClass<D
 export interface DeletedChatJSON {
   /* eslint-disable camelcase */
   chat_type: ChatType;
-  gentime: string;
+  gentime: number;
   is_archive: boolean;
   jid: JID;
   /* eslint-enable camelcase */
@@ -5389,7 +5389,7 @@ export class DeletedChat implements TDProtoClass<DeletedChat> {
    */
   constructor (
     public chatType: ChatType,
-    public gentime: string,
+    public gentime: number,
     public isArchive: boolean,
     public jid: JID,
   ) {}
@@ -5474,7 +5474,7 @@ export class DeletedRemind implements TDProtoClass<DeletedRemind> {
 
 export interface DeletedSectionJSON {
   /* eslint-disable camelcase */
-  gentime: string;
+  gentime: number;
   uid: string;
   /* eslint-enable camelcase */
 }
@@ -5486,7 +5486,7 @@ export class DeletedSection implements TDProtoClass<DeletedSection> {
    * @param uid Section uid
    */
   constructor (
-    public gentime: string,
+    public gentime: number,
     public uid: string,
   ) {}
 
@@ -5564,7 +5564,7 @@ export class DeletedTag implements TDProtoClass<DeletedTag> {
 
 export interface DeletedTeamJSON {
   /* eslint-disable camelcase */
-  gentime: string;
+  gentime: number;
   is_archive: boolean;
   uid: string;
   /* eslint-enable camelcase */
@@ -5578,7 +5578,7 @@ export class DeletedTeam implements TDProtoClass<DeletedTeam> {
    * @param uid Team id
    */
   constructor (
-    public gentime: string,
+    public gentime: number,
     public isArchive: boolean,
     public uid: string,
   ) {}
@@ -6530,7 +6530,7 @@ export class GetActiveTariffsListResponse implements TDProtoClass<GetActiveTarif
 
 export interface GetPersonalAccountByIDRequestJSON {
   /* eslint-disable camelcase */
-  personal_account_id?: string;
+  personal_account_id?: number;
   /* eslint-enable camelcase */
 }
 
@@ -6540,7 +6540,7 @@ export class GetPersonalAccountByIDRequest implements TDProtoClass<GetPersonalAc
    * @param personalAccountId DOCUMENTATION MISSING
    */
   constructor (
-    public personalAccountId?: string,
+    public personalAccountId?: number,
   ) {}
 
   public static fromJSON (raw: GetPersonalAccountByIDRequestJSON): GetPersonalAccountByIDRequest {
@@ -6573,19 +6573,19 @@ export class GetPersonalAccountByIDRequest implements TDProtoClass<GetPersonalAc
 export interface GetPersonalAccountByIDResponseJSON {
   /* eslint-disable camelcase */
   discount_amount: number;
-  discount_id: string;
+  discount_id: number;
   free_workplaces: number;
   next_billing_date: string;
   owner_uuid: string;
   paid_workplaces: number;
   status: PersonalAccountStatus;
-  tariff_id: string;
+  tariff_id: number;
   tariff_name: string;
   team_count: number;
   users_count: number;
   workplace_count: number;
   full_name?: string;
-  personal_account_id?: string;
+  personal_account_id?: number;
   phone?: string;
   /* eslint-enable camelcase */
 }
@@ -6611,19 +6611,19 @@ export class GetPersonalAccountByIDResponse implements TDProtoClass<GetPersonalA
    */
   constructor (
     public discountAmount: number,
-    public discountId: string,
+    public discountId: number,
     public freeWorkplaces: number,
     public nextBillingDate: string,
     public ownerUuid: string,
     public paidWorkplaces: number,
     public status: PersonalAccountStatus,
-    public tariffId: string,
+    public tariffId: number,
     public tariffName: string,
     public teamCount: number,
     public usersCount: number,
     public workplaceCount: number,
     public fullName?: string,
-    public personalAccountId?: string,
+    public personalAccountId?: number,
     public phone?: string,
   ) {}
 
@@ -6699,7 +6699,7 @@ export class GetPersonalAccountByIDResponse implements TDProtoClass<GetPersonalA
 export interface GetPersonalAccountsListRequestJSON {
   /* eslint-disable camelcase */
   options?: OptionsJSON;
-  personal_account_id?: string;
+  personal_account_id?: number;
   /* eslint-enable camelcase */
 }
 
@@ -6711,7 +6711,7 @@ export class GetPersonalAccountsListRequest implements TDProtoClass<GetPersonalA
    */
   constructor (
     public options?: Options,
-    public personalAccountId?: string,
+    public personalAccountId?: number,
   ) {}
 
   public static fromJSON (raw: GetPersonalAccountsListRequestJSON): GetPersonalAccountsListRequest {
@@ -7741,7 +7741,7 @@ export interface MessageJSON {
   content: MessageContentJSON;
   created: ISODateTimeString;
   from: JID;
-  gentime: string;
+  gentime: number;
   message_id: string;
   to: JID;
   _debug?: string;
@@ -7811,7 +7811,7 @@ export class Message implements TDProtoClass<Message> {
     public content: MessageContent,
     public readonly created: ISODateTimeString,
     public readonly from: JID,
-    public readonly gentime: string,
+    public readonly gentime: number,
     public messageId: string,
     public to: JID,
     public readonly _debug?: string,
@@ -8840,8 +8840,8 @@ export class OnlineContact implements TDProtoClass<OnlineContact> {
 
 export interface OptionsJSON {
   /* eslint-disable camelcase */
-  limit?: string;
-  offset?: string;
+  limit?: number;
+  offset?: number;
   /* eslint-enable camelcase */
 }
 
@@ -8852,8 +8852,8 @@ export class Options implements TDProtoClass<Options> {
    * @param offset DOCUMENTATION MISSING
    */
   constructor (
-    public limit?: string,
-    public offset?: string,
+    public limit?: number,
+    public offset?: number,
   ) {}
 
   public static fromJSON (raw: OptionsJSON): Options {
@@ -9243,19 +9243,19 @@ export class PdfVersion implements TDProtoClass<PdfVersion> {
 export interface PersonalAccountBillingJSON {
   /* eslint-disable camelcase */
   discount_amount: number;
-  discount_id: string;
+  discount_id: number;
   free_workplaces: number;
   next_billing_date: string;
   owner_uuid: string;
   paid_workplaces: number;
   status: PersonalAccountStatus;
-  tariff_id: string;
+  tariff_id: number;
   tariff_name: string;
   team_count: number;
   users_count: number;
   workplace_count: number;
   full_name?: string;
-  personal_account_id?: string;
+  personal_account_id?: number;
   phone?: string;
   /* eslint-enable camelcase */
 }
@@ -9281,19 +9281,19 @@ export class PersonalAccountBilling implements TDProtoClass<PersonalAccountBilli
    */
   constructor (
     public discountAmount: number,
-    public discountId: string,
+    public discountId: number,
     public freeWorkplaces: number,
     public nextBillingDate: string,
     public ownerUuid: string,
     public paidWorkplaces: number,
     public status: PersonalAccountStatus,
-    public tariffId: string,
+    public tariffId: number,
     public tariffName: string,
     public teamCount: number,
     public usersCount: number,
     public workplaceCount: number,
     public fullName?: string,
-    public personalAccountId?: string,
+    public personalAccountId?: number,
     public phone?: string,
   ) {}
 
@@ -9700,7 +9700,7 @@ export class Resp implements TDProtoClass<Resp> {
 
 export interface SectionJSON {
   /* eslint-disable camelcase */
-  gentime: string;
+  gentime: number;
   name: string;
   sort_ordering: number;
   uid: string;
@@ -9720,7 +9720,7 @@ export class Section implements TDProtoClass<Section> {
    * @param isArchive Is deleted
    */
   constructor (
-    public gentime: string,
+    public gentime: number,
     public name: string,
     public sortOrdering: number,
     public uid: string,
@@ -11369,8 +11369,8 @@ export class ServerChatDraft implements TDProtoClass<ServerChatDraft> {
 export interface ServerChatDraftParamsJSON {
   /* eslint-disable camelcase */
   draft: string;
-  draft_gentime: string;
-  draft_num: string;
+  draft_gentime: number;
+  draft_num: number;
   jid: JID;
   /* eslint-enable camelcase */
 }
@@ -11385,8 +11385,8 @@ export class ServerChatDraftParams implements TDProtoClass<ServerChatDraftParams
    */
   constructor (
     public draft: string,
-    public draftGentime: string,
-    public draftNum: string,
+    public draftGentime: number,
+    public draftNum: number,
     public jid: JID,
   ) {}
 
@@ -12863,7 +12863,7 @@ export class ServerSectionDeleted implements TDProtoClass<ServerSectionDeleted> 
 export interface ServerSectionDeletedParamsJSON {
   /* eslint-disable camelcase */
   chat_type: ChatType;
-  gentime: string;
+  gentime: number;
   sections: DeletedSectionJSON[];
   /* eslint-enable camelcase */
 }
@@ -12877,7 +12877,7 @@ export class ServerSectionDeletedParams implements TDProtoClass<ServerSectionDel
    */
   constructor (
     public chatType: ChatType,
-    public gentime: string,
+    public gentime: number,
     public sections: DeletedSection[],
   ) {}
 
@@ -12971,7 +12971,7 @@ export class ServerSectionUpdated implements TDProtoClass<ServerSectionUpdated> 
 export interface ServerSectionUpdatedParamsJSON {
   /* eslint-disable camelcase */
   chat_type: ChatType;
-  gentime: string;
+  gentime: number;
   sections: SectionJSON[];
   /* eslint-enable camelcase */
 }
@@ -12985,7 +12985,7 @@ export class ServerSectionUpdatedParams implements TDProtoClass<ServerSectionUpd
    */
   constructor (
     public chatType: ChatType,
-    public gentime: string,
+    public gentime: number,
     public sections: Section[],
   ) {}
 
@@ -14170,7 +14170,7 @@ export interface ShortMessageJSON {
   chat_type: ChatType;
   created: ISODateTimeString;
   from: JID;
-  gentime: string;
+  gentime: number;
   message_id: string;
   to: JID;
   is_archive?: boolean;
@@ -14194,7 +14194,7 @@ export class ShortMessage implements TDProtoClass<ShortMessage> {
     public readonly chatType: ChatType,
     public readonly created: ISODateTimeString,
     public readonly from: JID,
-    public readonly gentime: string,
+    public readonly gentime: number,
     public messageId: string,
     public to: JID,
     public readonly isArchive?: boolean,
@@ -14592,7 +14592,7 @@ export class Subtask implements TDProtoClass<Subtask> {
 
 export interface SuspendPersonalAccountRequestJSON {
   /* eslint-disable camelcase */
-  personal_account_id?: string;
+  personal_account_id?: number;
   /* eslint-enable camelcase */
 }
 
@@ -14602,7 +14602,7 @@ export class SuspendPersonalAccountRequest implements TDProtoClass<SuspendPerson
    * @param personalAccountId DOCUMENTATION MISSING
    */
   constructor (
-    public personalAccountId?: string,
+    public personalAccountId?: number,
   ) {}
 
   public static fromJSON (raw: SuspendPersonalAccountRequestJSON): SuspendPersonalAccountRequest {
@@ -14775,10 +14775,10 @@ export interface TariffJSON {
   title_en: string;
   title_ru: string;
   uid: string;
-  cloud_space?: string;
+  cloud_space?: number;
   max_members_in_team?: number;
   max_participants_per_call?: number;
-  max_upload_filesize?: string;
+  max_upload_filesize?: number;
   price?: string;
   /* eslint-enable camelcase */
 }
@@ -14799,10 +14799,10 @@ export class Tariff implements TDProtoClass<Tariff> {
     public titleEn: string,
     public titleRu: string,
     public uid: string,
-    public cloudSpace?: string,
+    public cloudSpace?: number,
     public maxMembersInTeam?: number,
     public maxParticipantsPerCall?: number,
-    public maxUploadFilesize?: string,
+    public maxUploadFilesize?: number,
     public price?: string,
   ) {}
 
@@ -15282,7 +15282,7 @@ export class TaskFilter implements TDProtoClass<TaskFilter> {
 
 export interface TaskItemJSON {
   /* eslint-disable camelcase */
-  gentime: string;
+  gentime: number;
   text: string;
   can_change?: boolean;
   can_toggle?: boolean;
@@ -15306,7 +15306,7 @@ export class TaskItem implements TDProtoClass<TaskItem> {
    * @param uid Id
    */
   constructor (
-    public readonly gentime: string,
+    public readonly gentime: number,
     public text: string,
     public canChange?: boolean,
     public canToggle?: boolean,
@@ -15696,7 +15696,7 @@ export class TaskTab implements TDProtoClass<TaskTab> {
 
 export interface TeamJSON {
   /* eslint-disable camelcase */
-  gentime: string;
+  gentime: number;
   icons: IconDataJSON;
   last_active: boolean;
   max_message_update_age: number;
@@ -15721,8 +15721,8 @@ export interface TeamJSON {
   task_importance_min?: number;
   task_importance_rev?: boolean;
   theme?: ThemeJSON;
-  uploads_size?: string;
-  uploads_size_limit?: string;
+  uploads_size?: number;
+  uploads_size_limit?: number;
   use_patronymic?: boolean;
   use_task_complexity?: boolean;
   use_task_importance?: boolean;
@@ -15768,7 +15768,7 @@ export class Team implements TDProtoClass<Team> {
    * @param useTaskUrgency Use urgency field in task
    */
   constructor (
-    public readonly gentime: string,
+    public readonly gentime: number,
     public readonly icons: IconData,
     public readonly lastActive: boolean,
     public maxMessageUpdateAge: number,
@@ -15793,8 +15793,8 @@ export class Team implements TDProtoClass<Team> {
     public taskImportanceMin?: number,
     public taskImportanceRev?: boolean,
     public readonly theme?: Theme,
-    public readonly uploadsSize?: string,
-    public readonly uploadsSizeLimit?: string,
+    public readonly uploadsSize?: number,
+    public readonly uploadsSizeLimit?: number,
     public usePatronymic?: boolean,
     public useTaskComplexity?: boolean,
     public useTaskImportance?: boolean,
@@ -15925,7 +15925,7 @@ export class Team implements TDProtoClass<Team> {
 export interface TeamBillingJSON {
   /* eslint-disable camelcase */
   delete_date?: string;
-  personal_account_id?: string;
+  personal_account_id?: number;
   team_uuid?: string;
   /* eslint-enable camelcase */
 }
@@ -15939,7 +15939,7 @@ export class TeamBilling implements TDProtoClass<TeamBilling> {
    */
   constructor (
     public deleteDate?: string,
-    public personalAccountId?: string,
+    public personalAccountId?: number,
     public teamUuid?: string,
   ) {}
 
@@ -16584,7 +16584,7 @@ export class Theme implements TDProtoClass<Theme> {
 
 export interface UnblockPersonalAccountRequestJSON {
   /* eslint-disable camelcase */
-  personal_account_id?: string;
+  personal_account_id?: number;
   /* eslint-enable camelcase */
 }
 
@@ -16594,7 +16594,7 @@ export class UnblockPersonalAccountRequest implements TDProtoClass<UnblockPerson
    * @param personalAccountId DOCUMENTATION MISSING
    */
   constructor (
-    public personalAccountId?: string,
+    public personalAccountId?: number,
   ) {}
 
   public static fromJSON (raw: UnblockPersonalAccountRequestJSON): UnblockPersonalAccountRequest {
