@@ -3468,90 +3468,6 @@ export class ClientPing implements TDProtoClass<ClientPing> {
   }
 }
 
-export interface CloseTariffRequestJSON {
-  /* eslint-disable camelcase */
-  close_date?: string;
-  /* eslint-enable camelcase */
-}
-
-export class CloseTariffRequest implements TDProtoClass<CloseTariffRequest> {
-  /**
-   * Request to close (archive) the tariff
-   * @param closeDate DOCUMENTATION MISSING
-   */
-  constructor (
-    public closeDate?: string,
-  ) {}
-
-  public static fromJSON (raw: CloseTariffRequestJSON): CloseTariffRequest {
-    return new CloseTariffRequest(
-      raw.close_date,
-    )
-  }
-
-  public mappableFields = [
-    'closeDate',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    closeDate: () => ({ close_date: this.closeDate }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): CloseTariffRequestJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<CloseTariffRequestJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface CloseTariffResponseJSON {
-  /* eslint-disable camelcase */
-  success: boolean;
-  /* eslint-enable camelcase */
-}
-
-export class CloseTariffResponse implements TDProtoClass<CloseTariffResponse> {
-  /**
-   * Response from closing (archiving) the tariff
-   * @param success DOCUMENTATION MISSING
-   */
-  constructor (
-    public success: boolean,
-  ) {}
-
-  public static fromJSON (raw: CloseTariffResponseJSON): CloseTariffResponse {
-    return new CloseTariffResponse(
-      raw.success,
-    )
-  }
-
-  public mappableFields = [
-    'success',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    success: () => ({ success: this.success }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): CloseTariffResponseJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<CloseTariffResponseJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
 export interface ColorRuleJSON {
   /* eslint-disable camelcase */
   color_index: number;
@@ -13768,48 +13684,6 @@ export class Session implements TDProtoClass<Session> {
   }
 }
 
-export interface SetTariffAsDefaultResponseJSON {
-  /* eslint-disable camelcase */
-  success: boolean;
-  /* eslint-enable camelcase */
-}
-
-export class SetTariffAsDefaultResponse implements TDProtoClass<SetTariffAsDefaultResponse> {
-  /**
-   * Response from setting the tariff as default
-   * @param success DOCUMENTATION MISSING
-   */
-  constructor (
-    public success: boolean,
-  ) {}
-
-  public static fromJSON (raw: SetTariffAsDefaultResponseJSON): SetTariffAsDefaultResponse {
-    return new SetTariffAsDefaultResponse(
-      raw.success,
-    )
-  }
-
-  public mappableFields = [
-    'success',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    success: () => ({ success: this.success }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): SetTariffAsDefaultResponseJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<SetTariffAsDefaultResponseJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
 export interface SharpLinkJSON {
   /* eslint-disable camelcase */
   key: string;
@@ -16405,6 +16279,60 @@ export class Unread implements TDProtoClass<Unread> {
 
   public toJSON (): UnreadJSON
   public toJSON (fields: Array<this['mappableFields'][number]>): Partial<UnreadJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface UpdateTariffRequestJSON {
+  /* eslint-disable camelcase */
+  close_date?: string;
+  is_default_tariff?: boolean;
+  status?: TariffStatus;
+  /* eslint-enable camelcase */
+}
+
+export class UpdateTariffRequest implements TDProtoClass<UpdateTariffRequest> {
+  /**
+   * Request to update the tariff
+   * @param closeDate Date of closing tariff
+   * @param isDefaultTariff Default tariff flag that is set when registering an account
+   * @param status Status of tariff
+   */
+  constructor (
+    public closeDate?: string,
+    public isDefaultTariff?: boolean,
+    public status?: TariffStatus,
+  ) {}
+
+  public static fromJSON (raw: UpdateTariffRequestJSON): UpdateTariffRequest {
+    return new UpdateTariffRequest(
+      raw.close_date,
+      raw.is_default_tariff,
+      raw.status,
+    )
+  }
+
+  public mappableFields = [
+    'closeDate',
+    'isDefaultTariff',
+    'status',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    closeDate: () => ({ close_date: this.closeDate }),
+    isDefaultTariff: () => ({ is_default_tariff: this.isDefaultTariff }),
+    status: () => ({ status: this.status }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): UpdateTariffRequestJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<UpdateTariffRequestJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
