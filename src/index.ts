@@ -4418,6 +4418,7 @@ export interface CreatePersonalAccountResponseJSON {
   next_billing_date: string;
   owner_uuid: string;
   paid_workplaces: number;
+  personal_account_id: string;
   status: PersonalAccountStatus;
   tariff_id: string;
   tariff_name: string;
@@ -4425,7 +4426,6 @@ export interface CreatePersonalAccountResponseJSON {
   users_count: number;
   workplace_count: number;
   full_name?: string;
-  personal_account_id?: string;
   phone?: string;
   /* eslint-enable camelcase */
 }
@@ -4439,6 +4439,7 @@ export class CreatePersonalAccountResponse implements TDProtoClass<CreatePersona
    * @param nextBillingDate Date of next debiting funds
    * @param ownerUuid ID User who owns this personal account
    * @param paidWorkplaces Count of paid workplaces on personal account
+   * @param personalAccountId PersonalAccountBilling ID
    * @param status Status of personal account
    * @param tariffId ID Tariff on this personal account
    * @param tariffName Name Tariff on this personal account
@@ -4446,7 +4447,6 @@ export class CreatePersonalAccountResponse implements TDProtoClass<CreatePersona
    * @param usersCount Count of user on personal account
    * @param workplaceCount Count of workplaces on personal account
    * @param fullName Full name of owner personal account
-   * @param personalAccountId PersonalAccountBilling ID
    * @param phone Phone number of owner account
    */
   constructor (
@@ -4456,6 +4456,7 @@ export class CreatePersonalAccountResponse implements TDProtoClass<CreatePersona
     public nextBillingDate: string,
     public ownerUuid: string,
     public paidWorkplaces: number,
+    public personalAccountId: string,
     public status: PersonalAccountStatus,
     public tariffId: string,
     public tariffName: string,
@@ -4463,7 +4464,6 @@ export class CreatePersonalAccountResponse implements TDProtoClass<CreatePersona
     public usersCount: number,
     public workplaceCount: number,
     public fullName?: string,
-    public personalAccountId?: string,
     public phone?: string,
   ) {}
 
@@ -4475,6 +4475,7 @@ export class CreatePersonalAccountResponse implements TDProtoClass<CreatePersona
       raw.next_billing_date,
       raw.owner_uuid,
       raw.paid_workplaces,
+      raw.personal_account_id,
       raw.status,
       raw.tariff_id,
       raw.tariff_name,
@@ -4482,7 +4483,6 @@ export class CreatePersonalAccountResponse implements TDProtoClass<CreatePersona
       raw.users_count,
       raw.workplace_count,
       raw.full_name,
-      raw.personal_account_id,
       raw.phone,
     )
   }
@@ -4494,6 +4494,7 @@ export class CreatePersonalAccountResponse implements TDProtoClass<CreatePersona
     'nextBillingDate',
     'ownerUuid',
     'paidWorkplaces',
+    'personalAccountId',
     'status',
     'tariffId',
     'tariffName',
@@ -4501,7 +4502,6 @@ export class CreatePersonalAccountResponse implements TDProtoClass<CreatePersona
     'usersCount',
     'workplaceCount',
     'fullName',
-    'personalAccountId',
     'phone',
   ] as const
 
@@ -4513,6 +4513,7 @@ export class CreatePersonalAccountResponse implements TDProtoClass<CreatePersona
     nextBillingDate: () => ({ next_billing_date: this.nextBillingDate }),
     ownerUuid: () => ({ owner_uuid: this.ownerUuid }),
     paidWorkplaces: () => ({ paid_workplaces: this.paidWorkplaces }),
+    personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
     status: () => ({ status: this.status }),
     tariffId: () => ({ tariff_id: this.tariffId }),
     tariffName: () => ({ tariff_name: this.tariffName }),
@@ -4520,7 +4521,6 @@ export class CreatePersonalAccountResponse implements TDProtoClass<CreatePersona
     usersCount: () => ({ users_count: this.usersCount }),
     workplaceCount: () => ({ workplace_count: this.workplaceCount }),
     fullName: () => ({ full_name: this.fullName }),
-    personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
     phone: () => ({ phone: this.phone }),
     /* eslint-enable camelcase */
   }
@@ -6452,6 +6452,7 @@ export interface GetPersonalAccountByIDResponseJSON {
   next_billing_date: string;
   owner_uuid: string;
   paid_workplaces: number;
+  personal_account_id: string;
   status: PersonalAccountStatus;
   tariff_id: string;
   tariff_name: string;
@@ -6459,7 +6460,6 @@ export interface GetPersonalAccountByIDResponseJSON {
   users_count: number;
   workplace_count: number;
   full_name?: string;
-  personal_account_id?: string;
   phone?: string;
   /* eslint-enable camelcase */
 }
@@ -6473,6 +6473,7 @@ export class GetPersonalAccountByIDResponse implements TDProtoClass<GetPersonalA
    * @param nextBillingDate Date of next debiting funds
    * @param ownerUuid ID User who owns this personal account
    * @param paidWorkplaces Count of paid workplaces on personal account
+   * @param personalAccountId PersonalAccountBilling ID
    * @param status Status of personal account
    * @param tariffId ID Tariff on this personal account
    * @param tariffName Name Tariff on this personal account
@@ -6480,7 +6481,6 @@ export class GetPersonalAccountByIDResponse implements TDProtoClass<GetPersonalA
    * @param usersCount Count of user on personal account
    * @param workplaceCount Count of workplaces on personal account
    * @param fullName Full name of owner personal account
-   * @param personalAccountId PersonalAccountBilling ID
    * @param phone Phone number of owner account
    */
   constructor (
@@ -6490,6 +6490,7 @@ export class GetPersonalAccountByIDResponse implements TDProtoClass<GetPersonalA
     public nextBillingDate: string,
     public ownerUuid: string,
     public paidWorkplaces: number,
+    public personalAccountId: string,
     public status: PersonalAccountStatus,
     public tariffId: string,
     public tariffName: string,
@@ -6497,7 +6498,6 @@ export class GetPersonalAccountByIDResponse implements TDProtoClass<GetPersonalA
     public usersCount: number,
     public workplaceCount: number,
     public fullName?: string,
-    public personalAccountId?: string,
     public phone?: string,
   ) {}
 
@@ -6509,6 +6509,7 @@ export class GetPersonalAccountByIDResponse implements TDProtoClass<GetPersonalA
       raw.next_billing_date,
       raw.owner_uuid,
       raw.paid_workplaces,
+      raw.personal_account_id,
       raw.status,
       raw.tariff_id,
       raw.tariff_name,
@@ -6516,7 +6517,6 @@ export class GetPersonalAccountByIDResponse implements TDProtoClass<GetPersonalA
       raw.users_count,
       raw.workplace_count,
       raw.full_name,
-      raw.personal_account_id,
       raw.phone,
     )
   }
@@ -6528,6 +6528,7 @@ export class GetPersonalAccountByIDResponse implements TDProtoClass<GetPersonalA
     'nextBillingDate',
     'ownerUuid',
     'paidWorkplaces',
+    'personalAccountId',
     'status',
     'tariffId',
     'tariffName',
@@ -6535,7 +6536,6 @@ export class GetPersonalAccountByIDResponse implements TDProtoClass<GetPersonalA
     'usersCount',
     'workplaceCount',
     'fullName',
-    'personalAccountId',
     'phone',
   ] as const
 
@@ -6547,6 +6547,7 @@ export class GetPersonalAccountByIDResponse implements TDProtoClass<GetPersonalA
     nextBillingDate: () => ({ next_billing_date: this.nextBillingDate }),
     ownerUuid: () => ({ owner_uuid: this.ownerUuid }),
     paidWorkplaces: () => ({ paid_workplaces: this.paidWorkplaces }),
+    personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
     status: () => ({ status: this.status }),
     tariffId: () => ({ tariff_id: this.tariffId }),
     tariffName: () => ({ tariff_name: this.tariffName }),
@@ -6554,7 +6555,6 @@ export class GetPersonalAccountByIDResponse implements TDProtoClass<GetPersonalA
     usersCount: () => ({ users_count: this.usersCount }),
     workplaceCount: () => ({ workplace_count: this.workplaceCount }),
     fullName: () => ({ full_name: this.fullName }),
-    personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
     phone: () => ({ phone: this.phone }),
     /* eslint-enable camelcase */
   }
@@ -9026,6 +9026,7 @@ export interface PersonalAccountBillingJSON {
   next_billing_date: string;
   owner_uuid: string;
   paid_workplaces: number;
+  personal_account_id: string;
   status: PersonalAccountStatus;
   tariff_id: string;
   tariff_name: string;
@@ -9033,7 +9034,6 @@ export interface PersonalAccountBillingJSON {
   users_count: number;
   workplace_count: number;
   full_name?: string;
-  personal_account_id?: string;
   phone?: string;
   /* eslint-enable camelcase */
 }
@@ -9047,6 +9047,7 @@ export class PersonalAccountBilling implements TDProtoClass<PersonalAccountBilli
    * @param nextBillingDate Date of next debiting funds
    * @param ownerUuid ID User who owns this personal account
    * @param paidWorkplaces Count of paid workplaces on personal account
+   * @param personalAccountId PersonalAccountBilling ID
    * @param status Status of personal account
    * @param tariffId ID Tariff on this personal account
    * @param tariffName Name Tariff on this personal account
@@ -9054,7 +9055,6 @@ export class PersonalAccountBilling implements TDProtoClass<PersonalAccountBilli
    * @param usersCount Count of user on personal account
    * @param workplaceCount Count of workplaces on personal account
    * @param fullName Full name of owner personal account
-   * @param personalAccountId PersonalAccountBilling ID
    * @param phone Phone number of owner account
    */
   constructor (
@@ -9064,6 +9064,7 @@ export class PersonalAccountBilling implements TDProtoClass<PersonalAccountBilli
     public nextBillingDate: string,
     public ownerUuid: string,
     public paidWorkplaces: number,
+    public personalAccountId: string,
     public status: PersonalAccountStatus,
     public tariffId: string,
     public tariffName: string,
@@ -9071,7 +9072,6 @@ export class PersonalAccountBilling implements TDProtoClass<PersonalAccountBilli
     public usersCount: number,
     public workplaceCount: number,
     public fullName?: string,
-    public personalAccountId?: string,
     public phone?: string,
   ) {}
 
@@ -9083,6 +9083,7 @@ export class PersonalAccountBilling implements TDProtoClass<PersonalAccountBilli
       raw.next_billing_date,
       raw.owner_uuid,
       raw.paid_workplaces,
+      raw.personal_account_id,
       raw.status,
       raw.tariff_id,
       raw.tariff_name,
@@ -9090,7 +9091,6 @@ export class PersonalAccountBilling implements TDProtoClass<PersonalAccountBilli
       raw.users_count,
       raw.workplace_count,
       raw.full_name,
-      raw.personal_account_id,
       raw.phone,
     )
   }
@@ -9102,6 +9102,7 @@ export class PersonalAccountBilling implements TDProtoClass<PersonalAccountBilli
     'nextBillingDate',
     'ownerUuid',
     'paidWorkplaces',
+    'personalAccountId',
     'status',
     'tariffId',
     'tariffName',
@@ -9109,7 +9110,6 @@ export class PersonalAccountBilling implements TDProtoClass<PersonalAccountBilli
     'usersCount',
     'workplaceCount',
     'fullName',
-    'personalAccountId',
     'phone',
   ] as const
 
@@ -9121,6 +9121,7 @@ export class PersonalAccountBilling implements TDProtoClass<PersonalAccountBilli
     nextBillingDate: () => ({ next_billing_date: this.nextBillingDate }),
     ownerUuid: () => ({ owner_uuid: this.ownerUuid }),
     paidWorkplaces: () => ({ paid_workplaces: this.paidWorkplaces }),
+    personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
     status: () => ({ status: this.status }),
     tariffId: () => ({ tariff_id: this.tariffId }),
     tariffName: () => ({ tariff_name: this.tariffName }),
@@ -9128,7 +9129,6 @@ export class PersonalAccountBilling implements TDProtoClass<PersonalAccountBilli
     usersCount: () => ({ users_count: this.usersCount }),
     workplaceCount: () => ({ workplace_count: this.workplaceCount }),
     fullName: () => ({ full_name: this.fullName }),
-    personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
     phone: () => ({ phone: this.phone }),
     /* eslint-enable camelcase */
   }
