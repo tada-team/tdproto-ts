@@ -186,8 +186,8 @@ export class ActivatePersonalAccountResponse implements TDProtoClass<ActivatePer
 
 export interface ActivateWorkplacesOnPersonalAccountRequestJSON {
   /* eslint-disable camelcase */
-  count_workplaces?: number;
-  personal_account_id?: string;
+  count_workplaces: number;
+  personal_account_id: string;
   /* eslint-enable camelcase */
 }
 
@@ -198,8 +198,8 @@ export class ActivateWorkplacesOnPersonalAccountRequest implements TDProtoClass<
    * @param personalAccountId DOCUMENTATION MISSING
    */
   constructor (
-    public countWorkplaces?: number,
-    public personalAccountId?: string,
+    public countWorkplaces: number,
+    public personalAccountId: string,
   ) {}
 
   public static fromJSON (raw: ActivateWorkplacesOnPersonalAccountRequestJSON): ActivateWorkplacesOnPersonalAccountRequest {
@@ -462,8 +462,8 @@ export class AddTeamOnPersonalAccountResponse implements TDProtoClass<AddTeamOnP
 
 export interface AddUserInWorkplaceRequestJSON {
   /* eslint-disable camelcase */
-  personal_account_id?: string;
-  user_uuid?: string;
+  personal_account_id: string;
+  user_uuid: string;
   /* eslint-enable camelcase */
 }
 
@@ -474,8 +474,8 @@ export class AddUserInWorkplaceRequest implements TDProtoClass<AddUserInWorkplac
    * @param userUuid DOCUMENTATION MISSING
    */
   constructor (
-    public personalAccountId?: string,
-    public userUuid?: string,
+    public personalAccountId: string,
+    public userUuid: string,
   ) {}
 
   public static fromJSON (raw: AddUserInWorkplaceRequestJSON): AddUserInWorkplaceRequest {
@@ -552,8 +552,8 @@ export class AddUserInWorkplaceResponse implements TDProtoClass<AddUserInWorkpla
 
 export interface AddWorkplacesOnPersonalAccountRequestJSON {
   /* eslint-disable camelcase */
-  count_workplaces?: number;
-  personal_account_id?: string;
+  count_workplaces: number;
+  personal_account_id: string;
   /* eslint-enable camelcase */
 }
 
@@ -564,8 +564,8 @@ export class AddWorkplacesOnPersonalAccountRequest implements TDProtoClass<AddWo
    * @param personalAccountId DOCUMENTATION MISSING
    */
   constructor (
-    public countWorkplaces?: number,
-    public personalAccountId?: string,
+    public countWorkplaces: number,
+    public personalAccountId: string,
   ) {}
 
   public static fromJSON (raw: AddWorkplacesOnPersonalAccountRequestJSON): AddWorkplacesOnPersonalAccountRequest {
@@ -5378,8 +5378,8 @@ export class DeleteTeamFromPersonalAccountResponse implements TDProtoClass<Delet
 
 export interface DeleteUserFromWorkplaceRequestJSON {
   /* eslint-disable camelcase */
-  personal_account_id?: string;
-  user_uuid?: string;
+  personal_account_id: string;
+  user_uuid: string;
   /* eslint-enable camelcase */
 }
 
@@ -5390,8 +5390,8 @@ export class DeleteUserFromWorkplaceRequest implements TDProtoClass<DeleteUserFr
    * @param userUuid DOCUMENTATION MISSING
    */
   constructor (
-    public personalAccountId?: string,
-    public userUuid?: string,
+    public personalAccountId: string,
+    public userUuid: string,
   ) {}
 
   public static fromJSON (raw: DeleteUserFromWorkplaceRequestJSON): DeleteUserFromWorkplaceRequest {
@@ -5468,8 +5468,8 @@ export class DeleteUserFromWorkplaceResponse implements TDProtoClass<DeleteUserF
 
 export interface DeleteWorkplacesOnPersonalAccountRequestJSON {
   /* eslint-disable camelcase */
-  count_workplaces?: number;
-  personal_account_id?: string;
+  count_workplaces: number;
+  personal_account_id: string;
   /* eslint-enable camelcase */
 }
 
@@ -5480,8 +5480,8 @@ export class DeleteWorkplacesOnPersonalAccountRequest implements TDProtoClass<De
    * @param personalAccountId DOCUMENTATION MISSING
    */
   constructor (
-    public countWorkplaces?: number,
-    public personalAccountId?: string,
+    public countWorkplaces: number,
+    public personalAccountId: string,
   ) {}
 
   public static fromJSON (raw: DeleteWorkplacesOnPersonalAccountRequestJSON): DeleteWorkplacesOnPersonalAccountRequest {
@@ -7052,7 +7052,7 @@ export class GetTariffsListResponse implements TDProtoClass<GetTariffsListRespon
 
 export interface GetUnpaidWorkplacesByPersonalAccountRequestJSON {
   /* eslint-disable camelcase */
-  personal_account_id: number;
+  personal_account_id: string;
   /* eslint-enable camelcase */
 }
 
@@ -7062,7 +7062,7 @@ export class GetUnpaidWorkplacesByPersonalAccountRequest implements TDProtoClass
    * @param personalAccountId DOCUMENTATION MISSING
    */
   constructor (
-    public personalAccountId: number,
+    public personalAccountId: string,
   ) {}
 
   public static fromJSON (raw: GetUnpaidWorkplacesByPersonalAccountRequestJSON): GetUnpaidWorkplacesByPersonalAccountRequest {
@@ -7134,12 +7134,210 @@ export class GetUnpaidWorkplacesByPersonalAccountResponse implements TDProtoClas
   }
 }
 
+export interface GetUsersInfoByUserUUIDArrayExcludingTeamMembersRequestJSON {
+  /* eslint-disable camelcase */
+  team_uuid: string;
+  user_uuid: string[];
+  limit?: number;
+  offset?: number;
+  /* eslint-enable camelcase */
+}
+
+export class GetUsersInfoByUserUUIDArrayExcludingTeamMembersRequest implements TDProtoClass<GetUsersInfoByUserUUIDArrayExcludingTeamMembersRequest> {
+  /**
+   * GetUsersInfoByUserUUIDArrayExcludingTeamMembersRequest request on get user information by array of UUID's users excluding team members in uuid team
+   * @param teamUuid DOCUMENTATION MISSING
+   * @param userUuid DOCUMENTATION MISSING
+   * @param limit DOCUMENTATION MISSING
+   * @param offset DOCUMENTATION MISSING
+   */
+  constructor (
+    public teamUuid: string,
+    public userUuid: string[],
+    public limit?: number,
+    public offset?: number,
+  ) {}
+
+  public static fromJSON (raw: GetUsersInfoByUserUUIDArrayExcludingTeamMembersRequestJSON): GetUsersInfoByUserUUIDArrayExcludingTeamMembersRequest {
+    return new GetUsersInfoByUserUUIDArrayExcludingTeamMembersRequest(
+      raw.team_uuid,
+      raw.user_uuid,
+      raw.limit,
+      raw.offset,
+    )
+  }
+
+  public mappableFields = [
+    'teamUuid',
+    'userUuid',
+    'limit',
+    'offset',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    teamUuid: () => ({ team_uuid: this.teamUuid }),
+    userUuid: () => ({ user_uuid: this.userUuid }),
+    limit: () => ({ limit: this.limit }),
+    offset: () => ({ offset: this.offset }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): GetUsersInfoByUserUUIDArrayExcludingTeamMembersRequestJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<GetUsersInfoByUserUUIDArrayExcludingTeamMembersRequestJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface GetUsersInfoByUserUUIDArrayExcludingTeamMembersResponseJSON {
+  /* eslint-disable camelcase */
+  user_info?: UserInfoJSON[];
+  /* eslint-enable camelcase */
+}
+
+export class GetUsersInfoByUserUUIDArrayExcludingTeamMembersResponse implements TDProtoClass<GetUsersInfoByUserUUIDArrayExcludingTeamMembersResponse> {
+  /**
+   * GetUsersInfoByUserUUIDArrayExcludingTeamMembersResponse response on get user information by array of UUID's users excluding team members in uuid team
+   * @param userInfo DOCUMENTATION MISSING
+   */
+  constructor (
+    public userInfo?: UserInfo[],
+  ) {}
+
+  public static fromJSON (raw: GetUsersInfoByUserUUIDArrayExcludingTeamMembersResponseJSON): GetUsersInfoByUserUUIDArrayExcludingTeamMembersResponse {
+    return new GetUsersInfoByUserUUIDArrayExcludingTeamMembersResponse(
+      raw.user_info && raw.user_info.map(UserInfo.fromJSON),
+    )
+  }
+
+  public mappableFields = [
+    'userInfo',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    userInfo: () => ({ user_info: this.userInfo?.map(u => u.toJSON()) }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): GetUsersInfoByUserUUIDArrayExcludingTeamMembersResponseJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<GetUsersInfoByUserUUIDArrayExcludingTeamMembersResponseJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface GetUsersInfoByUserUUIDArrayRequestJSON {
+  /* eslint-disable camelcase */
+  user_uuid: string[];
+  limit?: number;
+  offset?: number;
+  /* eslint-enable camelcase */
+}
+
+export class GetUsersInfoByUserUUIDArrayRequest implements TDProtoClass<GetUsersInfoByUserUUIDArrayRequest> {
+  /**
+   * GetUsersInfoByUserUUIDArrayRequest request on get user information by array of UUID's users
+   * @param userUuid DOCUMENTATION MISSING
+   * @param limit DOCUMENTATION MISSING
+   * @param offset DOCUMENTATION MISSING
+   */
+  constructor (
+    public userUuid: string[],
+    public limit?: number,
+    public offset?: number,
+  ) {}
+
+  public static fromJSON (raw: GetUsersInfoByUserUUIDArrayRequestJSON): GetUsersInfoByUserUUIDArrayRequest {
+    return new GetUsersInfoByUserUUIDArrayRequest(
+      raw.user_uuid,
+      raw.limit,
+      raw.offset,
+    )
+  }
+
+  public mappableFields = [
+    'userUuid',
+    'limit',
+    'offset',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    userUuid: () => ({ user_uuid: this.userUuid }),
+    limit: () => ({ limit: this.limit }),
+    offset: () => ({ offset: this.offset }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): GetUsersInfoByUserUUIDArrayRequestJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<GetUsersInfoByUserUUIDArrayRequestJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface GetUsersInfoByUserUUIDArrayResponseJSON {
+  /* eslint-disable camelcase */
+  user_info?: UserInfoJSON[];
+  /* eslint-enable camelcase */
+}
+
+export class GetUsersInfoByUserUUIDArrayResponse implements TDProtoClass<GetUsersInfoByUserUUIDArrayResponse> {
+  /**
+   * GetUsersInfoByUserUUIDArrayResponse response on get user information by array of UUID's users
+   * @param userInfo DOCUMENTATION MISSING
+   */
+  constructor (
+    public userInfo?: UserInfo[],
+  ) {}
+
+  public static fromJSON (raw: GetUsersInfoByUserUUIDArrayResponseJSON): GetUsersInfoByUserUUIDArrayResponse {
+    return new GetUsersInfoByUserUUIDArrayResponse(
+      raw.user_info && raw.user_info.map(UserInfo.fromJSON),
+    )
+  }
+
+  public mappableFields = [
+    'userInfo',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    userInfo: () => ({ user_info: this.userInfo?.map(u => u.toJSON()) }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): GetUsersInfoByUserUUIDArrayResponseJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<GetUsersInfoByUserUUIDArrayResponseJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface GetWorkplaceByPersonalAccountResponseJSON {
   /* eslint-disable camelcase */
-  personal_account_id: number;
-  user_id?: number;
+  personal_account_id: string;
+  user_id?: string;
   user_uuid?: string;
-  workplace_id?: number;
+  workplace_id?: string;
   /* eslint-enable camelcase */
 }
 
@@ -7152,10 +7350,10 @@ export class GetWorkplaceByPersonalAccountResponse implements TDProtoClass<GetWo
    * @param workplaceId DOCUMENTATION MISSING
    */
   constructor (
-    public personalAccountId: number,
-    public userId?: number,
+    public personalAccountId: string,
+    public userId?: string,
     public userUuid?: string,
-    public workplaceId?: number,
+    public workplaceId?: string,
   ) {}
 
   public static fromJSON (raw: GetWorkplaceByPersonalAccountResponseJSON): GetWorkplaceByPersonalAccountResponse {
@@ -7196,7 +7394,7 @@ export class GetWorkplaceByPersonalAccountResponse implements TDProtoClass<GetWo
 
 export interface GetWorkplacesByPersonalAccountRequestJSON {
   /* eslint-disable camelcase */
-  personal_account_id: number;
+  personal_account_id: string;
   options?: WorkplaceOptionsJSON;
   /* eslint-enable camelcase */
 }
@@ -7208,7 +7406,7 @@ export class GetWorkplacesByPersonalAccountRequest implements TDProtoClass<GetWo
    * @param options DOCUMENTATION MISSING
    */
   constructor (
-    public personalAccountId: number,
+    public personalAccountId: string,
     public options?: WorkplaceOptions,
   ) {}
 
@@ -17626,6 +17824,72 @@ export class UserAuth implements TDProtoClass<UserAuth> {
   }
 }
 
+export interface UserInfoJSON {
+  /* eslint-disable camelcase */
+  uuid: string;
+  email?: string;
+  fio?: string;
+  last_activity?: string;
+  phone?: string;
+  /* eslint-enable camelcase */
+}
+
+export class UserInfo implements TDProtoClass<UserInfo> {
+  /**
+   * UserInfo user information
+   * @param uuid DOCUMENTATION MISSING
+   * @param email DOCUMENTATION MISSING
+   * @param fio DOCUMENTATION MISSING
+   * @param lastActivity DOCUMENTATION MISSING
+   * @param phone DOCUMENTATION MISSING
+   */
+  constructor (
+    public uuid: string,
+    public email?: string,
+    public fio?: string,
+    public lastActivity?: string,
+    public phone?: string,
+  ) {}
+
+  public static fromJSON (raw: UserInfoJSON): UserInfo {
+    return new UserInfo(
+      raw.uuid,
+      raw.email,
+      raw.fio,
+      raw.last_activity,
+      raw.phone,
+    )
+  }
+
+  public mappableFields = [
+    'uuid',
+    'email',
+    'fio',
+    'lastActivity',
+    'phone',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    uuid: () => ({ uuid: this.uuid }),
+    email: () => ({ email: this.email }),
+    fio: () => ({ fio: this.fio }),
+    lastActivity: () => ({ last_activity: this.lastActivity }),
+    phone: () => ({ phone: this.phone }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): UserInfoJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<UserInfoJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface UserWithMeJSON {
   /* eslint-disable camelcase */
   alt_send: boolean;
@@ -17934,10 +18198,10 @@ export class WebBase implements TDProtoClass<WebBase> {
 
 export interface WorkplaceBillingJSON {
   /* eslint-disable camelcase */
-  personal_account_id: number;
-  user_id?: number;
+  personal_account_id: string;
+  user_id?: string;
   user_uuid?: string;
-  workplace_id?: number;
+  workplace_id?: string;
   /* eslint-enable camelcase */
 }
 
@@ -17950,10 +18214,10 @@ export class WorkplaceBilling implements TDProtoClass<WorkplaceBilling> {
    * @param workplaceId DOCUMENTATION MISSING
    */
   constructor (
-    public personalAccountId: number,
-    public userId?: number,
+    public personalAccountId: string,
+    public userId?: string,
     public userUuid?: string,
-    public workplaceId?: number,
+    public workplaceId?: string,
   ) {}
 
   public static fromJSON (raw: WorkplaceBillingJSON): WorkplaceBilling {
