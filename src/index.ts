@@ -1126,6 +1126,72 @@ export class CallOnliner implements TDProtoClass<CallOnliner> {
   }
 }
 
+export interface ChangeTariffBillingJSON {
+  /* eslint-disable camelcase */
+  personal_account_id: number;
+  close_date?: string;
+  create_date?: string;
+  open_date?: string;
+  tariff_id?: number;
+  /* eslint-enable camelcase */
+}
+
+export class ChangeTariffBilling implements TDProtoClass<ChangeTariffBilling> {
+  /**
+   * ChangeTariffBilling struct of changes tariffs by personal account
+   * @param personalAccountId DOCUMENTATION MISSING
+   * @param closeDate DOCUMENTATION MISSING
+   * @param createDate DOCUMENTATION MISSING
+   * @param openDate DOCUMENTATION MISSING
+   * @param tariffId DOCUMENTATION MISSING
+   */
+  constructor (
+    public personalAccountId: number,
+    public closeDate?: string,
+    public createDate?: string,
+    public openDate?: string,
+    public tariffId?: number,
+  ) {}
+
+  public static fromJSON (raw: ChangeTariffBillingJSON): ChangeTariffBilling {
+    return new ChangeTariffBilling(
+      raw.personal_account_id,
+      raw.close_date,
+      raw.create_date,
+      raw.open_date,
+      raw.tariff_id,
+    )
+  }
+
+  public mappableFields = [
+    'personalAccountId',
+    'closeDate',
+    'createDate',
+    'openDate',
+    'tariffId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
+    closeDate: () => ({ close_date: this.closeDate }),
+    createDate: () => ({ create_date: this.createDate }),
+    openDate: () => ({ open_date: this.openDate }),
+    tariffId: () => ({ tariff_id: this.tariffId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ChangeTariffBillingJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ChangeTariffBillingJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface ChatJSON {
   /* eslint-disable camelcase */
   chat_type: ChatType;
@@ -1755,6 +1821,90 @@ export class ChatShort implements TDProtoClass<ChatShort> {
 
   public toJSON (): ChatShortJSON
   public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ChatShortJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface CheckActivePersonalAccountRequestJSON {
+  /* eslint-disable camelcase */
+  personal_account_id: number;
+  /* eslint-enable camelcase */
+}
+
+export class CheckActivePersonalAccountRequest implements TDProtoClass<CheckActivePersonalAccountRequest> {
+  /**
+   * CheckActivePersonalAccountRequest request on check active personal account
+   * @param personalAccountId DOCUMENTATION MISSING
+   */
+  constructor (
+    public personalAccountId: number,
+  ) {}
+
+  public static fromJSON (raw: CheckActivePersonalAccountRequestJSON): CheckActivePersonalAccountRequest {
+    return new CheckActivePersonalAccountRequest(
+      raw.personal_account_id,
+    )
+  }
+
+  public mappableFields = [
+    'personalAccountId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): CheckActivePersonalAccountRequestJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<CheckActivePersonalAccountRequestJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface CheckActivePersonalAccountResponseJSON {
+  /* eslint-disable camelcase */
+  success?: boolean;
+  /* eslint-enable camelcase */
+}
+
+export class CheckActivePersonalAccountResponse implements TDProtoClass<CheckActivePersonalAccountResponse> {
+  /**
+   * CheckActivePersonalAccountResponse response on check active personal account
+   * @param success DOCUMENTATION MISSING
+   */
+  constructor (
+    public success?: boolean,
+  ) {}
+
+  public static fromJSON (raw: CheckActivePersonalAccountResponseJSON): CheckActivePersonalAccountResponse {
+    return new CheckActivePersonalAccountResponse(
+      raw.success,
+    )
+  }
+
+  public mappableFields = [
+    'success',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    success: () => ({ success: this.success }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): CheckActivePersonalAccountResponseJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<CheckActivePersonalAccountResponseJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -4266,6 +4416,102 @@ export class Country implements TDProtoClass<Country> {
   }
 }
 
+export interface CreateChangeTariffOnPersonalAccountRequestJSON {
+  /* eslint-disable camelcase */
+  personal_account_id: number;
+  tariff_id: number;
+  open_date?: string;
+  /* eslint-enable camelcase */
+}
+
+export class CreateChangeTariffOnPersonalAccountRequest implements TDProtoClass<CreateChangeTariffOnPersonalAccountRequest> {
+  /**
+   * CreateChangeTariffOnPersonalAccountRequest request on create change tariff on personal account
+   * @param personalAccountId DOCUMENTATION MISSING
+   * @param tariffId DOCUMENTATION MISSING
+   * @param openDate DOCUMENTATION MISSING
+   */
+  constructor (
+    public personalAccountId: number,
+    public tariffId: number,
+    public openDate?: string,
+  ) {}
+
+  public static fromJSON (raw: CreateChangeTariffOnPersonalAccountRequestJSON): CreateChangeTariffOnPersonalAccountRequest {
+    return new CreateChangeTariffOnPersonalAccountRequest(
+      raw.personal_account_id,
+      raw.tariff_id,
+      raw.open_date,
+    )
+  }
+
+  public mappableFields = [
+    'personalAccountId',
+    'tariffId',
+    'openDate',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
+    tariffId: () => ({ tariff_id: this.tariffId }),
+    openDate: () => ({ open_date: this.openDate }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): CreateChangeTariffOnPersonalAccountRequestJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<CreateChangeTariffOnPersonalAccountRequestJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface CreateChangeTariffOnPersonalAccountResponseJSON {
+  /* eslint-disable camelcase */
+  success?: boolean;
+  /* eslint-enable camelcase */
+}
+
+export class CreateChangeTariffOnPersonalAccountResponse implements TDProtoClass<CreateChangeTariffOnPersonalAccountResponse> {
+  /**
+   * CreateChangeTariffOnPersonalAccountResponse response on create change tariff on personal account
+   * @param success DOCUMENTATION MISSING
+   */
+  constructor (
+    public success?: boolean,
+  ) {}
+
+  public static fromJSON (raw: CreateChangeTariffOnPersonalAccountResponseJSON): CreateChangeTariffOnPersonalAccountResponse {
+    return new CreateChangeTariffOnPersonalAccountResponse(
+      raw.success,
+    )
+  }
+
+  public mappableFields = [
+    'success',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    success: () => ({ success: this.success }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): CreateChangeTariffOnPersonalAccountResponseJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<CreateChangeTariffOnPersonalAccountResponseJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface CreatePersonalAccountRequestJSON {
   /* eslint-disable camelcase */
   owner_uuid: string;
@@ -4455,8 +4701,11 @@ export class CreatePersonalAccountResponse implements TDProtoClass<CreatePersona
 export interface CreateTariffRequestJSON {
   /* eslint-disable camelcase */
   currency: Currency;
+  min_step_workplaces: number;
+  min_tariff_workplaces: number;
   period_days: number;
   tariff_name: string;
+  video_call_bitrate: number;
   close_date?: string;
   cost_workplace?: string;
   disk_space_quota_mb?: string;
@@ -4475,8 +4724,11 @@ export class CreateTariffRequest implements TDProtoClass<CreateTariffRequest> {
   /**
    * Request to create the tariff
    * @param currency Currency of tariff
+   * @param minStepWorkplaces Minimum step of change count workspaces on tariff
+   * @param minTariffWorkplaces Count of minimum workspaces on tariff
    * @param periodDays Number of paid days
    * @param tariffName Name of tariff
+   * @param videoCallBitrate Bitrate of video in video co
    * @param closeDate Date of closing tariff
    * @param costWorkplace Cost of one workplace
    * @param diskSpaceQuotaMb Disk space limit per user
@@ -4491,8 +4743,11 @@ export class CreateTariffRequest implements TDProtoClass<CreateTariffRequest> {
    */
   constructor (
     public currency: Currency,
+    public minStepWorkplaces: number,
+    public minTariffWorkplaces: number,
     public periodDays: number,
     public tariffName: string,
+    public videoCallBitrate: number,
     public closeDate?: string,
     public costWorkplace?: string,
     public diskSpaceQuotaMb?: string,
@@ -4509,8 +4764,11 @@ export class CreateTariffRequest implements TDProtoClass<CreateTariffRequest> {
   public static fromJSON (raw: CreateTariffRequestJSON): CreateTariffRequest {
     return new CreateTariffRequest(
       raw.currency,
+      raw.min_step_workplaces,
+      raw.min_tariff_workplaces,
       raw.period_days,
       raw.tariff_name,
+      raw.video_call_bitrate,
       raw.close_date,
       raw.cost_workplace,
       raw.disk_space_quota_mb,
@@ -4527,8 +4785,11 @@ export class CreateTariffRequest implements TDProtoClass<CreateTariffRequest> {
 
   public mappableFields = [
     'currency',
+    'minStepWorkplaces',
+    'minTariffWorkplaces',
     'periodDays',
     'tariffName',
+    'videoCallBitrate',
     'closeDate',
     'costWorkplace',
     'diskSpaceQuotaMb',
@@ -4545,8 +4806,11 @@ export class CreateTariffRequest implements TDProtoClass<CreateTariffRequest> {
   readonly #mapper = {
     /* eslint-disable camelcase */
     currency: () => ({ currency: this.currency }),
+    minStepWorkplaces: () => ({ min_step_workplaces: this.minStepWorkplaces }),
+    minTariffWorkplaces: () => ({ min_tariff_workplaces: this.minTariffWorkplaces }),
     periodDays: () => ({ period_days: this.periodDays }),
     tariffName: () => ({ tariff_name: this.tariffName }),
+    videoCallBitrate: () => ({ video_call_bitrate: this.videoCallBitrate }),
     closeDate: () => ({ close_date: this.closeDate }),
     costWorkplace: () => ({ cost_workplace: this.costWorkplace }),
     diskSpaceQuotaMb: () => ({ disk_space_quota_mb: this.diskSpaceQuotaMb }),
@@ -4917,6 +5181,96 @@ export class DLPUserData implements TDProtoClass<DLPUserData> {
 
   public toJSON (): DLPUserDataJSON
   public toJSON (fields: Array<this['mappableFields'][number]>): Partial<DLPUserDataJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface DeleteChangeTariffOnPersonalAccountRequestJSON {
+  /* eslint-disable camelcase */
+  personal_account_id: number;
+  tariff_id: number;
+  /* eslint-enable camelcase */
+}
+
+export class DeleteChangeTariffOnPersonalAccountRequest implements TDProtoClass<DeleteChangeTariffOnPersonalAccountRequest> {
+  /**
+   * DeleteChangeTariffOnPersonalAccountRequest request on delete change tariff on personal account
+   * @param personalAccountId DOCUMENTATION MISSING
+   * @param tariffId DOCUMENTATION MISSING
+   */
+  constructor (
+    public personalAccountId: number,
+    public tariffId: number,
+  ) {}
+
+  public static fromJSON (raw: DeleteChangeTariffOnPersonalAccountRequestJSON): DeleteChangeTariffOnPersonalAccountRequest {
+    return new DeleteChangeTariffOnPersonalAccountRequest(
+      raw.personal_account_id,
+      raw.tariff_id,
+    )
+  }
+
+  public mappableFields = [
+    'personalAccountId',
+    'tariffId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
+    tariffId: () => ({ tariff_id: this.tariffId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): DeleteChangeTariffOnPersonalAccountRequestJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<DeleteChangeTariffOnPersonalAccountRequestJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface DeleteChangeTariffOnPersonalAccountResponseJSON {
+  /* eslint-disable camelcase */
+  success?: boolean;
+  /* eslint-enable camelcase */
+}
+
+export class DeleteChangeTariffOnPersonalAccountResponse implements TDProtoClass<DeleteChangeTariffOnPersonalAccountResponse> {
+  /**
+   * DeleteChangeTariffOnPersonalAccountResponse response on delete change tariff om personal account
+   * @param success DOCUMENTATION MISSING
+   */
+  constructor (
+    public success?: boolean,
+  ) {}
+
+  public static fromJSON (raw: DeleteChangeTariffOnPersonalAccountResponseJSON): DeleteChangeTariffOnPersonalAccountResponse {
+    return new DeleteChangeTariffOnPersonalAccountResponse(
+      raw.success,
+    )
+  }
+
+  public mappableFields = [
+    'success',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    success: () => ({ success: this.success }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): DeleteChangeTariffOnPersonalAccountResponseJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<DeleteChangeTariffOnPersonalAccountResponseJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -6360,6 +6714,132 @@ export class GetActiveTariffsListResponse implements TDProtoClass<GetActiveTarif
   }
 }
 
+export interface GetChangesTariffsByPersonalAccountRequestJSON {
+  /* eslint-disable camelcase */
+  personal_account_id: number;
+  /* eslint-enable camelcase */
+}
+
+export class GetChangesTariffsByPersonalAccountRequest implements TDProtoClass<GetChangesTariffsByPersonalAccountRequest> {
+  /**
+   * GetChangesTariffsByPersonalAccountRequest request on get changes tariffs by personal account
+   * @param personalAccountId DOCUMENTATION MISSING
+   */
+  constructor (
+    public personalAccountId: number,
+  ) {}
+
+  public static fromJSON (raw: GetChangesTariffsByPersonalAccountRequestJSON): GetChangesTariffsByPersonalAccountRequest {
+    return new GetChangesTariffsByPersonalAccountRequest(
+      raw.personal_account_id,
+    )
+  }
+
+  public mappableFields = [
+    'personalAccountId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): GetChangesTariffsByPersonalAccountRequestJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<GetChangesTariffsByPersonalAccountRequestJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface GetChangesTariffsByPersonalAccountResponseJSON {
+  /* eslint-disable camelcase */
+  tariffs_changes?: ChangeTariffBillingJSON[];
+  /* eslint-enable camelcase */
+}
+
+export class GetChangesTariffsByPersonalAccountResponse implements TDProtoClass<GetChangesTariffsByPersonalAccountResponse> {
+  /**
+   * GetChangesTariffsByPersonalAccountResponse response on get changes tariffs by personal account
+   * @param tariffsChanges DOCUMENTATION MISSING
+   */
+  constructor (
+    public tariffsChanges?: ChangeTariffBilling[],
+  ) {}
+
+  public static fromJSON (raw: GetChangesTariffsByPersonalAccountResponseJSON): GetChangesTariffsByPersonalAccountResponse {
+    return new GetChangesTariffsByPersonalAccountResponse(
+      raw.tariffs_changes && raw.tariffs_changes.map(ChangeTariffBilling.fromJSON),
+    )
+  }
+
+  public mappableFields = [
+    'tariffsChanges',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    tariffsChanges: () => ({ tariffs_changes: this.tariffsChanges?.map(u => u.toJSON()) }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): GetChangesTariffsByPersonalAccountResponseJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<GetChangesTariffsByPersonalAccountResponseJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface GetPersonalAccountByIDRequestJSON {
+  /* eslint-disable camelcase */
+  personal_account_id?: number;
+  /* eslint-enable camelcase */
+}
+
+export class GetPersonalAccountByIDRequest implements TDProtoClass<GetPersonalAccountByIDRequest> {
+  /**
+   * GetPersonalAccountByIDRequest request on get personal account by ID
+   * @param personalAccountId DOCUMENTATION MISSING
+   */
+  constructor (
+    public personalAccountId?: number,
+  ) {}
+
+  public static fromJSON (raw: GetPersonalAccountByIDRequestJSON): GetPersonalAccountByIDRequest {
+    return new GetPersonalAccountByIDRequest(
+      raw.personal_account_id,
+    )
+  }
+
+  public mappableFields = [
+    'personalAccountId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): GetPersonalAccountByIDRequestJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<GetPersonalAccountByIDRequestJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface GetPersonalAccountByIDResponseJSON {
   /* eslint-disable camelcase */
   discount_amount: number;
@@ -6561,6 +7041,240 @@ export class GetTariffsListResponse implements TDProtoClass<GetTariffsListRespon
 
   public toJSON (): GetTariffsListResponseJSON
   public toJSON (fields: Array<this['mappableFields'][number]>): Partial<GetTariffsListResponseJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface GetUnpaidWorkplacesByPersonalAccountRequestJSON {
+  /* eslint-disable camelcase */
+  personal_account_id: number;
+  /* eslint-enable camelcase */
+}
+
+export class GetUnpaidWorkplacesByPersonalAccountRequest implements TDProtoClass<GetUnpaidWorkplacesByPersonalAccountRequest> {
+  /**
+   * GetUnpaidWorkplacesByPersonalAccountRequest request on get count unpaid workplaces by personal account
+   * @param personalAccountId DOCUMENTATION MISSING
+   */
+  constructor (
+    public personalAccountId: number,
+  ) {}
+
+  public static fromJSON (raw: GetUnpaidWorkplacesByPersonalAccountRequestJSON): GetUnpaidWorkplacesByPersonalAccountRequest {
+    return new GetUnpaidWorkplacesByPersonalAccountRequest(
+      raw.personal_account_id,
+    )
+  }
+
+  public mappableFields = [
+    'personalAccountId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): GetUnpaidWorkplacesByPersonalAccountRequestJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<GetUnpaidWorkplacesByPersonalAccountRequestJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface GetUnpaidWorkplacesByPersonalAccountResponseJSON {
+  /* eslint-disable camelcase */
+  count?: number;
+  /* eslint-enable camelcase */
+}
+
+export class GetUnpaidWorkplacesByPersonalAccountResponse implements TDProtoClass<GetUnpaidWorkplacesByPersonalAccountResponse> {
+  /**
+   * GetUnpaidWorkplacesByPersonalAccountResponse response on get count unpaid workplaces by personal account
+   * @param count DOCUMENTATION MISSING
+   */
+  constructor (
+    public count?: number,
+  ) {}
+
+  public static fromJSON (raw: GetUnpaidWorkplacesByPersonalAccountResponseJSON): GetUnpaidWorkplacesByPersonalAccountResponse {
+    return new GetUnpaidWorkplacesByPersonalAccountResponse(
+      raw.count,
+    )
+  }
+
+  public mappableFields = [
+    'count',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    count: () => ({ count: this.count }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): GetUnpaidWorkplacesByPersonalAccountResponseJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<GetUnpaidWorkplacesByPersonalAccountResponseJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface GetWorkplaceByPersonalAccountResponseJSON {
+  /* eslint-disable camelcase */
+  personal_account_id: number;
+  user_id?: number;
+  user_uuid?: string;
+  workplace_id?: number;
+  /* eslint-enable camelcase */
+}
+
+export class GetWorkplaceByPersonalAccountResponse implements TDProtoClass<GetWorkplaceByPersonalAccountResponse> {
+  /**
+   * GetWorkplaceByPersonalAccountResponse response on get workplace by personal account
+   * @param personalAccountId DOCUMENTATION MISSING
+   * @param userId DOCUMENTATION MISSING
+   * @param userUuid DOCUMENTATION MISSING
+   * @param workplaceId DOCUMENTATION MISSING
+   */
+  constructor (
+    public personalAccountId: number,
+    public userId?: number,
+    public userUuid?: string,
+    public workplaceId?: number,
+  ) {}
+
+  public static fromJSON (raw: GetWorkplaceByPersonalAccountResponseJSON): GetWorkplaceByPersonalAccountResponse {
+    return new GetWorkplaceByPersonalAccountResponse(
+      raw.personal_account_id,
+      raw.user_id,
+      raw.user_uuid,
+      raw.workplace_id,
+    )
+  }
+
+  public mappableFields = [
+    'personalAccountId',
+    'userId',
+    'userUuid',
+    'workplaceId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
+    userId: () => ({ user_id: this.userId }),
+    userUuid: () => ({ user_uuid: this.userUuid }),
+    workplaceId: () => ({ workplace_id: this.workplaceId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): GetWorkplaceByPersonalAccountResponseJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<GetWorkplaceByPersonalAccountResponseJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface GetWorkplacesByPersonalAccountRequestJSON {
+  /* eslint-disable camelcase */
+  personal_account_id: number;
+  options?: WorkplaceOptionsJSON;
+  /* eslint-enable camelcase */
+}
+
+export class GetWorkplacesByPersonalAccountRequest implements TDProtoClass<GetWorkplacesByPersonalAccountRequest> {
+  /**
+   * GetWorkplacesByPersonalAccountRequest request on get workplaces by personal account
+   * @param personalAccountId DOCUMENTATION MISSING
+   * @param options DOCUMENTATION MISSING
+   */
+  constructor (
+    public personalAccountId: number,
+    public options?: WorkplaceOptions,
+  ) {}
+
+  public static fromJSON (raw: GetWorkplacesByPersonalAccountRequestJSON): GetWorkplacesByPersonalAccountRequest {
+    return new GetWorkplacesByPersonalAccountRequest(
+      raw.personal_account_id,
+      raw.options && WorkplaceOptions.fromJSON(raw.options),
+    )
+  }
+
+  public mappableFields = [
+    'personalAccountId',
+    'options',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
+    options: () => ({ options: this.options?.toJSON() }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): GetWorkplacesByPersonalAccountRequestJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<GetWorkplacesByPersonalAccountRequestJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface GetWorkplacesByPersonalAccountResponseJSON {
+  /* eslint-disable camelcase */
+  workplaces?: WorkplaceBillingJSON[];
+  /* eslint-enable camelcase */
+}
+
+export class GetWorkplacesByPersonalAccountResponse implements TDProtoClass<GetWorkplacesByPersonalAccountResponse> {
+  /**
+   * GetWorkplacesByPersonalAccountResponse response on get workplaces by personal account
+   * @param workplaces DOCUMENTATION MISSING
+   */
+  constructor (
+    public workplaces?: WorkplaceBilling[],
+  ) {}
+
+  public static fromJSON (raw: GetWorkplacesByPersonalAccountResponseJSON): GetWorkplacesByPersonalAccountResponse {
+    return new GetWorkplacesByPersonalAccountResponse(
+      raw.workplaces && raw.workplaces.map(WorkplaceBilling.fromJSON),
+    )
+  }
+
+  public mappableFields = [
+    'workplaces',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    workplaces: () => ({ workplaces: this.workplaces?.map(u => u.toJSON()) }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): GetWorkplacesByPersonalAccountResponseJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<GetWorkplacesByPersonalAccountResponseJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -14476,11 +15190,14 @@ export interface TariffBillingJSON {
   is_recalc_change_tariff: boolean;
   max_video_user: number;
   max_voice_user: number;
+  min_step_workplaces: number;
+  min_tariff_workplaces: number;
   open_date: string;
   period_days: number;
   status: TariffStatus;
   tariff_id: string;
   tariff_name: string;
+  video_call_bitrate: number;
   close_date?: string;
   /* eslint-enable camelcase */
 }
@@ -14498,11 +15215,14 @@ export class TariffBilling implements TDProtoClass<TariffBilling> {
    * @param isRecalcChangeTariff Flag for accounting for unspent days when switching to a new tariff
    * @param maxVideoUser Maximum count of users in video conference
    * @param maxVoiceUser Maximum count of users in voice conference
+   * @param minStepWorkplaces Minimum step of change count workspaces on tariff
+   * @param minTariffWorkplaces Count of minimum workspaces on tariff
    * @param openDate Date of opening tariff
    * @param periodDays Number of paid days
    * @param status Status of tariff
    * @param tariffId Tariff id
    * @param tariffName Name of tariff
+   * @param videoCallBitrate Bitrate of video in video co
    * @param closeDate Date of closing tariff
    */
   constructor (
@@ -14516,11 +15236,14 @@ export class TariffBilling implements TDProtoClass<TariffBilling> {
     public isRecalcChangeTariff: boolean,
     public maxVideoUser: number,
     public maxVoiceUser: number,
+    public minStepWorkplaces: number,
+    public minTariffWorkplaces: number,
     public openDate: string,
     public periodDays: number,
     public status: TariffStatus,
     public tariffId: string,
     public tariffName: string,
+    public videoCallBitrate: number,
     public closeDate?: string,
   ) {}
 
@@ -14536,11 +15259,14 @@ export class TariffBilling implements TDProtoClass<TariffBilling> {
       raw.is_recalc_change_tariff,
       raw.max_video_user,
       raw.max_voice_user,
+      raw.min_step_workplaces,
+      raw.min_tariff_workplaces,
       raw.open_date,
       raw.period_days,
       raw.status,
       raw.tariff_id,
       raw.tariff_name,
+      raw.video_call_bitrate,
       raw.close_date,
     )
   }
@@ -14556,11 +15282,14 @@ export class TariffBilling implements TDProtoClass<TariffBilling> {
     'isRecalcChangeTariff',
     'maxVideoUser',
     'maxVoiceUser',
+    'minStepWorkplaces',
+    'minTariffWorkplaces',
     'openDate',
     'periodDays',
     'status',
     'tariffId',
     'tariffName',
+    'videoCallBitrate',
     'closeDate',
   ] as const
 
@@ -14576,11 +15305,14 @@ export class TariffBilling implements TDProtoClass<TariffBilling> {
     isRecalcChangeTariff: () => ({ is_recalc_change_tariff: this.isRecalcChangeTariff }),
     maxVideoUser: () => ({ max_video_user: this.maxVideoUser }),
     maxVoiceUser: () => ({ max_voice_user: this.maxVoiceUser }),
+    minStepWorkplaces: () => ({ min_step_workplaces: this.minStepWorkplaces }),
+    minTariffWorkplaces: () => ({ min_tariff_workplaces: this.minTariffWorkplaces }),
     openDate: () => ({ open_date: this.openDate }),
     periodDays: () => ({ period_days: this.periodDays }),
     status: () => ({ status: this.status }),
     tariffId: () => ({ tariff_id: this.tariffId }),
     tariffName: () => ({ tariff_name: this.tariffName }),
+    videoCallBitrate: () => ({ video_call_bitrate: this.videoCallBitrate }),
     closeDate: () => ({ close_date: this.closeDate }),
     /* eslint-enable camelcase */
   }
@@ -16288,8 +17020,105 @@ export class Unread implements TDProtoClass<Unread> {
   }
 }
 
+export interface UpdatePersonalAccountRequestJSON {
+  /* eslint-disable camelcase */
+  personal_account_id: number;
+  full_name?: string;
+  phone?: string;
+  /* eslint-enable camelcase */
+}
+
+export class UpdatePersonalAccountRequest implements TDProtoClass<UpdatePersonalAccountRequest> {
+  /**
+   * UpdatePersonalAccountRequest request on update personal account
+   * @param personalAccountId DOCUMENTATION MISSING
+   * @param fullName DOCUMENTATION MISSING
+   * @param phone DOCUMENTATION MISSING
+   */
+  constructor (
+    public personalAccountId: number,
+    public fullName?: string,
+    public phone?: string,
+  ) {}
+
+  public static fromJSON (raw: UpdatePersonalAccountRequestJSON): UpdatePersonalAccountRequest {
+    return new UpdatePersonalAccountRequest(
+      raw.personal_account_id,
+      raw.full_name,
+      raw.phone,
+    )
+  }
+
+  public mappableFields = [
+    'personalAccountId',
+    'fullName',
+    'phone',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
+    fullName: () => ({ full_name: this.fullName }),
+    phone: () => ({ phone: this.phone }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): UpdatePersonalAccountRequestJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<UpdatePersonalAccountRequestJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface UpdatePersonalAccountResponseJSON {
+  /* eslint-disable camelcase */
+  success?: boolean;
+  /* eslint-enable camelcase */
+}
+
+export class UpdatePersonalAccountResponse implements TDProtoClass<UpdatePersonalAccountResponse> {
+  /**
+   * UpdatePersonalAccountResponse response on update personal account
+   * @param success DOCUMENTATION MISSING
+   */
+  constructor (
+    public success?: boolean,
+  ) {}
+
+  public static fromJSON (raw: UpdatePersonalAccountResponseJSON): UpdatePersonalAccountResponse {
+    return new UpdatePersonalAccountResponse(
+      raw.success,
+    )
+  }
+
+  public mappableFields = [
+    'success',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    success: () => ({ success: this.success }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): UpdatePersonalAccountResponseJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<UpdatePersonalAccountResponseJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface UpdateTariffRequestJSON {
   /* eslint-disable camelcase */
+  tariff_id: string;
   close_date?: string;
   is_default_tariff?: boolean;
   status?: TariffStatus;
@@ -16299,11 +17128,13 @@ export interface UpdateTariffRequestJSON {
 export class UpdateTariffRequest implements TDProtoClass<UpdateTariffRequest> {
   /**
    * Request to update the tariff
+   * @param tariffId Tariff id
    * @param closeDate Date of closing tariff
    * @param isDefaultTariff Default tariff flag that is set when registering an account
    * @param status Status of tariff
    */
   constructor (
+    public tariffId: string,
     public closeDate?: string,
     public isDefaultTariff?: boolean,
     public status?: TariffStatus,
@@ -16311,6 +17142,7 @@ export class UpdateTariffRequest implements TDProtoClass<UpdateTariffRequest> {
 
   public static fromJSON (raw: UpdateTariffRequestJSON): UpdateTariffRequest {
     return new UpdateTariffRequest(
+      raw.tariff_id,
       raw.close_date,
       raw.is_default_tariff,
       raw.status,
@@ -16318,6 +17150,7 @@ export class UpdateTariffRequest implements TDProtoClass<UpdateTariffRequest> {
   }
 
   public mappableFields = [
+    'tariffId',
     'closeDate',
     'isDefaultTariff',
     'status',
@@ -16325,6 +17158,7 @@ export class UpdateTariffRequest implements TDProtoClass<UpdateTariffRequest> {
 
   readonly #mapper = {
     /* eslint-disable camelcase */
+    tariffId: () => ({ tariff_id: this.tariffId }),
     closeDate: () => ({ close_date: this.closeDate }),
     isDefaultTariff: () => ({ is_default_tariff: this.isDefaultTariff }),
     status: () => ({ status: this.status }),
@@ -17089,6 +17923,114 @@ export class WebBase implements TDProtoClass<WebBase> {
 
   public toJSON (): WebBaseJSON
   public toJSON (fields: Array<this['mappableFields'][number]>): Partial<WebBaseJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface WorkplaceBillingJSON {
+  /* eslint-disable camelcase */
+  personal_account_id: number;
+  user_id?: number;
+  user_uuid?: string;
+  workplace_id?: number;
+  /* eslint-enable camelcase */
+}
+
+export class WorkplaceBilling implements TDProtoClass<WorkplaceBilling> {
+  /**
+   * WorkplaceBilling struct of workplace on personal account
+   * @param personalAccountId DOCUMENTATION MISSING
+   * @param userId DOCUMENTATION MISSING
+   * @param userUuid DOCUMENTATION MISSING
+   * @param workplaceId DOCUMENTATION MISSING
+   */
+  constructor (
+    public personalAccountId: number,
+    public userId?: number,
+    public userUuid?: string,
+    public workplaceId?: number,
+  ) {}
+
+  public static fromJSON (raw: WorkplaceBillingJSON): WorkplaceBilling {
+    return new WorkplaceBilling(
+      raw.personal_account_id,
+      raw.user_id,
+      raw.user_uuid,
+      raw.workplace_id,
+    )
+  }
+
+  public mappableFields = [
+    'personalAccountId',
+    'userId',
+    'userUuid',
+    'workplaceId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
+    userId: () => ({ user_id: this.userId }),
+    userUuid: () => ({ user_uuid: this.userUuid }),
+    workplaceId: () => ({ workplace_id: this.workplaceId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): WorkplaceBillingJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<WorkplaceBillingJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface WorkplaceOptionsJSON {
+  /* eslint-disable camelcase */
+  limit?: number;
+  offset?: number;
+  /* eslint-enable camelcase */
+}
+
+export class WorkplaceOptions implements TDProtoClass<WorkplaceOptions> {
+  /**
+   * WorkplaceOptions struct for pagination
+   * @param limit DOCUMENTATION MISSING
+   * @param offset DOCUMENTATION MISSING
+   */
+  constructor (
+    public limit?: number,
+    public offset?: number,
+  ) {}
+
+  public static fromJSON (raw: WorkplaceOptionsJSON): WorkplaceOptions {
+    return new WorkplaceOptions(
+      raw.limit,
+      raw.offset,
+    )
+  }
+
+  public mappableFields = [
+    'limit',
+    'offset',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    limit: () => ({ limit: this.limit }),
+    offset: () => ({ offset: this.offset }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): WorkplaceOptionsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<WorkplaceOptionsJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
