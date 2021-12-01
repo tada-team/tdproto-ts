@@ -1254,56 +1254,50 @@ export class CallOnliner implements TDProtoClass<CallOnliner> {
 
 export interface ChangeTariffBillingJSON {
   /* eslint-disable camelcase */
-  personal_account_id: number;
+  tariff_id: string;
   close_date?: string;
   create_date?: string;
   open_date?: string;
-  tariff_id?: number;
   /* eslint-enable camelcase */
 }
 
 export class ChangeTariffBilling implements TDProtoClass<ChangeTariffBilling> {
   /**
    * ChangeTariffBilling struct of changes tariffs by personal account
-   * @param personalAccountId DOCUMENTATION MISSING
+   * @param tariffId DOCUMENTATION MISSING
    * @param closeDate DOCUMENTATION MISSING
    * @param createDate DOCUMENTATION MISSING
    * @param openDate DOCUMENTATION MISSING
-   * @param tariffId DOCUMENTATION MISSING
    */
   constructor (
-    public personalAccountId: number,
+    public tariffId: string,
     public closeDate?: string,
     public createDate?: string,
     public openDate?: string,
-    public tariffId?: number,
   ) {}
 
   public static fromJSON (raw: ChangeTariffBillingJSON): ChangeTariffBilling {
     return new ChangeTariffBilling(
-      raw.personal_account_id,
+      raw.tariff_id,
       raw.close_date,
       raw.create_date,
       raw.open_date,
-      raw.tariff_id,
     )
   }
 
   public mappableFields = [
-    'personalAccountId',
+    'tariffId',
     'closeDate',
     'createDate',
     'openDate',
-    'tariffId',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
+    tariffId: () => ({ tariff_id: this.tariffId }),
     closeDate: () => ({ close_date: this.closeDate }),
     createDate: () => ({ create_date: this.createDate }),
     openDate: () => ({ open_date: this.openDate }),
-    tariffId: () => ({ tariff_id: this.tariffId }),
     /* eslint-enable camelcase */
   }
 
@@ -4502,7 +4496,7 @@ export class Country implements TDProtoClass<Country> {
 
 export interface CreateChangeTariffOnPersonalAccountRequestJSON {
   /* eslint-disable camelcase */
-  tariff_id: number;
+  tariff_id: string;
   open_date?: string;
   /* eslint-enable camelcase */
 }
@@ -4514,7 +4508,7 @@ export class CreateChangeTariffOnPersonalAccountRequest implements TDProtoClass<
    * @param openDate DOCUMENTATION MISSING
    */
   constructor (
-    public tariffId: number,
+    public tariffId: string,
     public openDate?: string,
   ) {}
 
@@ -5276,7 +5270,7 @@ export class DLPUserData implements TDProtoClass<DLPUserData> {
 
 export interface DeleteChangeTariffOnPersonalAccountRequestJSON {
   /* eslint-disable camelcase */
-  tariff_id: number;
+  tariff_id: string;
   /* eslint-enable camelcase */
 }
 
@@ -5286,7 +5280,7 @@ export class DeleteChangeTariffOnPersonalAccountRequest implements TDProtoClass<
    * @param tariffId DOCUMENTATION MISSING
    */
   constructor (
-    public tariffId: number,
+    public tariffId: string,
   ) {}
 
   public static fromJSON (raw: DeleteChangeTariffOnPersonalAccountRequestJSON): DeleteChangeTariffOnPersonalAccountRequest {
