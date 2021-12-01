@@ -772,6 +772,48 @@ export class AnyEvent implements TDProtoClass<AnyEvent> {
   }
 }
 
+export interface AvatarColorsJSON {
+  /* eslint-disable camelcase */
+  task_default: RGBColor;
+  /* eslint-enable camelcase */
+}
+
+export class AvatarColors implements TDProtoClass<AvatarColors> {
+  /**
+   * AvatarColors avatar colors for app
+   * @param taskDefault TaskDefault color
+   */
+  constructor (
+    public taskDefault: RGBColor,
+  ) {}
+
+  public static fromJSON (raw: AvatarColorsJSON): AvatarColors {
+    return new AvatarColors(
+      raw.task_default,
+    )
+  }
+
+  public mappableFields = [
+    'taskDefault',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    taskDefault: () => ({ task_default: this.taskDefault }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): AvatarColorsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<AvatarColorsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface BaseEventJSON {
   /* eslint-disable camelcase */
   event: string;
@@ -16755,6 +16797,7 @@ export interface ThemeJSON {
   TextOnAccentHoverColor: RGBColor;
   attention: RGBColor;
   attention_light: RGBColor;
+  avatar: AvatarColorsJSON;
   back: RGBColor;
   back_dark: RGBColor;
   back_light: RGBColor;
@@ -16799,6 +16842,7 @@ export class Theme implements TDProtoClass<Theme> {
    * @param TextOnAccentHoverColor TextOnAccentHoverColor for web
    * @param attention Attention color for app
    * @param attentionLight Attention light color for app
+   * @param avatar Avatar colors for app
    * @param back Back light color for app
    * @param backDark Back dark color for app
    * @param backLight Back light color for app
@@ -16839,6 +16883,7 @@ export class Theme implements TDProtoClass<Theme> {
     public TextOnAccentHoverColor: RGBColor,
     public attention: RGBColor,
     public attentionLight: RGBColor,
+    public avatar: AvatarColors,
     public back: RGBColor,
     public backDark: RGBColor,
     public backLight: RGBColor,
@@ -16881,6 +16926,7 @@ export class Theme implements TDProtoClass<Theme> {
       raw.TextOnAccentHoverColor,
       raw.attention,
       raw.attention_light,
+      AvatarColors.fromJSON(raw.avatar),
       raw.back,
       raw.back_dark,
       raw.back_light,
@@ -16923,6 +16969,7 @@ export class Theme implements TDProtoClass<Theme> {
     'TextOnAccentHoverColor',
     'attention',
     'attentionLight',
+    'avatar',
     'back',
     'backDark',
     'backLight',
@@ -16965,6 +17012,7 @@ export class Theme implements TDProtoClass<Theme> {
     TextOnAccentHoverColor: () => ({ TextOnAccentHoverColor: this.TextOnAccentHoverColor }),
     attention: () => ({ attention: this.attention }),
     attentionLight: () => ({ attention_light: this.attentionLight }),
+    avatar: () => ({ avatar: this.avatar.toJSON() }),
     back: () => ({ back: this.back }),
     backDark: () => ({ back_dark: this.backDark }),
     backLight: () => ({ back_light: this.backLight }),
