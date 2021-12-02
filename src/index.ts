@@ -862,6 +862,54 @@ export class BaseEvent implements TDProtoClass<BaseEvent> {
   }
 }
 
+export interface BgJSON {
+  /* eslint-disable camelcase */
+  badge_background: RGBColor;
+  fade: RGBColor;
+  /* eslint-enable camelcase */
+}
+
+export class Bg implements TDProtoClass<Bg> {
+  /**
+   * Bg bg colors for app
+   * @param badgeBackground BadgeBackground color
+   * @param fade Fade color
+   */
+  constructor (
+    public badgeBackground: RGBColor,
+    public fade: RGBColor,
+  ) {}
+
+  public static fromJSON (raw: BgJSON): Bg {
+    return new Bg(
+      raw.badge_background,
+      raw.fade,
+    )
+  }
+
+  public mappableFields = [
+    'badgeBackground',
+    'fade',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    badgeBackground: () => ({ badge_background: this.badgeBackground }),
+    fade: () => ({ fade: this.fade }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): BgJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<BgJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface BlockPersonalAccountResponseJSON {
   /* eslint-disable camelcase */
   success: boolean;
@@ -1021,6 +1069,66 @@ export class ButtonColors implements TDProtoClass<ButtonColors> {
 
   public toJSON (): ButtonColorsJSON
   public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ButtonColorsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface CallColorsJSON {
+  /* eslint-disable camelcase */
+  button_active: RGBColor;
+  button_end_call: RGBColor;
+  callbar_background: RGBColor;
+  icon_callbar: RGBColor;
+  /* eslint-enable camelcase */
+}
+
+export class CallColors implements TDProtoClass<CallColors> {
+  /**
+   * CallColors call colors for app
+   * @param buttonActive ButtonActive color
+   * @param buttonEndCall ButtonEndCall color
+   * @param callbarBackground CallBarBackground color
+   * @param iconCallbar IconCallBar color
+   */
+  constructor (
+    public buttonActive: RGBColor,
+    public buttonEndCall: RGBColor,
+    public callbarBackground: RGBColor,
+    public iconCallbar: RGBColor,
+  ) {}
+
+  public static fromJSON (raw: CallColorsJSON): CallColors {
+    return new CallColors(
+      raw.button_active,
+      raw.button_end_call,
+      raw.callbar_background,
+      raw.icon_callbar,
+    )
+  }
+
+  public mappableFields = [
+    'buttonActive',
+    'buttonEndCall',
+    'callbarBackground',
+    'iconCallbar',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    buttonActive: () => ({ button_active: this.buttonActive }),
+    buttonEndCall: () => ({ button_end_call: this.buttonEndCall }),
+    callbarBackground: () => ({ callbar_background: this.callbarBackground }),
+    iconCallbar: () => ({ icon_callbar: this.iconCallbar }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): CallColorsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<CallColorsJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -6656,6 +6764,8 @@ export interface FontColorsJSON {
   simple_button: RGBColor;
   sub: RGBColor;
   text: RGBColor;
+  text_avatar: RGBColor;
+  text_badge: RGBColor;
   title: RGBColor;
   /* eslint-enable camelcase */
 }
@@ -6669,6 +6779,8 @@ export class FontColors implements TDProtoClass<FontColors> {
    * @param simpleButton Simple button color
    * @param sub Sub color
    * @param text Text color
+   * @param textAvatar TextAvatar color
+   * @param textBadge TextBadge color
    * @param title Title color
    */
   constructor (
@@ -6678,6 +6790,8 @@ export class FontColors implements TDProtoClass<FontColors> {
     public simpleButton: RGBColor,
     public sub: RGBColor,
     public text: RGBColor,
+    public textAvatar: RGBColor,
+    public textBadge: RGBColor,
     public title: RGBColor,
   ) {}
 
@@ -6689,6 +6803,8 @@ export class FontColors implements TDProtoClass<FontColors> {
       raw.simple_button,
       raw.sub,
       raw.text,
+      raw.text_avatar,
+      raw.text_badge,
       raw.title,
     )
   }
@@ -6700,6 +6816,8 @@ export class FontColors implements TDProtoClass<FontColors> {
     'simpleButton',
     'sub',
     'text',
+    'textAvatar',
+    'textBadge',
     'title',
   ] as const
 
@@ -6711,6 +6829,8 @@ export class FontColors implements TDProtoClass<FontColors> {
     simpleButton: () => ({ simple_button: this.simpleButton }),
     sub: () => ({ sub: this.sub }),
     text: () => ({ text: this.text }),
+    textAvatar: () => ({ text_avatar: this.textAvatar }),
+    textBadge: () => ({ text_badge: this.textBadge }),
     title: () => ({ title: this.title }),
     /* eslint-enable camelcase */
   }
@@ -7680,6 +7800,7 @@ export interface InputColorsJSON {
   disable: RGBColor;
   error: RGBColor;
   static: RGBColor;
+  selection: RGBColor;
   /* eslint-enable camelcase */
 }
 
@@ -7690,12 +7811,14 @@ export class InputColors implements TDProtoClass<InputColors> {
    * @param disable Disable color
    * @param error Error color
    * @param isStatic Static color
+   * @param selection Selection color
    */
   constructor (
     public active: RGBColor,
     public disable: RGBColor,
     public error: RGBColor,
     public isStatic: RGBColor,
+    public selection: RGBColor,
   ) {}
 
   public static fromJSON (raw: InputColorsJSON): InputColors {
@@ -7704,6 +7827,7 @@ export class InputColors implements TDProtoClass<InputColors> {
       raw.disable,
       raw.error,
       raw.static,
+      raw.selection,
     )
   }
 
@@ -7712,6 +7836,7 @@ export class InputColors implements TDProtoClass<InputColors> {
     'disable',
     'error',
     'isStatic',
+    'selection',
   ] as const
 
   readonly #mapper = {
@@ -7720,6 +7845,7 @@ export class InputColors implements TDProtoClass<InputColors> {
     disable: () => ({ disable: this.disable }),
     error: () => ({ error: this.error }),
     isStatic: () => ({ static: this.isStatic }),
+    selection: () => ({ selection: this.selection }),
     /* eslint-enable camelcase */
   }
 
@@ -15112,6 +15238,78 @@ export class SuspendPersonalAccountResponse implements TDProtoClass<SuspendPerso
   }
 }
 
+export interface SwipeColorsJSON {
+  /* eslint-disable camelcase */
+  call: RGBColor;
+  end_call: RGBColor;
+  hide: RGBColor;
+  message: RGBColor;
+  notification: RGBColor;
+  pin: RGBColor;
+  /* eslint-enable camelcase */
+}
+
+export class SwipeColors implements TDProtoClass<SwipeColors> {
+  /**
+   * SwipeColors swipe colors for app
+   * @param call Call color
+   * @param endCall EndCall
+   * @param hide Hide color
+   * @param message Message color
+   * @param notification Notification color
+   * @param pin Pin color
+   */
+  constructor (
+    public call: RGBColor,
+    public endCall: RGBColor,
+    public hide: RGBColor,
+    public message: RGBColor,
+    public notification: RGBColor,
+    public pin: RGBColor,
+  ) {}
+
+  public static fromJSON (raw: SwipeColorsJSON): SwipeColors {
+    return new SwipeColors(
+      raw.call,
+      raw.end_call,
+      raw.hide,
+      raw.message,
+      raw.notification,
+      raw.pin,
+    )
+  }
+
+  public mappableFields = [
+    'call',
+    'endCall',
+    'hide',
+    'message',
+    'notification',
+    'pin',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    call: () => ({ call: this.call }),
+    endCall: () => ({ end_call: this.endCall }),
+    hide: () => ({ hide: this.hide }),
+    message: () => ({ message: this.message }),
+    notification: () => ({ notification: this.notification }),
+    pin: () => ({ pin: this.pin }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): SwipeColorsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<SwipeColorsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface SwitcherColorsJSON {
   /* eslint-disable camelcase */
   off: RGBColor;
@@ -16796,10 +16994,12 @@ export interface ThemeJSON {
   back_dark: RGBColor;
   back_light: RGBColor;
   background: RGBColor;
+  bg: BgJSON;
   brand: RGBColor;
   brand_dark: RGBColor;
   brand_light: RGBColor;
   button: ButtonColorsJSON;
+  call: CallColorsJSON;
   chat_input_background: RGBColor;
   error: RGBColor;
   error_light: RGBColor;
@@ -16811,6 +17011,7 @@ export interface ThemeJSON {
   substrate_background: RGBColor;
   success: RGBColor;
   success_light: RGBColor;
+  swipe: SwipeColorsJSON;
   switcher: SwitcherColorsJSON;
   tab_background: RGBColor;
   title_background: RGBColor;
@@ -16841,10 +17042,12 @@ export class Theme implements TDProtoClass<Theme> {
    * @param backDark Back dark color for app
    * @param backLight Back light color for app
    * @param background Background color for app
+   * @param bg Bg colors for app
    * @param brand Brand color for app
    * @param brandDark BrandDark color for app
    * @param brandLight Brand light color for app
    * @param button Button colors for app
+   * @param call Call colors for app
    * @param chatInputBackground Chat input background color for app
    * @param error Error color for app
    * @param errorLight Error light color for app
@@ -16856,6 +17059,7 @@ export class Theme implements TDProtoClass<Theme> {
    * @param substrateBackground Substrate background color for app
    * @param success Success color for app
    * @param successLight Success light color for app
+   * @param swipe Swipe colors for app
    * @param switcher Switcher colors for app
    * @param tabBackground Tab background color for app
    * @param titleBackground Title background color for app
@@ -16882,10 +17086,12 @@ export class Theme implements TDProtoClass<Theme> {
     public backDark: RGBColor,
     public backLight: RGBColor,
     public background: RGBColor,
+    public bg: Bg,
     public brand: RGBColor,
     public brandDark: RGBColor,
     public brandLight: RGBColor,
     public button: ButtonColors,
+    public call: CallColors,
     public chatInputBackground: RGBColor,
     public error: RGBColor,
     public errorLight: RGBColor,
@@ -16897,6 +17103,7 @@ export class Theme implements TDProtoClass<Theme> {
     public substrateBackground: RGBColor,
     public success: RGBColor,
     public successLight: RGBColor,
+    public swipe: SwipeColors,
     public switcher: SwitcherColors,
     public tabBackground: RGBColor,
     public titleBackground: RGBColor,
@@ -16925,10 +17132,12 @@ export class Theme implements TDProtoClass<Theme> {
       raw.back_dark,
       raw.back_light,
       raw.background,
+      Bg.fromJSON(raw.bg),
       raw.brand,
       raw.brand_dark,
       raw.brand_light,
       ButtonColors.fromJSON(raw.button),
+      CallColors.fromJSON(raw.call),
       raw.chat_input_background,
       raw.error,
       raw.error_light,
@@ -16940,6 +17149,7 @@ export class Theme implements TDProtoClass<Theme> {
       raw.substrate_background,
       raw.success,
       raw.success_light,
+      SwipeColors.fromJSON(raw.swipe),
       SwitcherColors.fromJSON(raw.switcher),
       raw.tab_background,
       raw.title_background,
@@ -16968,10 +17178,12 @@ export class Theme implements TDProtoClass<Theme> {
     'backDark',
     'backLight',
     'background',
+    'bg',
     'brand',
     'brandDark',
     'brandLight',
     'button',
+    'call',
     'chatInputBackground',
     'error',
     'errorLight',
@@ -16983,6 +17195,7 @@ export class Theme implements TDProtoClass<Theme> {
     'substrateBackground',
     'success',
     'successLight',
+    'swipe',
     'switcher',
     'tabBackground',
     'titleBackground',
@@ -17011,10 +17224,12 @@ export class Theme implements TDProtoClass<Theme> {
     backDark: () => ({ back_dark: this.backDark }),
     backLight: () => ({ back_light: this.backLight }),
     background: () => ({ background: this.background }),
+    bg: () => ({ bg: this.bg.toJSON() }),
     brand: () => ({ brand: this.brand }),
     brandDark: () => ({ brand_dark: this.brandDark }),
     brandLight: () => ({ brand_light: this.brandLight }),
     button: () => ({ button: this.button.toJSON() }),
+    call: () => ({ call: this.call.toJSON() }),
     chatInputBackground: () => ({ chat_input_background: this.chatInputBackground }),
     error: () => ({ error: this.error }),
     errorLight: () => ({ error_light: this.errorLight }),
@@ -17026,6 +17241,7 @@ export class Theme implements TDProtoClass<Theme> {
     substrateBackground: () => ({ substrate_background: this.substrateBackground }),
     success: () => ({ success: this.success }),
     successLight: () => ({ success_light: this.successLight }),
+    swipe: () => ({ swipe: this.swipe.toJSON() }),
     switcher: () => ({ switcher: this.switcher.toJSON() }),
     tabBackground: () => ({ tab_background: this.tabBackground }),
     titleBackground: () => ({ title_background: this.titleBackground }),
@@ -18029,17 +18245,17 @@ export interface WebBaseJSON {
 export class WebBase implements TDProtoClass<WebBase> {
   /**
    * WebBase base colors for web
-   * @param attention DOCUMENTATION MISSING
-   * @param attentionLight DOCUMENTATION MISSING
-   * @param backLight DOCUMENTATION MISSING
-   * @param brand DOCUMENTATION MISSING
-   * @param brandDark DOCUMENTATION MISSING
-   * @param brandLight DOCUMENTATION MISSING
-   * @param error DOCUMENTATION MISSING
-   * @param errorLight DOCUMENTATION MISSING
-   * @param fade DOCUMENTATION MISSING
-   * @param success DOCUMENTATION MISSING
-   * @param successLight DOCUMENTATION MISSING
+   * @param attention Attention color
+   * @param attentionLight AttentionLight color
+   * @param backLight BackLight color
+   * @param brand Brand color
+   * @param brandDark BrandDark color
+   * @param brandLight BrandLight color
+   * @param error Error color
+   * @param errorLight ErrorLight color
+   * @param fade Fade color
+   * @param success Success color
+   * @param successLight SuccessLight color
    */
   constructor (
     public attention: RGBColor,
