@@ -2772,6 +2772,108 @@ export class ClientCallRejectParams implements TDProtoClass<ClientCallRejectPara
   }
 }
 
+export interface ClientCallScreenShareJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ClientCallScreenShareParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ClientCallScreenShare implements TDProtoClass<ClientCallScreenShare> {
+  /**
+   * ClientCallScreenShare event for enable/disable screen share
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ClientCallScreenShareParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ClientCallScreenShareJSON): ClientCallScreenShare {
+    return new ClientCallScreenShare(
+      raw.event,
+      ClientCallScreenShareParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ClientCallScreenShareJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientCallScreenShareJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ClientCallScreenShareParamsJSON {
+  /* eslint-disable camelcase */
+  call_jid: JID;
+  screenshare_enabled: boolean;
+  /* eslint-enable camelcase */
+}
+
+export class ClientCallScreenShareParams implements TDProtoClass<ClientCallScreenShareParams> {
+  /**
+   * Params of the client.call.screenshare event
+   * @param callJid CallJid Chat or contact id
+   * @param screenshareEnabled ScreenShareEnabled enabled or disabled screen share
+   */
+  constructor (
+    public callJid: JID,
+    public screenshareEnabled: boolean,
+  ) {}
+
+  public static fromJSON (raw: ClientCallScreenShareParamsJSON): ClientCallScreenShareParams {
+    return new ClientCallScreenShareParams(
+      raw.call_jid,
+      raw.screenshare_enabled,
+    )
+  }
+
+  public mappableFields = [
+    'callJid',
+    'screenshareEnabled',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    callJid: () => ({ call_jid: this.callJid }),
+    screenshareEnabled: () => ({ screenshare_enabled: this.screenshareEnabled }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ClientCallScreenShareParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ClientCallScreenShareParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface ClientCallSdpJSON {
   /* eslint-disable camelcase */
   event: string;
@@ -11351,6 +11453,114 @@ export class ServerCallRestartParams implements TDProtoClass<ServerCallRestartPa
 
   public toJSON (): ServerCallRestartParamsJSON
   public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallRestartParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerCallScreenShareJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ServerCallScreenShareParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerCallScreenShare implements TDProtoClass<ServerCallScreenShare> {
+  /**
+   * ServerCallScreenShare screen share event
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ServerCallScreenShareParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ServerCallScreenShareJSON): ServerCallScreenShare {
+    return new ServerCallScreenShare(
+      raw.event,
+      ServerCallScreenShareParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerCallScreenShareJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallScreenShareJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerCallScreenShareParamsJSON {
+  /* eslint-disable camelcase */
+  actor_jid: JID;
+  call_jid: JID;
+  screenshare_enabled: boolean;
+  /* eslint-enable camelcase */
+}
+
+export class ServerCallScreenShareParams implements TDProtoClass<ServerCallScreenShareParams> {
+  /**
+   * Params of the server.call.screenshare event
+   * @param actorJid ActorJid - contact id which enable/disable screen sharing
+   * @param callJid CallJid - Chat or contact id
+   * @param screenshareEnabled ScreenShareEnabled enabled or disabled screen share
+   */
+  constructor (
+    public actorJid: JID,
+    public callJid: JID,
+    public screenshareEnabled: boolean,
+  ) {}
+
+  public static fromJSON (raw: ServerCallScreenShareParamsJSON): ServerCallScreenShareParams {
+    return new ServerCallScreenShareParams(
+      raw.actor_jid,
+      raw.call_jid,
+      raw.screenshare_enabled,
+    )
+  }
+
+  public mappableFields = [
+    'actorJid',
+    'callJid',
+    'screenshareEnabled',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    actorJid: () => ({ actor_jid: this.actorJid }),
+    callJid: () => ({ call_jid: this.callJid }),
+    screenshareEnabled: () => ({ screenshare_enabled: this.screenshareEnabled }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerCallScreenShareParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallScreenShareParamsJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
