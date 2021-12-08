@@ -6320,7 +6320,7 @@ export interface FeaturesJSON {
   amplitude_api_key?: string;
   app_login_background?: string;
   auth_2fa?: boolean;
-  auth_by_ntlm?: boolean;
+  auth_by_kerberos?: boolean;
   auth_by_password?: boolean;
   auth_by_qr_code?: boolean;
   auth_by_sms?: boolean;
@@ -6423,7 +6423,7 @@ export class Features implements TDProtoClass<Features> {
    * @param amplitudeApiKey Amplitude api key
    * @param appLoginBackground AppBackground image url, if any
    * @param auth2fa Two-factor authentication (2FA) enabled
-   * @param authByNtlm NTLM authentication enabled
+   * @param authByKerberos Kerberos authentication enabled
    * @param authByPassword Password authentication enabled
    * @param authByQrCode QR-code / link authentication enabled
    * @param authBySms SMS authentication enabled
@@ -6522,7 +6522,7 @@ export class Features implements TDProtoClass<Features> {
     public amplitudeApiKey?: string,
     public appLoginBackground?: string,
     public auth2fa?: boolean,
-    public authByNtlm?: boolean,
+    public authByKerberos?: boolean,
     public authByPassword?: boolean,
     public authByQrCode?: boolean,
     public authBySms?: boolean,
@@ -6623,7 +6623,7 @@ export class Features implements TDProtoClass<Features> {
       raw.amplitude_api_key,
       raw.app_login_background,
       raw.auth_2fa,
-      raw.auth_by_ntlm,
+      raw.auth_by_kerberos,
       raw.auth_by_password,
       raw.auth_by_qr_code,
       raw.auth_by_sms,
@@ -6724,7 +6724,7 @@ export class Features implements TDProtoClass<Features> {
     'amplitudeApiKey',
     'appLoginBackground',
     'auth2fa',
-    'authByNtlm',
+    'authByKerberos',
     'authByPassword',
     'authByQrCode',
     'authBySms',
@@ -6825,7 +6825,7 @@ export class Features implements TDProtoClass<Features> {
     amplitudeApiKey: () => ({ amplitude_api_key: this.amplitudeApiKey }),
     appLoginBackground: () => ({ app_login_background: this.appLoginBackground }),
     auth2fa: () => ({ auth_2fa: this.auth2fa }),
-    authByNtlm: () => ({ auth_by_ntlm: this.authByNtlm }),
+    authByKerberos: () => ({ auth_by_kerberos: this.authByKerberos }),
     authByPassword: () => ({ auth_by_password: this.authByPassword }),
     authByQrCode: () => ({ auth_by_qr_code: this.authByQrCode }),
     authBySms: () => ({ auth_by_sms: this.authBySms }),
