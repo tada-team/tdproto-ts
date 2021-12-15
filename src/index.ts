@@ -772,6 +772,72 @@ export class AnyEvent implements TDProtoClass<AnyEvent> {
   }
 }
 
+export interface AuthJSON {
+  /* eslint-disable camelcase */
+  me: UserWithMeJSON;
+  method2fa: string;
+  recovery2fa: boolean;
+  required2fa: boolean;
+  token?: string;
+  /* eslint-enable camelcase */
+}
+
+export class Auth implements TDProtoClass<Auth> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param me DOCUMENTATION MISSING
+   * @param method2fa DOCUMENTATION MISSING
+   * @param recovery2fa DOCUMENTATION MISSING
+   * @param required2fa DOCUMENTATION MISSING
+   * @param token DOCUMENTATION MISSING
+   */
+  constructor (
+    public me: UserWithMe,
+    public method2fa: string,
+    public recovery2fa: boolean,
+    public required2fa: boolean,
+    public token?: string,
+  ) {}
+
+  public static fromJSON (raw: AuthJSON): Auth {
+    return new Auth(
+      UserWithMe.fromJSON(raw.me),
+      raw.method2fa,
+      raw.recovery2fa,
+      raw.required2fa,
+      raw.token,
+    )
+  }
+
+  public mappableFields = [
+    'me',
+    'method2fa',
+    'recovery2fa',
+    'required2fa',
+    'token',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    me: () => ({ me: this.me.toJSON() }),
+    method2fa: () => ({ method2fa: this.method2fa }),
+    recovery2fa: () => ({ recovery2fa: this.recovery2fa }),
+    required2fa: () => ({ required2fa: this.required2fa }),
+    token: () => ({ token: this.token }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): AuthJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<AuthJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface AvatarColorsJSON {
   /* eslint-disable camelcase */
   task_default: RGBColor;
