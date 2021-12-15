@@ -18300,7 +18300,6 @@ export class UserInfo implements TDProtoClass<UserInfo> {
 
 export interface UserWithMeJSON {
   /* eslint-disable camelcase */
-  account: PersonalAccountBillingJSON;
   alt_send: boolean;
   always_send_pushes: boolean;
   asterisk_mention: boolean;
@@ -18313,6 +18312,7 @@ export interface UserWithMeJSON {
   teams: TeamJSON[];
   timezone: string;
   unread_first: boolean;
+  account?: PersonalAccountBillingJSON;
   default_lang?: string;
   email?: string;
   family_name?: string;
@@ -18326,7 +18326,6 @@ export interface UserWithMeJSON {
 export class UserWithMe implements TDProtoClass<UserWithMe> {
   /**
    * Account data with extra information
-   * @param account Billing personal account
    * @param altSend Use Ctrl/Cmd + Enter instead Enter
    * @param alwaysSendPushes Send pushes even user is online
    * @param asteriskMention Use * as @ for mentions
@@ -18339,6 +18338,7 @@ export class UserWithMe implements TDProtoClass<UserWithMe> {
    * @param teams Available teams
    * @param timezone Timezone
    * @param unreadFirst Show unread chats in chat list first
+   * @param account Personal account from billing
    * @param defaultLang Default language code
    * @param email Email for login
    * @param familyName Family name
@@ -18348,7 +18348,6 @@ export class UserWithMe implements TDProtoClass<UserWithMe> {
    * @param phone Phone for login
    */
   constructor (
-    public account: PersonalAccountBilling,
     public altSend: boolean,
     public alwaysSendPushes: boolean,
     public asteriskMention: boolean,
@@ -18361,6 +18360,7 @@ export class UserWithMe implements TDProtoClass<UserWithMe> {
     public teams: Team[],
     public timezone: string,
     public unreadFirst: boolean,
+    public account?: PersonalAccountBilling,
     public defaultLang?: string,
     public email?: string,
     public familyName?: string,
@@ -18372,7 +18372,6 @@ export class UserWithMe implements TDProtoClass<UserWithMe> {
 
   public static fromJSON (raw: UserWithMeJSON): UserWithMe {
     return new UserWithMe(
-      PersonalAccountBilling.fromJSON(raw.account),
       raw.alt_send,
       raw.always_send_pushes,
       raw.asterisk_mention,
@@ -18385,6 +18384,7 @@ export class UserWithMe implements TDProtoClass<UserWithMe> {
       raw.teams.map(Team.fromJSON),
       raw.timezone,
       raw.unread_first,
+      raw.account && PersonalAccountBilling.fromJSON(raw.account),
       raw.default_lang,
       raw.email,
       raw.family_name,
@@ -18396,7 +18396,6 @@ export class UserWithMe implements TDProtoClass<UserWithMe> {
   }
 
   public mappableFields = [
-    'account',
     'altSend',
     'alwaysSendPushes',
     'asteriskMention',
@@ -18409,6 +18408,7 @@ export class UserWithMe implements TDProtoClass<UserWithMe> {
     'teams',
     'timezone',
     'unreadFirst',
+    'account',
     'defaultLang',
     'email',
     'familyName',
@@ -18420,7 +18420,6 @@ export class UserWithMe implements TDProtoClass<UserWithMe> {
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    account: () => ({ account: this.account.toJSON() }),
     altSend: () => ({ alt_send: this.altSend }),
     alwaysSendPushes: () => ({ always_send_pushes: this.alwaysSendPushes }),
     asteriskMention: () => ({ asterisk_mention: this.asteriskMention }),
@@ -18433,6 +18432,7 @@ export class UserWithMe implements TDProtoClass<UserWithMe> {
     teams: () => ({ teams: this.teams.map(u => u.toJSON()) }),
     timezone: () => ({ timezone: this.timezone }),
     unreadFirst: () => ({ unread_first: this.unreadFirst }),
+    account: () => ({ account: this.account?.toJSON() }),
     defaultLang: () => ({ default_lang: this.defaultLang }),
     email: () => ({ email: this.email }),
     familyName: () => ({ family_name: this.familyName }),
