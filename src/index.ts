@@ -642,32 +642,32 @@ export class AddUserInWorkplaceResponse implements TDProtoClass<AddUserInWorkpla
 
 export interface AddWorkplacesOnPersonalAccountRequestJSON {
   /* eslint-disable camelcase */
-  count_workplaces: number;
+  workplaces_count: number;
   /* eslint-enable camelcase */
 }
 
 export class AddWorkplacesOnPersonalAccountRequest implements TDProtoClass<AddWorkplacesOnPersonalAccountRequest> {
   /**
    * AddWorkplacesOnPersonalAccountRequest request on add workplace on personal account
-   * @param countWorkplaces DOCUMENTATION MISSING
+   * @param workplacesCount DOCUMENTATION MISSING
    */
   constructor (
-    public countWorkplaces: number,
+    public workplacesCount: number,
   ) {}
 
   public static fromJSON (raw: AddWorkplacesOnPersonalAccountRequestJSON): AddWorkplacesOnPersonalAccountRequest {
     return new AddWorkplacesOnPersonalAccountRequest(
-      raw.count_workplaces,
+      raw.workplaces_count,
     )
   }
 
   public mappableFields = [
-    'countWorkplaces',
+    'workplacesCount',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    countWorkplaces: () => ({ count_workplaces: this.countWorkplaces }),
+    workplacesCount: () => ({ workplaces_count: this.workplacesCount }),
     /* eslint-enable camelcase */
   }
 
@@ -6390,6 +6390,7 @@ export interface FeaturesJSON {
   auth_by_password?: boolean;
   auth_by_qr_code?: boolean;
   auth_by_sms?: boolean;
+  billing?: boolean;
   custom_app_icon_name?: string;
   default_wallpaper?: WallpaperJSON;
   file_extension_blacklist?: string[];
@@ -6493,6 +6494,7 @@ export class Features implements TDProtoClass<Features> {
    * @param authByPassword Password authentication enabled
    * @param authByQrCode QR-code / link authentication enabled
    * @param authBySms SMS authentication enabled
+   * @param billing Billing services integrations
    * @param customAppIconName Custom application icon name, if any
    * @param defaultWallpaper Default wallpaper url for mobile apps, if any
    * @param fileExtensionBlacklist File Extension Blacklist
@@ -6592,6 +6594,7 @@ export class Features implements TDProtoClass<Features> {
     public authByPassword?: boolean,
     public authByQrCode?: boolean,
     public authBySms?: boolean,
+    public billing?: boolean,
     public customAppIconName?: string,
     public defaultWallpaper?: Wallpaper,
     public fileExtensionBlacklist?: string[],
@@ -6693,6 +6696,7 @@ export class Features implements TDProtoClass<Features> {
       raw.auth_by_password,
       raw.auth_by_qr_code,
       raw.auth_by_sms,
+      raw.billing,
       raw.custom_app_icon_name,
       raw.default_wallpaper && Wallpaper.fromJSON(raw.default_wallpaper),
       raw.file_extension_blacklist,
@@ -6794,6 +6798,7 @@ export class Features implements TDProtoClass<Features> {
     'authByPassword',
     'authByQrCode',
     'authBySms',
+    'billing',
     'customAppIconName',
     'defaultWallpaper',
     'fileExtensionBlacklist',
@@ -6895,6 +6900,7 @@ export class Features implements TDProtoClass<Features> {
     authByPassword: () => ({ auth_by_password: this.authByPassword }),
     authByQrCode: () => ({ auth_by_qr_code: this.authByQrCode }),
     authBySms: () => ({ auth_by_sms: this.authBySms }),
+    billing: () => ({ billing: this.billing }),
     customAppIconName: () => ({ custom_app_icon_name: this.customAppIconName }),
     defaultWallpaper: () => ({ default_wallpaper: this.defaultWallpaper?.toJSON() }),
     fileExtensionBlacklist: () => ({ file_extension_blacklist: this.fileExtensionBlacklist }),
