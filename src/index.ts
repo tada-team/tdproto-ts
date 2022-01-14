@@ -4770,6 +4770,90 @@ export class Country implements TDProtoClass<Country> {
   }
 }
 
+export interface CreateBillingContactRequestJSON {
+  /* eslint-disable camelcase */
+  family_name: string;
+  given_name: string;
+  patronymic: string;
+  phone: string;
+  role: string;
+  sections: string[];
+  status: TeamStatus;
+  user_uid: string;
+  /* eslint-enable camelcase */
+}
+
+export class CreateBillingContactRequest implements TDProtoClass<CreateBillingContactRequest> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param familyName DOCUMENTATION MISSING
+   * @param givenName DOCUMENTATION MISSING
+   * @param patronymic DOCUMENTATION MISSING
+   * @param phone DOCUMENTATION MISSING
+   * @param role DOCUMENTATION MISSING
+   * @param sections DOCUMENTATION MISSING
+   * @param status DOCUMENTATION MISSING
+   * @param userUid DOCUMENTATION MISSING
+   */
+  constructor (
+    public familyName: string,
+    public givenName: string,
+    public patronymic: string,
+    public phone: string,
+    public role: string,
+    public sections: string[],
+    public status: TeamStatus,
+    public userUid: string,
+  ) {}
+
+  public static fromJSON (raw: CreateBillingContactRequestJSON): CreateBillingContactRequest {
+    return new CreateBillingContactRequest(
+      raw.family_name,
+      raw.given_name,
+      raw.patronymic,
+      raw.phone,
+      raw.role,
+      raw.sections,
+      raw.status,
+      raw.user_uid,
+    )
+  }
+
+  public mappableFields = [
+    'familyName',
+    'givenName',
+    'patronymic',
+    'phone',
+    'role',
+    'sections',
+    'status',
+    'userUid',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    familyName: () => ({ family_name: this.familyName }),
+    givenName: () => ({ given_name: this.givenName }),
+    patronymic: () => ({ patronymic: this.patronymic }),
+    phone: () => ({ phone: this.phone }),
+    role: () => ({ role: this.role }),
+    sections: () => ({ sections: this.sections }),
+    status: () => ({ status: this.status }),
+    userUid: () => ({ user_uid: this.userUid }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): CreateBillingContactRequestJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<CreateBillingContactRequestJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface CreateChangeTariffOnPersonalAccountRequestJSON {
   /* eslint-disable camelcase */
   tariff_id: string;
