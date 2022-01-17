@@ -4772,46 +4772,46 @@ export class Country implements TDProtoClass<Country> {
 
 export interface CreateBillingContactRequestJSON {
   /* eslint-disable camelcase */
-  family_name: string;
-  given_name: string;
-  patronymic: string;
   phone: string;
-  role: string;
-  sections: string[];
-  status: TeamStatus;
-  user_uid: string;
+  family_name?: string;
+  given_name?: string;
+  patronymic?: string;
+  role?: string;
+  sections?: string[];
+  status?: TeamStatus;
+  user_uid?: string;
   /* eslint-enable camelcase */
 }
 
 export class CreateBillingContactRequest implements TDProtoClass<CreateBillingContactRequest> {
   /**
    * MISSING CLASS DOCUMENTATION
+   * @param phone DOCUMENTATION MISSING
    * @param familyName DOCUMENTATION MISSING
    * @param givenName DOCUMENTATION MISSING
    * @param patronymic DOCUMENTATION MISSING
-   * @param phone DOCUMENTATION MISSING
    * @param role DOCUMENTATION MISSING
    * @param sections DOCUMENTATION MISSING
    * @param status DOCUMENTATION MISSING
    * @param userUid DOCUMENTATION MISSING
    */
   constructor (
-    public familyName: string,
-    public givenName: string,
-    public patronymic: string,
     public phone: string,
-    public role: string,
-    public sections: string[],
-    public status: TeamStatus,
-    public userUid: string,
+    public familyName?: string,
+    public givenName?: string,
+    public patronymic?: string,
+    public role?: string,
+    public sections?: string[],
+    public status?: TeamStatus,
+    public userUid?: string,
   ) {}
 
   public static fromJSON (raw: CreateBillingContactRequestJSON): CreateBillingContactRequest {
     return new CreateBillingContactRequest(
+      raw.phone,
       raw.family_name,
       raw.given_name,
       raw.patronymic,
-      raw.phone,
       raw.role,
       raw.sections,
       raw.status,
@@ -4820,10 +4820,10 @@ export class CreateBillingContactRequest implements TDProtoClass<CreateBillingCo
   }
 
   public mappableFields = [
+    'phone',
     'familyName',
     'givenName',
     'patronymic',
-    'phone',
     'role',
     'sections',
     'status',
@@ -4832,10 +4832,10 @@ export class CreateBillingContactRequest implements TDProtoClass<CreateBillingCo
 
   readonly #mapper = {
     /* eslint-disable camelcase */
+    phone: () => ({ phone: this.phone }),
     familyName: () => ({ family_name: this.familyName }),
     givenName: () => ({ given_name: this.givenName }),
     patronymic: () => ({ patronymic: this.patronymic }),
-    phone: () => ({ phone: this.phone }),
     role: () => ({ role: this.role }),
     sections: () => ({ sections: this.sections }),
     status: () => ({ status: this.status }),
