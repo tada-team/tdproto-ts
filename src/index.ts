@@ -7398,6 +7398,114 @@ export class GetTariffsListResponse implements TDProtoClass<GetTariffsListRespon
   }
 }
 
+export interface GetTeamOnPersonalAccountResponseJSON {
+  /* eslint-disable camelcase */
+  open_date: string;
+  personal_account_id: string;
+  team_id: string;
+  team_uuid: string;
+  close_date?: string;
+  /* eslint-enable camelcase */
+}
+
+export class GetTeamOnPersonalAccountResponse implements TDProtoClass<GetTeamOnPersonalAccountResponse> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param openDate DOCUMENTATION MISSING
+   * @param personalAccountId DOCUMENTATION MISSING
+   * @param teamId DOCUMENTATION MISSING
+   * @param teamUuid DOCUMENTATION MISSING
+   * @param closeDate DOCUMENTATION MISSING
+   */
+  constructor (
+    public openDate: string,
+    public personalAccountId: string,
+    public teamId: string,
+    public teamUuid: string,
+    public closeDate?: string,
+  ) {}
+
+  public static fromJSON (raw: GetTeamOnPersonalAccountResponseJSON): GetTeamOnPersonalAccountResponse {
+    return new GetTeamOnPersonalAccountResponse(
+      raw.open_date,
+      raw.personal_account_id,
+      raw.team_id,
+      raw.team_uuid,
+      raw.close_date,
+    )
+  }
+
+  public mappableFields = [
+    'openDate',
+    'personalAccountId',
+    'teamId',
+    'teamUuid',
+    'closeDate',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    openDate: () => ({ open_date: this.openDate }),
+    personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
+    teamId: () => ({ team_id: this.teamId }),
+    teamUuid: () => ({ team_uuid: this.teamUuid }),
+    closeDate: () => ({ close_date: this.closeDate }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): GetTeamOnPersonalAccountResponseJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<GetTeamOnPersonalAccountResponseJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface GetTeamsOnPersonalAccountResponseJSON {
+  /* eslint-disable camelcase */
+  teams: GetTeamOnPersonalAccountResponseJSON[];
+  /* eslint-enable camelcase */
+}
+
+export class GetTeamsOnPersonalAccountResponse implements TDProtoClass<GetTeamsOnPersonalAccountResponse> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param teams DOCUMENTATION MISSING
+   */
+  constructor (
+    public teams: GetTeamOnPersonalAccountResponse[],
+  ) {}
+
+  public static fromJSON (raw: GetTeamsOnPersonalAccountResponseJSON): GetTeamsOnPersonalAccountResponse {
+    return new GetTeamsOnPersonalAccountResponse(
+      raw.teams.map(GetTeamOnPersonalAccountResponse.fromJSON),
+    )
+  }
+
+  public mappableFields = [
+    'teams',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    teams: () => ({ teams: this.teams.map(u => u.toJSON()) }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): GetTeamsOnPersonalAccountResponseJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<GetTeamsOnPersonalAccountResponseJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface GetUnpaidWorkplacesByPersonalAccountResponseJSON {
   /* eslint-disable camelcase */
   count?: number;
