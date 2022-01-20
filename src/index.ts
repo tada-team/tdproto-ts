@@ -10784,6 +10784,102 @@ export class Section implements TDProtoClass<Section> {
   }
 }
 
+export interface ServerAccountUpdatedJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ServerAccountUpdatedParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerAccountUpdated implements TDProtoClass<ServerAccountUpdated> {
+  /**
+   * Personal Account created or updated
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ServerAccountUpdatedParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ServerAccountUpdatedJSON): ServerAccountUpdated {
+    return new ServerAccountUpdated(
+      raw.event,
+      ServerAccountUpdatedParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerAccountUpdatedJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerAccountUpdatedJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerAccountUpdatedParamsJSON {
+  /* eslint-disable camelcase */
+  account: PersonalAccountBillingJSON;
+  /* eslint-enable camelcase */
+}
+
+export class ServerAccountUpdatedParams implements TDProtoClass<ServerAccountUpdatedParams> {
+  /**
+   * Params of the server.account.updated event
+   * @param account Personal Account info
+   */
+  constructor (
+    public account: PersonalAccountBilling,
+  ) {}
+
+  public static fromJSON (raw: ServerAccountUpdatedParamsJSON): ServerAccountUpdatedParams {
+    return new ServerAccountUpdatedParams(
+      PersonalAccountBilling.fromJSON(raw.account),
+    )
+  }
+
+  public mappableFields = [
+    'account',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    account: () => ({ account: this.account.toJSON() }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerAccountUpdatedParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerAccountUpdatedParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface ServerCallAnswerJSON {
   /* eslint-disable camelcase */
   event: string;
