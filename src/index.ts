@@ -15124,6 +15124,102 @@ export class ServerWarningParams implements TDProtoClass<ServerWarningParams> {
   }
 }
 
+export interface ServerWorkplaceUpdatedJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ServerWorkplaceUpdatedParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerWorkplaceUpdated implements TDProtoClass<ServerWorkplaceUpdated> {
+  /**
+   * ServerWorkplaceUpdated Workplace created or updated
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ServerWorkplaceUpdatedParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ServerWorkplaceUpdatedJSON): ServerWorkplaceUpdated {
+    return new ServerWorkplaceUpdated(
+      raw.event,
+      ServerWorkplaceUpdatedParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerWorkplaceUpdatedJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerWorkplaceUpdatedJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerWorkplaceUpdatedParamsJSON {
+  /* eslint-disable camelcase */
+  workplaces: UserInfoJSON[];
+  /* eslint-enable camelcase */
+}
+
+export class ServerWorkplaceUpdatedParams implements TDProtoClass<ServerWorkplaceUpdatedParams> {
+  /**
+   * Params of the server.workplace.updated event
+   * @param workplaces Workplaces info
+   */
+  constructor (
+    public workplaces: UserInfo[],
+  ) {}
+
+  public static fromJSON (raw: ServerWorkplaceUpdatedParamsJSON): ServerWorkplaceUpdatedParams {
+    return new ServerWorkplaceUpdatedParams(
+      raw.workplaces.map(UserInfo.fromJSON),
+    )
+  }
+
+  public mappableFields = [
+    'workplaces',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    workplaces: () => ({ workplaces: this.workplaces.map(u => u.toJSON()) }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerWorkplaceUpdatedParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerWorkplaceUpdatedParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface SessionJSON {
   /* eslint-disable camelcase */
   created: ISODateTimeString;
