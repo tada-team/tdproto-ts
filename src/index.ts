@@ -9149,6 +9149,48 @@ export class MeetingsCreateRequestMembers implements TDProtoClass<MeetingsCreate
   }
 }
 
+export interface MeetingsDeleteRequestParamsJSON {
+  /* eslint-disable camelcase */
+  date?: ISODateTimeString;
+  /* eslint-enable camelcase */
+}
+
+export class MeetingsDeleteRequestParams implements TDProtoClass<MeetingsDeleteRequestParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param date DOCUMENTATION MISSING
+   */
+  constructor (
+    public date?: ISODateTimeString,
+  ) {}
+
+  public static fromJSON (raw: MeetingsDeleteRequestParamsJSON): MeetingsDeleteRequestParams {
+    return new MeetingsDeleteRequestParams(
+      raw.date,
+    )
+  }
+
+  public mappableFields = [
+    'date',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    date: () => ({ date: this.date }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): MeetingsDeleteRequestParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<MeetingsDeleteRequestParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface MeetingsMembersCreateRequestJSON {
   /* eslint-disable camelcase */
   jid: JID;
