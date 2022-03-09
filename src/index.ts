@@ -57,13 +57,16 @@ export type Mediatype =
    | 'pdf'
 
 export type MeetingMemberStatus =
-   | 'owner'
-   | 'admin'
-   | 'member'
-   | 'accepted'
-   | 'rejected'
-   | 'doubts'
-   | 'waiting'
+   | 'MEETING_MEMBER_STATUS_OWNER'
+   | 'MEETING_MEMBER_STATUS_ADMIN'
+   | 'MEETING_MEMBER_STATUS_MEMBER'
+   | 'MEETING_MEMBER_STATUS_OPTIONAL_MEMBER'
+
+export type MeetingPresenceStatus =
+   | 'MEETING_PRESENCE_STATUS_ACCEPTED'
+   | 'MEETING_PRESENCE_STATUS_REJECTED'
+   | 'MEETING_PRESENCE_STATUS_DOUBTS'
+   | 'MEETING_PRESENCE_STATUS_WAITING'
 
 export type PersonalAccountStatus =
    | 'PERSONAL_ACCOUNT_STATUS_ACTIVE'
@@ -92,8 +95,6 @@ export type Err = string
 export type ISODateTimeString = string
 
 export type JID = string
-
-export type MeetingMemberPresence = string
 
 export type PushDeviceType = number
 
@@ -8930,7 +8931,7 @@ export class Meeting implements TDProtoClass<Meeting> {
 export interface MeetingMemberJSON {
   /* eslint-disable camelcase */
   contact: ContactJSON;
-  presence: MeetingMemberPresence;
+  presence: MeetingPresenceStatus;
   status: MeetingMemberStatus;
   can_change_presence?: boolean;
   can_change_status?: boolean;
@@ -8952,7 +8953,7 @@ export class MeetingMember implements TDProtoClass<MeetingMember> {
    */
   constructor (
     public contact: Contact,
-    public presence: MeetingMemberPresence,
+    public presence: MeetingPresenceStatus,
     public status: MeetingMemberStatus,
     public canChangePresence?: boolean,
     public canChangeStatus?: boolean,
@@ -9009,7 +9010,7 @@ export interface MeetingsCreateRequestJSON {
   /* eslint-disable camelcase */
   end_at: string;
   members: MeetingsCreateRequestMembersJSON[];
-  owner_presence: MeetingMemberPresence;
+  owner_presence: MeetingPresenceStatus;
   start_at: ISODateTimeString;
   freq?: number;
   freq_days?: number[];
@@ -9035,7 +9036,7 @@ export class MeetingsCreateRequest implements TDProtoClass<MeetingsCreateRequest
   constructor (
     public endAt: string,
     public members: MeetingsCreateRequestMembers[],
-    public ownerPresence: MeetingMemberPresence,
+    public ownerPresence: MeetingPresenceStatus,
     public startAt: ISODateTimeString,
     public freq?: number,
     public freqDays?: number[],
@@ -9250,7 +9251,7 @@ export interface MeetingsMembersRequestParamsJSON {
   is_required?: boolean;
   limit?: number;
   offset?: number;
-  presence?: MeetingMemberPresence;
+  presence?: MeetingPresenceStatus;
   sections?: string[];
   status?: MeetingMemberStatus;
   /* eslint-enable camelcase */
@@ -9270,7 +9271,7 @@ export class MeetingsMembersRequestParams implements TDProtoClass<MeetingsMember
     public isRequired?: boolean,
     public limit?: number,
     public offset?: number,
-    public presence?: MeetingMemberPresence,
+    public presence?: MeetingPresenceStatus,
     public sections?: string[],
     public status?: MeetingMemberStatus,
   ) {}
