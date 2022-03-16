@@ -19,6 +19,7 @@ export type ChatType =
    | 'direct'
    | 'group'
    | 'task'
+   | 'meeting'
 
 export type Currency =
    | 'EUR'
