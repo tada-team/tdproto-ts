@@ -9458,8 +9458,6 @@ export interface MeetingsRequestParamsJSON {
   limit?: number;
   members?: string[];
   offset?: number;
-  owners?: string[];
-  owners_sections?: string[];
   team_uuid?: string;
   /* eslint-enable camelcase */
 }
@@ -9478,8 +9476,6 @@ export class MeetingsRequestParams implements TDProtoClass<MeetingsRequestParams
    * @param limit DOCUMENTATION MISSING
    * @param members DOCUMENTATION MISSING
    * @param offset DOCUMENTATION MISSING
-   * @param owners DOCUMENTATION MISSING
-   * @param ownersSections DOCUMENTATION MISSING
    * @param teamUuid DOCUMENTATION MISSING
    */
   constructor (
@@ -9494,8 +9490,6 @@ export class MeetingsRequestParams implements TDProtoClass<MeetingsRequestParams
     public limit?: number,
     public members?: string[],
     public offset?: number,
-    public owners?: string[],
-    public ownersSections?: string[],
     public teamUuid?: string,
   ) {}
 
@@ -9512,8 +9506,6 @@ export class MeetingsRequestParams implements TDProtoClass<MeetingsRequestParams
       raw.limit,
       raw.members,
       raw.offset,
-      raw.owners,
-      raw.owners_sections,
       raw.team_uuid,
     )
   }
@@ -9530,8 +9522,6 @@ export class MeetingsRequestParams implements TDProtoClass<MeetingsRequestParams
     'limit',
     'members',
     'offset',
-    'owners',
-    'ownersSections',
     'teamUuid',
   ] as const
 
@@ -9548,8 +9538,6 @@ export class MeetingsRequestParams implements TDProtoClass<MeetingsRequestParams
     limit: () => ({ limit: this.limit }),
     members: () => ({ members: this.members }),
     offset: () => ({ offset: this.offset }),
-    owners: () => ({ owners: this.owners }),
-    ownersSections: () => ({ owners_sections: this.ownersSections }),
     teamUuid: () => ({ team_uuid: this.teamUuid }),
     /* eslint-enable camelcase */
   }
