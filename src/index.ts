@@ -30,6 +30,10 @@ export type GroupStatus =
    | 'admin'
    | 'member'
 
+export type ICETransportPolicy =
+   | 'relay'
+   | 'all'
+
 export type MarkupType =
    | 'bold'
    | 'italic'
@@ -6493,6 +6497,7 @@ export interface FeaturesJSON {
   file_extension_blacklist?: string[];
   file_extension_whitelist?: string[];
   file_extension_whitelist_priority?: boolean;
+  ice_transport_policy?: ICETransportPolicy;
   installation_title?: string;
   is_recaptcha_enabled?: boolean;
   landing_url?: string;
@@ -6597,6 +6602,7 @@ export class Features implements TDProtoClass<Features> {
    * @param fileExtensionBlacklist File Extension Blacklist
    * @param fileExtensionWhitelist File Extension Whitelist
    * @param fileExtensionWhitelistPriority File Extension Whitelist Priority
+   * @param iceTransportPolicy IceTransportPolicy a ice transport policy
    * @param installationTitle Installation title, used on login screen
    * @param isRecaptchaEnabled Captcha enabled
    * @param landingUrl Landing page address, if any
@@ -6697,6 +6703,7 @@ export class Features implements TDProtoClass<Features> {
     public fileExtensionBlacklist?: string[],
     public fileExtensionWhitelist?: string[],
     public fileExtensionWhitelistPriority?: boolean,
+    public iceTransportPolicy?: ICETransportPolicy,
     public installationTitle?: string,
     public isRecaptchaEnabled?: boolean,
     public landingUrl?: string,
@@ -6799,6 +6806,7 @@ export class Features implements TDProtoClass<Features> {
       raw.file_extension_blacklist,
       raw.file_extension_whitelist,
       raw.file_extension_whitelist_priority,
+      raw.ice_transport_policy,
       raw.installation_title,
       raw.is_recaptcha_enabled,
       raw.landing_url,
@@ -6901,6 +6909,7 @@ export class Features implements TDProtoClass<Features> {
     'fileExtensionBlacklist',
     'fileExtensionWhitelist',
     'fileExtensionWhitelistPriority',
+    'iceTransportPolicy',
     'installationTitle',
     'isRecaptchaEnabled',
     'landingUrl',
@@ -7003,6 +7012,7 @@ export class Features implements TDProtoClass<Features> {
     fileExtensionBlacklist: () => ({ file_extension_blacklist: this.fileExtensionBlacklist }),
     fileExtensionWhitelist: () => ({ file_extension_whitelist: this.fileExtensionWhitelist }),
     fileExtensionWhitelistPriority: () => ({ file_extension_whitelist_priority: this.fileExtensionWhitelistPriority }),
+    iceTransportPolicy: () => ({ ice_transport_policy: this.iceTransportPolicy }),
     installationTitle: () => ({ installation_title: this.installationTitle }),
     isRecaptchaEnabled: () => ({ is_recaptcha_enabled: this.isRecaptchaEnabled }),
     landingUrl: () => ({ landing_url: this.landingUrl }),
@@ -8008,31 +8018,43 @@ export class GroupMembership implements TDProtoClass<GroupMembership> {
 export interface ICEServerJSON {
   /* eslint-disable camelcase */
   urls: string;
+  credential?: string;
+  username?: string;
   /* eslint-enable camelcase */
 }
 
 export class ICEServer implements TDProtoClass<ICEServer> {
   /**
    * Interactive Connectivity Establishment Server for WEB Rtc connection. Readonly
-   * @param urls URls
+   * @param urls Urls - STUN or TURN addresses
+   * @param credential Credential - credential for TURN server
+   * @param username UserName - username for TURN server
    */
   constructor (
     public urls: string,
+    public credential?: string,
+    public username?: string,
   ) {}
 
   public static fromJSON (raw: ICEServerJSON): ICEServer {
     return new ICEServer(
       raw.urls,
+      raw.credential,
+      raw.username,
     )
   }
 
   public mappableFields = [
     'urls',
+    'credential',
+    'username',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
     urls: () => ({ urls: this.urls }),
+    credential: () => ({ credential: this.credential }),
+    username: () => ({ username: this.username }),
     /* eslint-enable camelcase */
   }
 
