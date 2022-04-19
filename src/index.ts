@@ -9047,7 +9047,6 @@ export interface MeetingMemberJSON {
   can_change_presence?: boolean;
   can_change_status?: boolean;
   can_remove?: boolean;
-  is_required?: boolean;
   /* eslint-enable camelcase */
 }
 
@@ -9062,7 +9061,6 @@ export class MeetingMember implements TDProtoClass<MeetingMember> {
    * @param canChangePresence DOCUMENTATION MISSING
    * @param canChangeStatus DOCUMENTATION MISSING
    * @param canRemove DOCUMENTATION MISSING
-   * @param isRequired DOCUMENTATION MISSING
    */
   constructor (
     public chatUuid: string,
@@ -9073,7 +9071,6 @@ export class MeetingMember implements TDProtoClass<MeetingMember> {
     public canChangePresence?: boolean,
     public canChangeStatus?: boolean,
     public canRemove?: boolean,
-    public isRequired?: boolean,
   ) {}
 
   public static fromJSON (raw: MeetingMemberJSON): MeetingMember {
@@ -9086,7 +9083,6 @@ export class MeetingMember implements TDProtoClass<MeetingMember> {
       raw.can_change_presence,
       raw.can_change_status,
       raw.can_remove,
-      raw.is_required,
     )
   }
 
@@ -9099,7 +9095,6 @@ export class MeetingMember implements TDProtoClass<MeetingMember> {
     'canChangePresence',
     'canChangeStatus',
     'canRemove',
-    'isRequired',
   ] as const
 
   readonly #mapper = {
@@ -9112,7 +9107,6 @@ export class MeetingMember implements TDProtoClass<MeetingMember> {
     canChangePresence: () => ({ can_change_presence: this.canChangePresence }),
     canChangeStatus: () => ({ can_change_status: this.canChangeStatus }),
     canRemove: () => ({ can_remove: this.canRemove }),
-    isRequired: () => ({ is_required: this.isRequired }),
     /* eslint-enable camelcase */
   }
 
@@ -9274,7 +9268,6 @@ export class MeetingsDeleteRequestParams implements TDProtoClass<MeetingsDeleteR
 export interface MeetingsMembersCreateParamsJSON {
   /* eslint-disable camelcase */
   jid: JID;
-  is_required?: boolean;
   status?: MeetingMemberStatus;
   /* eslint-enable camelcase */
 }
@@ -9283,33 +9276,28 @@ export class MeetingsMembersCreateParams implements TDProtoClass<MeetingsMembers
   /**
    * MISSING CLASS DOCUMENTATION
    * @param jid DOCUMENTATION MISSING
-   * @param isRequired DOCUMENTATION MISSING
    * @param status DOCUMENTATION MISSING
    */
   constructor (
     public jid: JID,
-    public isRequired?: boolean,
     public status?: MeetingMemberStatus,
   ) {}
 
   public static fromJSON (raw: MeetingsMembersCreateParamsJSON): MeetingsMembersCreateParams {
     return new MeetingsMembersCreateParams(
       raw.jid,
-      raw.is_required,
       raw.status,
     )
   }
 
   public mappableFields = [
     'jid',
-    'isRequired',
     'status',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
     jid: () => ({ jid: this.jid }),
-    isRequired: () => ({ is_required: this.isRequired }),
     status: () => ({ status: this.status }),
     /* eslint-enable camelcase */
   }
@@ -9603,7 +9591,6 @@ export class MeetingsMembersResponse implements TDProtoClass<MeetingsMembersResp
 
 export interface MeetingsMembersUpdateRequestJSON {
   /* eslint-disable camelcase */
-  is_required?: boolean;
   status?: MeetingMemberStatus;
   team_uuid?: string;
   /* eslint-enable camelcase */
@@ -9612,33 +9599,28 @@ export interface MeetingsMembersUpdateRequestJSON {
 export class MeetingsMembersUpdateRequest implements TDProtoClass<MeetingsMembersUpdateRequest> {
   /**
    * MISSING CLASS DOCUMENTATION
-   * @param isRequired DOCUMENTATION MISSING
    * @param status DOCUMENTATION MISSING
    * @param teamUuid DOCUMENTATION MISSING
    */
   constructor (
-    public isRequired?: boolean,
     public status?: MeetingMemberStatus,
     public teamUuid?: string,
   ) {}
 
   public static fromJSON (raw: MeetingsMembersUpdateRequestJSON): MeetingsMembersUpdateRequest {
     return new MeetingsMembersUpdateRequest(
-      raw.is_required,
       raw.status,
       raw.team_uuid,
     )
   }
 
   public mappableFields = [
-    'isRequired',
     'status',
     'teamUuid',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    isRequired: () => ({ is_required: this.isRequired }),
     status: () => ({ status: this.status }),
     teamUuid: () => ({ team_uuid: this.teamUuid }),
     /* eslint-enable camelcase */
