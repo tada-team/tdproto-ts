@@ -8910,6 +8910,7 @@ export interface MeetingJSON {
   is_archive?: boolean;
   is_outside?: boolean;
   is_public?: boolean;
+  is_required?: boolean;
   meeting_members?: MeetingMemberJSON[];
   personal_account_id?: string;
   title?: string;
@@ -8934,6 +8935,7 @@ export class Meeting implements TDProtoClass<Meeting> {
    * @param isArchive DOCUMENTATION MISSING
    * @param isOutside DOCUMENTATION MISSING
    * @param isPublic DOCUMENTATION MISSING
+   * @param isRequired DOCUMENTATION MISSING
    * @param meetingMembers DOCUMENTATION MISSING
    * @param personalAccountId DOCUMENTATION MISSING
    * @param title DOCUMENTATION MISSING
@@ -8954,6 +8956,7 @@ export class Meeting implements TDProtoClass<Meeting> {
     public isArchive?: boolean,
     public isOutside?: boolean,
     public isPublic?: boolean,
+    public isRequired?: boolean,
     public meetingMembers?: MeetingMember[],
     public personalAccountId?: string,
     public title?: string,
@@ -8976,6 +8979,7 @@ export class Meeting implements TDProtoClass<Meeting> {
       raw.is_archive,
       raw.is_outside,
       raw.is_public,
+      raw.is_required,
       raw.meeting_members && raw.meeting_members.map(MeetingMember.fromJSON),
       raw.personal_account_id,
       raw.title,
@@ -8998,6 +9002,7 @@ export class Meeting implements TDProtoClass<Meeting> {
     'isArchive',
     'isOutside',
     'isPublic',
+    'isRequired',
     'meetingMembers',
     'personalAccountId',
     'title',
@@ -9020,6 +9025,7 @@ export class Meeting implements TDProtoClass<Meeting> {
     isArchive: () => ({ is_archive: this.isArchive }),
     isOutside: () => ({ is_outside: this.isOutside }),
     isPublic: () => ({ is_public: this.isPublic }),
+    isRequired: () => ({ is_required: this.isRequired }),
     meetingMembers: () => ({ meeting_members: this.meetingMembers?.map(u => u.toJSON()) }),
     personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
     title: () => ({ title: this.title }),
@@ -9647,6 +9653,7 @@ export interface MeetingsRequestParamsJSON {
   is_freq?: boolean;
   is_outside?: boolean;
   is_public?: boolean;
+  is_required?: boolean;
   limit?: number;
   members?: string[];
   offset?: number;
@@ -9664,6 +9671,7 @@ export class MeetingsRequestParams implements TDProtoClass<MeetingsRequestParams
    * @param isFreq DOCUMENTATION MISSING
    * @param isOutside DOCUMENTATION MISSING
    * @param isPublic DOCUMENTATION MISSING
+   * @param isRequired DOCUMENTATION MISSING
    * @param limit DOCUMENTATION MISSING
    * @param members DOCUMENTATION MISSING
    * @param offset DOCUMENTATION MISSING
@@ -9677,6 +9685,7 @@ export class MeetingsRequestParams implements TDProtoClass<MeetingsRequestParams
     public isFreq?: boolean,
     public isOutside?: boolean,
     public isPublic?: boolean,
+    public isRequired?: boolean,
     public limit?: number,
     public members?: string[],
     public offset?: number,
@@ -9692,6 +9701,7 @@ export class MeetingsRequestParams implements TDProtoClass<MeetingsRequestParams
       raw.is_freq,
       raw.is_outside,
       raw.is_public,
+      raw.is_required,
       raw.limit,
       raw.members,
       raw.offset,
@@ -9707,6 +9717,7 @@ export class MeetingsRequestParams implements TDProtoClass<MeetingsRequestParams
     'isFreq',
     'isOutside',
     'isPublic',
+    'isRequired',
     'limit',
     'members',
     'offset',
@@ -9722,6 +9733,7 @@ export class MeetingsRequestParams implements TDProtoClass<MeetingsRequestParams
     isFreq: () => ({ is_freq: this.isFreq }),
     isOutside: () => ({ is_outside: this.isOutside }),
     isPublic: () => ({ is_public: this.isPublic }),
+    isRequired: () => ({ is_required: this.isRequired }),
     limit: () => ({ limit: this.limit }),
     members: () => ({ members: this.members }),
     offset: () => ({ offset: this.offset }),
