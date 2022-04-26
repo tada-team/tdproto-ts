@@ -8895,8 +8895,8 @@ export class MarkupEntity implements TDProtoClass<MarkupEntity> {
 
 export interface MeetingJSON {
   /* eslint-disable camelcase */
+  chat_uuid: string;
   duration: number;
-  group_uuid: string;
   id: string;
   owner_uuid: string;
   start_at: ISODateTimeString;
@@ -8920,8 +8920,8 @@ export interface MeetingJSON {
 export class Meeting implements TDProtoClass<Meeting> {
   /**
    * MISSING CLASS DOCUMENTATION
+   * @param chatUuid DOCUMENTATION MISSING
    * @param duration DOCUMENTATION MISSING
-   * @param groupUuid DOCUMENTATION MISSING
    * @param id DOCUMENTATION MISSING
    * @param ownerUuid DOCUMENTATION MISSING
    * @param startAt DOCUMENTATION MISSING
@@ -8941,8 +8941,8 @@ export class Meeting implements TDProtoClass<Meeting> {
    * @param title DOCUMENTATION MISSING
    */
   constructor (
+    public chatUuid: string,
     public duration: number,
-    public groupUuid: string,
     public id: string,
     public ownerUuid: string,
     public startAt: ISODateTimeString,
@@ -8964,8 +8964,8 @@ export class Meeting implements TDProtoClass<Meeting> {
 
   public static fromJSON (raw: MeetingJSON): Meeting {
     return new Meeting(
+      raw.chat_uuid,
       raw.duration,
-      raw.group_uuid,
       raw.id,
       raw.owner_uuid,
       raw.start_at,
@@ -8987,8 +8987,8 @@ export class Meeting implements TDProtoClass<Meeting> {
   }
 
   public mappableFields = [
+    'chatUuid',
     'duration',
-    'groupUuid',
     'id',
     'ownerUuid',
     'startAt',
@@ -9010,8 +9010,8 @@ export class Meeting implements TDProtoClass<Meeting> {
 
   readonly #mapper = {
     /* eslint-disable camelcase */
+    chatUuid: () => ({ chat_uuid: this.chatUuid }),
     duration: () => ({ duration: this.duration }),
-    groupUuid: () => ({ group_uuid: this.groupUuid }),
     id: () => ({ id: this.id }),
     ownerUuid: () => ({ owner_uuid: this.ownerUuid }),
     startAt: () => ({ start_at: this.startAt }),
