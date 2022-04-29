@@ -8898,6 +8898,7 @@ export interface MeetingJSON {
   chat_uuid: string;
   duration: number;
   id: string;
+  owner_jid: JID;
   owner_uuid: string;
   start_at: ISODateTimeString;
   team_uuid: string;
@@ -8923,6 +8924,7 @@ export class Meeting implements TDProtoClass<Meeting> {
    * @param chatUuid DOCUMENTATION MISSING
    * @param duration DOCUMENTATION MISSING
    * @param id DOCUMENTATION MISSING
+   * @param ownerJid DOCUMENTATION MISSING
    * @param ownerUuid DOCUMENTATION MISSING
    * @param startAt DOCUMENTATION MISSING
    * @param teamUuid DOCUMENTATION MISSING
@@ -8944,6 +8946,7 @@ export class Meeting implements TDProtoClass<Meeting> {
     public chatUuid: string,
     public duration: number,
     public id: string,
+    public ownerJid: JID,
     public ownerUuid: string,
     public startAt: ISODateTimeString,
     public teamUuid: string,
@@ -8967,6 +8970,7 @@ export class Meeting implements TDProtoClass<Meeting> {
       raw.chat_uuid,
       raw.duration,
       raw.id,
+      raw.owner_jid,
       raw.owner_uuid,
       raw.start_at,
       raw.team_uuid,
@@ -8990,6 +8994,7 @@ export class Meeting implements TDProtoClass<Meeting> {
     'chatUuid',
     'duration',
     'id',
+    'ownerJid',
     'ownerUuid',
     'startAt',
     'teamUuid',
@@ -9013,6 +9018,7 @@ export class Meeting implements TDProtoClass<Meeting> {
     chatUuid: () => ({ chat_uuid: this.chatUuid }),
     duration: () => ({ duration: this.duration }),
     id: () => ({ id: this.id }),
+    ownerJid: () => ({ owner_jid: this.ownerJid }),
     ownerUuid: () => ({ owner_uuid: this.ownerUuid }),
     startAt: () => ({ start_at: this.startAt }),
     teamUuid: () => ({ team_uuid: this.teamUuid }),
