@@ -16896,6 +16896,7 @@ export interface SubtaskJSON {
   jid: JID;
   num: number;
   title: string;
+  deadline?: ISODateTimeString;
   public?: boolean;
   task_status?: string;
   /* eslint-enable camelcase */
@@ -16909,6 +16910,7 @@ export class Subtask implements TDProtoClass<Subtask> {
    * @param jid Task id
    * @param num Task number in this team
    * @param title Task title. Generated from number and description
+   * @param deadline Deadline task deadline
    * @param isPublic Is task or group public for non-guests
    * @param taskStatus Subtask task status
    */
@@ -16918,6 +16920,7 @@ export class Subtask implements TDProtoClass<Subtask> {
     public jid: JID,
     public num: number,
     public title: string,
+    public deadline?: ISODateTimeString,
     public isPublic?: boolean,
     public taskStatus?: string,
   ) {}
@@ -16929,6 +16932,7 @@ export class Subtask implements TDProtoClass<Subtask> {
       raw.jid,
       raw.num,
       raw.title,
+      raw.deadline,
       raw.public,
       raw.task_status,
     )
@@ -16940,6 +16944,7 @@ export class Subtask implements TDProtoClass<Subtask> {
     'jid',
     'num',
     'title',
+    'deadline',
     'isPublic',
     'taskStatus',
   ] as const
@@ -16951,6 +16956,7 @@ export class Subtask implements TDProtoClass<Subtask> {
     jid: () => ({ jid: this.jid }),
     num: () => ({ num: this.num }),
     title: () => ({ title: this.title }),
+    deadline: () => ({ deadline: this.deadline }),
     isPublic: () => ({ public: this.isPublic }),
     taskStatus: () => ({ task_status: this.taskStatus }),
     /* eslint-enable camelcase */
