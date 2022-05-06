@@ -8898,8 +8898,8 @@ export interface MeetingJSON {
   chat_uuid: string;
   duration: number;
   id: string;
-  owner_jid: JID;
-  owner_uuid: string;
+  owner_contact_uuid: JID;
+  owner_user_uuid: string;
   start_at: ISODateTimeString;
   team_uuid: string;
   can_add_member?: boolean;
@@ -8924,8 +8924,8 @@ export class Meeting implements TDProtoClass<Meeting> {
    * @param chatUuid DOCUMENTATION MISSING
    * @param duration DOCUMENTATION MISSING
    * @param id DOCUMENTATION MISSING
-   * @param ownerJid DOCUMENTATION MISSING
-   * @param ownerUuid DOCUMENTATION MISSING
+   * @param ownerContactUuid DOCUMENTATION MISSING
+   * @param ownerUserUuid DOCUMENTATION MISSING
    * @param startAt DOCUMENTATION MISSING
    * @param teamUuid DOCUMENTATION MISSING
    * @param canAddMember DOCUMENTATION MISSING
@@ -8946,8 +8946,8 @@ export class Meeting implements TDProtoClass<Meeting> {
     public chatUuid: string,
     public duration: number,
     public id: string,
-    public ownerJid: JID,
-    public ownerUuid: string,
+    public ownerContactUuid: JID,
+    public ownerUserUuid: string,
     public startAt: ISODateTimeString,
     public teamUuid: string,
     public canAddMember?: boolean,
@@ -8970,8 +8970,8 @@ export class Meeting implements TDProtoClass<Meeting> {
       raw.chat_uuid,
       raw.duration,
       raw.id,
-      raw.owner_jid,
-      raw.owner_uuid,
+      raw.owner_contact_uuid,
+      raw.owner_user_uuid,
       raw.start_at,
       raw.team_uuid,
       raw.can_add_member,
@@ -8994,8 +8994,8 @@ export class Meeting implements TDProtoClass<Meeting> {
     'chatUuid',
     'duration',
     'id',
-    'ownerJid',
-    'ownerUuid',
+    'ownerContactUuid',
+    'ownerUserUuid',
     'startAt',
     'teamUuid',
     'canAddMember',
@@ -9018,8 +9018,8 @@ export class Meeting implements TDProtoClass<Meeting> {
     chatUuid: () => ({ chat_uuid: this.chatUuid }),
     duration: () => ({ duration: this.duration }),
     id: () => ({ id: this.id }),
-    ownerJid: () => ({ owner_jid: this.ownerJid }),
-    ownerUuid: () => ({ owner_uuid: this.ownerUuid }),
+    ownerContactUuid: () => ({ owner_contact_uuid: this.ownerContactUuid }),
+    ownerUserUuid: () => ({ owner_user_uuid: this.ownerUserUuid }),
     startAt: () => ({ start_at: this.startAt }),
     teamUuid: () => ({ team_uuid: this.teamUuid }),
     canAddMember: () => ({ can_add_member: this.canAddMember }),
@@ -9137,7 +9137,7 @@ export interface MeetingsCreateRequestJSON {
   /* eslint-disable camelcase */
   duration: number;
   members: MeetingsMemberCreateParamsJSON[];
-  owner_uuid: string;
+  owner_contact_uuid: JID;
   start_at: ISODateTimeString;
   team_uuid: string;
   description?: string;
@@ -9153,7 +9153,7 @@ export class MeetingsCreateRequest implements TDProtoClass<MeetingsCreateRequest
    * MISSING CLASS DOCUMENTATION
    * @param duration DOCUMENTATION MISSING
    * @param members DOCUMENTATION MISSING
-   * @param ownerUuid DOCUMENTATION MISSING
+   * @param ownerContactUuid DOCUMENTATION MISSING
    * @param startAt DOCUMENTATION MISSING
    * @param teamUuid DOCUMENTATION MISSING
    * @param description DOCUMENTATION MISSING
@@ -9165,7 +9165,7 @@ export class MeetingsCreateRequest implements TDProtoClass<MeetingsCreateRequest
   constructor (
     public duration: number,
     public members: MeetingsMemberCreateParams[],
-    public ownerUuid: string,
+    public ownerContactUuid: JID,
     public startAt: ISODateTimeString,
     public teamUuid: string,
     public description?: string,
@@ -9179,7 +9179,7 @@ export class MeetingsCreateRequest implements TDProtoClass<MeetingsCreateRequest
     return new MeetingsCreateRequest(
       raw.duration,
       raw.members.map(MeetingsMemberCreateParams.fromJSON),
-      raw.owner_uuid,
+      raw.owner_contact_uuid,
       raw.start_at,
       raw.team_uuid,
       raw.description,
@@ -9193,7 +9193,7 @@ export class MeetingsCreateRequest implements TDProtoClass<MeetingsCreateRequest
   public mappableFields = [
     'duration',
     'members',
-    'ownerUuid',
+    'ownerContactUuid',
     'startAt',
     'teamUuid',
     'description',
@@ -9207,7 +9207,7 @@ export class MeetingsCreateRequest implements TDProtoClass<MeetingsCreateRequest
     /* eslint-disable camelcase */
     duration: () => ({ duration: this.duration }),
     members: () => ({ members: this.members.map(u => u.toJSON()) }),
-    ownerUuid: () => ({ owner_uuid: this.ownerUuid }),
+    ownerContactUuid: () => ({ owner_contact_uuid: this.ownerContactUuid }),
     startAt: () => ({ start_at: this.startAt }),
     teamUuid: () => ({ team_uuid: this.teamUuid }),
     description: () => ({ description: this.description }),
@@ -11116,6 +11116,66 @@ export class PaginatedContacts implements TDProtoClass<PaginatedContacts> {
 
   public toJSON (): PaginatedContactsJSON
   public toJSON (fields: Array<this['mappableFields'][number]>): Partial<PaginatedContactsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface PaginatedMeetingsJSON {
+  /* eslint-disable camelcase */
+  count: number;
+  limit: number;
+  objects: MeetingJSON[];
+  offset: number;
+  /* eslint-enable camelcase */
+}
+
+export class PaginatedMeetings implements TDProtoClass<PaginatedMeetings> {
+  /**
+   * Paginated meetings
+   * @param count DOCUMENTATION MISSING
+   * @param limit DOCUMENTATION MISSING
+   * @param objects DOCUMENTATION MISSING
+   * @param offset DOCUMENTATION MISSING
+   */
+  constructor (
+    public count: number,
+    public limit: number,
+    public objects: Meeting[],
+    public offset: number,
+  ) {}
+
+  public static fromJSON (raw: PaginatedMeetingsJSON): PaginatedMeetings {
+    return new PaginatedMeetings(
+      raw.count,
+      raw.limit,
+      raw.objects.map(Meeting.fromJSON),
+      raw.offset,
+    )
+  }
+
+  public mappableFields = [
+    'count',
+    'limit',
+    'objects',
+    'offset',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    count: () => ({ count: this.count }),
+    limit: () => ({ limit: this.limit }),
+    objects: () => ({ objects: this.objects.map(u => u.toJSON()) }),
+    offset: () => ({ offset: this.offset }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): PaginatedMeetingsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<PaginatedMeetingsJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
