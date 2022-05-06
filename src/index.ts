@@ -16891,6 +16891,7 @@ export interface SubtaskJSON {
   num: number;
   title: string;
   deadline?: ISODateTimeString;
+  deadline_expired?: boolean;
   public?: boolean;
   task_status?: string;
   /* eslint-enable camelcase */
@@ -16904,7 +16905,8 @@ export class Subtask implements TDProtoClass<Subtask> {
    * @param jid Task id
    * @param num Task number in this team
    * @param title Task title. Generated from number and description
-   * @param deadline Deadline task deadline
+   * @param deadline Subtask deadline in iso format, if any
+   * @param deadlineExpired Is subtask deadline expired
    * @param isPublic Is task or group public for non-guests
    * @param taskStatus Subtask task status
    */
@@ -16915,6 +16917,7 @@ export class Subtask implements TDProtoClass<Subtask> {
     public num: number,
     public title: string,
     public deadline?: ISODateTimeString,
+    public deadlineExpired?: boolean,
     public isPublic?: boolean,
     public taskStatus?: string,
   ) {}
@@ -16927,6 +16930,7 @@ export class Subtask implements TDProtoClass<Subtask> {
       raw.num,
       raw.title,
       raw.deadline,
+      raw.deadline_expired,
       raw.public,
       raw.task_status,
     )
@@ -16939,6 +16943,7 @@ export class Subtask implements TDProtoClass<Subtask> {
     'num',
     'title',
     'deadline',
+    'deadlineExpired',
     'isPublic',
     'taskStatus',
   ] as const
@@ -16951,6 +16956,7 @@ export class Subtask implements TDProtoClass<Subtask> {
     num: () => ({ num: this.num }),
     title: () => ({ title: this.title }),
     deadline: () => ({ deadline: this.deadline }),
+    deadlineExpired: () => ({ deadline_expired: this.deadlineExpired }),
     isPublic: () => ({ public: this.isPublic }),
     taskStatus: () => ({ task_status: this.taskStatus }),
     /* eslint-enable camelcase */
