@@ -9229,6 +9229,48 @@ export class MeetingsCreateRequest implements TDProtoClass<MeetingsCreateRequest
   }
 }
 
+export interface MeetingsDatesResponseJSON {
+  /* eslint-disable camelcase */
+  dates: string[];
+  /* eslint-enable camelcase */
+}
+
+export class MeetingsDatesResponse implements TDProtoClass<MeetingsDatesResponse> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param dates DOCUMENTATION MISSING
+   */
+  constructor (
+    public dates: string[],
+  ) {}
+
+  public static fromJSON (raw: MeetingsDatesResponseJSON): MeetingsDatesResponse {
+    return new MeetingsDatesResponse(
+      raw.dates,
+    )
+  }
+
+  public mappableFields = [
+    'dates',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    dates: () => ({ dates: this.dates }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): MeetingsDatesResponseJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<MeetingsDatesResponseJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface MeetingsDeleteRequestParamsJSON {
   /* eslint-disable camelcase */
   team_uuid: string;
@@ -9279,8 +9321,8 @@ export class MeetingsDeleteRequestParams implements TDProtoClass<MeetingsDeleteR
 
 export interface MeetingsGetRequestJSON {
   /* eslint-disable camelcase */
-  date_from: ISODateTimeString;
-  date_to: ISODateTimeString;
+  date_from: string;
+  date_to: string;
   team_uuid: string;
   is_archive?: boolean;
   is_freq?: boolean;
@@ -9309,8 +9351,8 @@ export class MeetingsGetRequest implements TDProtoClass<MeetingsGetRequest> {
    * @param offset DOCUMENTATION MISSING
    */
   constructor (
-    public dateFrom: ISODateTimeString,
-    public dateTo: ISODateTimeString,
+    public dateFrom: string,
+    public dateTo: string,
     public teamUuid: string,
     public isArchive?: boolean,
     public isFreq?: boolean,
