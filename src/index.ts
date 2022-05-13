@@ -8895,146 +8895,526 @@ export class MarkupEntity implements TDProtoClass<MarkupEntity> {
 
 export interface MeetingJSON {
   /* eslint-disable camelcase */
-  chat_uuid: string;
+  chat_type: ChatType;
+  created: ISODateTimeString;
+  display_name: string;
   duration: number;
+  gentime: number;
+  icons: IconDataJSON;
   id: string;
+  jid: JID;
   owner_contact_uuid: JID;
   owner_user_uuid: string;
   start_at: ISODateTimeString;
   team_uuid: string;
+  assignee?: JID;
+  autocleanup_age?: number;
+  base_gentime?: number;
   can_add_member?: boolean;
+  can_call?: boolean;
+  can_change_member_status?: boolean;
+  can_change_settings?: boolean;
   can_delete?: boolean;
+  can_delete_any_message?: boolean;
   can_edit?: boolean;
   can_join?: boolean;
+  can_remove_member?: boolean;
+  can_send_message?: boolean;
+  can_set_important_any_message?: boolean;
+  cant_send_message_reason?: string;
+  changeable_fields?: string[];
+  collapsed?: boolean;
+  color_index?: number;
+  complexity?: number;
+  counters_enabled?: boolean;
+  deadline?: ISODateTimeString;
+  deadline_expired?: boolean;
+  default_for_all?: boolean;
   description?: string;
+  done?: ISODateTimeString;
+  done_reason?: string;
+  draft?: string;
+  draft_gentime?: number;
+  draft_num?: number;
+  feed?: boolean;
   freq?: FreqJSON;
+  hidden?: boolean;
+  importance?: number;
   is_archive?: boolean;
   is_outside?: boolean;
-  is_public?: boolean;
+  public?: boolean;
   is_required?: boolean;
+  items?: TaskItemJSON[];
+  last_activity?: ISODateTimeString;
+  last_message?: MessageJSON;
+  last_read_message_id?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  linked_messages?: any[];
+  links?: MessageLinkJSON[];
+  markup?: MarkupEntityJSON[];
   meeting_members?: MeetingMemberJSON[];
+  members?: GroupMembershipJSON[];
+  notifications_enabled?: boolean;
+  num?: number;
+  num_checked_items?: number;
+  num_importants?: number;
+  num_items?: number;
+  num_members?: number;
+  num_unread?: number;
+  num_unread_notices?: number;
+  observers?: JID[];
+  owner?: JID;
+  parents?: SubtaskJSON[];
   personal_account_id?: string;
+  pinned?: boolean;
+  pinned_message?: MessageJSON;
+  pinned_sort_ordering?: number;
+  readonly_for_members?: boolean;
+  section?: string;
+  spent_time?: number;
+  status?: GroupStatus;
+  tabs?: TaskTabKey[];
+  tags?: string[];
+  task_status?: string;
   title?: string;
+  uploads?: UploadJSON[];
+  urgency?: number;
   /* eslint-enable camelcase */
 }
 
 export class Meeting implements TDProtoClass<Meeting> {
   /**
    * MISSING CLASS DOCUMENTATION
-   * @param chatUuid DOCUMENTATION MISSING
+   * @param chatType Chat type
+   * @param created Creation date, iso datetime
+   * @param displayName Title
    * @param duration DOCUMENTATION MISSING
+   * @param gentime Chat fields related to concrete participant) version
+   * @param icons Icons info
    * @param id DOCUMENTATION MISSING
+   * @param jid Group/Task/Contact id
    * @param ownerContactUuid DOCUMENTATION MISSING
    * @param ownerUserUuid DOCUMENTATION MISSING
    * @param startAt DOCUMENTATION MISSING
    * @param teamUuid DOCUMENTATION MISSING
-   * @param canAddMember DOCUMENTATION MISSING
-   * @param canDelete DOCUMENTATION MISSING
+   * @param assignee Assignee contact id. Tasks only
+   * @param autocleanupAge Delete messages in this chat in seconds. Experimental function
+   * @param baseGentime Base fields (not related to concrete participant) version
+   * @param canAddMember Can I add member to this group chat
+   * @param canCall Can I call to this chat
+   * @param canChangeMemberStatus Can I change member status in this group chat
+   * @param canChangeSettings deprecated: use changeable fields
+   * @param canDelete Can I delete this chat
+   * @param canDeleteAnyMessage Can I delete any message in this chat
    * @param canEdit DOCUMENTATION MISSING
-   * @param canJoin DOCUMENTATION MISSING
-   * @param description DOCUMENTATION MISSING
+   * @param canJoin Can I join to this public group/task
+   * @param canRemoveMember Can I remove member from this group chat
+   * @param canSendMessage Can I send message to this chat
+   * @param canSetImportantAnyMessage Can I change Important flag in any message in this chat
+   * @param cantSendMessageReason Why I can't send message to this chat (if can't)
+   * @param changeableFields List of editable fields
+   * @param collapsed Description collapsed. Used for tasks only
+   * @param colorIndex Custom color index from table of colors. Tasks only
+   * @param complexity Task complexity, number
+   * @param countersEnabled Include unread messages to counters
+   * @param deadline Task deadline in iso format, if any
+   * @param deadlineExpired Is task deadline expired
+   * @param defaultForAll Any new team member will be added to this group chat
+   * @param description Group or task description
+   * @param done Task done date in iso format, if any
+   * @param doneReason Task done reason, if any
+   * @param draft Last message draft, if any
+   * @param draftGentime Last message draft version, if any
+   * @param draftNum Deprecated
+   * @param feed Present in feed (main screen)
    * @param freq DOCUMENTATION MISSING
+   * @param hidden Hidden chat
+   * @param importance Task importance, if available in team
    * @param isArchive DOCUMENTATION MISSING
    * @param isOutside DOCUMENTATION MISSING
-   * @param isPublic DOCUMENTATION MISSING
+   * @param isPublic Can other team member see this task/group chat
    * @param isRequired DOCUMENTATION MISSING
+   * @param items Checklist items. Task only
+   * @param lastActivity Date of the last message sent even if it was deleted
+   * @param lastMessage Last message object
+   * @param lastReadMessageId Last read message id, if any
+   * @param linkedMessages Used for "Create task from messages..."
+   * @param links Links in description
+   * @param markup Markup entities for description field. Experimental
    * @param meetingMembers DOCUMENTATION MISSING
+   * @param members Group chat members
+   * @param notificationsEnabled Push notifications enabled
+   * @param num Task number in this team
+   * @param numCheckedItems Checked items in checklist. Tasks only
+   * @param numImportants Number of important messages
+   * @param numItems Items in checklist. Tasks only
+   * @param numMembers Non-archive participants number
+   * @param numUnread Unread counter
+   * @param numUnreadNotices Mentions (@) counter
+   * @param observers Task followers id's. TODO: rename to "followers"
+   * @param owner Task creator
+   * @param parents Parent tasks
    * @param personalAccountId DOCUMENTATION MISSING
-   * @param title DOCUMENTATION MISSING
+   * @param pinned Is chat pinned on top
+   * @param pinnedMessage Pinned message for this chat
+   * @param pinnedSortOrdering Sort ordering for pinned chat
+   * @param readonlyForMembers Readonly for non-admins group chat (Like Channels in Telegram but switchable)
+   * @param section Project / section id, if any
+   * @param spentTime Task spent time, number
+   * @param status My status in group chat
+   * @param tabs Tab names
+   * @param tags Task tags list, if any
+   * @param taskStatus Task status. May be custom
+   * @param title Task title. Generated from number and description
+   * @param uploads Upload uids for request, upload objects for response
+   * @param urgency Task urgency, if available in team
    */
   constructor (
-    public chatUuid: string,
+    public chatType: ChatType,
+    public created: ISODateTimeString,
+    public displayName: string,
     public duration: number,
+    public gentime: number,
+    public icons: IconData,
     public id: string,
+    public jid: JID,
     public ownerContactUuid: JID,
     public ownerUserUuid: string,
     public startAt: ISODateTimeString,
     public teamUuid: string,
+    public assignee?: JID,
+    public autocleanupAge?: number,
+    public baseGentime?: number,
     public canAddMember?: boolean,
+    public canCall?: boolean,
+    public canChangeMemberStatus?: boolean,
+    public canChangeSettings?: boolean,
     public canDelete?: boolean,
+    public canDeleteAnyMessage?: boolean,
     public canEdit?: boolean,
     public canJoin?: boolean,
+    public canRemoveMember?: boolean,
+    public canSendMessage?: boolean,
+    public canSetImportantAnyMessage?: boolean,
+    public cantSendMessageReason?: string,
+    public changeableFields?: string[],
+    public collapsed?: boolean,
+    public colorIndex?: number,
+    public complexity?: number,
+    public countersEnabled?: boolean,
+    public deadline?: ISODateTimeString,
+    public deadlineExpired?: boolean,
+    public defaultForAll?: boolean,
     public description?: string,
+    public done?: ISODateTimeString,
+    public doneReason?: string,
+    public draft?: string,
+    public draftGentime?: number,
+    public draftNum?: number,
+    public feed?: boolean,
     public freq?: Freq,
+    public hidden?: boolean,
+    public importance?: number,
     public isArchive?: boolean,
     public isOutside?: boolean,
     public isPublic?: boolean,
     public isRequired?: boolean,
+    public items?: TaskItem[],
+    public lastActivity?: ISODateTimeString,
+    public lastMessage?: Message,
+    public lastReadMessageId?: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    public linkedMessages?: any[],
+    public links?: MessageLink[],
+    public readonly markup?: MarkupEntity[],
     public meetingMembers?: MeetingMember[],
+    public members?: GroupMembership[],
+    public notificationsEnabled?: boolean,
+    public num?: number,
+    public numCheckedItems?: number,
+    public numImportants?: number,
+    public numItems?: number,
+    public numMembers?: number,
+    public numUnread?: number,
+    public numUnreadNotices?: number,
+    public observers?: JID[],
+    public owner?: JID,
+    public parents?: Subtask[],
     public personalAccountId?: string,
+    public pinned?: boolean,
+    public pinnedMessage?: Message,
+    public pinnedSortOrdering?: number,
+    public readonlyForMembers?: boolean,
+    public section?: string,
+    public spentTime?: number,
+    public status?: GroupStatus,
+    public tabs?: TaskTabKey[],
+    public tags?: string[],
+    public taskStatus?: string,
     public title?: string,
+    public uploads?: Upload[],
+    public urgency?: number,
   ) {}
 
   public static fromJSON (raw: MeetingJSON): Meeting {
     return new Meeting(
-      raw.chat_uuid,
+      raw.chat_type,
+      raw.created,
+      raw.display_name,
       raw.duration,
+      raw.gentime,
+      IconData.fromJSON(raw.icons),
       raw.id,
+      raw.jid,
       raw.owner_contact_uuid,
       raw.owner_user_uuid,
       raw.start_at,
       raw.team_uuid,
+      raw.assignee,
+      raw.autocleanup_age,
+      raw.base_gentime,
       raw.can_add_member,
+      raw.can_call,
+      raw.can_change_member_status,
+      raw.can_change_settings,
       raw.can_delete,
+      raw.can_delete_any_message,
       raw.can_edit,
       raw.can_join,
+      raw.can_remove_member,
+      raw.can_send_message,
+      raw.can_set_important_any_message,
+      raw.cant_send_message_reason,
+      raw.changeable_fields,
+      raw.collapsed,
+      raw.color_index,
+      raw.complexity,
+      raw.counters_enabled,
+      raw.deadline,
+      raw.deadline_expired,
+      raw.default_for_all,
       raw.description,
+      raw.done,
+      raw.done_reason,
+      raw.draft,
+      raw.draft_gentime,
+      raw.draft_num,
+      raw.feed,
       raw.freq && Freq.fromJSON(raw.freq),
+      raw.hidden,
+      raw.importance,
       raw.is_archive,
       raw.is_outside,
-      raw.is_public,
+      raw.public,
       raw.is_required,
+      raw.items && raw.items.map(TaskItem.fromJSON),
+      raw.last_activity,
+      raw.last_message && Message.fromJSON(raw.last_message),
+      raw.last_read_message_id,
+      raw.linked_messages,
+      raw.links && raw.links.map(MessageLink.fromJSON),
+      raw.markup && raw.markup.map(MarkupEntity.fromJSON),
       raw.meeting_members && raw.meeting_members.map(MeetingMember.fromJSON),
+      raw.members && raw.members.map(GroupMembership.fromJSON),
+      raw.notifications_enabled,
+      raw.num,
+      raw.num_checked_items,
+      raw.num_importants,
+      raw.num_items,
+      raw.num_members,
+      raw.num_unread,
+      raw.num_unread_notices,
+      raw.observers,
+      raw.owner,
+      raw.parents && raw.parents.map(Subtask.fromJSON),
       raw.personal_account_id,
+      raw.pinned,
+      raw.pinned_message && Message.fromJSON(raw.pinned_message),
+      raw.pinned_sort_ordering,
+      raw.readonly_for_members,
+      raw.section,
+      raw.spent_time,
+      raw.status,
+      raw.tabs,
+      raw.tags,
+      raw.task_status,
       raw.title,
+      raw.uploads && raw.uploads.map(Upload.fromJSON),
+      raw.urgency,
     )
   }
 
   public mappableFields = [
-    'chatUuid',
+    'chatType',
+    'created',
+    'displayName',
     'duration',
+    'gentime',
+    'icons',
     'id',
+    'jid',
     'ownerContactUuid',
     'ownerUserUuid',
     'startAt',
     'teamUuid',
+    'assignee',
+    'autocleanupAge',
+    'baseGentime',
     'canAddMember',
+    'canCall',
+    'canChangeMemberStatus',
+    'canChangeSettings',
     'canDelete',
+    'canDeleteAnyMessage',
     'canEdit',
     'canJoin',
+    'canRemoveMember',
+    'canSendMessage',
+    'canSetImportantAnyMessage',
+    'cantSendMessageReason',
+    'changeableFields',
+    'collapsed',
+    'colorIndex',
+    'complexity',
+    'countersEnabled',
+    'deadline',
+    'deadlineExpired',
+    'defaultForAll',
     'description',
+    'done',
+    'doneReason',
+    'draft',
+    'draftGentime',
+    'draftNum',
+    'feed',
     'freq',
+    'hidden',
+    'importance',
     'isArchive',
     'isOutside',
     'isPublic',
     'isRequired',
+    'items',
+    'lastActivity',
+    'lastMessage',
+    'lastReadMessageId',
+    'linkedMessages',
+    'links',
+    'markup',
     'meetingMembers',
+    'members',
+    'notificationsEnabled',
+    'num',
+    'numCheckedItems',
+    'numImportants',
+    'numItems',
+    'numMembers',
+    'numUnread',
+    'numUnreadNotices',
+    'observers',
+    'owner',
+    'parents',
     'personalAccountId',
+    'pinned',
+    'pinnedMessage',
+    'pinnedSortOrdering',
+    'readonlyForMembers',
+    'section',
+    'spentTime',
+    'status',
+    'tabs',
+    'tags',
+    'taskStatus',
     'title',
+    'uploads',
+    'urgency',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    chatUuid: () => ({ chat_uuid: this.chatUuid }),
+    chatType: () => ({ chat_type: this.chatType }),
+    created: () => ({ created: this.created }),
+    displayName: () => ({ display_name: this.displayName }),
     duration: () => ({ duration: this.duration }),
+    gentime: () => ({ gentime: this.gentime }),
+    icons: () => ({ icons: this.icons.toJSON() }),
     id: () => ({ id: this.id }),
+    jid: () => ({ jid: this.jid }),
     ownerContactUuid: () => ({ owner_contact_uuid: this.ownerContactUuid }),
     ownerUserUuid: () => ({ owner_user_uuid: this.ownerUserUuid }),
     startAt: () => ({ start_at: this.startAt }),
     teamUuid: () => ({ team_uuid: this.teamUuid }),
+    assignee: () => ({ assignee: this.assignee }),
+    autocleanupAge: () => ({ autocleanup_age: this.autocleanupAge }),
+    baseGentime: () => ({ base_gentime: this.baseGentime }),
     canAddMember: () => ({ can_add_member: this.canAddMember }),
+    canCall: () => ({ can_call: this.canCall }),
+    canChangeMemberStatus: () => ({ can_change_member_status: this.canChangeMemberStatus }),
+    canChangeSettings: () => ({ can_change_settings: this.canChangeSettings }),
     canDelete: () => ({ can_delete: this.canDelete }),
+    canDeleteAnyMessage: () => ({ can_delete_any_message: this.canDeleteAnyMessage }),
     canEdit: () => ({ can_edit: this.canEdit }),
     canJoin: () => ({ can_join: this.canJoin }),
+    canRemoveMember: () => ({ can_remove_member: this.canRemoveMember }),
+    canSendMessage: () => ({ can_send_message: this.canSendMessage }),
+    canSetImportantAnyMessage: () => ({ can_set_important_any_message: this.canSetImportantAnyMessage }),
+    cantSendMessageReason: () => ({ cant_send_message_reason: this.cantSendMessageReason }),
+    changeableFields: () => ({ changeable_fields: this.changeableFields }),
+    collapsed: () => ({ collapsed: this.collapsed }),
+    colorIndex: () => ({ color_index: this.colorIndex }),
+    complexity: () => ({ complexity: this.complexity }),
+    countersEnabled: () => ({ counters_enabled: this.countersEnabled }),
+    deadline: () => ({ deadline: this.deadline }),
+    deadlineExpired: () => ({ deadline_expired: this.deadlineExpired }),
+    defaultForAll: () => ({ default_for_all: this.defaultForAll }),
     description: () => ({ description: this.description }),
+    done: () => ({ done: this.done }),
+    doneReason: () => ({ done_reason: this.doneReason }),
+    draft: () => ({ draft: this.draft }),
+    draftGentime: () => ({ draft_gentime: this.draftGentime }),
+    draftNum: () => ({ draft_num: this.draftNum }),
+    feed: () => ({ feed: this.feed }),
     freq: () => ({ freq: this.freq?.toJSON() }),
+    hidden: () => ({ hidden: this.hidden }),
+    importance: () => ({ importance: this.importance }),
     isArchive: () => ({ is_archive: this.isArchive }),
     isOutside: () => ({ is_outside: this.isOutside }),
-    isPublic: () => ({ is_public: this.isPublic }),
+    isPublic: () => ({ public: this.isPublic }),
     isRequired: () => ({ is_required: this.isRequired }),
+    items: () => ({ items: this.items?.map(u => u.toJSON()) }),
+    lastActivity: () => ({ last_activity: this.lastActivity }),
+    lastMessage: () => ({ last_message: this.lastMessage?.toJSON() }),
+    lastReadMessageId: () => ({ last_read_message_id: this.lastReadMessageId }),
+    linkedMessages: () => ({ linked_messages: this.linkedMessages }),
+    links: () => ({ links: this.links?.map(u => u.toJSON()) }),
+    markup: () => ({ markup: this.markup?.map(u => u.toJSON()) }),
     meetingMembers: () => ({ meeting_members: this.meetingMembers?.map(u => u.toJSON()) }),
+    members: () => ({ members: this.members?.map(u => u.toJSON()) }),
+    notificationsEnabled: () => ({ notifications_enabled: this.notificationsEnabled }),
+    num: () => ({ num: this.num }),
+    numCheckedItems: () => ({ num_checked_items: this.numCheckedItems }),
+    numImportants: () => ({ num_importants: this.numImportants }),
+    numItems: () => ({ num_items: this.numItems }),
+    numMembers: () => ({ num_members: this.numMembers }),
+    numUnread: () => ({ num_unread: this.numUnread }),
+    numUnreadNotices: () => ({ num_unread_notices: this.numUnreadNotices }),
+    observers: () => ({ observers: this.observers }),
+    owner: () => ({ owner: this.owner }),
+    parents: () => ({ parents: this.parents?.map(u => u.toJSON()) }),
     personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
+    pinned: () => ({ pinned: this.pinned }),
+    pinnedMessage: () => ({ pinned_message: this.pinnedMessage?.toJSON() }),
+    pinnedSortOrdering: () => ({ pinned_sort_ordering: this.pinnedSortOrdering }),
+    readonlyForMembers: () => ({ readonly_for_members: this.readonlyForMembers }),
+    section: () => ({ section: this.section }),
+    spentTime: () => ({ spent_time: this.spentTime }),
+    status: () => ({ status: this.status }),
+    tabs: () => ({ tabs: this.tabs }),
+    tags: () => ({ tags: this.tags }),
+    taskStatus: () => ({ task_status: this.taskStatus }),
     title: () => ({ title: this.title }),
+    uploads: () => ({ uploads: this.uploads?.map(u => u.toJSON()) }),
+    urgency: () => ({ urgency: this.urgency }),
     /* eslint-enable camelcase */
   }
 
@@ -9795,50 +10175,50 @@ export class MeetingsMembersUpdateRequest implements TDProtoClass<MeetingsMember
 
 export interface MeetingsResponseJSON {
   /* eslint-disable camelcase */
-  items: MeetingJSON[];
-  limit?: number;
-  offset?: number;
-  total?: number;
+  count: number;
+  limit: number;
+  objects: MeetingJSON[];
+  offset: number;
   /* eslint-enable camelcase */
 }
 
 export class MeetingsResponse implements TDProtoClass<MeetingsResponse> {
   /**
    * MISSING CLASS DOCUMENTATION
-   * @param items DOCUMENTATION MISSING
+   * @param count DOCUMENTATION MISSING
    * @param limit DOCUMENTATION MISSING
+   * @param objects DOCUMENTATION MISSING
    * @param offset DOCUMENTATION MISSING
-   * @param total DOCUMENTATION MISSING
    */
   constructor (
-    public items: Meeting[],
-    public limit?: number,
-    public offset?: number,
-    public total?: number,
+    public count: number,
+    public limit: number,
+    public objects: Meeting[],
+    public offset: number,
   ) {}
 
   public static fromJSON (raw: MeetingsResponseJSON): MeetingsResponse {
     return new MeetingsResponse(
-      raw.items.map(Meeting.fromJSON),
+      raw.count,
       raw.limit,
+      raw.objects.map(Meeting.fromJSON),
       raw.offset,
-      raw.total,
     )
   }
 
   public mappableFields = [
-    'items',
+    'count',
     'limit',
+    'objects',
     'offset',
-    'total',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    items: () => ({ items: this.items.map(u => u.toJSON()) }),
+    count: () => ({ count: this.count }),
     limit: () => ({ limit: this.limit }),
+    objects: () => ({ objects: this.objects.map(u => u.toJSON()) }),
     offset: () => ({ offset: this.offset }),
-    total: () => ({ total: this.total }),
     /* eslint-enable camelcase */
   }
 
