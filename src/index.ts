@@ -8905,7 +8905,7 @@ export interface MeetingJSON {
   jid: JID;
   owner_contact_uuid: JID;
   owner_user_uuid: string;
-  start_at: ISODateTimeString;
+  start_at: string;
   team_uuid: string;
   assignee?: JID;
   autocleanup_age?: number;
@@ -9080,7 +9080,7 @@ export class Meeting implements TDProtoClass<Meeting> {
     public jid: JID,
     public ownerContactUuid: JID,
     public ownerUserUuid: string,
-    public startAt: ISODateTimeString,
+    public startAt: string,
     public teamUuid: string,
     public assignee?: JID,
     public autocleanupAge?: number,
@@ -9518,7 +9518,7 @@ export interface MeetingsCreateRequestJSON {
   duration: number;
   members: MeetingsMemberCreateParamsJSON[];
   owner_contact_uuid: JID;
-  start_at: ISODateTimeString;
+  start_at: string;
   team_uuid: string;
   description?: string;
   freq?: FreqJSON;
@@ -9546,7 +9546,7 @@ export class MeetingsCreateRequest implements TDProtoClass<MeetingsCreateRequest
     public duration: number,
     public members: MeetingsMemberCreateParams[],
     public ownerContactUuid: JID,
-    public startAt: ISODateTimeString,
+    public startAt: string,
     public teamUuid: string,
     public description?: string,
     public freq?: Freq,
