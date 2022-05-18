@@ -14825,6 +14825,102 @@ export class ServerLoginParams implements TDProtoClass<ServerLoginParams> {
   }
 }
 
+export interface ServerMeetingUpdatedJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ServerMeetingUpdatedParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerMeetingUpdated implements TDProtoClass<ServerMeetingUpdated> {
+  /**
+   * Meeting created or updated
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ServerMeetingUpdatedParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ServerMeetingUpdatedJSON): ServerMeetingUpdated {
+    return new ServerMeetingUpdated(
+      raw.event,
+      ServerMeetingUpdatedParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerMeetingUpdatedJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerMeetingUpdatedJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerMeetingUpdatedParamsJSON {
+  /* eslint-disable camelcase */
+  meetings: MeetingJSON[];
+  /* eslint-enable camelcase */
+}
+
+export class ServerMeetingUpdatedParams implements TDProtoClass<ServerMeetingUpdatedParams> {
+  /**
+   * Params of the server.meeting.updated event
+   * @param meetings Meeting info
+   */
+  constructor (
+    public meetings: Meeting[],
+  ) {}
+
+  public static fromJSON (raw: ServerMeetingUpdatedParamsJSON): ServerMeetingUpdatedParams {
+    return new ServerMeetingUpdatedParams(
+      raw.meetings.map(Meeting.fromJSON),
+    )
+  }
+
+  public mappableFields = [
+    'meetings',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    meetings: () => ({ meetings: this.meetings.map(u => u.toJSON()) }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerMeetingUpdatedParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerMeetingUpdatedParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface ServerMessagePushJSON {
   /* eslint-disable camelcase */
   event: string;
