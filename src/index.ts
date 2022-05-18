@@ -8905,7 +8905,7 @@ export interface MeetingJSON {
   jid: JID;
   owner_contact_uuid: JID;
   owner_user_uuid: string;
-  start_at: string;
+  start_at: ISODateTimeString;
   team_uuid: string;
   assignee?: JID;
   autocleanup_age?: number;
@@ -9080,7 +9080,7 @@ export class Meeting implements TDProtoClass<Meeting> {
     public jid: JID,
     public ownerContactUuid: JID,
     public ownerUserUuid: string,
-    public startAt: string,
+    public startAt: ISODateTimeString,
     public teamUuid: string,
     public assignee?: JID,
     public autocleanupAge?: number,
@@ -9504,6 +9504,54 @@ export class MeetingMember implements TDProtoClass<MeetingMember> {
 
   public toJSON (): MeetingMemberJSON
   public toJSON (fields: Array<this['mappableFields'][number]>): Partial<MeetingMemberJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface MeetingsCountResponseJSON {
+  /* eslint-disable camelcase */
+  count_cells: number;
+  count_meetings: number;
+  /* eslint-enable camelcase */
+}
+
+export class MeetingsCountResponse implements TDProtoClass<MeetingsCountResponse> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param countCells DOCUMENTATION MISSING
+   * @param countMeetings DOCUMENTATION MISSING
+   */
+  constructor (
+    public countCells: number,
+    public countMeetings: number,
+  ) {}
+
+  public static fromJSON (raw: MeetingsCountResponseJSON): MeetingsCountResponse {
+    return new MeetingsCountResponse(
+      raw.count_cells,
+      raw.count_meetings,
+    )
+  }
+
+  public mappableFields = [
+    'countCells',
+    'countMeetings',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    countCells: () => ({ count_cells: this.countCells }),
+    countMeetings: () => ({ count_meetings: this.countMeetings }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): MeetingsCountResponseJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<MeetingsCountResponseJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
