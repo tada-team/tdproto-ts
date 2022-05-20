@@ -10285,12 +10285,14 @@ export interface MeetingsUpdateRequestJSON {
   /* eslint-disable camelcase */
   meeting_id: string;
   active_from?: string;
+  description?: string;
   duration?: number;
   freq?: FreqJSON;
   is_outside?: boolean;
   is_public?: boolean;
   start_at?: string;
   team_uuid?: string;
+  title?: string;
   /* eslint-enable camelcase */
 }
 
@@ -10299,58 +10301,68 @@ export class MeetingsUpdateRequest implements TDProtoClass<MeetingsUpdateRequest
    * MISSING CLASS DOCUMENTATION
    * @param meetingId DOCUMENTATION MISSING
    * @param activeFrom DOCUMENTATION MISSING
+   * @param description DOCUMENTATION MISSING
    * @param duration DOCUMENTATION MISSING
    * @param freq DOCUMENTATION MISSING
    * @param isOutside DOCUMENTATION MISSING
    * @param isPublic DOCUMENTATION MISSING
    * @param startAt DOCUMENTATION MISSING
    * @param teamUuid DOCUMENTATION MISSING
+   * @param title DOCUMENTATION MISSING
    */
   constructor (
     public meetingId: string,
     public activeFrom?: string,
+    public description?: string,
     public duration?: number,
     public freq?: Freq,
     public isOutside?: boolean,
     public isPublic?: boolean,
     public startAt?: string,
     public teamUuid?: string,
+    public title?: string,
   ) {}
 
   public static fromJSON (raw: MeetingsUpdateRequestJSON): MeetingsUpdateRequest {
     return new MeetingsUpdateRequest(
       raw.meeting_id,
       raw.active_from,
+      raw.description,
       raw.duration,
       raw.freq && Freq.fromJSON(raw.freq),
       raw.is_outside,
       raw.is_public,
       raw.start_at,
       raw.team_uuid,
+      raw.title,
     )
   }
 
   public mappableFields = [
     'meetingId',
     'activeFrom',
+    'description',
     'duration',
     'freq',
     'isOutside',
     'isPublic',
     'startAt',
     'teamUuid',
+    'title',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
     meetingId: () => ({ meeting_id: this.meetingId }),
     activeFrom: () => ({ active_from: this.activeFrom }),
+    description: () => ({ description: this.description }),
     duration: () => ({ duration: this.duration }),
     freq: () => ({ freq: this.freq?.toJSON() }),
     isOutside: () => ({ is_outside: this.isOutside }),
     isPublic: () => ({ is_public: this.isPublic }),
     startAt: () => ({ start_at: this.startAt }),
     teamUuid: () => ({ team_uuid: this.teamUuid }),
+    title: () => ({ title: this.title }),
     /* eslint-enable camelcase */
   }
 
