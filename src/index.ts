@@ -9897,6 +9897,54 @@ export class MeetingsMemberCreateParams implements TDProtoClass<MeetingsMemberCr
   }
 }
 
+export interface MeetingsMembersBatchDeleteRequestParamsJSON {
+  /* eslint-disable camelcase */
+  members_jids: JID[];
+  team_uuid: string;
+  /* eslint-enable camelcase */
+}
+
+export class MeetingsMembersBatchDeleteRequestParams implements TDProtoClass<MeetingsMembersBatchDeleteRequestParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param membersJids DOCUMENTATION MISSING
+   * @param teamUuid DOCUMENTATION MISSING
+   */
+  constructor (
+    public membersJids: JID[],
+    public teamUuid: string,
+  ) {}
+
+  public static fromJSON (raw: MeetingsMembersBatchDeleteRequestParamsJSON): MeetingsMembersBatchDeleteRequestParams {
+    return new MeetingsMembersBatchDeleteRequestParams(
+      raw.members_jids,
+      raw.team_uuid,
+    )
+  }
+
+  public mappableFields = [
+    'membersJids',
+    'teamUuid',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    membersJids: () => ({ members_jids: this.membersJids }),
+    teamUuid: () => ({ team_uuid: this.teamUuid }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): MeetingsMembersBatchDeleteRequestParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<MeetingsMembersBatchDeleteRequestParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface MeetingsMembersCreateRequestJSON {
   /* eslint-disable camelcase */
   members: MeetingsMemberCreateParamsJSON[];
@@ -10284,7 +10332,6 @@ export class MeetingsResponse implements TDProtoClass<MeetingsResponse> {
 export interface MeetingsUpdateRequestJSON {
   /* eslint-disable camelcase */
   meeting_id: string;
-  active_from?: string;
   description?: string;
   duration?: number;
   freq?: FreqJSON;
@@ -10300,7 +10347,6 @@ export class MeetingsUpdateRequest implements TDProtoClass<MeetingsUpdateRequest
   /**
    * MISSING CLASS DOCUMENTATION
    * @param meetingId DOCUMENTATION MISSING
-   * @param activeFrom DOCUMENTATION MISSING
    * @param description DOCUMENTATION MISSING
    * @param duration DOCUMENTATION MISSING
    * @param freq DOCUMENTATION MISSING
@@ -10312,7 +10358,6 @@ export class MeetingsUpdateRequest implements TDProtoClass<MeetingsUpdateRequest
    */
   constructor (
     public meetingId: string,
-    public activeFrom?: string,
     public description?: string,
     public duration?: number,
     public freq?: Freq,
@@ -10326,7 +10371,6 @@ export class MeetingsUpdateRequest implements TDProtoClass<MeetingsUpdateRequest
   public static fromJSON (raw: MeetingsUpdateRequestJSON): MeetingsUpdateRequest {
     return new MeetingsUpdateRequest(
       raw.meeting_id,
-      raw.active_from,
       raw.description,
       raw.duration,
       raw.freq && Freq.fromJSON(raw.freq),
@@ -10340,7 +10384,6 @@ export class MeetingsUpdateRequest implements TDProtoClass<MeetingsUpdateRequest
 
   public mappableFields = [
     'meetingId',
-    'activeFrom',
     'description',
     'duration',
     'freq',
@@ -10354,7 +10397,6 @@ export class MeetingsUpdateRequest implements TDProtoClass<MeetingsUpdateRequest
   readonly #mapper = {
     /* eslint-disable camelcase */
     meetingId: () => ({ meeting_id: this.meetingId }),
-    activeFrom: () => ({ active_from: this.activeFrom }),
     description: () => ({ description: this.description }),
     duration: () => ({ duration: this.duration }),
     freq: () => ({ freq: this.freq?.toJSON() }),
