@@ -10228,38 +10228,38 @@ export class MeetingsMembersResponse implements TDProtoClass<MeetingsMembersResp
 
 export interface MeetingsMembersUpdateRequestJSON {
   /* eslint-disable camelcase */
+  team_uuid: string;
   status?: MeetingMemberStatus;
-  team_uuid?: string;
   /* eslint-enable camelcase */
 }
 
 export class MeetingsMembersUpdateRequest implements TDProtoClass<MeetingsMembersUpdateRequest> {
   /**
    * MISSING CLASS DOCUMENTATION
-   * @param status DOCUMENTATION MISSING
    * @param teamUuid DOCUMENTATION MISSING
+   * @param status DOCUMENTATION MISSING
    */
   constructor (
+    public teamUuid: string,
     public status?: MeetingMemberStatus,
-    public teamUuid?: string,
   ) {}
 
   public static fromJSON (raw: MeetingsMembersUpdateRequestJSON): MeetingsMembersUpdateRequest {
     return new MeetingsMembersUpdateRequest(
-      raw.status,
       raw.team_uuid,
+      raw.status,
     )
   }
 
   public mappableFields = [
-    'status',
     'teamUuid',
+    'status',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    status: () => ({ status: this.status }),
     teamUuid: () => ({ team_uuid: this.teamUuid }),
+    status: () => ({ status: this.status }),
     /* eslint-enable camelcase */
   }
 
@@ -10337,13 +10337,13 @@ export class MeetingsResponse implements TDProtoClass<MeetingsResponse> {
 export interface MeetingsUpdateRequestJSON {
   /* eslint-disable camelcase */
   meeting_id: string;
+  team_uuid: string;
   description?: string;
   duration?: number;
   freq?: FreqJSON;
   is_outside?: boolean;
   is_public?: boolean;
   start_at?: string;
-  team_uuid?: string;
   title?: string;
   /* eslint-enable camelcase */
 }
@@ -10352,63 +10352,63 @@ export class MeetingsUpdateRequest implements TDProtoClass<MeetingsUpdateRequest
   /**
    * MISSING CLASS DOCUMENTATION
    * @param meetingId DOCUMENTATION MISSING
+   * @param teamUuid DOCUMENTATION MISSING
    * @param description DOCUMENTATION MISSING
    * @param duration DOCUMENTATION MISSING
    * @param freq DOCUMENTATION MISSING
    * @param isOutside DOCUMENTATION MISSING
    * @param isPublic DOCUMENTATION MISSING
    * @param startAt DOCUMENTATION MISSING
-   * @param teamUuid DOCUMENTATION MISSING
    * @param title DOCUMENTATION MISSING
    */
   constructor (
     public meetingId: string,
+    public teamUuid: string,
     public description?: string,
     public duration?: number,
     public freq?: Freq,
     public isOutside?: boolean,
     public isPublic?: boolean,
     public startAt?: string,
-    public teamUuid?: string,
     public title?: string,
   ) {}
 
   public static fromJSON (raw: MeetingsUpdateRequestJSON): MeetingsUpdateRequest {
     return new MeetingsUpdateRequest(
       raw.meeting_id,
+      raw.team_uuid,
       raw.description,
       raw.duration,
       raw.freq && Freq.fromJSON(raw.freq),
       raw.is_outside,
       raw.is_public,
       raw.start_at,
-      raw.team_uuid,
       raw.title,
     )
   }
 
   public mappableFields = [
     'meetingId',
+    'teamUuid',
     'description',
     'duration',
     'freq',
     'isOutside',
     'isPublic',
     'startAt',
-    'teamUuid',
     'title',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
     meetingId: () => ({ meeting_id: this.meetingId }),
+    teamUuid: () => ({ team_uuid: this.teamUuid }),
     description: () => ({ description: this.description }),
     duration: () => ({ duration: this.duration }),
     freq: () => ({ freq: this.freq?.toJSON() }),
     isOutside: () => ({ is_outside: this.isOutside }),
     isPublic: () => ({ is_public: this.isPublic }),
     startAt: () => ({ start_at: this.startAt }),
-    teamUuid: () => ({ team_uuid: this.teamUuid }),
     title: () => ({ title: this.title }),
     /* eslint-enable camelcase */
   }
@@ -14989,6 +14989,7 @@ export class ServerMeetingUpdated implements TDProtoClass<ServerMeetingUpdated> 
 export interface ServerMeetingUpdatedParamsJSON {
   /* eslint-disable camelcase */
   meetings: MeetingJSON[];
+  meetings_count: number;
   /* eslint-enable camelcase */
 }
 
@@ -14996,24 +14997,29 @@ export class ServerMeetingUpdatedParams implements TDProtoClass<ServerMeetingUpd
   /**
    * Params of the server.meeting.updated event
    * @param meetings Meeting info
+   * @param meetingsCount Meetings count
    */
   constructor (
     public meetings: Meeting[],
+    public meetingsCount: number,
   ) {}
 
   public static fromJSON (raw: ServerMeetingUpdatedParamsJSON): ServerMeetingUpdatedParams {
     return new ServerMeetingUpdatedParams(
       raw.meetings.map(Meeting.fromJSON),
+      raw.meetings_count,
     )
   }
 
   public mappableFields = [
     'meetings',
+    'meetingsCount',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
     meetings: () => ({ meetings: this.meetings.map(u => u.toJSON()) }),
+    meetingsCount: () => ({ meetings_count: this.meetingsCount }),
     /* eslint-enable camelcase */
   }
 
