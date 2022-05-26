@@ -10338,11 +10338,13 @@ export interface MeetingsUpdateRequestJSON {
   /* eslint-disable camelcase */
   meeting_id: string;
   team_uuid: string;
+  add_members?: MeetingsMemberCreateParamsJSON[];
   description?: string;
   duration?: number;
   freq?: FreqJSON;
   is_outside?: boolean;
   is_public?: boolean;
+  remove_members?: JID[];
   start_at?: string;
   title?: string;
   /* eslint-enable camelcase */
@@ -10353,22 +10355,26 @@ export class MeetingsUpdateRequest implements TDProtoClass<MeetingsUpdateRequest
    * MISSING CLASS DOCUMENTATION
    * @param meetingId DOCUMENTATION MISSING
    * @param teamUuid DOCUMENTATION MISSING
+   * @param addMembers DOCUMENTATION MISSING
    * @param description DOCUMENTATION MISSING
    * @param duration DOCUMENTATION MISSING
    * @param freq DOCUMENTATION MISSING
    * @param isOutside DOCUMENTATION MISSING
    * @param isPublic DOCUMENTATION MISSING
+   * @param removeMembers DOCUMENTATION MISSING
    * @param startAt DOCUMENTATION MISSING
    * @param title DOCUMENTATION MISSING
    */
   constructor (
     public meetingId: string,
     public teamUuid: string,
+    public addMembers?: MeetingsMemberCreateParams[],
     public description?: string,
     public duration?: number,
     public freq?: Freq,
     public isOutside?: boolean,
     public isPublic?: boolean,
+    public removeMembers?: JID[],
     public startAt?: string,
     public title?: string,
   ) {}
@@ -10377,11 +10383,13 @@ export class MeetingsUpdateRequest implements TDProtoClass<MeetingsUpdateRequest
     return new MeetingsUpdateRequest(
       raw.meeting_id,
       raw.team_uuid,
+      raw.add_members && raw.add_members.map(MeetingsMemberCreateParams.fromJSON),
       raw.description,
       raw.duration,
       raw.freq && Freq.fromJSON(raw.freq),
       raw.is_outside,
       raw.is_public,
+      raw.remove_members,
       raw.start_at,
       raw.title,
     )
@@ -10390,11 +10398,13 @@ export class MeetingsUpdateRequest implements TDProtoClass<MeetingsUpdateRequest
   public mappableFields = [
     'meetingId',
     'teamUuid',
+    'addMembers',
     'description',
     'duration',
     'freq',
     'isOutside',
     'isPublic',
+    'removeMembers',
     'startAt',
     'title',
   ] as const
@@ -10403,11 +10413,13 @@ export class MeetingsUpdateRequest implements TDProtoClass<MeetingsUpdateRequest
     /* eslint-disable camelcase */
     meetingId: () => ({ meeting_id: this.meetingId }),
     teamUuid: () => ({ team_uuid: this.teamUuid }),
+    addMembers: () => ({ add_members: this.addMembers?.map(u => u.toJSON()) }),
     description: () => ({ description: this.description }),
     duration: () => ({ duration: this.duration }),
     freq: () => ({ freq: this.freq?.toJSON() }),
     isOutside: () => ({ is_outside: this.isOutside }),
     isPublic: () => ({ is_public: this.isPublic }),
+    removeMembers: () => ({ remove_members: this.removeMembers }),
     startAt: () => ({ start_at: this.startAt }),
     title: () => ({ title: this.title }),
     /* eslint-enable camelcase */
