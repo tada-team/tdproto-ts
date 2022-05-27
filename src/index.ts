@@ -9759,6 +9759,7 @@ export interface MeetingsGetRequestJSON {
   team_uuid: string;
   is_archive?: boolean;
   is_freq?: boolean;
+  is_only_mу_meetings?: boolean;
   is_outside?: boolean;
   is_public?: boolean;
   is_required?: boolean;
@@ -9776,6 +9777,7 @@ export class MeetingsGetRequest implements TDProtoClass<MeetingsGetRequest> {
    * @param teamUuid DOCUMENTATION MISSING
    * @param isArchive DOCUMENTATION MISSING
    * @param isFreq DOCUMENTATION MISSING
+   * @param isOnlyMуMeetings DOCUMENTATION MISSING
    * @param isOutside DOCUMENTATION MISSING
    * @param isPublic DOCUMENTATION MISSING
    * @param isRequired DOCUMENTATION MISSING
@@ -9789,6 +9791,7 @@ export class MeetingsGetRequest implements TDProtoClass<MeetingsGetRequest> {
     public teamUuid: string,
     public isArchive?: boolean,
     public isFreq?: boolean,
+    public isOnlyMуMeetings?: boolean,
     public isOutside?: boolean,
     public isPublic?: boolean,
     public isRequired?: boolean,
@@ -9804,6 +9807,7 @@ export class MeetingsGetRequest implements TDProtoClass<MeetingsGetRequest> {
       raw.team_uuid,
       raw.is_archive,
       raw.is_freq,
+      raw.is_only_mу_meetings,
       raw.is_outside,
       raw.is_public,
       raw.is_required,
@@ -9819,6 +9823,7 @@ export class MeetingsGetRequest implements TDProtoClass<MeetingsGetRequest> {
     'teamUuid',
     'isArchive',
     'isFreq',
+    'isOnlyMуMeetings',
     'isOutside',
     'isPublic',
     'isRequired',
@@ -9834,6 +9839,7 @@ export class MeetingsGetRequest implements TDProtoClass<MeetingsGetRequest> {
     teamUuid: () => ({ team_uuid: this.teamUuid }),
     isArchive: () => ({ is_archive: this.isArchive }),
     isFreq: () => ({ is_freq: this.isFreq }),
+    isOnlyMуMeetings: () => ({ is_only_mу_meetings: this.isOnlyMуMeetings }),
     isOutside: () => ({ is_outside: this.isOutside }),
     isPublic: () => ({ is_public: this.isPublic }),
     isRequired: () => ({ is_required: this.isRequired }),
@@ -15001,7 +15007,8 @@ export class ServerMeetingUpdated implements TDProtoClass<ServerMeetingUpdated> 
 export interface ServerMeetingUpdatedParamsJSON {
   /* eslint-disable camelcase */
   meetings: MeetingJSON[];
-  meetings_count: number;
+  team_meetings_count: number;
+  user_meetings_count: number;
   /* eslint-enable camelcase */
 }
 
@@ -15009,29 +15016,34 @@ export class ServerMeetingUpdatedParams implements TDProtoClass<ServerMeetingUpd
   /**
    * Params of the server.meeting.updated event
    * @param meetings Meeting info
-   * @param meetingsCount Meetings count
+   * @param teamMeetingsCount Team Meetings count
+   * @param userMeetingsCount User Meetings count
    */
   constructor (
     public meetings: Meeting[],
-    public meetingsCount: number,
+    public teamMeetingsCount: number,
+    public userMeetingsCount: number,
   ) {}
 
   public static fromJSON (raw: ServerMeetingUpdatedParamsJSON): ServerMeetingUpdatedParams {
     return new ServerMeetingUpdatedParams(
       raw.meetings.map(Meeting.fromJSON),
-      raw.meetings_count,
+      raw.team_meetings_count,
+      raw.user_meetings_count,
     )
   }
 
   public mappableFields = [
     'meetings',
-    'meetingsCount',
+    'teamMeetingsCount',
+    'userMeetingsCount',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
     meetings: () => ({ meetings: this.meetings.map(u => u.toJSON()) }),
-    meetingsCount: () => ({ meetings_count: this.meetingsCount }),
+    teamMeetingsCount: () => ({ team_meetings_count: this.teamMeetingsCount }),
+    userMeetingsCount: () => ({ user_meetings_count: this.userMeetingsCount }),
     /* eslint-enable camelcase */
   }
 
