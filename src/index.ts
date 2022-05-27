@@ -9759,12 +9759,12 @@ export interface MeetingsGetRequestJSON {
   team_uuid: string;
   is_archive?: boolean;
   is_freq?: boolean;
-  is_only_mу_meetings?: boolean;
   is_outside?: boolean;
   is_public?: boolean;
   is_required?: boolean;
   limit?: number;
   members?: string[];
+  members_jids?: JID[];
   offset?: number;
   /* eslint-enable camelcase */
 }
@@ -9777,12 +9777,12 @@ export class MeetingsGetRequest implements TDProtoClass<MeetingsGetRequest> {
    * @param teamUuid DOCUMENTATION MISSING
    * @param isArchive DOCUMENTATION MISSING
    * @param isFreq DOCUMENTATION MISSING
-   * @param isOnlyMуMeetings DOCUMENTATION MISSING
    * @param isOutside DOCUMENTATION MISSING
    * @param isPublic DOCUMENTATION MISSING
    * @param isRequired DOCUMENTATION MISSING
    * @param limit DOCUMENTATION MISSING
    * @param members DOCUMENTATION MISSING
+   * @param membersJids DOCUMENTATION MISSING
    * @param offset DOCUMENTATION MISSING
    */
   constructor (
@@ -9791,12 +9791,12 @@ export class MeetingsGetRequest implements TDProtoClass<MeetingsGetRequest> {
     public teamUuid: string,
     public isArchive?: boolean,
     public isFreq?: boolean,
-    public isOnlyMуMeetings?: boolean,
     public isOutside?: boolean,
     public isPublic?: boolean,
     public isRequired?: boolean,
     public limit?: number,
     public members?: string[],
+    public membersJids?: JID[],
     public offset?: number,
   ) {}
 
@@ -9807,12 +9807,12 @@ export class MeetingsGetRequest implements TDProtoClass<MeetingsGetRequest> {
       raw.team_uuid,
       raw.is_archive,
       raw.is_freq,
-      raw.is_only_mу_meetings,
       raw.is_outside,
       raw.is_public,
       raw.is_required,
       raw.limit,
       raw.members,
+      raw.members_jids,
       raw.offset,
     )
   }
@@ -9823,12 +9823,12 @@ export class MeetingsGetRequest implements TDProtoClass<MeetingsGetRequest> {
     'teamUuid',
     'isArchive',
     'isFreq',
-    'isOnlyMуMeetings',
     'isOutside',
     'isPublic',
     'isRequired',
     'limit',
     'members',
+    'membersJids',
     'offset',
   ] as const
 
@@ -9839,12 +9839,12 @@ export class MeetingsGetRequest implements TDProtoClass<MeetingsGetRequest> {
     teamUuid: () => ({ team_uuid: this.teamUuid }),
     isArchive: () => ({ is_archive: this.isArchive }),
     isFreq: () => ({ is_freq: this.isFreq }),
-    isOnlyMуMeetings: () => ({ is_only_mу_meetings: this.isOnlyMуMeetings }),
     isOutside: () => ({ is_outside: this.isOutside }),
     isPublic: () => ({ is_public: this.isPublic }),
     isRequired: () => ({ is_required: this.isRequired }),
     limit: () => ({ limit: this.limit }),
     members: () => ({ members: this.members }),
+    membersJids: () => ({ members_jids: this.membersJids }),
     offset: () => ({ offset: this.offset }),
     /* eslint-enable camelcase */
   }
