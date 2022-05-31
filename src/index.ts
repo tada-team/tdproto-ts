@@ -9764,7 +9764,7 @@ export interface MeetingsGetRequestJSON {
   is_required?: boolean;
   limit?: number;
   members?: string[];
-  members_jids?: JID[];
+  members_jids?: string;
   offset?: number;
   /* eslint-enable camelcase */
 }
@@ -9796,7 +9796,7 @@ export class MeetingsGetRequest implements TDProtoClass<MeetingsGetRequest> {
     public isRequired?: boolean,
     public limit?: number,
     public members?: string[],
-    public membersJids?: JID[],
+    public membersJids?: string,
     public offset?: number,
   ) {}
 
