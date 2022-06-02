@@ -10350,7 +10350,7 @@ export interface MeetingsUpdateRequestJSON {
   freq?: FreqJSON;
   is_outside?: boolean;
   is_public?: boolean;
-  notification_enabled?: boolean;
+  notifications_enabled?: boolean;
   remove_members?: JID[];
   start_at?: string;
   title?: string;
@@ -10368,7 +10368,7 @@ export class MeetingsUpdateRequest implements TDProtoClass<MeetingsUpdateRequest
    * @param freq DOCUMENTATION MISSING
    * @param isOutside DOCUMENTATION MISSING
    * @param isPublic DOCUMENTATION MISSING
-   * @param notificationEnabled DOCUMENTATION MISSING
+   * @param notificationsEnabled DOCUMENTATION MISSING
    * @param removeMembers DOCUMENTATION MISSING
    * @param startAt DOCUMENTATION MISSING
    * @param title DOCUMENTATION MISSING
@@ -10382,7 +10382,7 @@ export class MeetingsUpdateRequest implements TDProtoClass<MeetingsUpdateRequest
     public freq?: Freq,
     public isOutside?: boolean,
     public isPublic?: boolean,
-    public notificationEnabled?: boolean,
+    public notificationsEnabled?: boolean,
     public removeMembers?: JID[],
     public startAt?: string,
     public title?: string,
@@ -10398,7 +10398,7 @@ export class MeetingsUpdateRequest implements TDProtoClass<MeetingsUpdateRequest
       raw.freq && Freq.fromJSON(raw.freq),
       raw.is_outside,
       raw.is_public,
-      raw.notification_enabled,
+      raw.notifications_enabled,
       raw.remove_members,
       raw.start_at,
       raw.title,
@@ -10414,7 +10414,7 @@ export class MeetingsUpdateRequest implements TDProtoClass<MeetingsUpdateRequest
     'freq',
     'isOutside',
     'isPublic',
-    'notificationEnabled',
+    'notificationsEnabled',
     'removeMembers',
     'startAt',
     'title',
@@ -10430,7 +10430,7 @@ export class MeetingsUpdateRequest implements TDProtoClass<MeetingsUpdateRequest
     freq: () => ({ freq: this.freq?.toJSON() }),
     isOutside: () => ({ is_outside: this.isOutside }),
     isPublic: () => ({ is_public: this.isPublic }),
-    notificationEnabled: () => ({ notification_enabled: this.notificationEnabled }),
+    notificationsEnabled: () => ({ notifications_enabled: this.notificationsEnabled }),
     removeMembers: () => ({ remove_members: this.removeMembers }),
     startAt: () => ({ start_at: this.startAt }),
     title: () => ({ title: this.title }),
