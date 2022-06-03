@@ -10345,6 +10345,7 @@ export interface MeetingsUpdateRequestJSON {
   meeting_id: string;
   team_uuid: string;
   add_members?: MeetingsMemberCreateParamsJSON[];
+  counters_enabled?: boolean;
   description?: string;
   duration?: number;
   freq?: FreqJSON;
@@ -10363,6 +10364,7 @@ export class MeetingsUpdateRequest implements TDProtoClass<MeetingsUpdateRequest
    * @param meetingId DOCUMENTATION MISSING
    * @param teamUuid DOCUMENTATION MISSING
    * @param addMembers DOCUMENTATION MISSING
+   * @param countersEnabled DOCUMENTATION MISSING
    * @param description DOCUMENTATION MISSING
    * @param duration DOCUMENTATION MISSING
    * @param freq DOCUMENTATION MISSING
@@ -10377,6 +10379,7 @@ export class MeetingsUpdateRequest implements TDProtoClass<MeetingsUpdateRequest
     public meetingId: string,
     public teamUuid: string,
     public addMembers?: MeetingsMemberCreateParams[],
+    public countersEnabled?: boolean,
     public description?: string,
     public duration?: number,
     public freq?: Freq,
@@ -10393,6 +10396,7 @@ export class MeetingsUpdateRequest implements TDProtoClass<MeetingsUpdateRequest
       raw.meeting_id,
       raw.team_uuid,
       raw.add_members && raw.add_members.map(MeetingsMemberCreateParams.fromJSON),
+      raw.counters_enabled,
       raw.description,
       raw.duration,
       raw.freq && Freq.fromJSON(raw.freq),
@@ -10409,6 +10413,7 @@ export class MeetingsUpdateRequest implements TDProtoClass<MeetingsUpdateRequest
     'meetingId',
     'teamUuid',
     'addMembers',
+    'countersEnabled',
     'description',
     'duration',
     'freq',
@@ -10425,6 +10430,7 @@ export class MeetingsUpdateRequest implements TDProtoClass<MeetingsUpdateRequest
     meetingId: () => ({ meeting_id: this.meetingId }),
     teamUuid: () => ({ team_uuid: this.teamUuid }),
     addMembers: () => ({ add_members: this.addMembers?.map(u => u.toJSON()) }),
+    countersEnabled: () => ({ counters_enabled: this.countersEnabled }),
     description: () => ({ description: this.description }),
     duration: () => ({ duration: this.duration }),
     freq: () => ({ freq: this.freq?.toJSON() }),
