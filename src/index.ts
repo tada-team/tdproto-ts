@@ -6482,6 +6482,7 @@ export interface FeaturesJSON {
   pin_code_wrong_limit: number;
   readonly_groups: boolean;
   resend_timeout: number;
+  rumarket_app: string;
   safari_push_id: string;
   sentry_dsn_js: string;
   server_drafts: boolean;
@@ -6587,6 +6588,7 @@ export class Features implements TDProtoClass<Features> {
    * @param pinCodeWrongLimit Max number of attempts to enter an invalid PIN code
    * @param readonlyGroups Deprecated
    * @param resendTimeout Resend message in n seconds if no confirmation from server given
+   * @param rumarketApp Link to Rumarket store
    * @param safariPushId Safari push id for web-push notifications
    * @param sentryDsnJs Frontend sentry.io settings
    * @param serverDrafts Message drafts saved on server
@@ -6688,6 +6690,7 @@ export class Features implements TDProtoClass<Features> {
     public pinCodeWrongLimit: number,
     public readonlyGroups: boolean,
     public resendTimeout: number,
+    public rumarketApp: string,
     public safariPushId: string,
     public sentryDsnJs: string,
     public serverDrafts: boolean,
@@ -6791,6 +6794,7 @@ export class Features implements TDProtoClass<Features> {
       raw.pin_code_wrong_limit,
       raw.readonly_groups,
       raw.resend_timeout,
+      raw.rumarket_app,
       raw.safari_push_id,
       raw.sentry_dsn_js,
       raw.server_drafts,
@@ -6894,6 +6898,7 @@ export class Features implements TDProtoClass<Features> {
     'pinCodeWrongLimit',
     'readonlyGroups',
     'resendTimeout',
+    'rumarketApp',
     'safariPushId',
     'sentryDsnJs',
     'serverDrafts',
@@ -6997,6 +7002,7 @@ export class Features implements TDProtoClass<Features> {
     pinCodeWrongLimit: () => ({ pin_code_wrong_limit: this.pinCodeWrongLimit }),
     readonlyGroups: () => ({ readonly_groups: this.readonlyGroups }),
     resendTimeout: () => ({ resend_timeout: this.resendTimeout }),
+    rumarketApp: () => ({ rumarket_app: this.rumarketApp }),
     safariPushId: () => ({ safari_push_id: this.safariPushId }),
     sentryDsnJs: () => ({ sentry_dsn_js: this.sentryDsnJs }),
     serverDrafts: () => ({ server_drafts: this.serverDrafts }),
