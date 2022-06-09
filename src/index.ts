@@ -14968,6 +14968,126 @@ export class ServerLoginParams implements TDProtoClass<ServerLoginParams> {
   }
 }
 
+export interface ServerMeetingDeletedJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ServerMeetingDeletedParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerMeetingDeleted implements TDProtoClass<ServerMeetingDeleted> {
+  /**
+   * Meeting deleted
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ServerMeetingDeletedParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ServerMeetingDeletedJSON): ServerMeetingDeleted {
+    return new ServerMeetingDeleted(
+      raw.event,
+      ServerMeetingDeletedParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerMeetingDeletedJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerMeetingDeletedJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerMeetingDeletedParamsJSON {
+  /* eslint-disable camelcase */
+  meeting_id: string;
+  team_meetings_count: number;
+  team_meetings_dates: string[];
+  user_meetings_count: number;
+  user_meetings_dates: string[];
+  /* eslint-enable camelcase */
+}
+
+export class ServerMeetingDeletedParams implements TDProtoClass<ServerMeetingDeletedParams> {
+  /**
+   * Params of the server.meeting.deleted event
+   * @param meetingId Meeting info
+   * @param teamMeetingsCount Team Meetings count
+   * @param teamMeetingsDates Dates of team meetings
+   * @param userMeetingsCount User Meetings count
+   * @param userMeetingsDates Dates of user meetings
+   */
+  constructor (
+    public meetingId: string,
+    public teamMeetingsCount: number,
+    public teamMeetingsDates: string[],
+    public userMeetingsCount: number,
+    public userMeetingsDates: string[],
+  ) {}
+
+  public static fromJSON (raw: ServerMeetingDeletedParamsJSON): ServerMeetingDeletedParams {
+    return new ServerMeetingDeletedParams(
+      raw.meeting_id,
+      raw.team_meetings_count,
+      raw.team_meetings_dates,
+      raw.user_meetings_count,
+      raw.user_meetings_dates,
+    )
+  }
+
+  public mappableFields = [
+    'meetingId',
+    'teamMeetingsCount',
+    'teamMeetingsDates',
+    'userMeetingsCount',
+    'userMeetingsDates',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    meetingId: () => ({ meeting_id: this.meetingId }),
+    teamMeetingsCount: () => ({ team_meetings_count: this.teamMeetingsCount }),
+    teamMeetingsDates: () => ({ team_meetings_dates: this.teamMeetingsDates }),
+    userMeetingsCount: () => ({ user_meetings_count: this.userMeetingsCount }),
+    userMeetingsDates: () => ({ user_meetings_dates: this.userMeetingsDates }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerMeetingDeletedParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerMeetingDeletedParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface ServerMeetingUpdatedJSON {
   /* eslint-disable camelcase */
   event: string;
