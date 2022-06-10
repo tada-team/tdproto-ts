@@ -15024,11 +15024,7 @@ export class ServerMeetingDeleted implements TDProtoClass<ServerMeetingDeleted> 
 
 export interface ServerMeetingDeletedParamsJSON {
   /* eslint-disable camelcase */
-  meeting_id: string;
-  team_meetings_count: number;
-  team_meetings_dates: string[];
-  user_meetings_count: number;
-  user_meetings_dates: string[];
+  meeting_id: string[];
   /* eslint-enable camelcase */
 }
 
@@ -15036,44 +15032,24 @@ export class ServerMeetingDeletedParams implements TDProtoClass<ServerMeetingDel
   /**
    * Params of the server.meeting.deleted event
    * @param meetingId Meeting info
-   * @param teamMeetingsCount Team Meetings count
-   * @param teamMeetingsDates Dates of team meetings
-   * @param userMeetingsCount User Meetings count
-   * @param userMeetingsDates Dates of user meetings
    */
   constructor (
-    public meetingId: string,
-    public teamMeetingsCount: number,
-    public teamMeetingsDates: string[],
-    public userMeetingsCount: number,
-    public userMeetingsDates: string[],
+    public meetingId: string[],
   ) {}
 
   public static fromJSON (raw: ServerMeetingDeletedParamsJSON): ServerMeetingDeletedParams {
     return new ServerMeetingDeletedParams(
       raw.meeting_id,
-      raw.team_meetings_count,
-      raw.team_meetings_dates,
-      raw.user_meetings_count,
-      raw.user_meetings_dates,
     )
   }
 
   public mappableFields = [
     'meetingId',
-    'teamMeetingsCount',
-    'teamMeetingsDates',
-    'userMeetingsCount',
-    'userMeetingsDates',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
     meetingId: () => ({ meeting_id: this.meetingId }),
-    teamMeetingsCount: () => ({ team_meetings_count: this.teamMeetingsCount }),
-    teamMeetingsDates: () => ({ team_meetings_dates: this.teamMeetingsDates }),
-    userMeetingsCount: () => ({ user_meetings_count: this.userMeetingsCount }),
-    userMeetingsDates: () => ({ user_meetings_dates: this.userMeetingsDates }),
     /* eslint-enable camelcase */
   }
 
