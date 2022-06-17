@@ -4138,6 +4138,7 @@ export interface ContactJSON {
   can_add_to_team?: boolean;
   can_call?: boolean;
   can_create_group?: boolean;
+  can_create_meeting?: boolean;
   can_create_task?: boolean;
   can_delete?: boolean;
   can_delete_any_message?: boolean;
@@ -4205,6 +4206,7 @@ export class Contact implements TDProtoClass<Contact> {
    * @param canAddToTeam Can I add new members to this team
    * @param canCall Can I call to this contact
    * @param canCreateGroup Can I create group chats in this team
+   * @param canCreateMeeting Can I create meetings in this team
    * @param canCreateTask Can I create task for this contact
    * @param canDelete Can I remove this contact from team
    * @param canDeleteAnyMessage Deprecated
@@ -4268,6 +4270,7 @@ export class Contact implements TDProtoClass<Contact> {
     public canAddToTeam?: boolean,
     public canCall?: boolean,
     public canCreateGroup?: boolean,
+    public canCreateMeeting?: boolean,
     public canCreateTask?: boolean,
     public canDelete?: boolean,
     public canDeleteAnyMessage?: boolean,
@@ -4333,6 +4336,7 @@ export class Contact implements TDProtoClass<Contact> {
       raw.can_add_to_team,
       raw.can_call,
       raw.can_create_group,
+      raw.can_create_meeting,
       raw.can_create_task,
       raw.can_delete,
       raw.can_delete_any_message,
@@ -4398,6 +4402,7 @@ export class Contact implements TDProtoClass<Contact> {
     'canAddToTeam',
     'canCall',
     'canCreateGroup',
+    'canCreateMeeting',
     'canCreateTask',
     'canDelete',
     'canDeleteAnyMessage',
@@ -4463,6 +4468,7 @@ export class Contact implements TDProtoClass<Contact> {
     canAddToTeam: () => ({ can_add_to_team: this.canAddToTeam }),
     canCall: () => ({ can_call: this.canCall }),
     canCreateGroup: () => ({ can_create_group: this.canCreateGroup }),
+    canCreateMeeting: () => ({ can_create_meeting: this.canCreateMeeting }),
     canCreateTask: () => ({ can_create_task: this.canCreateTask }),
     canDelete: () => ({ can_delete: this.canDelete }),
     canDeleteAnyMessage: () => ({ can_delete_any_message: this.canDeleteAnyMessage }),
