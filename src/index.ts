@@ -4169,6 +4169,8 @@ export interface ContactJSON {
   hide_pushes_content?: boolean;
   is_archive?: boolean;
   last_activity?: ISODateTimeString;
+  meeting_mshort_view?: boolean;
+  meeting_short_view?: boolean;
   mood?: string;
   munread_first?: boolean;
   node?: string;
@@ -4237,6 +4239,8 @@ export class Contact implements TDProtoClass<Contact> {
    * @param hidePushesContent Hide pushes body
    * @param isArchive Contact deleted
    * @param lastActivity Last activity in this team (iso datetime)
+   * @param meetingMshortView Short view in meeting list in mobile app
+   * @param meetingShortView Short view in meeting list
    * @param mood Mood in this team
    * @param munreadFirst Show unread chats first in feed in mobile app
    * @param node Node uid for external users
@@ -4301,6 +4305,8 @@ export class Contact implements TDProtoClass<Contact> {
     public hidePushesContent?: boolean,
     public isArchive?: boolean,
     public lastActivity?: ISODateTimeString,
+    public meetingMshortView?: boolean,
+    public meetingShortView?: boolean,
     public mood?: string,
     public munreadFirst?: boolean,
     public node?: string,
@@ -4367,6 +4373,8 @@ export class Contact implements TDProtoClass<Contact> {
       raw.hide_pushes_content,
       raw.is_archive,
       raw.last_activity,
+      raw.meeting_mshort_view,
+      raw.meeting_short_view,
       raw.mood,
       raw.munread_first,
       raw.node,
@@ -4433,6 +4441,8 @@ export class Contact implements TDProtoClass<Contact> {
     'hidePushesContent',
     'isArchive',
     'lastActivity',
+    'meetingMshortView',
+    'meetingShortView',
     'mood',
     'munreadFirst',
     'node',
@@ -4499,6 +4509,8 @@ export class Contact implements TDProtoClass<Contact> {
     hidePushesContent: () => ({ hide_pushes_content: this.hidePushesContent }),
     isArchive: () => ({ is_archive: this.isArchive }),
     lastActivity: () => ({ last_activity: this.lastActivity }),
+    meetingMshortView: () => ({ meeting_mshort_view: this.meetingMshortView }),
+    meetingShortView: () => ({ meeting_short_view: this.meetingShortView }),
     mood: () => ({ mood: this.mood }),
     munreadFirst: () => ({ munread_first: this.munreadFirst }),
     node: () => ({ node: this.node }),
