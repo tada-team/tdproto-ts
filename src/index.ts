@@ -81,6 +81,12 @@ export type MeetingRepeatabilityType =
    | 'MEETING_PRESENCE_STATUS_NDOW'
    | 'MEETING_PRESENCE_STATUS_ANNUALLY'
 
+export type MessengerType =
+   | 'telegram'
+
+export type ParseStatus =
+   | 'created'
+
 export type PersonalAccountStatus =
    | 'PERSONAL_ACCOUNT_STATUS_ACTIVE'
    | 'PERSONAL_ACCOUNT_STATUS_SUSPENDED'
@@ -8823,6 +8829,78 @@ export class JSEP implements TDProtoClass<JSEP> {
 
   public toJSON (): JSEPJSON
   public toJSON (fields: Array<this['mappableFields'][number]>): Partial<JSEPJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface MappedUserJSON {
+  /* eslint-disable camelcase */
+  contact_id: JID;
+  external_user_id: string;
+  external_user_name: string;
+  is_admin: boolean;
+  is_archive: boolean;
+  is_deleted: boolean;
+  /* eslint-enable camelcase */
+}
+
+export class MappedUser implements TDProtoClass<MappedUser> {
+  /**
+   * MappedUser struct for map internal user with external user
+   * @param contactId ContactID tada contact id
+   * @param externalUserId ExternalUserID user id from messenger
+   * @param externalUserName ExternalUserName user name from messenger
+   * @param isAdmin IsAdmin group admin flag
+   * @param isArchive IsArchive flag of archive user
+   * @param isDeleted IsDeleted flag of deleted user from messenger
+   */
+  constructor (
+    public contactId: JID,
+    public externalUserId: string,
+    public externalUserName: string,
+    public isAdmin: boolean,
+    public isArchive: boolean,
+    public isDeleted: boolean,
+  ) {}
+
+  public static fromJSON (raw: MappedUserJSON): MappedUser {
+    return new MappedUser(
+      raw.contact_id,
+      raw.external_user_id,
+      raw.external_user_name,
+      raw.is_admin,
+      raw.is_archive,
+      raw.is_deleted,
+    )
+  }
+
+  public mappableFields = [
+    'contactId',
+    'externalUserId',
+    'externalUserName',
+    'isAdmin',
+    'isArchive',
+    'isDeleted',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    contactId: () => ({ contact_id: this.contactId }),
+    externalUserId: () => ({ external_user_id: this.externalUserId }),
+    externalUserName: () => ({ external_user_name: this.externalUserName }),
+    isAdmin: () => ({ is_admin: this.isAdmin }),
+    isArchive: () => ({ is_archive: this.isArchive }),
+    isDeleted: () => ({ is_deleted: this.isDeleted }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): MappedUserJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<MappedUserJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
