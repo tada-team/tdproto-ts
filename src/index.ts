@@ -8840,7 +8840,7 @@ export class JSEP implements TDProtoClass<JSEP> {
 
 export interface MappedUserJSON {
   /* eslint-disable camelcase */
-  contact: ContactShortJSON;
+  contact: ContactJSON;
   external_user_id: string;
   external_user_name: string;
   is_admin: boolean;
@@ -8852,7 +8852,7 @@ export interface MappedUserJSON {
 export class MappedUser implements TDProtoClass<MappedUser> {
   /**
    * MappedUser struct for map internal user with external user
-   * @param contact Contact short tada contact data
+   * @param contact Contact tada contact data
    * @param externalUserId ExternalUserID user id from messenger
    * @param externalUserName ExternalUserName user name from messenger
    * @param isAdmin IsAdmin group admin flag
@@ -8860,7 +8860,7 @@ export class MappedUser implements TDProtoClass<MappedUser> {
    * @param isDeleted IsDeleted flag of deleted user from messenger
    */
   constructor (
-    public contact: ContactShort,
+    public contact: Contact,
     public externalUserId: string,
     public externalUserName: string,
     public isAdmin: boolean,
@@ -8870,7 +8870,7 @@ export class MappedUser implements TDProtoClass<MappedUser> {
 
   public static fromJSON (raw: MappedUserJSON): MappedUser {
     return new MappedUser(
-      ContactShort.fromJSON(raw.contact),
+      Contact.fromJSON(raw.contact),
       raw.external_user_id,
       raw.external_user_name,
       raw.is_admin,
