@@ -8840,7 +8840,7 @@ export class JSEP implements TDProtoClass<JSEP> {
 
 export interface MappedUserJSON {
   /* eslint-disable camelcase */
-  contact_id: JID;
+  contact: ContactShortJSON;
   external_user_id: string;
   external_user_name: string;
   is_admin: boolean;
@@ -8852,7 +8852,7 @@ export interface MappedUserJSON {
 export class MappedUser implements TDProtoClass<MappedUser> {
   /**
    * MappedUser struct for map internal user with external user
-   * @param contactId ContactID tada contact id
+   * @param contact Contact short tada contact data
    * @param externalUserId ExternalUserID user id from messenger
    * @param externalUserName ExternalUserName user name from messenger
    * @param isAdmin IsAdmin group admin flag
@@ -8860,7 +8860,7 @@ export class MappedUser implements TDProtoClass<MappedUser> {
    * @param isDeleted IsDeleted flag of deleted user from messenger
    */
   constructor (
-    public contactId: JID,
+    public contact: ContactShort,
     public externalUserId: string,
     public externalUserName: string,
     public isAdmin: boolean,
@@ -8870,7 +8870,7 @@ export class MappedUser implements TDProtoClass<MappedUser> {
 
   public static fromJSON (raw: MappedUserJSON): MappedUser {
     return new MappedUser(
-      raw.contact_id,
+      ContactShort.fromJSON(raw.contact),
       raw.external_user_id,
       raw.external_user_name,
       raw.is_admin,
@@ -8880,7 +8880,7 @@ export class MappedUser implements TDProtoClass<MappedUser> {
   }
 
   public mappableFields = [
-    'contactId',
+    'contact',
     'externalUserId',
     'externalUserName',
     'isAdmin',
@@ -8890,7 +8890,7 @@ export class MappedUser implements TDProtoClass<MappedUser> {
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    contactId: () => ({ contact_id: this.contactId }),
+    contact: () => ({ contact: this.contact.toJSON() }),
     externalUserId: () => ({ external_user_id: this.externalUserId }),
     externalUserName: () => ({ external_user_name: this.externalUserName }),
     isAdmin: () => ({ is_admin: this.isAdmin }),
