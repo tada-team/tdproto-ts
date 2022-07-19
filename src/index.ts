@@ -6446,6 +6446,7 @@ export class Emoji implements TDProtoClass<Emoji> {
 
 export interface FeaturesJSON {
   /* eslint-disable camelcase */
+  ChatsImportEnabled: boolean;
   afk_age: number;
   android_app: string;
   android_corp_app: string;
@@ -6552,6 +6553,7 @@ export interface FeaturesJSON {
 export class Features implements TDProtoClass<Features> {
   /**
    * Server information. Readonly
+   * @param ChatsImportEnabled ChatsImportEnabled import chat feature
    * @param afkAge Max inactivity seconds
    * @param androidApp Link to Google Play
    * @param androidCorpApp Link to Google Play for corporate app
@@ -6654,6 +6656,7 @@ export class Features implements TDProtoClass<Features> {
    * @param webLoginBackground WebBackground image url, if any
    */
   constructor (
+    public ChatsImportEnabled: boolean,
     public afkAge: number,
     public androidApp: string,
     public androidCorpApp: string,
@@ -6758,6 +6761,7 @@ export class Features implements TDProtoClass<Features> {
 
   public static fromJSON (raw: FeaturesJSON): Features {
     return new Features(
+      raw.ChatsImportEnabled,
       raw.afk_age,
       raw.android_app,
       raw.android_corp_app,
@@ -6862,6 +6866,7 @@ export class Features implements TDProtoClass<Features> {
   }
 
   public mappableFields = [
+    'ChatsImportEnabled',
     'afkAge',
     'androidApp',
     'androidCorpApp',
@@ -6966,6 +6971,7 @@ export class Features implements TDProtoClass<Features> {
 
   readonly #mapper = {
     /* eslint-disable camelcase */
+    ChatsImportEnabled: () => ({ ChatsImportEnabled: this.ChatsImportEnabled }),
     afkAge: () => ({ afk_age: this.afkAge }),
     androidApp: () => ({ android_app: this.androidApp }),
     androidCorpApp: () => ({ android_corp_app: this.androidCorpApp }),
