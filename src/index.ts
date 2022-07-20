@@ -11983,6 +11983,324 @@ export class PaginatedUploadShortMessages implements TDProtoClass<PaginatedUploa
   }
 }
 
+export interface ParserGenerateChatsResponseJSON {
+  /* eslint-disable camelcase */
+  action_type: ActionType;
+  processing_action: string;
+  /* eslint-enable camelcase */
+}
+
+export class ParserGenerateChatsResponse implements TDProtoClass<ParserGenerateChatsResponse> {
+  /**
+   * ParserGenerateChatsResponse
+   * @param actionType ActionType must be generate_chat
+   * @param processingAction ProcessingAction action for background notifications about generation of chats and messages
+   */
+  constructor (
+    public actionType: ActionType,
+    public processingAction: string,
+  ) {}
+
+  public static fromJSON (raw: ParserGenerateChatsResponseJSON): ParserGenerateChatsResponse {
+    return new ParserGenerateChatsResponse(
+      raw.action_type,
+      raw.processing_action,
+    )
+  }
+
+  public mappableFields = [
+    'actionType',
+    'processingAction',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    actionType: () => ({ action_type: this.actionType }),
+    processingAction: () => ({ processing_action: this.processingAction }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ParserGenerateChatsResponseJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ParserGenerateChatsResponseJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ParserGetArchiveStatusResponseJSON {
+  /* eslint-disable camelcase */
+  status: ParseStatus;
+  /* eslint-enable camelcase */
+}
+
+export class ParserGetArchiveStatusResponse implements TDProtoClass<ParserGetArchiveStatusResponse> {
+  /**
+   * ParserGetArchiveStatusResponse response structure for method GetArchiveStatus
+   * @param status Status archive parse status
+   */
+  constructor (
+    public status: ParseStatus,
+  ) {}
+
+  public static fromJSON (raw: ParserGetArchiveStatusResponseJSON): ParserGetArchiveStatusResponse {
+    return new ParserGetArchiveStatusResponse(
+      raw.status,
+    )
+  }
+
+  public mappableFields = [
+    'status',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    status: () => ({ status: this.status }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ParserGetArchiveStatusResponseJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ParserGetArchiveStatusResponseJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ParserGetMappedUsersResponseJSON {
+  /* eslint-disable camelcase */
+  users: MappedUserJSON[];
+  /* eslint-enable camelcase */
+}
+
+export class ParserGetMappedUsersResponse implements TDProtoClass<ParserGetMappedUsersResponse> {
+  /**
+   * ParserGetMappedUsersResponse ..
+   * @param users Users ..
+   */
+  constructor (
+    public users: MappedUser[],
+  ) {}
+
+  public static fromJSON (raw: ParserGetMappedUsersResponseJSON): ParserGetMappedUsersResponse {
+    return new ParserGetMappedUsersResponse(
+      raw.users.map(MappedUser.fromJSON),
+    )
+  }
+
+  public mappableFields = [
+    'users',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    users: () => ({ users: this.users.map(u => u.toJSON()) }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ParserGetMappedUsersResponseJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ParserGetMappedUsersResponseJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ParserMapUsersRequestJSON {
+  /* eslint-disable camelcase */
+  users: MappedUserJSON[];
+  /* eslint-enable camelcase */
+}
+
+export class ParserMapUsersRequest implements TDProtoClass<ParserMapUsersRequest> {
+  /**
+   * ParserMapUsersRequest ..
+   * @param users Users ..
+   */
+  constructor (
+    public users: MappedUser[],
+  ) {}
+
+  public static fromJSON (raw: ParserMapUsersRequestJSON): ParserMapUsersRequest {
+    return new ParserMapUsersRequest(
+      raw.users.map(MappedUser.fromJSON),
+    )
+  }
+
+  public mappableFields = [
+    'users',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    users: () => ({ users: this.users.map(u => u.toJSON()) }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ParserMapUsersRequestJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ParserMapUsersRequestJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ParserMapUsersResponseJSON {
+  /* eslint-disable camelcase */
+  success: boolean;
+  /* eslint-enable camelcase */
+}
+
+export class ParserMapUsersResponse implements TDProtoClass<ParserMapUsersResponse> {
+  /**
+   * ParserMapUsersResponse ..
+   * @param success Success result
+   */
+  constructor (
+    public success: boolean,
+  ) {}
+
+  public static fromJSON (raw: ParserMapUsersResponseJSON): ParserMapUsersResponse {
+    return new ParserMapUsersResponse(
+      raw.success,
+    )
+  }
+
+  public mappableFields = [
+    'success',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    success: () => ({ success: this.success }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ParserMapUsersResponseJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ParserMapUsersResponseJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ParserSendArchiveStatusRequestJSON {
+  /* eslint-disable camelcase */
+  progress: number;
+  status: ParseStatus;
+  /* eslint-enable camelcase */
+}
+
+export class ParserSendArchiveStatusRequest implements TDProtoClass<ParserSendArchiveStatusRequest> {
+  /**
+   * ParserSendArchiveStatusRequest ..
+   * @param progress DOCUMENTATION MISSING
+   * @param status DOCUMENTATION MISSING
+   */
+  constructor (
+    public progress: number,
+    public status: ParseStatus,
+  ) {}
+
+  public static fromJSON (raw: ParserSendArchiveStatusRequestJSON): ParserSendArchiveStatusRequest {
+    return new ParserSendArchiveStatusRequest(
+      raw.progress,
+      raw.status,
+    )
+  }
+
+  public mappableFields = [
+    'progress',
+    'status',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    progress: () => ({ progress: this.progress }),
+    status: () => ({ status: this.status }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ParserSendArchiveStatusRequestJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ParserSendArchiveStatusRequestJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ParserUploadArchiveResponseJSON {
+  /* eslint-disable camelcase */
+  action_type: ActionType;
+  processing_action: string;
+  success: boolean;
+  /* eslint-enable camelcase */
+}
+
+export class ParserUploadArchiveResponse implements TDProtoClass<ParserUploadArchiveResponse> {
+  /**
+   * ParserUploadArchiveResponse response structure for method UploadArchive
+   * @param actionType ActionType must be archive_unpacking
+   * @param processingAction ProcessingAction action for background notifications about archive unpacking
+   * @param success Success result
+   */
+  constructor (
+    public actionType: ActionType,
+    public processingAction: string,
+    public success: boolean,
+  ) {}
+
+  public static fromJSON (raw: ParserUploadArchiveResponseJSON): ParserUploadArchiveResponse {
+    return new ParserUploadArchiveResponse(
+      raw.action_type,
+      raw.processing_action,
+      raw.success,
+    )
+  }
+
+  public mappableFields = [
+    'actionType',
+    'processingAction',
+    'success',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    actionType: () => ({ action_type: this.actionType }),
+    processingAction: () => ({ processing_action: this.processingAction }),
+    success: () => ({ success: this.success }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ParserUploadArchiveResponseJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ParserUploadArchiveResponseJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface PaymentJSON {
   /* eslint-disable camelcase */
   confirmation_url: string;
