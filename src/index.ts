@@ -11,6 +11,12 @@ export type UiSettings = Record<string, any>
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type UiSettingsData = Record<string, any>
 
+export type ActionType =
+   | 'contact_import'
+   | 'task_import'
+   | 'archive_unpacking'
+   | 'generate_chat'
+
 export type CallType =
    | 'audio'
    | 'video'
@@ -86,6 +92,11 @@ export type MessengerType =
 
 export type ParseStatus =
    | 'created'
+   | 'uploaded'
+   | 'in_progress'
+   | 'uploading_media'
+   | 'completed'
+   | 'error'
 
 export type PersonalAccountStatus =
    | 'PERSONAL_ACCOUNT_STATUS_ACTIVE'
@@ -15719,6 +15730,7 @@ export interface ServerProcessingParamsJSON {
   message: string;
   num: number;
   total: number;
+  action_type?: ActionType;
   /* eslint-enable camelcase */
 }
 
@@ -15730,6 +15742,7 @@ export class ServerProcessingParams implements TDProtoClass<ServerProcessingPara
    * @param message Message
    * @param num Current processing item
    * @param total Total processing items
+   * @param actionType ActionType. Ex: [contact_import || task_import || archive_unpacking || generate_chats]
    */
   constructor (
     public action: string,
@@ -15737,6 +15750,7 @@ export class ServerProcessingParams implements TDProtoClass<ServerProcessingPara
     public message: string,
     public num: number,
     public total: number,
+    public actionType?: ActionType,
   ) {}
 
   public static fromJSON (raw: ServerProcessingParamsJSON): ServerProcessingParams {
@@ -15746,6 +15760,7 @@ export class ServerProcessingParams implements TDProtoClass<ServerProcessingPara
       raw.message,
       raw.num,
       raw.total,
+      raw.action_type,
     )
   }
 
@@ -15755,6 +15770,7 @@ export class ServerProcessingParams implements TDProtoClass<ServerProcessingPara
     'message',
     'num',
     'total',
+    'actionType',
   ] as const
 
   readonly #mapper = {
@@ -15764,6 +15780,7 @@ export class ServerProcessingParams implements TDProtoClass<ServerProcessingPara
     message: () => ({ message: this.message }),
     num: () => ({ num: this.num }),
     total: () => ({ total: this.total }),
+    actionType: () => ({ action_type: this.actionType }),
     /* eslint-enable camelcase */
   }
 
