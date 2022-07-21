@@ -16056,6 +16056,7 @@ export interface ServerProcessingParamsJSON {
   num: number;
   total: number;
   action_type?: ActionType;
+  body?: string;
   /* eslint-enable camelcase */
 }
 
@@ -16068,6 +16069,7 @@ export class ServerProcessingParams implements TDProtoClass<ServerProcessingPara
    * @param num Current processing item
    * @param total Total processing items
    * @param actionType ActionType. Ex: [contact_import || task_import || archive_unpacking || generate_chats]
+   * @param body Body
    */
   constructor (
     public action: string,
@@ -16076,6 +16078,7 @@ export class ServerProcessingParams implements TDProtoClass<ServerProcessingPara
     public num: number,
     public total: number,
     public actionType?: ActionType,
+    public body?: string,
   ) {}
 
   public static fromJSON (raw: ServerProcessingParamsJSON): ServerProcessingParams {
@@ -16086,6 +16089,7 @@ export class ServerProcessingParams implements TDProtoClass<ServerProcessingPara
       raw.num,
       raw.total,
       raw.action_type,
+      raw.body,
     )
   }
 
@@ -16096,6 +16100,7 @@ export class ServerProcessingParams implements TDProtoClass<ServerProcessingPara
     'num',
     'total',
     'actionType',
+    'body',
   ] as const
 
   readonly #mapper = {
@@ -16106,6 +16111,7 @@ export class ServerProcessingParams implements TDProtoClass<ServerProcessingPara
     num: () => ({ num: this.num }),
     total: () => ({ total: this.total }),
     actionType: () => ({ action_type: this.actionType }),
+    body: () => ({ body: this.body }),
     /* eslint-enable camelcase */
   }
 
