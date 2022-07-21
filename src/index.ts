@@ -12033,6 +12033,7 @@ export class ParserGenerateChatsResponse implements TDProtoClass<ParserGenerateC
 
 export interface ParserGetArchiveStatusResponseJSON {
   /* eslint-disable camelcase */
+  progress: number;
   status: ParseStatus;
   /* eslint-enable camelcase */
 }
@@ -12040,24 +12041,29 @@ export interface ParserGetArchiveStatusResponseJSON {
 export class ParserGetArchiveStatusResponse implements TDProtoClass<ParserGetArchiveStatusResponse> {
   /**
    * ParserGetArchiveStatusResponse response structure for method GetArchiveStatus
+   * @param progress Progress of archive unpacking
    * @param status Status archive parse status
    */
   constructor (
+    public progress: number,
     public status: ParseStatus,
   ) {}
 
   public static fromJSON (raw: ParserGetArchiveStatusResponseJSON): ParserGetArchiveStatusResponse {
     return new ParserGetArchiveStatusResponse(
+      raw.progress,
       raw.status,
     )
   }
 
   public mappableFields = [
+    'progress',
     'status',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
+    progress: () => ({ progress: this.progress }),
     status: () => ({ status: this.status }),
     /* eslint-enable camelcase */
   }
@@ -12209,8 +12215,8 @@ export interface ParserSendArchiveStatusRequestJSON {
 export class ParserSendArchiveStatusRequest implements TDProtoClass<ParserSendArchiveStatusRequest> {
   /**
    * ParserSendArchiveStatusRequest ..
-   * @param progress DOCUMENTATION MISSING
-   * @param status DOCUMENTATION MISSING
+   * @param progress Progress of archive unpacking
+   * @param status Status archive parse status
    */
   constructor (
     public progress: number,
