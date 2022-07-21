@@ -96,6 +96,7 @@ export type ParseStatus =
    | 'in_progress'
    | 'uploading_media'
    | 'completed'
+   | 'not_found'
    | 'error'
 
 export type PersonalAccountStatus =
@@ -11992,7 +11993,7 @@ export interface ParserGenerateChatsResponseJSON {
 
 export class ParserGenerateChatsResponse implements TDProtoClass<ParserGenerateChatsResponse> {
   /**
-   * ParserGenerateChatsResponse
+   * ParserGenerateChatsResponse ..
    * @param actionType ActionType must be generate_chat
    * @param processingAction ProcessingAction action for background notifications about generation of chats and messages
    */
