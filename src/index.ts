@@ -12001,6 +12001,7 @@ export class PaginatedUploadShortMessages implements TDProtoClass<PaginatedUploa
 export interface ParserGenerateChatsResponseJSON {
   /* eslint-disable camelcase */
   action_type: ActionType;
+  archive_name: string;
   processing_action: string;
   /* eslint-enable camelcase */
 }
@@ -12009,28 +12010,33 @@ export class ParserGenerateChatsResponse implements TDProtoClass<ParserGenerateC
   /**
    * ParserGenerateChatsResponse ..
    * @param actionType ActionType must be generate_chat
+   * @param archiveName ArchiveName name of archive
    * @param processingAction ProcessingAction action for background notifications about generation of chats and messages
    */
   constructor (
     public actionType: ActionType,
+    public archiveName: string,
     public processingAction: string,
   ) {}
 
   public static fromJSON (raw: ParserGenerateChatsResponseJSON): ParserGenerateChatsResponse {
     return new ParserGenerateChatsResponse(
       raw.action_type,
+      raw.archive_name,
       raw.processing_action,
     )
   }
 
   public mappableFields = [
     'actionType',
+    'archiveName',
     'processingAction',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
     actionType: () => ({ action_type: this.actionType }),
+    archiveName: () => ({ archive_name: this.archiveName }),
     processingAction: () => ({ processing_action: this.processingAction }),
     /* eslint-enable camelcase */
   }
@@ -12096,6 +12102,7 @@ export class ParserGetMappedUsersResponse implements TDProtoClass<ParserGetMappe
 
 export interface ParserGetStateResponseJSON {
   /* eslint-disable camelcase */
+  archive_name: string;
   has_error: boolean;
   state: ParseState;
   action?: string;
@@ -12109,6 +12116,7 @@ export interface ParserGetStateResponseJSON {
 export class ParserGetStateResponse implements TDProtoClass<ParserGetStateResponse> {
   /**
    * ParserGetStateResponse response structure for method GetArchiveState
+   * @param archiveName ArchiveName name of archive
    * @param hasError Has error
    * @param state State of import chats
    * @param action Action name
@@ -12118,6 +12126,7 @@ export class ParserGetStateResponse implements TDProtoClass<ParserGetStateRespon
    * @param progress Progress of archive unpacking
    */
   constructor (
+    public archiveName: string,
     public hasError: boolean,
     public state: ParseState,
     public action?: string,
@@ -12129,6 +12138,7 @@ export class ParserGetStateResponse implements TDProtoClass<ParserGetStateRespon
 
   public static fromJSON (raw: ParserGetStateResponseJSON): ParserGetStateResponse {
     return new ParserGetStateResponse(
+      raw.archive_name,
       raw.has_error,
       raw.state,
       raw.action,
@@ -12140,6 +12150,7 @@ export class ParserGetStateResponse implements TDProtoClass<ParserGetStateRespon
   }
 
   public mappableFields = [
+    'archiveName',
     'hasError',
     'state',
     'action',
@@ -12151,6 +12162,7 @@ export class ParserGetStateResponse implements TDProtoClass<ParserGetStateRespon
 
   readonly #mapper = {
     /* eslint-disable camelcase */
+    archiveName: () => ({ archive_name: this.archiveName }),
     hasError: () => ({ has_error: this.hasError }),
     state: () => ({ state: this.state }),
     action: () => ({ action: this.action }),
@@ -12313,6 +12325,7 @@ export class ParserSendArchiveStatusRequest implements TDProtoClass<ParserSendAr
 export interface ParserUploadArchiveResponseJSON {
   /* eslint-disable camelcase */
   action_type: ActionType;
+  archive_name: string;
   processing_action: string;
   success: boolean;
   /* eslint-enable camelcase */
@@ -12322,11 +12335,13 @@ export class ParserUploadArchiveResponse implements TDProtoClass<ParserUploadArc
   /**
    * ParserUploadArchiveResponse response structure for method UploadArchive
    * @param actionType ActionType must be archive_unpacking
+   * @param archiveName ArchiveName name of archive
    * @param processingAction ProcessingAction action for background notifications about archive unpacking
    * @param success Success result
    */
   constructor (
     public actionType: ActionType,
+    public archiveName: string,
     public processingAction: string,
     public success: boolean,
   ) {}
@@ -12334,6 +12349,7 @@ export class ParserUploadArchiveResponse implements TDProtoClass<ParserUploadArc
   public static fromJSON (raw: ParserUploadArchiveResponseJSON): ParserUploadArchiveResponse {
     return new ParserUploadArchiveResponse(
       raw.action_type,
+      raw.archive_name,
       raw.processing_action,
       raw.success,
     )
@@ -12341,6 +12357,7 @@ export class ParserUploadArchiveResponse implements TDProtoClass<ParserUploadArc
 
   public mappableFields = [
     'actionType',
+    'archiveName',
     'processingAction',
     'success',
   ] as const
@@ -12348,6 +12365,7 @@ export class ParserUploadArchiveResponse implements TDProtoClass<ParserUploadArc
   readonly #mapper = {
     /* eslint-disable camelcase */
     actionType: () => ({ action_type: this.actionType }),
+    archiveName: () => ({ archive_name: this.archiveName }),
     processingAction: () => ({ processing_action: this.processingAction }),
     success: () => ({ success: this.success }),
     /* eslint-enable camelcase */
