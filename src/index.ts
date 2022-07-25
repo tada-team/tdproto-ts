@@ -90,6 +90,20 @@ export type MeetingRepeatabilityType =
 export type MessengerType =
    | 'telegram'
 
+export type ParseErrCode =
+   | '1001'
+   | '1002'
+   | '1003'
+   | '1004'
+   | '1005'
+   | '1006'
+
+export type ParseState =
+   | 'not_found'
+   | 'unpacking'
+   | 'need_mapping'
+   | 'generating'
+
 export type ParseStatus =
    | 'created'
    | 'uploaded'
@@ -12032,45 +12046,45 @@ export class ParserGenerateChatsResponse implements TDProtoClass<ParserGenerateC
   }
 }
 
-export interface ParserGetArchiveStatusResponseJSON {
+export interface ParserGetMappedUsersResponseJSON {
   /* eslint-disable camelcase */
-  progress: number;
-  status: ParseStatus;
+  chat_name: string;
+  users: MappedUserJSON[];
   /* eslint-enable camelcase */
 }
 
-export class ParserGetArchiveStatusResponse implements TDProtoClass<ParserGetArchiveStatusResponse> {
+export class ParserGetMappedUsersResponse implements TDProtoClass<ParserGetMappedUsersResponse> {
   /**
-   * ParserGetArchiveStatusResponse response structure for method GetArchiveStatus
-   * @param progress Progress of archive unpacking
-   * @param status Status archive parse status
+   * ParserGetMappedUsersResponse ..
+   * @param chatName ChatName ..
+   * @param users Users ..
    */
   constructor (
-    public progress: number,
-    public status: ParseStatus,
+    public chatName: string,
+    public users: MappedUser[],
   ) {}
 
-  public static fromJSON (raw: ParserGetArchiveStatusResponseJSON): ParserGetArchiveStatusResponse {
-    return new ParserGetArchiveStatusResponse(
-      raw.progress,
-      raw.status,
+  public static fromJSON (raw: ParserGetMappedUsersResponseJSON): ParserGetMappedUsersResponse {
+    return new ParserGetMappedUsersResponse(
+      raw.chat_name,
+      raw.users.map(MappedUser.fromJSON),
     )
   }
 
   public mappableFields = [
-    'progress',
-    'status',
+    'chatName',
+    'users',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    progress: () => ({ progress: this.progress }),
-    status: () => ({ status: this.status }),
+    chatName: () => ({ chat_name: this.chatName }),
+    users: () => ({ users: this.users.map(u => u.toJSON()) }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): ParserGetArchiveStatusResponseJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ParserGetArchiveStatusResponseJSON>
+  public toJSON (): ParserGetMappedUsersResponseJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ParserGetMappedUsersResponseJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -12080,39 +12094,75 @@ export class ParserGetArchiveStatusResponse implements TDProtoClass<ParserGetArc
   }
 }
 
-export interface ParserGetMappedUsersResponseJSON {
+export interface ParserGetStateResponseJSON {
   /* eslint-disable camelcase */
-  users: MappedUserJSON[];
+  has_error: boolean;
+  state: ParseState;
+  action?: string;
+  action_type?: ActionType;
+  body?: string;
+  message?: string;
+  progress?: number;
   /* eslint-enable camelcase */
 }
 
-export class ParserGetMappedUsersResponse implements TDProtoClass<ParserGetMappedUsersResponse> {
+export class ParserGetStateResponse implements TDProtoClass<ParserGetStateResponse> {
   /**
-   * ParserGetMappedUsersResponse ..
-   * @param users Users ..
+   * ParserGetStateResponse response structure for method GetArchiveState
+   * @param hasError Has error
+   * @param state State of import chats
+   * @param action Action name
+   * @param actionType ActionType. Ex: [archive_unpacking || generate_chats]
+   * @param body Localized Body
+   * @param message Localized Message
+   * @param progress Progress of archive unpacking
    */
   constructor (
-    public users: MappedUser[],
+    public hasError: boolean,
+    public state: ParseState,
+    public action?: string,
+    public actionType?: ActionType,
+    public body?: string,
+    public message?: string,
+    public progress?: number,
   ) {}
 
-  public static fromJSON (raw: ParserGetMappedUsersResponseJSON): ParserGetMappedUsersResponse {
-    return new ParserGetMappedUsersResponse(
-      raw.users.map(MappedUser.fromJSON),
+  public static fromJSON (raw: ParserGetStateResponseJSON): ParserGetStateResponse {
+    return new ParserGetStateResponse(
+      raw.has_error,
+      raw.state,
+      raw.action,
+      raw.action_type,
+      raw.body,
+      raw.message,
+      raw.progress,
     )
   }
 
   public mappableFields = [
-    'users',
+    'hasError',
+    'state',
+    'action',
+    'actionType',
+    'body',
+    'message',
+    'progress',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    users: () => ({ users: this.users.map(u => u.toJSON()) }),
+    hasError: () => ({ has_error: this.hasError }),
+    state: () => ({ state: this.state }),
+    action: () => ({ action: this.action }),
+    actionType: () => ({ action_type: this.actionType }),
+    body: () => ({ body: this.body }),
+    message: () => ({ message: this.message }),
+    progress: () => ({ progress: this.progress }),
     /* eslint-enable camelcase */
   }
 
-  public toJSON (): ParserGetMappedUsersResponseJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ParserGetMappedUsersResponseJSON>
+  public toJSON (): ParserGetStateResponseJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ParserGetStateResponseJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -12210,6 +12260,7 @@ export interface ParserSendArchiveStatusRequestJSON {
   /* eslint-disable camelcase */
   progress: number;
   status: ParseStatus;
+  error_code?: ParseErrCode;
   /* eslint-enable camelcase */
 }
 
@@ -12218,28 +12269,33 @@ export class ParserSendArchiveStatusRequest implements TDProtoClass<ParserSendAr
    * ParserSendArchiveStatusRequest ..
    * @param progress Progress of archive unpacking
    * @param status Status archive parse status
+   * @param errorCode ErrorCode if smth went wrong
    */
   constructor (
     public progress: number,
     public status: ParseStatus,
+    public errorCode?: ParseErrCode,
   ) {}
 
   public static fromJSON (raw: ParserSendArchiveStatusRequestJSON): ParserSendArchiveStatusRequest {
     return new ParserSendArchiveStatusRequest(
       raw.progress,
       raw.status,
+      raw.error_code,
     )
   }
 
   public mappableFields = [
     'progress',
     'status',
+    'errorCode',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
     progress: () => ({ progress: this.progress }),
     status: () => ({ status: this.status }),
+    errorCode: () => ({ error_code: this.errorCode }),
     /* eslint-enable camelcase */
   }
 
