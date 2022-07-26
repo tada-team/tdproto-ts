@@ -4174,6 +4174,7 @@ export interface ContactJSON {
   can_create_task?: boolean;
   can_delete?: boolean;
   can_delete_any_message?: boolean;
+  can_import_chats?: boolean;
   can_import_tasks?: boolean;
   can_join_public_groups?: boolean;
   can_join_public_tasks?: boolean;
@@ -4244,6 +4245,7 @@ export class Contact implements TDProtoClass<Contact> {
    * @param canCreateTask Can I create task for this contact
    * @param canDelete Can I remove this contact from team
    * @param canDeleteAnyMessage Deprecated
+   * @param canImportChats Can I import chats from external services (now its only telegram)
    * @param canImportTasks Can I import tasks in this team
    * @param canJoinPublicGroups Can I view/join public group in this team
    * @param canJoinPublicTasks Can I view/join public tasks in this team
@@ -4310,6 +4312,7 @@ export class Contact implements TDProtoClass<Contact> {
     public canCreateTask?: boolean,
     public canDelete?: boolean,
     public canDeleteAnyMessage?: boolean,
+    public canImportChats?: boolean,
     public canImportTasks?: boolean,
     public canJoinPublicGroups?: boolean,
     public canJoinPublicTasks?: boolean,
@@ -4378,6 +4381,7 @@ export class Contact implements TDProtoClass<Contact> {
       raw.can_create_task,
       raw.can_delete,
       raw.can_delete_any_message,
+      raw.can_import_chats,
       raw.can_import_tasks,
       raw.can_join_public_groups,
       raw.can_join_public_tasks,
@@ -4446,6 +4450,7 @@ export class Contact implements TDProtoClass<Contact> {
     'canCreateTask',
     'canDelete',
     'canDeleteAnyMessage',
+    'canImportChats',
     'canImportTasks',
     'canJoinPublicGroups',
     'canJoinPublicTasks',
@@ -4514,6 +4519,7 @@ export class Contact implements TDProtoClass<Contact> {
     canCreateTask: () => ({ can_create_task: this.canCreateTask }),
     canDelete: () => ({ can_delete: this.canDelete }),
     canDeleteAnyMessage: () => ({ can_delete_any_message: this.canDeleteAnyMessage }),
+    canImportChats: () => ({ can_import_chats: this.canImportChats }),
     canImportTasks: () => ({ can_import_tasks: this.canImportTasks }),
     canJoinPublicGroups: () => ({ can_join_public_groups: this.canJoinPublicGroups }),
     canJoinPublicTasks: () => ({ can_join_public_tasks: this.canJoinPublicTasks }),
@@ -6472,7 +6478,6 @@ export class Emoji implements TDProtoClass<Emoji> {
 
 export interface FeaturesJSON {
   /* eslint-disable camelcase */
-  ChatsImportEnabled: boolean;
   afk_age: number;
   android_app: string;
   android_corp_app: string;
@@ -6579,7 +6584,6 @@ export interface FeaturesJSON {
 export class Features implements TDProtoClass<Features> {
   /**
    * Server information. Readonly
-   * @param ChatsImportEnabled ChatsImportEnabled import chat feature
    * @param afkAge Max inactivity seconds
    * @param androidApp Link to Google Play
    * @param androidCorpApp Link to Google Play for corporate app
@@ -6682,7 +6686,6 @@ export class Features implements TDProtoClass<Features> {
    * @param webLoginBackground WebBackground image url, if any
    */
   constructor (
-    public ChatsImportEnabled: boolean,
     public afkAge: number,
     public androidApp: string,
     public androidCorpApp: string,
@@ -6787,7 +6790,6 @@ export class Features implements TDProtoClass<Features> {
 
   public static fromJSON (raw: FeaturesJSON): Features {
     return new Features(
-      raw.ChatsImportEnabled,
       raw.afk_age,
       raw.android_app,
       raw.android_corp_app,
@@ -6892,7 +6894,6 @@ export class Features implements TDProtoClass<Features> {
   }
 
   public mappableFields = [
-    'ChatsImportEnabled',
     'afkAge',
     'androidApp',
     'androidCorpApp',
@@ -6997,7 +6998,6 @@ export class Features implements TDProtoClass<Features> {
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    ChatsImportEnabled: () => ({ ChatsImportEnabled: this.ChatsImportEnabled }),
     afkAge: () => ({ afk_age: this.afkAge }),
     androidApp: () => ({ android_app: this.androidApp }),
     androidCorpApp: () => ({ android_corp_app: this.androidCorpApp }),
