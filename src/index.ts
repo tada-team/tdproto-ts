@@ -104,15 +104,6 @@ export type ParseState =
    | 'need_mapping'
    | 'generating'
 
-export type ParseStatus =
-   | 'created'
-   | 'uploaded'
-   | 'in_progress'
-   | 'uploading_media'
-   | 'completed'
-   | 'not_found'
-   | 'error'
-
 export type PersonalAccountStatus =
    | 'PERSONAL_ACCOUNT_STATUS_ACTIVE'
    | 'PERSONAL_ACCOUNT_STATUS_SUSPENDED'
@@ -12259,60 +12250,6 @@ export class ParserMapUsersResponse implements TDProtoClass<ParserMapUsersRespon
 
   public toJSON (): ParserMapUsersResponseJSON
   public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ParserMapUsersResponseJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface ParserSendArchiveStatusRequestJSON {
-  /* eslint-disable camelcase */
-  progress: number;
-  status: ParseStatus;
-  error_code?: ParseErrCode;
-  /* eslint-enable camelcase */
-}
-
-export class ParserSendArchiveStatusRequest implements TDProtoClass<ParserSendArchiveStatusRequest> {
-  /**
-   * ParserSendArchiveStatusRequest ..
-   * @param progress Progress of archive unpacking
-   * @param status Status archive parse status
-   * @param errorCode ErrorCode if smth went wrong
-   */
-  constructor (
-    public progress: number,
-    public status: ParseStatus,
-    public errorCode?: ParseErrCode,
-  ) {}
-
-  public static fromJSON (raw: ParserSendArchiveStatusRequestJSON): ParserSendArchiveStatusRequest {
-    return new ParserSendArchiveStatusRequest(
-      raw.progress,
-      raw.status,
-      raw.error_code,
-    )
-  }
-
-  public mappableFields = [
-    'progress',
-    'status',
-    'errorCode',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    progress: () => ({ progress: this.progress }),
-    status: () => ({ status: this.status }),
-    errorCode: () => ({ error_code: this.errorCode }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): ParserSendArchiveStatusRequestJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ParserSendArchiveStatusRequestJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
