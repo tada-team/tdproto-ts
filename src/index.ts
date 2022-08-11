@@ -7192,6 +7192,7 @@ export interface FreqJSON {
   frequency: number;
   repeatability_type: MeetingRepeatabilityType;
   freq_days?: number[];
+  repeatability_description?: string;
   /* eslint-enable camelcase */
 }
 
@@ -7201,11 +7202,13 @@ export class Freq implements TDProtoClass<Freq> {
    * @param frequency DOCUMENTATION MISSING
    * @param repeatabilityType DOCUMENTATION MISSING
    * @param freqDays DOCUMENTATION MISSING
+   * @param repeatabilityDescription DOCUMENTATION MISSING
    */
   constructor (
     public frequency: number,
     public repeatabilityType: MeetingRepeatabilityType,
     public freqDays?: number[],
+    public repeatabilityDescription?: string,
   ) {}
 
   public static fromJSON (raw: FreqJSON): Freq {
@@ -7213,6 +7216,7 @@ export class Freq implements TDProtoClass<Freq> {
       raw.frequency,
       raw.repeatability_type,
       raw.freq_days,
+      raw.repeatability_description,
     )
   }
 
@@ -7220,6 +7224,7 @@ export class Freq implements TDProtoClass<Freq> {
     'frequency',
     'repeatabilityType',
     'freqDays',
+    'repeatabilityDescription',
   ] as const
 
   readonly #mapper = {
@@ -7227,6 +7232,7 @@ export class Freq implements TDProtoClass<Freq> {
     frequency: () => ({ frequency: this.frequency }),
     repeatabilityType: () => ({ repeatability_type: this.repeatabilityType }),
     freqDays: () => ({ freq_days: this.freqDays }),
+    repeatabilityDescription: () => ({ repeatability_description: this.repeatabilityDescription }),
     /* eslint-enable camelcase */
   }
 
