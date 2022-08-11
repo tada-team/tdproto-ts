@@ -90,14 +90,6 @@ export type MeetingRepeatabilityType =
 export type MessengerType =
    | 'telegram'
 
-export type ParseErrCode =
-   | '1001'
-   | '1002'
-   | '1003'
-   | '1004'
-   | '1005'
-   | '1006'
-
 export type ParseState =
    | 'not_found'
    | 'unpacking'
@@ -131,6 +123,8 @@ export type Err = string
 export type ISODateTimeString = string
 
 export type JID = string
+
+export type ParseErrCode = number
 
 export type PushDeviceType = number
 
