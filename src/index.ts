@@ -9877,6 +9877,60 @@ export class MeetingsDeleteRequestParams implements TDProtoClass<MeetingsDeleteR
   }
 }
 
+export interface MeetingsGetFrequencyDescriptionParamsJSON {
+  /* eslint-disable camelcase */
+  frequency: number;
+  repeatability_type: MeetingRepeatabilityType;
+  freq_days?: string;
+  /* eslint-enable camelcase */
+}
+
+export class MeetingsGetFrequencyDescriptionParams implements TDProtoClass<MeetingsGetFrequencyDescriptionParams> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param frequency DOCUMENTATION MISSING
+   * @param repeatabilityType DOCUMENTATION MISSING
+   * @param freqDays DOCUMENTATION MISSING
+   */
+  constructor (
+    public frequency: number,
+    public repeatabilityType: MeetingRepeatabilityType,
+    public freqDays?: string,
+  ) {}
+
+  public static fromJSON (raw: MeetingsGetFrequencyDescriptionParamsJSON): MeetingsGetFrequencyDescriptionParams {
+    return new MeetingsGetFrequencyDescriptionParams(
+      raw.frequency,
+      raw.repeatability_type,
+      raw.freq_days,
+    )
+  }
+
+  public mappableFields = [
+    'frequency',
+    'repeatabilityType',
+    'freqDays',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    frequency: () => ({ frequency: this.frequency }),
+    repeatabilityType: () => ({ repeatability_type: this.repeatabilityType }),
+    freqDays: () => ({ freq_days: this.freqDays }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): MeetingsGetFrequencyDescriptionParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<MeetingsGetFrequencyDescriptionParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface MeetingsGetRequestJSON {
   /* eslint-disable camelcase */
   date_from: string;
