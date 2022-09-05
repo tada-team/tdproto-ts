@@ -1399,6 +1399,7 @@ export interface CallOnlinerJSON {
   /* eslint-disable camelcase */
   devices: CallDeviceJSON[];
   display_name: string;
+  enabled_screenshare: boolean;
   enabled_video: boolean;
   icon: string;
   jid: JID;
@@ -1412,6 +1413,7 @@ export class CallOnliner implements TDProtoClass<CallOnliner> {
    * Call participant
    * @param devices Member devices, strictly one for now
    * @param displayName Contact name
+   * @param enabledScreenshare Screenshare state
    * @param enabledVideo Video state
    * @param icon Contact icon
    * @param jid Contact id
@@ -1421,6 +1423,7 @@ export class CallOnliner implements TDProtoClass<CallOnliner> {
   constructor (
     public devices: CallDevice[],
     public displayName: string,
+    public enabledScreenshare: boolean,
     public enabledVideo: boolean,
     public icon: string,
     public jid: JID,
@@ -1432,6 +1435,7 @@ export class CallOnliner implements TDProtoClass<CallOnliner> {
     return new CallOnliner(
       raw.devices.map(CallDevice.fromJSON),
       raw.display_name,
+      raw.enabled_screenshare,
       raw.enabled_video,
       raw.icon,
       raw.jid,
@@ -1443,6 +1447,7 @@ export class CallOnliner implements TDProtoClass<CallOnliner> {
   public mappableFields = [
     'devices',
     'displayName',
+    'enabledScreenshare',
     'enabledVideo',
     'icon',
     'jid',
@@ -1454,6 +1459,7 @@ export class CallOnliner implements TDProtoClass<CallOnliner> {
     /* eslint-disable camelcase */
     devices: () => ({ devices: this.devices.map(u => u.toJSON()) }),
     displayName: () => ({ display_name: this.displayName }),
+    enabledScreenshare: () => ({ enabled_screenshare: this.enabledScreenshare }),
     enabledVideo: () => ({ enabled_video: this.enabledVideo }),
     icon: () => ({ icon: this.icon }),
     jid: () => ({ jid: this.jid }),
