@@ -1587,6 +1587,8 @@ export interface ChatJSON {
   linked_messages?: any[];
   links?: MessageLinkJSON[];
   markup?: MarkupEntityJSON[];
+  meeting_freq?: boolean;
+  meeting_start_at?: ISODateTimeString;
   members?: GroupMembershipJSON[];
   notifications_enabled?: boolean;
   num?: number;
@@ -1663,6 +1665,8 @@ export class Chat implements TDProtoClass<Chat> {
    * @param linkedMessages Used for "Create task from messages..."
    * @param links Links in description
    * @param markup Markup entities for description field. Experimental
+   * @param meetingFreq Meeting has frequency
+   * @param meetingStartAt Start date of meeting chat
    * @param members Group chat members
    * @param notificationsEnabled Push notifications enabled
    * @param num Task number in this team
@@ -1736,6 +1740,8 @@ export class Chat implements TDProtoClass<Chat> {
     public linkedMessages?: any[],
     public links?: MessageLink[],
     public readonly markup?: MarkupEntity[],
+    public meetingFreq?: boolean,
+    public meetingStartAt?: ISODateTimeString,
     public members?: GroupMembership[],
     public notificationsEnabled?: boolean,
     public num?: number,
@@ -1810,6 +1816,8 @@ export class Chat implements TDProtoClass<Chat> {
       raw.linked_messages,
       raw.links && raw.links.map(MessageLink.fromJSON),
       raw.markup && raw.markup.map(MarkupEntity.fromJSON),
+      raw.meeting_freq,
+      raw.meeting_start_at,
       raw.members && raw.members.map(GroupMembership.fromJSON),
       raw.notifications_enabled,
       raw.num,
@@ -1884,6 +1892,8 @@ export class Chat implements TDProtoClass<Chat> {
     'linkedMessages',
     'links',
     'markup',
+    'meetingFreq',
+    'meetingStartAt',
     'members',
     'notificationsEnabled',
     'num',
@@ -1958,6 +1968,8 @@ export class Chat implements TDProtoClass<Chat> {
     linkedMessages: () => ({ linked_messages: this.linkedMessages }),
     links: () => ({ links: this.links?.map(u => u.toJSON()) }),
     markup: () => ({ markup: this.markup?.map(u => u.toJSON()) }),
+    meetingFreq: () => ({ meeting_freq: this.meetingFreq }),
+    meetingStartAt: () => ({ meeting_start_at: this.meetingStartAt }),
     members: () => ({ members: this.members?.map(u => u.toJSON()) }),
     notificationsEnabled: () => ({ notifications_enabled: this.notificationsEnabled }),
     num: () => ({ num: this.num }),
@@ -9088,7 +9100,9 @@ export interface MeetingJSON {
   linked_messages?: any[];
   links?: MessageLinkJSON[];
   markup?: MarkupEntityJSON[];
+  meeting_freq?: boolean;
   meeting_members?: MeetingMemberJSON[];
+  meeting_start_at?: ISODateTimeString;
   members?: GroupMembershipJSON[];
   notifications_enabled?: boolean;
   num?: number;
@@ -9177,7 +9191,9 @@ export class Meeting implements TDProtoClass<Meeting> {
    * @param linkedMessages Used for "Create task from messages..."
    * @param links Links in description
    * @param markup Markup entities for description field. Experimental
+   * @param meetingFreq Meeting has frequency
    * @param meetingMembers DOCUMENTATION MISSING
+   * @param meetingStartAt Start date of meeting chat
    * @param members Group chat members
    * @param notificationsEnabled Push notifications enabled
    * @param num Task number in this team
@@ -9263,7 +9279,9 @@ export class Meeting implements TDProtoClass<Meeting> {
     public linkedMessages?: any[],
     public links?: MessageLink[],
     public readonly markup?: MarkupEntity[],
+    public meetingFreq?: boolean,
     public meetingMembers?: MeetingMember[],
+    public meetingStartAt?: ISODateTimeString,
     public members?: GroupMembership[],
     public notificationsEnabled?: boolean,
     public num?: number,
@@ -9350,7 +9368,9 @@ export class Meeting implements TDProtoClass<Meeting> {
       raw.linked_messages,
       raw.links && raw.links.map(MessageLink.fromJSON),
       raw.markup && raw.markup.map(MarkupEntity.fromJSON),
+      raw.meeting_freq,
       raw.meeting_members && raw.meeting_members.map(MeetingMember.fromJSON),
+      raw.meeting_start_at,
       raw.members && raw.members.map(GroupMembership.fromJSON),
       raw.notifications_enabled,
       raw.num,
@@ -9437,7 +9457,9 @@ export class Meeting implements TDProtoClass<Meeting> {
     'linkedMessages',
     'links',
     'markup',
+    'meetingFreq',
     'meetingMembers',
+    'meetingStartAt',
     'members',
     'notificationsEnabled',
     'num',
@@ -9524,7 +9546,9 @@ export class Meeting implements TDProtoClass<Meeting> {
     linkedMessages: () => ({ linked_messages: this.linkedMessages }),
     links: () => ({ links: this.links?.map(u => u.toJSON()) }),
     markup: () => ({ markup: this.markup?.map(u => u.toJSON()) }),
+    meetingFreq: () => ({ meeting_freq: this.meetingFreq }),
     meetingMembers: () => ({ meeting_members: this.meetingMembers?.map(u => u.toJSON()) }),
+    meetingStartAt: () => ({ meeting_start_at: this.meetingStartAt }),
     members: () => ({ members: this.members?.map(u => u.toJSON()) }),
     notificationsEnabled: () => ({ notifications_enabled: this.notificationsEnabled }),
     num: () => ({ num: this.num }),
