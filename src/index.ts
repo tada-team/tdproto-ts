@@ -19549,6 +19549,7 @@ export interface TeamJSON {
   display_family_name_first?: boolean;
   hide_archived_users?: boolean;
   is_archive?: boolean;
+  notebot?: JID;
   pinned?: boolean;
   single_group?: JID;
   subscription?: SubscriptionJSON;
@@ -19587,6 +19588,7 @@ export class Team implements TDProtoClass<Team> {
    * @param displayFamilyNameFirst Family name should be first in display name
    * @param hideArchivedUsers Don't show archived users by default
    * @param isArchive Team deleted
+   * @param notebot Сurrent team favorites bot, jid of chat
    * @param pinned Team pinned
    * @param singleGroup For single group teams, jid of chat
    * @param subscription Сurrent team subscription
@@ -19621,6 +19623,7 @@ export class Team implements TDProtoClass<Team> {
     public displayFamilyNameFirst?: boolean,
     public hideArchivedUsers?: boolean,
     public readonly isArchive?: boolean,
+    public readonly notebot?: JID,
     public pinned?: boolean,
     public readonly singleGroup?: JID,
     public subscription?: Subscription,
@@ -19657,6 +19660,7 @@ export class Team implements TDProtoClass<Team> {
       raw.display_family_name_first,
       raw.hide_archived_users,
       raw.is_archive,
+      raw.notebot,
       raw.pinned,
       raw.single_group,
       raw.subscription && Subscription.fromJSON(raw.subscription),
@@ -19693,6 +19697,7 @@ export class Team implements TDProtoClass<Team> {
     'displayFamilyNameFirst',
     'hideArchivedUsers',
     'isArchive',
+    'notebot',
     'pinned',
     'singleGroup',
     'subscription',
@@ -19729,6 +19734,7 @@ export class Team implements TDProtoClass<Team> {
     displayFamilyNameFirst: () => ({ display_family_name_first: this.displayFamilyNameFirst }),
     hideArchivedUsers: () => ({ hide_archived_users: this.hideArchivedUsers }),
     isArchive: () => ({ is_archive: this.isArchive }),
+    notebot: () => ({ notebot: this.notebot }),
     pinned: () => ({ pinned: this.pinned }),
     singleGroup: () => ({ single_group: this.singleGroup }),
     subscription: () => ({ subscription: this.subscription?.toJSON() }),
