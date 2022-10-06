@@ -8213,6 +8213,60 @@ export class ICEServer implements TDProtoClass<ICEServer> {
   }
 }
 
+export interface IVCSInfoJSON {
+  /* eslint-disable camelcase */
+  conference_id?: string;
+  guest_join_token?: string;
+  moderator_join_token?: string;
+  /* eslint-enable camelcase */
+}
+
+export class IVCSInfo implements TDProtoClass<IVCSInfo> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param conferenceId DOCUMENTATION MISSING
+   * @param guestJoinToken DOCUMENTATION MISSING
+   * @param moderatorJoinToken DOCUMENTATION MISSING
+   */
+  constructor (
+    public conferenceId?: string,
+    public guestJoinToken?: string,
+    public moderatorJoinToken?: string,
+  ) {}
+
+  public static fromJSON (raw: IVCSInfoJSON): IVCSInfo {
+    return new IVCSInfo(
+      raw.conference_id,
+      raw.guest_join_token,
+      raw.moderator_join_token,
+    )
+  }
+
+  public mappableFields = [
+    'conferenceId',
+    'guestJoinToken',
+    'moderatorJoinToken',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    conferenceId: () => ({ conference_id: this.conferenceId }),
+    guestJoinToken: () => ({ guest_join_token: this.guestJoinToken }),
+    moderatorJoinToken: () => ({ moderator_join_token: this.moderatorJoinToken }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): IVCSInfoJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<IVCSInfoJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface IconColorsJSON {
   /* eslint-disable camelcase */
   brand: RGBColor;
@@ -9099,6 +9153,7 @@ export interface MeetingJSON {
   public?: boolean;
   is_required?: boolean;
   items?: TaskItemJSON[];
+  ivcs_info?: IVCSInfoJSON;
   last_activity?: ISODateTimeString;
   last_message?: MessageJSON;
   last_read_message_id?: string;
@@ -9136,6 +9191,7 @@ export interface MeetingJSON {
   title?: string;
   uploads?: UploadJSON[];
   urgency?: number;
+  vcs_enabled?: boolean;
   /* eslint-enable camelcase */
 }
 
@@ -9192,6 +9248,7 @@ export class Meeting implements TDProtoClass<Meeting> {
    * @param isPublic Can other team member see this task/group chat
    * @param isRequired DOCUMENTATION MISSING
    * @param items Checklist items. Task only
+   * @param ivcsInfo DOCUMENTATION MISSING
    * @param lastActivity Date of the last message sent even if it was deleted
    * @param lastMessage Last message object
    * @param lastReadMessageId Last read message id, if any
@@ -9228,6 +9285,7 @@ export class Meeting implements TDProtoClass<Meeting> {
    * @param title Task title. Generated from number and description
    * @param uploads Upload uids for request, upload objects for response
    * @param urgency Task urgency, if available in team
+   * @param vcsEnabled DOCUMENTATION MISSING
    */
   constructor (
     public chatType: ChatType,
@@ -9280,6 +9338,7 @@ export class Meeting implements TDProtoClass<Meeting> {
     public isPublic?: boolean,
     public isRequired?: boolean,
     public items?: TaskItem[],
+    public ivcsInfo?: IVCSInfo,
     public lastActivity?: ISODateTimeString,
     public lastMessage?: Message,
     public lastReadMessageId?: string,
@@ -9317,6 +9376,7 @@ export class Meeting implements TDProtoClass<Meeting> {
     public title?: string,
     public uploads?: Upload[],
     public urgency?: number,
+    public vcsEnabled?: boolean,
   ) {}
 
   public static fromJSON (raw: MeetingJSON): Meeting {
@@ -9371,6 +9431,7 @@ export class Meeting implements TDProtoClass<Meeting> {
       raw.public,
       raw.is_required,
       raw.items && raw.items.map(TaskItem.fromJSON),
+      raw.ivcs_info && IVCSInfo.fromJSON(raw.ivcs_info),
       raw.last_activity,
       raw.last_message && Message.fromJSON(raw.last_message),
       raw.last_read_message_id,
@@ -9407,6 +9468,7 @@ export class Meeting implements TDProtoClass<Meeting> {
       raw.title,
       raw.uploads && raw.uploads.map(Upload.fromJSON),
       raw.urgency,
+      raw.vcs_enabled,
     )
   }
 
@@ -9461,6 +9523,7 @@ export class Meeting implements TDProtoClass<Meeting> {
     'isPublic',
     'isRequired',
     'items',
+    'ivcsInfo',
     'lastActivity',
     'lastMessage',
     'lastReadMessageId',
@@ -9497,6 +9560,7 @@ export class Meeting implements TDProtoClass<Meeting> {
     'title',
     'uploads',
     'urgency',
+    'vcsEnabled',
   ] as const
 
   readonly #mapper = {
@@ -9551,6 +9615,7 @@ export class Meeting implements TDProtoClass<Meeting> {
     isPublic: () => ({ public: this.isPublic }),
     isRequired: () => ({ is_required: this.isRequired }),
     items: () => ({ items: this.items?.map(u => u.toJSON()) }),
+    ivcsInfo: () => ({ ivcs_info: this.ivcsInfo?.toJSON() }),
     lastActivity: () => ({ last_activity: this.lastActivity }),
     lastMessage: () => ({ last_message: this.lastMessage?.toJSON() }),
     lastReadMessageId: () => ({ last_read_message_id: this.lastReadMessageId }),
@@ -9587,6 +9652,7 @@ export class Meeting implements TDProtoClass<Meeting> {
     title: () => ({ title: this.title }),
     uploads: () => ({ uploads: this.uploads?.map(u => u.toJSON()) }),
     urgency: () => ({ urgency: this.urgency }),
+    vcsEnabled: () => ({ vcs_enabled: this.vcsEnabled }),
     /* eslint-enable camelcase */
   }
 
@@ -9745,6 +9811,7 @@ export interface MeetingsCreateRequestJSON {
   is_outside?: boolean;
   is_public?: boolean;
   title?: string;
+  vcs_enabled?: boolean;
   /* eslint-enable camelcase */
 }
 
@@ -9761,6 +9828,7 @@ export class MeetingsCreateRequest implements TDProtoClass<MeetingsCreateRequest
    * @param isOutside DOCUMENTATION MISSING
    * @param isPublic DOCUMENTATION MISSING
    * @param title DOCUMENTATION MISSING
+   * @param vcsEnabled DOCUMENTATION MISSING
    */
   constructor (
     public duration: number,
@@ -9773,6 +9841,7 @@ export class MeetingsCreateRequest implements TDProtoClass<MeetingsCreateRequest
     public isOutside?: boolean,
     public isPublic?: boolean,
     public title?: string,
+    public vcsEnabled?: boolean,
   ) {}
 
   public static fromJSON (raw: MeetingsCreateRequestJSON): MeetingsCreateRequest {
@@ -9787,6 +9856,7 @@ export class MeetingsCreateRequest implements TDProtoClass<MeetingsCreateRequest
       raw.is_outside,
       raw.is_public,
       raw.title,
+      raw.vcs_enabled,
     )
   }
 
@@ -9801,6 +9871,7 @@ export class MeetingsCreateRequest implements TDProtoClass<MeetingsCreateRequest
     'isOutside',
     'isPublic',
     'title',
+    'vcsEnabled',
   ] as const
 
   readonly #mapper = {
@@ -9815,6 +9886,7 @@ export class MeetingsCreateRequest implements TDProtoClass<MeetingsCreateRequest
     isOutside: () => ({ is_outside: this.isOutside }),
     isPublic: () => ({ is_public: this.isPublic }),
     title: () => ({ title: this.title }),
+    vcsEnabled: () => ({ vcs_enabled: this.vcsEnabled }),
     /* eslint-enable camelcase */
   }
 
@@ -10576,6 +10648,7 @@ export interface MeetingsUpdateRequestJSON {
   remove_members?: JID[];
   start_at?: string;
   title?: string;
+  vcs_enabled?: boolean;
   /* eslint-enable camelcase */
 }
 
@@ -10595,6 +10668,7 @@ export class MeetingsUpdateRequest implements TDProtoClass<MeetingsUpdateRequest
    * @param removeMembers DOCUMENTATION MISSING
    * @param startAt DOCUMENTATION MISSING
    * @param title DOCUMENTATION MISSING
+   * @param vcsEnabled DOCUMENTATION MISSING
    */
   constructor (
     public meetingId: string,
@@ -10610,6 +10684,7 @@ export class MeetingsUpdateRequest implements TDProtoClass<MeetingsUpdateRequest
     public removeMembers?: JID[],
     public startAt?: string,
     public title?: string,
+    public vcsEnabled?: boolean,
   ) {}
 
   public static fromJSON (raw: MeetingsUpdateRequestJSON): MeetingsUpdateRequest {
@@ -10627,6 +10702,7 @@ export class MeetingsUpdateRequest implements TDProtoClass<MeetingsUpdateRequest
       raw.remove_members,
       raw.start_at,
       raw.title,
+      raw.vcs_enabled,
     )
   }
 
@@ -10644,6 +10720,7 @@ export class MeetingsUpdateRequest implements TDProtoClass<MeetingsUpdateRequest
     'removeMembers',
     'startAt',
     'title',
+    'vcsEnabled',
   ] as const
 
   readonly #mapper = {
@@ -10661,6 +10738,7 @@ export class MeetingsUpdateRequest implements TDProtoClass<MeetingsUpdateRequest
     removeMembers: () => ({ remove_members: this.removeMembers }),
     startAt: () => ({ start_at: this.startAt }),
     title: () => ({ title: this.title }),
+    vcsEnabled: () => ({ vcs_enabled: this.vcsEnabled }),
     /* eslint-enable camelcase */
   }
 
