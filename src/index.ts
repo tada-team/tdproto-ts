@@ -8216,8 +8216,7 @@ export class ICEServer implements TDProtoClass<ICEServer> {
 export interface IVCSInfoJSON {
   /* eslint-disable camelcase */
   conference_id?: string;
-  guest_join_token?: string;
-  moderator_join_token?: string;
+  join_token?: string;
   /* eslint-enable camelcase */
 }
 
@@ -8225,34 +8224,29 @@ export class IVCSInfo implements TDProtoClass<IVCSInfo> {
   /**
    * MISSING CLASS DOCUMENTATION
    * @param conferenceId DOCUMENTATION MISSING
-   * @param guestJoinToken DOCUMENTATION MISSING
-   * @param moderatorJoinToken DOCUMENTATION MISSING
+   * @param joinToken DOCUMENTATION MISSING
    */
   constructor (
     public conferenceId?: string,
-    public guestJoinToken?: string,
-    public moderatorJoinToken?: string,
+    public joinToken?: string,
   ) {}
 
   public static fromJSON (raw: IVCSInfoJSON): IVCSInfo {
     return new IVCSInfo(
       raw.conference_id,
-      raw.guest_join_token,
-      raw.moderator_join_token,
+      raw.join_token,
     )
   }
 
   public mappableFields = [
     'conferenceId',
-    'guestJoinToken',
-    'moderatorJoinToken',
+    'joinToken',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
     conferenceId: () => ({ conference_id: this.conferenceId }),
-    guestJoinToken: () => ({ guest_join_token: this.guestJoinToken }),
-    moderatorJoinToken: () => ({ moderator_join_token: this.moderatorJoinToken }),
+    joinToken: () => ({ join_token: this.joinToken }),
     /* eslint-enable camelcase */
   }
 
