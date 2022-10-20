@@ -79,6 +79,15 @@ export type MeetingPresenceStatus =
    | 'MEETING_PRESENCE_STATUS_DOUBTS'
    | 'MEETING_PRESENCE_STATUS_WAITING'
 
+export type MeetingRecipientStatus =
+   | 'MEETING_RECIPIENT_STATUS_UNSPECIFIED'
+   | 'MEETING_RECIPIENT_STATUS_MINE'
+   | 'MEETING_RECIPIENT_STATUS_MINE_OTHER_TEAM'
+   | 'MEETING_RECIPIENT_STATUS_MINE_OTHER'
+   | 'MEETING_RECIPIENT_STATUS_ANOTHER'
+   | 'MEETING_RECIPIENT_STATUS_ANOTHER_OTHER_TEAM'
+   | 'MEETING_RECIPIENT_STATUS_ANOTHER_OTHER'
+
 export type MeetingRepeatabilityType =
    | 'MEETING_PRESENCE_STATUS_UNSPECIFIED'
    | 'MEETING_PRESENCE_STATUS_DAILY'
@@ -9101,14 +9110,13 @@ export interface MeetingJSON {
   created: ISODateTimeString;
   display_name: string;
   duration: number;
+  end_at: ISODateTimeString;
   gentime: number;
   icons: IconDataJSON;
   id: string;
   jid: JID;
-  owner_contact_uuid: JID;
-  owner_user_uuid: string;
+  meeting_recipient_status: MeetingRecipientStatus;
   start_at: ISODateTimeString;
-  team_uuid: string;
   assignee?: JID;
   autocleanup_age?: number;
   base_gentime?: number;
@@ -9170,6 +9178,8 @@ export interface MeetingJSON {
   num_unread_notices?: number;
   observers?: JID[];
   owner?: JID;
+  owner_contact_uuid?: JID;
+  owner_user_uuid?: string;
   parents?: SubtaskJSON[];
   personal_account_id?: string;
   pinned?: boolean;
@@ -9182,6 +9192,7 @@ export interface MeetingJSON {
   tabs?: TaskTabKey[];
   tags?: string[];
   task_status?: string;
+  team_uuid?: string;
   title?: string;
   uploads?: UploadJSON[];
   urgency?: number;
@@ -9196,14 +9207,13 @@ export class Meeting implements TDProtoClass<Meeting> {
    * @param created Creation date, iso datetime
    * @param displayName Title
    * @param duration DOCUMENTATION MISSING
+   * @param endAt DOCUMENTATION MISSING
    * @param gentime Chat fields related to concrete participant) version
    * @param icons Icons info
    * @param id DOCUMENTATION MISSING
    * @param jid Group/Task/Contact id
-   * @param ownerContactUuid DOCUMENTATION MISSING
-   * @param ownerUserUuid DOCUMENTATION MISSING
+   * @param meetingRecipientStatus DOCUMENTATION MISSING
    * @param startAt DOCUMENTATION MISSING
-   * @param teamUuid DOCUMENTATION MISSING
    * @param assignee Assignee contact id. Tasks only
    * @param autocleanupAge Delete messages in this chat in seconds. Experimental function
    * @param baseGentime Base fields (not related to concrete participant) version
@@ -9264,6 +9274,8 @@ export class Meeting implements TDProtoClass<Meeting> {
    * @param numUnreadNotices Mentions (@) counter
    * @param observers Task followers id's. TODO: rename to "followers"
    * @param owner Task creator
+   * @param ownerContactUuid DOCUMENTATION MISSING
+   * @param ownerUserUuid DOCUMENTATION MISSING
    * @param parents Parent tasks
    * @param personalAccountId DOCUMENTATION MISSING
    * @param pinned Is chat pinned on top
@@ -9276,6 +9288,7 @@ export class Meeting implements TDProtoClass<Meeting> {
    * @param tabs Tab names
    * @param tags Task tags list, if any
    * @param taskStatus Task status. May be custom
+   * @param teamUuid DOCUMENTATION MISSING
    * @param title Task title. Generated from number and description
    * @param uploads Upload uids for request, upload objects for response
    * @param urgency Task urgency, if available in team
@@ -9286,14 +9299,13 @@ export class Meeting implements TDProtoClass<Meeting> {
     public created: ISODateTimeString,
     public displayName: string,
     public duration: number,
+    public endAt: ISODateTimeString,
     public gentime: number,
     public icons: IconData,
     public id: string,
     public jid: JID,
-    public ownerContactUuid: JID,
-    public ownerUserUuid: string,
+    public meetingRecipientStatus: MeetingRecipientStatus,
     public startAt: ISODateTimeString,
-    public teamUuid: string,
     public assignee?: JID,
     public autocleanupAge?: number,
     public baseGentime?: number,
@@ -9355,6 +9367,8 @@ export class Meeting implements TDProtoClass<Meeting> {
     public numUnreadNotices?: number,
     public observers?: JID[],
     public owner?: JID,
+    public ownerContactUuid?: JID,
+    public ownerUserUuid?: string,
     public parents?: Subtask[],
     public personalAccountId?: string,
     public pinned?: boolean,
@@ -9367,6 +9381,7 @@ export class Meeting implements TDProtoClass<Meeting> {
     public tabs?: TaskTabKey[],
     public tags?: string[],
     public taskStatus?: string,
+    public teamUuid?: string,
     public title?: string,
     public uploads?: Upload[],
     public urgency?: number,
@@ -9379,14 +9394,13 @@ export class Meeting implements TDProtoClass<Meeting> {
       raw.created,
       raw.display_name,
       raw.duration,
+      raw.end_at,
       raw.gentime,
       IconData.fromJSON(raw.icons),
       raw.id,
       raw.jid,
-      raw.owner_contact_uuid,
-      raw.owner_user_uuid,
+      raw.meeting_recipient_status,
       raw.start_at,
-      raw.team_uuid,
       raw.assignee,
       raw.autocleanup_age,
       raw.base_gentime,
@@ -9447,6 +9461,8 @@ export class Meeting implements TDProtoClass<Meeting> {
       raw.num_unread_notices,
       raw.observers,
       raw.owner,
+      raw.owner_contact_uuid,
+      raw.owner_user_uuid,
       raw.parents && raw.parents.map(Subtask.fromJSON),
       raw.personal_account_id,
       raw.pinned,
@@ -9459,6 +9475,7 @@ export class Meeting implements TDProtoClass<Meeting> {
       raw.tabs,
       raw.tags,
       raw.task_status,
+      raw.team_uuid,
       raw.title,
       raw.uploads && raw.uploads.map(Upload.fromJSON),
       raw.urgency,
@@ -9471,14 +9488,13 @@ export class Meeting implements TDProtoClass<Meeting> {
     'created',
     'displayName',
     'duration',
+    'endAt',
     'gentime',
     'icons',
     'id',
     'jid',
-    'ownerContactUuid',
-    'ownerUserUuid',
+    'meetingRecipientStatus',
     'startAt',
-    'teamUuid',
     'assignee',
     'autocleanupAge',
     'baseGentime',
@@ -9539,6 +9555,8 @@ export class Meeting implements TDProtoClass<Meeting> {
     'numUnreadNotices',
     'observers',
     'owner',
+    'ownerContactUuid',
+    'ownerUserUuid',
     'parents',
     'personalAccountId',
     'pinned',
@@ -9551,6 +9569,7 @@ export class Meeting implements TDProtoClass<Meeting> {
     'tabs',
     'tags',
     'taskStatus',
+    'teamUuid',
     'title',
     'uploads',
     'urgency',
@@ -9563,14 +9582,13 @@ export class Meeting implements TDProtoClass<Meeting> {
     created: () => ({ created: this.created }),
     displayName: () => ({ display_name: this.displayName }),
     duration: () => ({ duration: this.duration }),
+    endAt: () => ({ end_at: this.endAt }),
     gentime: () => ({ gentime: this.gentime }),
     icons: () => ({ icons: this.icons.toJSON() }),
     id: () => ({ id: this.id }),
     jid: () => ({ jid: this.jid }),
-    ownerContactUuid: () => ({ owner_contact_uuid: this.ownerContactUuid }),
-    ownerUserUuid: () => ({ owner_user_uuid: this.ownerUserUuid }),
+    meetingRecipientStatus: () => ({ meeting_recipient_status: this.meetingRecipientStatus }),
     startAt: () => ({ start_at: this.startAt }),
-    teamUuid: () => ({ team_uuid: this.teamUuid }),
     assignee: () => ({ assignee: this.assignee }),
     autocleanupAge: () => ({ autocleanup_age: this.autocleanupAge }),
     baseGentime: () => ({ base_gentime: this.baseGentime }),
@@ -9631,6 +9649,8 @@ export class Meeting implements TDProtoClass<Meeting> {
     numUnreadNotices: () => ({ num_unread_notices: this.numUnreadNotices }),
     observers: () => ({ observers: this.observers }),
     owner: () => ({ owner: this.owner }),
+    ownerContactUuid: () => ({ owner_contact_uuid: this.ownerContactUuid }),
+    ownerUserUuid: () => ({ owner_user_uuid: this.ownerUserUuid }),
     parents: () => ({ parents: this.parents?.map(u => u.toJSON()) }),
     personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
     pinned: () => ({ pinned: this.pinned }),
@@ -9643,6 +9663,7 @@ export class Meeting implements TDProtoClass<Meeting> {
     tabs: () => ({ tabs: this.tabs }),
     tags: () => ({ tags: this.tags }),
     taskStatus: () => ({ task_status: this.taskStatus }),
+    teamUuid: () => ({ team_uuid: this.teamUuid }),
     title: () => ({ title: this.title }),
     uploads: () => ({ uploads: this.uploads?.map(u => u.toJSON()) }),
     urgency: () => ({ urgency: this.urgency }),
