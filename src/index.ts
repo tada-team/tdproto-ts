@@ -10077,8 +10077,7 @@ export interface MeetingsGetRequestJSON {
   is_public?: boolean;
   is_required?: boolean;
   limit?: number;
-  members?: string[];
-  members_jids?: string;
+  members_jids?: string[];
   offset?: number;
   /* eslint-enable camelcase */
 }
@@ -10095,7 +10094,6 @@ export class MeetingsGetRequest implements TDProtoClass<MeetingsGetRequest> {
    * @param isPublic DOCUMENTATION MISSING
    * @param isRequired DOCUMENTATION MISSING
    * @param limit DOCUMENTATION MISSING
-   * @param members DOCUMENTATION MISSING
    * @param membersJids DOCUMENTATION MISSING
    * @param offset DOCUMENTATION MISSING
    */
@@ -10109,8 +10107,7 @@ export class MeetingsGetRequest implements TDProtoClass<MeetingsGetRequest> {
     public isPublic?: boolean,
     public isRequired?: boolean,
     public limit?: number,
-    public members?: string[],
-    public membersJids?: string,
+    public membersJids?: string[],
     public offset?: number,
   ) {}
 
@@ -10125,7 +10122,6 @@ export class MeetingsGetRequest implements TDProtoClass<MeetingsGetRequest> {
       raw.is_public,
       raw.is_required,
       raw.limit,
-      raw.members,
       raw.members_jids,
       raw.offset,
     )
@@ -10141,7 +10137,6 @@ export class MeetingsGetRequest implements TDProtoClass<MeetingsGetRequest> {
     'isPublic',
     'isRequired',
     'limit',
-    'members',
     'membersJids',
     'offset',
   ] as const
@@ -10157,7 +10152,6 @@ export class MeetingsGetRequest implements TDProtoClass<MeetingsGetRequest> {
     isPublic: () => ({ is_public: this.isPublic }),
     isRequired: () => ({ is_required: this.isRequired }),
     limit: () => ({ limit: this.limit }),
-    members: () => ({ members: this.members }),
     membersJids: () => ({ members_jids: this.membersJids }),
     offset: () => ({ offset: this.offset }),
     /* eslint-enable camelcase */
