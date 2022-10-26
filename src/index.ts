@@ -6570,6 +6570,7 @@ export interface FeaturesJSON {
   terms: TermsJSON;
   theme: string;
   userver: string;
+  vcs_enabled: boolean;
   wiki_pages: boolean;
   allow_admin_mute?: boolean;
   amplitude_api_key?: string;
@@ -6676,6 +6677,7 @@ export class Features implements TDProtoClass<Features> {
    * @param terms Team entity naming. Experimental
    * @param theme Default UI theme
    * @param userver Static files server address
+   * @param vcsEnabled VcsEnabled enabled or disabled vcs
    * @param wikiPages Wiki pages in chats. Experimental
    * @param allowAdminMute Wiki pages in chats. Experimental
    * @param amplitudeApiKey Amplitude api key
@@ -6778,6 +6780,7 @@ export class Features implements TDProtoClass<Features> {
     public terms: Terms,
     public theme: string,
     public userver: string,
+    public vcsEnabled: boolean,
     public wikiPages: boolean,
     public allowAdminMute?: boolean,
     public amplitudeApiKey?: string,
@@ -6882,6 +6885,7 @@ export class Features implements TDProtoClass<Features> {
       Terms.fromJSON(raw.terms),
       raw.theme,
       raw.userver,
+      raw.vcs_enabled,
       raw.wiki_pages,
       raw.allow_admin_mute,
       raw.amplitude_api_key,
@@ -6986,6 +6990,7 @@ export class Features implements TDProtoClass<Features> {
     'terms',
     'theme',
     'userver',
+    'vcsEnabled',
     'wikiPages',
     'allowAdminMute',
     'amplitudeApiKey',
@@ -7090,6 +7095,7 @@ export class Features implements TDProtoClass<Features> {
     terms: () => ({ terms: this.terms.toJSON() }),
     theme: () => ({ theme: this.theme }),
     userver: () => ({ userver: this.userver }),
+    vcsEnabled: () => ({ vcs_enabled: this.vcsEnabled }),
     wikiPages: () => ({ wiki_pages: this.wikiPages }),
     allowAdminMute: () => ({ allow_admin_mute: this.allowAdminMute }),
     amplitudeApiKey: () => ({ amplitude_api_key: this.amplitudeApiKey }),
@@ -10071,8 +10077,7 @@ export interface MeetingsGetRequestJSON {
   is_public?: boolean;
   is_required?: boolean;
   limit?: number;
-  members?: string[];
-  members_jids?: string;
+  members_jids?: string[];
   offset?: number;
   /* eslint-enable camelcase */
 }
@@ -10089,7 +10094,6 @@ export class MeetingsGetRequest implements TDProtoClass<MeetingsGetRequest> {
    * @param isPublic DOCUMENTATION MISSING
    * @param isRequired DOCUMENTATION MISSING
    * @param limit DOCUMENTATION MISSING
-   * @param members DOCUMENTATION MISSING
    * @param membersJids DOCUMENTATION MISSING
    * @param offset DOCUMENTATION MISSING
    */
@@ -10103,8 +10107,7 @@ export class MeetingsGetRequest implements TDProtoClass<MeetingsGetRequest> {
     public isPublic?: boolean,
     public isRequired?: boolean,
     public limit?: number,
-    public members?: string[],
-    public membersJids?: string,
+    public membersJids?: string[],
     public offset?: number,
   ) {}
 
@@ -10119,7 +10122,6 @@ export class MeetingsGetRequest implements TDProtoClass<MeetingsGetRequest> {
       raw.is_public,
       raw.is_required,
       raw.limit,
-      raw.members,
       raw.members_jids,
       raw.offset,
     )
@@ -10135,7 +10137,6 @@ export class MeetingsGetRequest implements TDProtoClass<MeetingsGetRequest> {
     'isPublic',
     'isRequired',
     'limit',
-    'members',
     'membersJids',
     'offset',
   ] as const
@@ -10151,7 +10152,6 @@ export class MeetingsGetRequest implements TDProtoClass<MeetingsGetRequest> {
     isPublic: () => ({ is_public: this.isPublic }),
     isRequired: () => ({ is_required: this.isRequired }),
     limit: () => ({ limit: this.limit }),
-    members: () => ({ members: this.members }),
     membersJids: () => ({ members_jids: this.membersJids }),
     offset: () => ({ offset: this.offset }),
     /* eslint-enable camelcase */
