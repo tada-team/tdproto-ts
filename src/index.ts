@@ -6570,6 +6570,7 @@ export interface FeaturesJSON {
   terms: TermsJSON;
   theme: string;
   userver: string;
+  vcs_enabled: boolean;
   wiki_pages: boolean;
   allow_admin_mute?: boolean;
   amplitude_api_key?: string;
@@ -6676,6 +6677,7 @@ export class Features implements TDProtoClass<Features> {
    * @param terms Team entity naming. Experimental
    * @param theme Default UI theme
    * @param userver Static files server address
+   * @param vcsEnabled VcsEnabled enabled or disabled vcs
    * @param wikiPages Wiki pages in chats. Experimental
    * @param allowAdminMute Wiki pages in chats. Experimental
    * @param amplitudeApiKey Amplitude api key
@@ -6778,6 +6780,7 @@ export class Features implements TDProtoClass<Features> {
     public terms: Terms,
     public theme: string,
     public userver: string,
+    public vcsEnabled: boolean,
     public wikiPages: boolean,
     public allowAdminMute?: boolean,
     public amplitudeApiKey?: string,
@@ -6882,6 +6885,7 @@ export class Features implements TDProtoClass<Features> {
       Terms.fromJSON(raw.terms),
       raw.theme,
       raw.userver,
+      raw.vcs_enabled,
       raw.wiki_pages,
       raw.allow_admin_mute,
       raw.amplitude_api_key,
@@ -6986,6 +6990,7 @@ export class Features implements TDProtoClass<Features> {
     'terms',
     'theme',
     'userver',
+    'vcsEnabled',
     'wikiPages',
     'allowAdminMute',
     'amplitudeApiKey',
@@ -7090,6 +7095,7 @@ export class Features implements TDProtoClass<Features> {
     terms: () => ({ terms: this.terms.toJSON() }),
     theme: () => ({ theme: this.theme }),
     userver: () => ({ userver: this.userver }),
+    vcsEnabled: () => ({ vcs_enabled: this.vcsEnabled }),
     wikiPages: () => ({ wiki_pages: this.wikiPages }),
     allowAdminMute: () => ({ allow_admin_mute: this.allowAdminMute }),
     amplitudeApiKey: () => ({ amplitude_api_key: this.amplitudeApiKey }),
