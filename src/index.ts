@@ -4168,120 +4168,56 @@ export class ColorRule implements TDProtoClass<ColorRule> {
 
 export interface ContactJSON {
   /* eslint-disable camelcase */
+  alt_send: boolean;
+  always_send_pushes: boolean;
+  asterisk_mention: boolean;
   contact_email: string;
+  contact_mshort_view: boolean;
   contact_phone: string;
-  display_name: string;
-  gentime: number;
-  icons: IconDataJSON;
-  jid: JID;
+  contact_short_view: boolean;
+  contact_show_archived: boolean;
+  debug_show_activity: boolean;
+  default_lang: string;
+  family_name: string;
+  focus_until: ISODateTimeString;
+  given_name: string;
+  group_mshort_view: boolean;
+  group_notifications_enabled: boolean;
+  group_short_view: boolean;
+  hide_pushes_content: boolean;
+  meeting_mshort_view: boolean;
+  meeting_short_view: boolean;
+  mood: string;
+  munread_first: boolean;
+  patronymic: string;
+  phone: string;
+  quiet_time_finish: string;
+  quiet_time_start: string;
   role: string;
   sections: string[];
-  short_name: string;
   status: TeamStatus;
-  alt_send?: boolean;
-  always_send_pushes?: boolean;
-  asterisk_mention?: boolean;
-  auth_2fa_enabled?: boolean;
-  auth_2fa_status?: string;
-  botname?: string;
-  can_add_to_group?: boolean;
-  can_add_to_team?: boolean;
-  can_call?: boolean;
-  can_create_group?: boolean;
-  can_create_meeting?: boolean;
-  can_create_task?: boolean;
-  can_delete?: boolean;
-  can_delete_any_message?: boolean;
-  can_import_chats?: boolean;
-  can_import_tasks?: boolean;
-  can_join_public_groups?: boolean;
-  can_join_public_tasks?: boolean;
-  can_manage_color_rules?: boolean;
-  can_manage_integrations?: boolean;
-  can_manage_projects?: boolean;
-  can_manage_sections?: boolean;
-  can_manage_tags?: boolean;
-  can_send_message?: boolean;
-  cant_send_message_reason?: string;
-  changeable_fields?: string[];
-  contact_mshort_view?: boolean;
-  contact_short_view?: boolean;
-  contact_show_archived?: boolean;
-  custom_fields?: ContactCustomFieldsJSON;
-  debug_show_activity?: boolean;
-  default_lang?: string;
-  dropall_enabled?: boolean;
-  family_name?: string;
-  focus_until?: ISODateTimeString;
-  given_name?: string;
-  group_mshort_view?: boolean;
-  group_notifications_enabled?: boolean;
-  group_short_view?: boolean;
-  hide_pushes_content?: boolean;
-  is_archive?: boolean;
-  last_activity?: ISODateTimeString;
-  meeting_mshort_view?: boolean;
-  meeting_short_view?: boolean;
-  mood?: string;
-  munread_first?: boolean;
-  node?: string;
-  patronymic?: string;
-  quiet_time_finish?: string;
-  quiet_time_start?: string;
-  task_mshort_view?: boolean;
-  task_notifications_enabled?: boolean;
-  task_short_view?: boolean;
-  timezone?: string;
-  unread_first?: boolean;
+  task_mshort_view: boolean;
+  task_notifications_enabled: boolean;
+  task_short_view: boolean;
+  timezone: string;
+  unread_first: boolean;
+  user_uid?: string;
   /* eslint-enable camelcase */
 }
 
 export class Contact implements TDProtoClass<Contact> {
   /**
-   * Contact
-   * @param contactEmail Contact email in this team
-   * @param contactPhone Contact phone in this team
-   * @param displayName Full name in chats
-   * @param gentime Object version
-   * @param icons Icons data
-   * @param jid Contact Id
-   * @param role Role in this team
-   * @param sections Section ids
-   * @param shortName Short name in chats
-   * @param status Status in this team
+   * Contact invite/edit form
    * @param altSend Use Ctrl/Cmd + Enter instead Enter
    * @param alwaysSendPushes Send push notifications even contact is online
    * @param asteriskMention Use * as @ for mentions
-   * @param auth2faEnabled Two-factor authentication is configured and confirmed
-   * @param auth2faStatus Two-factor authentication status
-   * @param botname Bot name. Empty for users
-   * @param canAddToGroup Can I add this contact to group chats
-   * @param canAddToTeam Can I add new members to this team
-   * @param canCall Can I call to this contact
-   * @param canCreateGroup Can I create group chats in this team
-   * @param canCreateMeeting Can I create meetings in this team
-   * @param canCreateTask Can I create task for this contact
-   * @param canDelete Can I remove this contact from team
-   * @param canDeleteAnyMessage Deprecated
-   * @param canImportChats Can I import chats from external services (now its only telegram)
-   * @param canImportTasks Can I import tasks in this team
-   * @param canJoinPublicGroups Can I view/join public group in this team
-   * @param canJoinPublicTasks Can I view/join public tasks in this team
-   * @param canManageColorRules Can I manage color rules in this team
-   * @param canManageIntegrations Can I manage integrations in this team
-   * @param canManageProjects Can I manage task projects in this team
-   * @param canManageSections Can I manage contact sections in this team
-   * @param canManageTags Can I manage tags in this team
-   * @param canSendMessage Can I send message to this contact
-   * @param cantSendMessageReason Why I can't send message to this chat (if can't)
-   * @param changeableFields Changeable fields
+   * @param contactEmail Contact email (part of contact information in team, visible by all)
    * @param contactMshortView Short view in contact list in mobile app
+   * @param contactPhone Contact phone number (part of contact information in team, visible by all)
    * @param contactShortView Short view in contact list
    * @param contactShowArchived Show archived contacts in contact list
-   * @param customFields Extra contact fields
    * @param debugShowActivity Enable debug messages in UI
    * @param defaultLang Default language code
-   * @param dropallEnabled Enable remove all messages experimental features
    * @param familyName Family name
    * @param focusUntil Focus mode enabled until
    * @param givenName Given name
@@ -4289,135 +4225,73 @@ export class Contact implements TDProtoClass<Contact> {
    * @param groupNotificationsEnabled Push notifications for group chats
    * @param groupShortView Short view in group list
    * @param hidePushesContent Hide pushes body
-   * @param isArchive Contact deleted
-   * @param lastActivity Last activity in this team (iso datetime)
    * @param meetingMshortView Short view in meeting list in mobile app
    * @param meetingShortView Short view in meeting list
-   * @param mood Mood in this team
-   * @param munreadFirst Show unread chats first in feed in mobile app
-   * @param node Node uid for external users
-   * @param patronymic Patronymic, if any
+   * @param mood Mood in team
+   * @param munreadFirst Show unread chats first (mobile app)
+   * @param patronymic Patronymic
+   * @param phone Phone number (for invitation by phone)
    * @param quietTimeFinish Quiet time finish
-   * @param quietTimeStart Quiet time start
+   * @param quietTimeStart Start silently time (no pushes, no sounds)
+   * @param role Role in team
+   * @param sections ContactSection uids, if any
+   * @param status Status in team
    * @param taskMshortView Short view in task list in mobile app
    * @param taskNotificationsEnabled Push notifications for task chats
    * @param taskShortView Short view in task list
    * @param timezone Timezone, if any
-   * @param unreadFirst Show unread chats first in feed
+   * @param unreadFirst Show unread chats first (web/desktop)
+   * @param userUid User uid (for invitation from other team)
    */
   constructor (
+    public altSend: boolean,
+    public alwaysSendPushes: boolean,
+    public asteriskMention: boolean,
     public contactEmail: string,
+    public contactMshortView: boolean,
     public contactPhone: string,
-    public displayName: string,
-    public gentime: number,
-    public icons: IconData,
-    public jid: JID,
+    public contactShortView: boolean,
+    public contactShowArchived: boolean,
+    public debugShowActivity: boolean,
+    public defaultLang: string,
+    public familyName: string,
+    public focusUntil: ISODateTimeString,
+    public givenName: string,
+    public groupMshortView: boolean,
+    public groupNotificationsEnabled: boolean,
+    public groupShortView: boolean,
+    public hidePushesContent: boolean,
+    public meetingMshortView: boolean,
+    public meetingShortView: boolean,
+    public mood: string,
+    public munreadFirst: boolean,
+    public patronymic: string,
+    public phone: string,
+    public quietTimeFinish: string,
+    public quietTimeStart: string,
     public role: string,
     public sections: string[],
-    public shortName: string,
     public status: TeamStatus,
-    public altSend?: boolean,
-    public alwaysSendPushes?: boolean,
-    public asteriskMention?: boolean,
-    public auth2faEnabled?: boolean,
-    public auth2faStatus?: string,
-    public botname?: string,
-    public canAddToGroup?: boolean,
-    public canAddToTeam?: boolean,
-    public canCall?: boolean,
-    public canCreateGroup?: boolean,
-    public canCreateMeeting?: boolean,
-    public canCreateTask?: boolean,
-    public canDelete?: boolean,
-    public canDeleteAnyMessage?: boolean,
-    public canImportChats?: boolean,
-    public canImportTasks?: boolean,
-    public canJoinPublicGroups?: boolean,
-    public canJoinPublicTasks?: boolean,
-    public canManageColorRules?: boolean,
-    public canManageIntegrations?: boolean,
-    public canManageProjects?: boolean,
-    public canManageSections?: boolean,
-    public canManageTags?: boolean,
-    public canSendMessage?: boolean,
-    public cantSendMessageReason?: string,
-    public changeableFields?: string[],
-    public contactMshortView?: boolean,
-    public contactShortView?: boolean,
-    public contactShowArchived?: boolean,
-    public customFields?: ContactCustomFields,
-    public debugShowActivity?: boolean,
-    public defaultLang?: string,
-    public dropallEnabled?: boolean,
-    public familyName?: string,
-    public focusUntil?: ISODateTimeString,
-    public givenName?: string,
-    public groupMshortView?: boolean,
-    public groupNotificationsEnabled?: boolean,
-    public groupShortView?: boolean,
-    public hidePushesContent?: boolean,
-    public isArchive?: boolean,
-    public lastActivity?: ISODateTimeString,
-    public meetingMshortView?: boolean,
-    public meetingShortView?: boolean,
-    public mood?: string,
-    public munreadFirst?: boolean,
-    public node?: string,
-    public patronymic?: string,
-    public quietTimeFinish?: string,
-    public quietTimeStart?: string,
-    public taskMshortView?: boolean,
-    public taskNotificationsEnabled?: boolean,
-    public taskShortView?: boolean,
-    public timezone?: string,
-    public unreadFirst?: boolean,
+    public taskMshortView: boolean,
+    public taskNotificationsEnabled: boolean,
+    public taskShortView: boolean,
+    public timezone: string,
+    public unreadFirst: boolean,
+    public userUid?: string,
   ) {}
 
   public static fromJSON (raw: ContactJSON): Contact {
     return new Contact(
-      raw.contact_email,
-      raw.contact_phone,
-      raw.display_name,
-      raw.gentime,
-      IconData.fromJSON(raw.icons),
-      raw.jid,
-      raw.role,
-      raw.sections,
-      raw.short_name,
-      raw.status,
       raw.alt_send,
       raw.always_send_pushes,
       raw.asterisk_mention,
-      raw.auth_2fa_enabled,
-      raw.auth_2fa_status,
-      raw.botname,
-      raw.can_add_to_group,
-      raw.can_add_to_team,
-      raw.can_call,
-      raw.can_create_group,
-      raw.can_create_meeting,
-      raw.can_create_task,
-      raw.can_delete,
-      raw.can_delete_any_message,
-      raw.can_import_chats,
-      raw.can_import_tasks,
-      raw.can_join_public_groups,
-      raw.can_join_public_tasks,
-      raw.can_manage_color_rules,
-      raw.can_manage_integrations,
-      raw.can_manage_projects,
-      raw.can_manage_sections,
-      raw.can_manage_tags,
-      raw.can_send_message,
-      raw.cant_send_message_reason,
-      raw.changeable_fields,
+      raw.contact_email,
       raw.contact_mshort_view,
+      raw.contact_phone,
       raw.contact_short_view,
       raw.contact_show_archived,
-      raw.custom_fields && ContactCustomFields.fromJSON(raw.custom_fields),
       raw.debug_show_activity,
       raw.default_lang,
-      raw.dropall_enabled,
       raw.family_name,
       raw.focus_until,
       raw.given_name,
@@ -4425,68 +4299,37 @@ export class Contact implements TDProtoClass<Contact> {
       raw.group_notifications_enabled,
       raw.group_short_view,
       raw.hide_pushes_content,
-      raw.is_archive,
-      raw.last_activity,
       raw.meeting_mshort_view,
       raw.meeting_short_view,
       raw.mood,
       raw.munread_first,
-      raw.node,
       raw.patronymic,
+      raw.phone,
       raw.quiet_time_finish,
       raw.quiet_time_start,
+      raw.role,
+      raw.sections,
+      raw.status,
       raw.task_mshort_view,
       raw.task_notifications_enabled,
       raw.task_short_view,
       raw.timezone,
       raw.unread_first,
+      raw.user_uid,
     )
   }
 
   public mappableFields = [
-    'contactEmail',
-    'contactPhone',
-    'displayName',
-    'gentime',
-    'icons',
-    'jid',
-    'role',
-    'sections',
-    'shortName',
-    'status',
     'altSend',
     'alwaysSendPushes',
     'asteriskMention',
-    'auth2faEnabled',
-    'auth2faStatus',
-    'botname',
-    'canAddToGroup',
-    'canAddToTeam',
-    'canCall',
-    'canCreateGroup',
-    'canCreateMeeting',
-    'canCreateTask',
-    'canDelete',
-    'canDeleteAnyMessage',
-    'canImportChats',
-    'canImportTasks',
-    'canJoinPublicGroups',
-    'canJoinPublicTasks',
-    'canManageColorRules',
-    'canManageIntegrations',
-    'canManageProjects',
-    'canManageSections',
-    'canManageTags',
-    'canSendMessage',
-    'cantSendMessageReason',
-    'changeableFields',
+    'contactEmail',
     'contactMshortView',
+    'contactPhone',
     'contactShortView',
     'contactShowArchived',
-    'customFields',
     'debugShowActivity',
     'defaultLang',
-    'dropallEnabled',
     'familyName',
     'focusUntil',
     'givenName',
@@ -4494,68 +4337,37 @@ export class Contact implements TDProtoClass<Contact> {
     'groupNotificationsEnabled',
     'groupShortView',
     'hidePushesContent',
-    'isArchive',
-    'lastActivity',
     'meetingMshortView',
     'meetingShortView',
     'mood',
     'munreadFirst',
-    'node',
     'patronymic',
+    'phone',
     'quietTimeFinish',
     'quietTimeStart',
+    'role',
+    'sections',
+    'status',
     'taskMshortView',
     'taskNotificationsEnabled',
     'taskShortView',
     'timezone',
     'unreadFirst',
+    'userUid',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    contactEmail: () => ({ contact_email: this.contactEmail }),
-    contactPhone: () => ({ contact_phone: this.contactPhone }),
-    displayName: () => ({ display_name: this.displayName }),
-    gentime: () => ({ gentime: this.gentime }),
-    icons: () => ({ icons: this.icons.toJSON() }),
-    jid: () => ({ jid: this.jid }),
-    role: () => ({ role: this.role }),
-    sections: () => ({ sections: this.sections }),
-    shortName: () => ({ short_name: this.shortName }),
-    status: () => ({ status: this.status }),
     altSend: () => ({ alt_send: this.altSend }),
     alwaysSendPushes: () => ({ always_send_pushes: this.alwaysSendPushes }),
     asteriskMention: () => ({ asterisk_mention: this.asteriskMention }),
-    auth2faEnabled: () => ({ auth_2fa_enabled: this.auth2faEnabled }),
-    auth2faStatus: () => ({ auth_2fa_status: this.auth2faStatus }),
-    botname: () => ({ botname: this.botname }),
-    canAddToGroup: () => ({ can_add_to_group: this.canAddToGroup }),
-    canAddToTeam: () => ({ can_add_to_team: this.canAddToTeam }),
-    canCall: () => ({ can_call: this.canCall }),
-    canCreateGroup: () => ({ can_create_group: this.canCreateGroup }),
-    canCreateMeeting: () => ({ can_create_meeting: this.canCreateMeeting }),
-    canCreateTask: () => ({ can_create_task: this.canCreateTask }),
-    canDelete: () => ({ can_delete: this.canDelete }),
-    canDeleteAnyMessage: () => ({ can_delete_any_message: this.canDeleteAnyMessage }),
-    canImportChats: () => ({ can_import_chats: this.canImportChats }),
-    canImportTasks: () => ({ can_import_tasks: this.canImportTasks }),
-    canJoinPublicGroups: () => ({ can_join_public_groups: this.canJoinPublicGroups }),
-    canJoinPublicTasks: () => ({ can_join_public_tasks: this.canJoinPublicTasks }),
-    canManageColorRules: () => ({ can_manage_color_rules: this.canManageColorRules }),
-    canManageIntegrations: () => ({ can_manage_integrations: this.canManageIntegrations }),
-    canManageProjects: () => ({ can_manage_projects: this.canManageProjects }),
-    canManageSections: () => ({ can_manage_sections: this.canManageSections }),
-    canManageTags: () => ({ can_manage_tags: this.canManageTags }),
-    canSendMessage: () => ({ can_send_message: this.canSendMessage }),
-    cantSendMessageReason: () => ({ cant_send_message_reason: this.cantSendMessageReason }),
-    changeableFields: () => ({ changeable_fields: this.changeableFields }),
+    contactEmail: () => ({ contact_email: this.contactEmail }),
     contactMshortView: () => ({ contact_mshort_view: this.contactMshortView }),
+    contactPhone: () => ({ contact_phone: this.contactPhone }),
     contactShortView: () => ({ contact_short_view: this.contactShortView }),
     contactShowArchived: () => ({ contact_show_archived: this.contactShowArchived }),
-    customFields: () => ({ custom_fields: this.customFields?.toJSON() }),
     debugShowActivity: () => ({ debug_show_activity: this.debugShowActivity }),
     defaultLang: () => ({ default_lang: this.defaultLang }),
-    dropallEnabled: () => ({ dropall_enabled: this.dropallEnabled }),
     familyName: () => ({ family_name: this.familyName }),
     focusUntil: () => ({ focus_until: this.focusUntil }),
     givenName: () => ({ given_name: this.givenName }),
@@ -4563,21 +4375,23 @@ export class Contact implements TDProtoClass<Contact> {
     groupNotificationsEnabled: () => ({ group_notifications_enabled: this.groupNotificationsEnabled }),
     groupShortView: () => ({ group_short_view: this.groupShortView }),
     hidePushesContent: () => ({ hide_pushes_content: this.hidePushesContent }),
-    isArchive: () => ({ is_archive: this.isArchive }),
-    lastActivity: () => ({ last_activity: this.lastActivity }),
     meetingMshortView: () => ({ meeting_mshort_view: this.meetingMshortView }),
     meetingShortView: () => ({ meeting_short_view: this.meetingShortView }),
     mood: () => ({ mood: this.mood }),
     munreadFirst: () => ({ munread_first: this.munreadFirst }),
-    node: () => ({ node: this.node }),
     patronymic: () => ({ patronymic: this.patronymic }),
+    phone: () => ({ phone: this.phone }),
     quietTimeFinish: () => ({ quiet_time_finish: this.quietTimeFinish }),
     quietTimeStart: () => ({ quiet_time_start: this.quietTimeStart }),
+    role: () => ({ role: this.role }),
+    sections: () => ({ sections: this.sections }),
+    status: () => ({ status: this.status }),
     taskMshortView: () => ({ task_mshort_view: this.taskMshortView }),
     taskNotificationsEnabled: () => ({ task_notifications_enabled: this.taskNotificationsEnabled }),
     taskShortView: () => ({ task_short_view: this.taskShortView }),
     timezone: () => ({ timezone: this.timezone }),
     unreadFirst: () => ({ unread_first: this.unreadFirst }),
+    userUid: () => ({ user_uid: this.userUid }),
     /* eslint-enable camelcase */
   }
 
