@@ -8231,6 +8231,7 @@ export class ICEServer implements TDProtoClass<ICEServer> {
 export interface IVCSInfoJSON {
   /* eslint-disable camelcase */
   conference_id?: string;
+  invite_link?: string;
   join_token?: string;
   /* eslint-enable camelcase */
 }
@@ -8239,28 +8240,33 @@ export class IVCSInfo implements TDProtoClass<IVCSInfo> {
   /**
    * MISSING CLASS DOCUMENTATION
    * @param conferenceId DOCUMENTATION MISSING
+   * @param inviteLink DOCUMENTATION MISSING
    * @param joinToken DOCUMENTATION MISSING
    */
   constructor (
     public conferenceId?: string,
+    public inviteLink?: string,
     public joinToken?: string,
   ) {}
 
   public static fromJSON (raw: IVCSInfoJSON): IVCSInfo {
     return new IVCSInfo(
       raw.conference_id,
+      raw.invite_link,
       raw.join_token,
     )
   }
 
   public mappableFields = [
     'conferenceId',
+    'inviteLink',
     'joinToken',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
     conferenceId: () => ({ conference_id: this.conferenceId }),
+    inviteLink: () => ({ invite_link: this.inviteLink }),
     joinToken: () => ({ join_token: this.joinToken }),
     /* eslint-enable camelcase */
   }
@@ -8891,6 +8897,60 @@ export class Invitation implements TDProtoClass<Invitation> {
 
   public toJSON (): InvitationJSON
   public toJSON (fields: Array<this['mappableFields'][number]>): Partial<InvitationJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface InvitationToMeetingJSON {
+  /* eslint-disable camelcase */
+  date_start: ISODateTimeString;
+  description: string;
+  meeting_jid: string;
+  /* eslint-enable camelcase */
+}
+
+export class InvitationToMeeting implements TDProtoClass<InvitationToMeeting> {
+  /**
+   * InvitationToMeeting Preview
+   * @param dateStart DOCUMENTATION MISSING
+   * @param description DOCUMENTATION MISSING
+   * @param meetingJid DOCUMENTATION MISSING
+   */
+  constructor (
+    public dateStart: ISODateTimeString,
+    public description: string,
+    public meetingJid: string,
+  ) {}
+
+  public static fromJSON (raw: InvitationToMeetingJSON): InvitationToMeeting {
+    return new InvitationToMeeting(
+      raw.date_start,
+      raw.description,
+      raw.meeting_jid,
+    )
+  }
+
+  public mappableFields = [
+    'dateStart',
+    'description',
+    'meetingJid',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    dateStart: () => ({ date_start: this.dateStart }),
+    description: () => ({ description: this.description }),
+    meetingJid: () => ({ meeting_jid: this.meetingJid }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): InvitationToMeetingJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<InvitationToMeetingJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -9763,6 +9823,48 @@ export class MeetingMember implements TDProtoClass<MeetingMember> {
 
   public toJSON (): MeetingMemberJSON
   public toJSON (fields: Array<this['mappableFields'][number]>): Partial<MeetingMemberJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface MeetingNewGuestJSON {
+  /* eslint-disable camelcase */
+  full_name: string;
+  /* eslint-enable camelcase */
+}
+
+export class MeetingNewGuest implements TDProtoClass<MeetingNewGuest> {
+  /**
+   * Guest Invitation Form
+   * @param fullName DOCUMENTATION MISSING
+   */
+  constructor (
+    public fullName: string,
+  ) {}
+
+  public static fromJSON (raw: MeetingNewGuestJSON): MeetingNewGuest {
+    return new MeetingNewGuest(
+      raw.full_name,
+    )
+  }
+
+  public mappableFields = [
+    'fullName',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    fullName: () => ({ full_name: this.fullName }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): MeetingNewGuestJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<MeetingNewGuestJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
