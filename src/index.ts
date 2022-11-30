@@ -10750,6 +10750,78 @@ export class MeetingsResponse implements TDProtoClass<MeetingsResponse> {
   }
 }
 
+export interface MeetingsUpdateCellRequestJSON {
+  /* eslint-disable camelcase */
+  cell_start_new_date: string;
+  cell_start_old_date: string;
+  duration: number;
+  is_outside: boolean;
+  meeting_id: string;
+  team_uuid: string;
+  /* eslint-enable camelcase */
+}
+
+export class MeetingsUpdateCellRequest implements TDProtoClass<MeetingsUpdateCellRequest> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param cellStartNewDate DOCUMENTATION MISSING
+   * @param cellStartOldDate DOCUMENTATION MISSING
+   * @param duration DOCUMENTATION MISSING
+   * @param isOutside DOCUMENTATION MISSING
+   * @param meetingId DOCUMENTATION MISSING
+   * @param teamUuid DOCUMENTATION MISSING
+   */
+  constructor (
+    public cellStartNewDate: string,
+    public cellStartOldDate: string,
+    public duration: number,
+    public isOutside: boolean,
+    public meetingId: string,
+    public teamUuid: string,
+  ) {}
+
+  public static fromJSON (raw: MeetingsUpdateCellRequestJSON): MeetingsUpdateCellRequest {
+    return new MeetingsUpdateCellRequest(
+      raw.cell_start_new_date,
+      raw.cell_start_old_date,
+      raw.duration,
+      raw.is_outside,
+      raw.meeting_id,
+      raw.team_uuid,
+    )
+  }
+
+  public mappableFields = [
+    'cellStartNewDate',
+    'cellStartOldDate',
+    'duration',
+    'isOutside',
+    'meetingId',
+    'teamUuid',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    cellStartNewDate: () => ({ cell_start_new_date: this.cellStartNewDate }),
+    cellStartOldDate: () => ({ cell_start_old_date: this.cellStartOldDate }),
+    duration: () => ({ duration: this.duration }),
+    isOutside: () => ({ is_outside: this.isOutside }),
+    meetingId: () => ({ meeting_id: this.meetingId }),
+    teamUuid: () => ({ team_uuid: this.teamUuid }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): MeetingsUpdateCellRequestJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<MeetingsUpdateCellRequestJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface MeetingsUpdateRequestJSON {
   /* eslint-disable camelcase */
   meeting_id: string;
@@ -15699,6 +15771,120 @@ export class ServerLoginParams implements TDProtoClass<ServerLoginParams> {
 
   public toJSON (): ServerLoginParamsJSON
   public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerLoginParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerMeetingCellUpdatedJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ServerMeetingCellUpdatedParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerMeetingCellUpdated implements TDProtoClass<ServerMeetingCellUpdated> {
+  /**
+   * Meeting Cell updated
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ServerMeetingCellUpdatedParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ServerMeetingCellUpdatedJSON): ServerMeetingCellUpdated {
+    return new ServerMeetingCellUpdated(
+      raw.event,
+      ServerMeetingCellUpdatedParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerMeetingCellUpdatedJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerMeetingCellUpdatedJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerMeetingCellUpdatedParamsJSON {
+  /* eslint-disable camelcase */
+  duration: number;
+  meeting_id: string;
+  start_at_new: ISODateTimeString;
+  start_at_old: ISODateTimeString;
+  /* eslint-enable camelcase */
+}
+
+export class ServerMeetingCellUpdatedParams implements TDProtoClass<ServerMeetingCellUpdatedParams> {
+  /**
+   * Params of the server.meetingcell.updated event
+   * @param duration DOCUMENTATION MISSING
+   * @param meetingId Meeting Cell info
+   * @param startAtNew DOCUMENTATION MISSING
+   * @param startAtOld DOCUMENTATION MISSING
+   */
+  constructor (
+    public duration: number,
+    public meetingId: string,
+    public startAtNew: ISODateTimeString,
+    public startAtOld: ISODateTimeString,
+  ) {}
+
+  public static fromJSON (raw: ServerMeetingCellUpdatedParamsJSON): ServerMeetingCellUpdatedParams {
+    return new ServerMeetingCellUpdatedParams(
+      raw.duration,
+      raw.meeting_id,
+      raw.start_at_new,
+      raw.start_at_old,
+    )
+  }
+
+  public mappableFields = [
+    'duration',
+    'meetingId',
+    'startAtNew',
+    'startAtOld',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    duration: () => ({ duration: this.duration }),
+    meetingId: () => ({ meeting_id: this.meetingId }),
+    startAtNew: () => ({ start_at_new: this.startAtNew }),
+    startAtOld: () => ({ start_at_old: this.startAtOld }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerMeetingCellUpdatedParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerMeetingCellUpdatedParamsJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
