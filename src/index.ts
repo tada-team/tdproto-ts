@@ -10755,7 +10755,6 @@ export interface MeetingsUpdateCellRequestJSON {
   cell_start_new_date: string;
   cell_start_old_date: string;
   duration: number;
-  is_outside: boolean;
   meeting_id: string;
   team_uuid: string;
   /* eslint-enable camelcase */
@@ -10767,7 +10766,6 @@ export class MeetingsUpdateCellRequest implements TDProtoClass<MeetingsUpdateCel
    * @param cellStartNewDate DOCUMENTATION MISSING
    * @param cellStartOldDate DOCUMENTATION MISSING
    * @param duration DOCUMENTATION MISSING
-   * @param isOutside DOCUMENTATION MISSING
    * @param meetingId DOCUMENTATION MISSING
    * @param teamUuid DOCUMENTATION MISSING
    */
@@ -10775,7 +10773,6 @@ export class MeetingsUpdateCellRequest implements TDProtoClass<MeetingsUpdateCel
     public cellStartNewDate: string,
     public cellStartOldDate: string,
     public duration: number,
-    public isOutside: boolean,
     public meetingId: string,
     public teamUuid: string,
   ) {}
@@ -10785,7 +10782,6 @@ export class MeetingsUpdateCellRequest implements TDProtoClass<MeetingsUpdateCel
       raw.cell_start_new_date,
       raw.cell_start_old_date,
       raw.duration,
-      raw.is_outside,
       raw.meeting_id,
       raw.team_uuid,
     )
@@ -10795,7 +10791,6 @@ export class MeetingsUpdateCellRequest implements TDProtoClass<MeetingsUpdateCel
     'cellStartNewDate',
     'cellStartOldDate',
     'duration',
-    'isOutside',
     'meetingId',
     'teamUuid',
   ] as const
@@ -10805,7 +10800,6 @@ export class MeetingsUpdateCellRequest implements TDProtoClass<MeetingsUpdateCel
     cellStartNewDate: () => ({ cell_start_new_date: this.cellStartNewDate }),
     cellStartOldDate: () => ({ cell_start_old_date: this.cellStartOldDate }),
     duration: () => ({ duration: this.duration }),
-    isOutside: () => ({ is_outside: this.isOutside }),
     meetingId: () => ({ meeting_id: this.meetingId }),
     teamUuid: () => ({ team_uuid: this.teamUuid }),
     /* eslint-enable camelcase */
