@@ -4221,6 +4221,7 @@ export interface ContactJSON {
   is_archive?: boolean;
   last_activity?: ISODateTimeString;
   meeting_mshort_view?: boolean;
+  meeting_notifications_enabled?: boolean;
   meeting_short_view?: boolean;
   mood?: string;
   munread_first?: boolean;
@@ -4292,6 +4293,7 @@ export class Contact implements TDProtoClass<Contact> {
    * @param isArchive Contact deleted
    * @param lastActivity Last activity in this team (iso datetime)
    * @param meetingMshortView Short view in meeting list in mobile app
+   * @param meetingNotificationsEnabled Push notifications for meeting chats
    * @param meetingShortView Short view in meeting list
    * @param mood Mood in this team
    * @param munreadFirst Show unread chats first in feed in mobile app
@@ -4359,6 +4361,7 @@ export class Contact implements TDProtoClass<Contact> {
     public isArchive?: boolean,
     public lastActivity?: ISODateTimeString,
     public meetingMshortView?: boolean,
+    public meetingNotificationsEnabled?: boolean,
     public meetingShortView?: boolean,
     public mood?: string,
     public munreadFirst?: boolean,
@@ -4428,6 +4431,7 @@ export class Contact implements TDProtoClass<Contact> {
       raw.is_archive,
       raw.last_activity,
       raw.meeting_mshort_view,
+      raw.meeting_notifications_enabled,
       raw.meeting_short_view,
       raw.mood,
       raw.munread_first,
@@ -4497,6 +4501,7 @@ export class Contact implements TDProtoClass<Contact> {
     'isArchive',
     'lastActivity',
     'meetingMshortView',
+    'meetingNotificationsEnabled',
     'meetingShortView',
     'mood',
     'munreadFirst',
@@ -4566,6 +4571,7 @@ export class Contact implements TDProtoClass<Contact> {
     isArchive: () => ({ is_archive: this.isArchive }),
     lastActivity: () => ({ last_activity: this.lastActivity }),
     meetingMshortView: () => ({ meeting_mshort_view: this.meetingMshortView }),
+    meetingNotificationsEnabled: () => ({ meeting_notifications_enabled: this.meetingNotificationsEnabled }),
     meetingShortView: () => ({ meeting_short_view: this.meetingShortView }),
     mood: () => ({ mood: this.mood }),
     munreadFirst: () => ({ munread_first: this.munreadFirst }),
