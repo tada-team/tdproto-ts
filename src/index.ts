@@ -20,6 +20,7 @@ export type ActionType =
 export type CallType =
    | 'audio'
    | 'video'
+   | 'video_multistream'
 
 export type ChatType =
    | 'direct'
@@ -14523,6 +14524,7 @@ export class ServerCallSdp implements TDProtoClass<ServerCallSdp> {
 export interface ServerCallSdpParamsJSON {
   /* eslint-disable camelcase */
   jid: JID;
+  jids: JID[];
   jsep: JSEPJSON;
   uid: string;
   /* eslint-enable camelcase */
@@ -14531,12 +14533,14 @@ export interface ServerCallSdpParamsJSON {
 export class ServerCallSdpParams implements TDProtoClass<ServerCallSdpParams> {
   /**
    * Params of the server.call.sdp event
-   * @param jid Chat or contact id
+   * @param jid Chat or contact id in singlesteam mode
+   * @param jids Jids for tracks in multistream mode
    * @param jsep SDP data
    * @param uid Call id
    */
   constructor (
     public jid: JID,
+    public jids: JID[],
     public jsep: JSEP,
     public uid: string,
   ) {}
@@ -14544,6 +14548,7 @@ export class ServerCallSdpParams implements TDProtoClass<ServerCallSdpParams> {
   public static fromJSON (raw: ServerCallSdpParamsJSON): ServerCallSdpParams {
     return new ServerCallSdpParams(
       raw.jid,
+      raw.jids,
       JSEP.fromJSON(raw.jsep),
       raw.uid,
     )
@@ -14551,6 +14556,7 @@ export class ServerCallSdpParams implements TDProtoClass<ServerCallSdpParams> {
 
   public mappableFields = [
     'jid',
+    'jids',
     'jsep',
     'uid',
   ] as const
@@ -14558,6 +14564,7 @@ export class ServerCallSdpParams implements TDProtoClass<ServerCallSdpParams> {
   readonly #mapper = {
     /* eslint-disable camelcase */
     jid: () => ({ jid: this.jid }),
+    jids: () => ({ jids: this.jids }),
     jsep: () => ({ jsep: this.jsep.toJSON() }),
     uid: () => ({ uid: this.uid }),
     /* eslint-enable camelcase */
