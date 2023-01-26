@@ -4815,6 +4815,72 @@ export class ContactShort implements TDProtoClass<ContactShort> {
   }
 }
 
+export interface ContactsSectionGetRequestJSON {
+  /* eslint-disable camelcase */
+  IsArchived: boolean;
+  IsBot: boolean;
+  Limit: number;
+  Offset: number;
+  SectionUid: string;
+  /* eslint-enable camelcase */
+}
+
+export class ContactsSectionGetRequest implements TDProtoClass<ContactsSectionGetRequest> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param IsArchived * ?is_archived=
+   * @param IsBot * ?is_bot=
+   * @param Limit DOCUMENTATION MISSING
+   * @param Offset DOCUMENTATION MISSING
+   * @param SectionUid Team Section
+   */
+  constructor (
+    public IsArchived: boolean,
+    public IsBot: boolean,
+    public Limit: number,
+    public Offset: number,
+    public SectionUid: string,
+  ) {}
+
+  public static fromJSON (raw: ContactsSectionGetRequestJSON): ContactsSectionGetRequest {
+    return new ContactsSectionGetRequest(
+      raw.IsArchived,
+      raw.IsBot,
+      raw.Limit,
+      raw.Offset,
+      raw.SectionUid,
+    )
+  }
+
+  public mappableFields = [
+    'IsArchived',
+    'IsBot',
+    'Limit',
+    'Offset',
+    'SectionUid',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    IsArchived: () => ({ IsArchived: this.IsArchived }),
+    IsBot: () => ({ IsBot: this.IsBot }),
+    Limit: () => ({ Limit: this.Limit }),
+    Offset: () => ({ Offset: this.Offset }),
+    SectionUid: () => ({ SectionUid: this.SectionUid }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ContactsSectionGetRequestJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ContactsSectionGetRequestJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface CountryJSON {
   /* eslint-disable camelcase */
   code: string;
