@@ -4230,6 +4230,7 @@ export interface ContactJSON {
   patronymic?: string;
   quiet_time_finish?: string;
   quiet_time_start?: string;
+  systembot_notifications_enabled?: boolean;
   task_mshort_view?: boolean;
   task_notifications_enabled?: boolean;
   task_short_view?: boolean;
@@ -4302,6 +4303,7 @@ export class Contact implements TDProtoClass<Contact> {
    * @param patronymic Patronymic, if any
    * @param quietTimeFinish Quiet time finish
    * @param quietTimeStart Quiet time start
+   * @param systembotNotificationsEnabled Push notifications from systembot
    * @param taskMshortView Short view in task list in mobile app
    * @param taskNotificationsEnabled Push notifications for task chats
    * @param taskShortView Short view in task list
@@ -4370,6 +4372,7 @@ export class Contact implements TDProtoClass<Contact> {
     public patronymic?: string,
     public quietTimeFinish?: string,
     public quietTimeStart?: string,
+    public systembotNotificationsEnabled?: boolean,
     public taskMshortView?: boolean,
     public taskNotificationsEnabled?: boolean,
     public taskShortView?: boolean,
@@ -4440,6 +4443,7 @@ export class Contact implements TDProtoClass<Contact> {
       raw.patronymic,
       raw.quiet_time_finish,
       raw.quiet_time_start,
+      raw.systembot_notifications_enabled,
       raw.task_mshort_view,
       raw.task_notifications_enabled,
       raw.task_short_view,
@@ -4510,6 +4514,7 @@ export class Contact implements TDProtoClass<Contact> {
     'patronymic',
     'quietTimeFinish',
     'quietTimeStart',
+    'systembotNotificationsEnabled',
     'taskMshortView',
     'taskNotificationsEnabled',
     'taskShortView',
@@ -4580,6 +4585,7 @@ export class Contact implements TDProtoClass<Contact> {
     patronymic: () => ({ patronymic: this.patronymic }),
     quietTimeFinish: () => ({ quiet_time_finish: this.quietTimeFinish }),
     quietTimeStart: () => ({ quiet_time_start: this.quietTimeStart }),
+    systembotNotificationsEnabled: () => ({ systembot_notifications_enabled: this.systembotNotificationsEnabled }),
     taskMshortView: () => ({ task_mshort_view: this.taskMshortView }),
     taskNotificationsEnabled: () => ({ task_notifications_enabled: this.taskNotificationsEnabled }),
     taskShortView: () => ({ task_short_view: this.taskShortView }),
