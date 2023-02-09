@@ -4230,6 +4230,7 @@ export interface ContactJSON {
   patronymic?: string;
   quiet_time_finish?: string;
   quiet_time_start?: string;
+  reaction_notifications_enabled?: boolean;
   systembot_notifications_enabled?: boolean;
   task_mshort_view?: boolean;
   task_notifications_enabled?: boolean;
@@ -4303,6 +4304,7 @@ export class Contact implements TDProtoClass<Contact> {
    * @param patronymic Patronymic, if any
    * @param quietTimeFinish Quiet time finish
    * @param quietTimeStart Quiet time start
+   * @param reactionNotificationsEnabled Push notifications for reactions
    * @param systembotNotificationsEnabled Push notifications from systembot
    * @param taskMshortView Short view in task list in mobile app
    * @param taskNotificationsEnabled Push notifications for task chats
@@ -4372,6 +4374,7 @@ export class Contact implements TDProtoClass<Contact> {
     public patronymic?: string,
     public quietTimeFinish?: string,
     public quietTimeStart?: string,
+    public reactionNotificationsEnabled?: boolean,
     public systembotNotificationsEnabled?: boolean,
     public taskMshortView?: boolean,
     public taskNotificationsEnabled?: boolean,
@@ -4443,6 +4446,7 @@ export class Contact implements TDProtoClass<Contact> {
       raw.patronymic,
       raw.quiet_time_finish,
       raw.quiet_time_start,
+      raw.reaction_notifications_enabled,
       raw.systembot_notifications_enabled,
       raw.task_mshort_view,
       raw.task_notifications_enabled,
@@ -4514,6 +4518,7 @@ export class Contact implements TDProtoClass<Contact> {
     'patronymic',
     'quietTimeFinish',
     'quietTimeStart',
+    'reactionNotificationsEnabled',
     'systembotNotificationsEnabled',
     'taskMshortView',
     'taskNotificationsEnabled',
@@ -4585,6 +4590,7 @@ export class Contact implements TDProtoClass<Contact> {
     patronymic: () => ({ patronymic: this.patronymic }),
     quietTimeFinish: () => ({ quiet_time_finish: this.quietTimeFinish }),
     quietTimeStart: () => ({ quiet_time_start: this.quietTimeStart }),
+    reactionNotificationsEnabled: () => ({ reaction_notifications_enabled: this.reactionNotificationsEnabled }),
     systembotNotificationsEnabled: () => ({ systembot_notifications_enabled: this.systembotNotificationsEnabled }),
     taskMshortView: () => ({ task_mshort_view: this.taskMshortView }),
     taskNotificationsEnabled: () => ({ task_notifications_enabled: this.taskNotificationsEnabled }),
