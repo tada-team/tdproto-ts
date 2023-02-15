@@ -20016,6 +20016,7 @@ export interface TeamJSON {
   hide_archived_users?: boolean;
   is_archive?: boolean;
   notebot?: JID;
+  owner?: ContactJSON;
   pinned?: boolean;
   single_group?: JID;
   subscription?: SubscriptionJSON;
@@ -20055,6 +20056,7 @@ export class Team implements TDProtoClass<Team> {
    * @param hideArchivedUsers Don't show archived users by default
    * @param isArchive Team deleted
    * @param notebot Сurrent team favorites bot, jid of chat
+   * @param owner Team owner
    * @param pinned Team pinned
    * @param singleGroup For single group teams, jid of chat
    * @param subscription Сurrent team subscription
@@ -20090,6 +20092,7 @@ export class Team implements TDProtoClass<Team> {
     public hideArchivedUsers?: boolean,
     public readonly isArchive?: boolean,
     public readonly notebot?: JID,
+    public owner?: Contact,
     public pinned?: boolean,
     public readonly singleGroup?: JID,
     public subscription?: Subscription,
@@ -20127,6 +20130,7 @@ export class Team implements TDProtoClass<Team> {
       raw.hide_archived_users,
       raw.is_archive,
       raw.notebot,
+      raw.owner && Contact.fromJSON(raw.owner),
       raw.pinned,
       raw.single_group,
       raw.subscription && Subscription.fromJSON(raw.subscription),
@@ -20164,6 +20168,7 @@ export class Team implements TDProtoClass<Team> {
     'hideArchivedUsers',
     'isArchive',
     'notebot',
+    'owner',
     'pinned',
     'singleGroup',
     'subscription',
@@ -20201,6 +20206,7 @@ export class Team implements TDProtoClass<Team> {
     hideArchivedUsers: () => ({ hide_archived_users: this.hideArchivedUsers }),
     isArchive: () => ({ is_archive: this.isArchive }),
     notebot: () => ({ notebot: this.notebot }),
+    owner: () => ({ owner: this.owner?.toJSON() }),
     pinned: () => ({ pinned: this.pinned }),
     singleGroup: () => ({ single_group: this.singleGroup }),
     subscription: () => ({ subscription: this.subscription?.toJSON() }),
