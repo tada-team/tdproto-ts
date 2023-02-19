@@ -1567,6 +1567,7 @@ export interface ChatJSON {
   can_delete?: boolean;
   can_delete_any_message?: boolean;
   can_join?: boolean;
+  can_mute_all?: boolean;
   can_remove_member?: boolean;
   can_send_message?: boolean;
   can_set_important_any_message?: boolean;
@@ -1647,6 +1648,7 @@ export class Chat implements TDProtoClass<Chat> {
    * @param canDelete Can I delete this chat
    * @param canDeleteAnyMessage Can I delete any message in this chat
    * @param canJoin Can I join to this public group/task
+   * @param canMuteAll Can I mute all in call
    * @param canRemoveMember Can I remove member from this group chat
    * @param canSendMessage Can I send message to this chat
    * @param canSetImportantAnyMessage Can I change Important flag in any message in this chat
@@ -1722,6 +1724,7 @@ export class Chat implements TDProtoClass<Chat> {
     public canDelete?: boolean,
     public canDeleteAnyMessage?: boolean,
     public canJoin?: boolean,
+    public canMuteAll?: boolean,
     public canRemoveMember?: boolean,
     public canSendMessage?: boolean,
     public canSetImportantAnyMessage?: boolean,
@@ -1800,6 +1803,7 @@ export class Chat implements TDProtoClass<Chat> {
       raw.can_delete,
       raw.can_delete_any_message,
       raw.can_join,
+      raw.can_mute_all,
       raw.can_remove_member,
       raw.can_send_message,
       raw.can_set_important_any_message,
@@ -1877,6 +1881,7 @@ export class Chat implements TDProtoClass<Chat> {
     'canDelete',
     'canDeleteAnyMessage',
     'canJoin',
+    'canMuteAll',
     'canRemoveMember',
     'canSendMessage',
     'canSetImportantAnyMessage',
@@ -1954,6 +1959,7 @@ export class Chat implements TDProtoClass<Chat> {
     canDelete: () => ({ can_delete: this.canDelete }),
     canDeleteAnyMessage: () => ({ can_delete_any_message: this.canDeleteAnyMessage }),
     canJoin: () => ({ can_join: this.canJoin }),
+    canMuteAll: () => ({ can_mute_all: this.canMuteAll }),
     canRemoveMember: () => ({ can_remove_member: this.canRemoveMember }),
     canSendMessage: () => ({ can_send_message: this.canSendMessage }),
     canSetImportantAnyMessage: () => ({ can_set_important_any_message: this.canSetImportantAnyMessage }),
@@ -6764,7 +6770,7 @@ export class Features implements TDProtoClass<Features> {
    * @param userver Static files server address
    * @param vcsEnabled VcsEnabled enabled or disabled vcs
    * @param wikiPages Wiki pages in chats. Experimental
-   * @param allowAdminMute Wiki pages in chats. Experimental
+   * @param allowAdminMute Wiki pages in chats. Experimental Deprecated: this field is not used
    * @param amplitudeApiKey Amplitude api key
    * @param appLoginBackground AppBackground image url, if any
    * @param auth2fa Two-factor authentication (2FA) enabled
@@ -9279,6 +9285,7 @@ export interface MeetingJSON {
   can_delete_any_message?: boolean;
   can_edit?: boolean;
   can_join?: boolean;
+  can_mute_all?: boolean;
   can_remove_member?: boolean;
   can_send_message?: boolean;
   can_set_important_any_message?: boolean;
@@ -9376,6 +9383,7 @@ export class Meeting implements TDProtoClass<Meeting> {
    * @param canDeleteAnyMessage Can I delete any message in this chat
    * @param canEdit DOCUMENTATION MISSING
    * @param canJoin Can I join to this public group/task
+   * @param canMuteAll Can I mute all in call
    * @param canRemoveMember Can I remove member from this group chat
    * @param canSendMessage Can I send message to this chat
    * @param canSetImportantAnyMessage Can I change Important flag in any message in this chat
@@ -9468,6 +9476,7 @@ export class Meeting implements TDProtoClass<Meeting> {
     public canDeleteAnyMessage?: boolean,
     public canEdit?: boolean,
     public canJoin?: boolean,
+    public canMuteAll?: boolean,
     public canRemoveMember?: boolean,
     public canSendMessage?: boolean,
     public canSetImportantAnyMessage?: boolean,
@@ -9563,6 +9572,7 @@ export class Meeting implements TDProtoClass<Meeting> {
       raw.can_delete_any_message,
       raw.can_edit,
       raw.can_join,
+      raw.can_mute_all,
       raw.can_remove_member,
       raw.can_send_message,
       raw.can_set_important_any_message,
@@ -9657,6 +9667,7 @@ export class Meeting implements TDProtoClass<Meeting> {
     'canDeleteAnyMessage',
     'canEdit',
     'canJoin',
+    'canMuteAll',
     'canRemoveMember',
     'canSendMessage',
     'canSetImportantAnyMessage',
@@ -9751,6 +9762,7 @@ export class Meeting implements TDProtoClass<Meeting> {
     canDeleteAnyMessage: () => ({ can_delete_any_message: this.canDeleteAnyMessage }),
     canEdit: () => ({ can_edit: this.canEdit }),
     canJoin: () => ({ can_join: this.canJoin }),
+    canMuteAll: () => ({ can_mute_all: this.canMuteAll }),
     canRemoveMember: () => ({ can_remove_member: this.canRemoveMember }),
     canSendMessage: () => ({ can_send_message: this.canSendMessage }),
     canSetImportantAnyMessage: () => ({ can_set_important_any_message: this.canSetImportantAnyMessage }),
