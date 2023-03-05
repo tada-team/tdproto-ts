@@ -6598,6 +6598,7 @@ export interface FeaturesJSON {
   calls_record: boolean;
   calls_version: number;
   calls_video_enabled: boolean;
+  calls_video_multistream_enabled: boolean;
   custom_server: boolean;
   custom_theme: boolean;
   desktop_version: string;
@@ -6705,6 +6706,7 @@ export class Features implements TDProtoClass<Features> {
    * @param callsRecord Calls record enabled
    * @param callsVersion Calls version. 0 = disabled, 1 = audio only, 2 = audio+video Deprecated: use CallsAudioEnabled and CallsVideoEnabled
    * @param callsVideoEnabled CallsVideoEnabled enabled or disabled video calls
+   * @param callsVideoMultistreamEnabled CallsVideoMultistreamEnabled enabled or disabled video in multistream mode (for janus)
    * @param customServer True for premise installation
    * @param customTheme True if server has custom theme
    * @param desktopVersion Desktop application version
@@ -6808,6 +6810,7 @@ export class Features implements TDProtoClass<Features> {
     public callsRecord: boolean,
     public callsVersion: number,
     public callsVideoEnabled: boolean,
+    public callsVideoMultistreamEnabled: boolean,
     public customServer: boolean,
     public customTheme: boolean,
     public desktopVersion: string,
@@ -6913,6 +6916,7 @@ export class Features implements TDProtoClass<Features> {
       raw.calls_record,
       raw.calls_version,
       raw.calls_video_enabled,
+      raw.calls_video_multistream_enabled,
       raw.custom_server,
       raw.custom_theme,
       raw.desktop_version,
@@ -7018,6 +7022,7 @@ export class Features implements TDProtoClass<Features> {
     'callsRecord',
     'callsVersion',
     'callsVideoEnabled',
+    'callsVideoMultistreamEnabled',
     'customServer',
     'customTheme',
     'desktopVersion',
@@ -7123,6 +7128,7 @@ export class Features implements TDProtoClass<Features> {
     callsRecord: () => ({ calls_record: this.callsRecord }),
     callsVersion: () => ({ calls_version: this.callsVersion }),
     callsVideoEnabled: () => ({ calls_video_enabled: this.callsVideoEnabled }),
+    callsVideoMultistreamEnabled: () => ({ calls_video_multistream_enabled: this.callsVideoMultistreamEnabled }),
     customServer: () => ({ custom_server: this.customServer }),
     customTheme: () => ({ custom_theme: this.customTheme }),
     desktopVersion: () => ({ desktop_version: this.desktopVersion }),
