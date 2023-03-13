@@ -5327,134 +5327,152 @@ export class CreatePersonalAccountResponse implements TDProtoClass<CreatePersona
 
 export interface CreateTariffRequestJSON {
   /* eslint-disable camelcase */
+  cost_workplace: string;
   currency: Currency;
-  min_step_workplaces: number;
-  min_tariff_workplaces: number;
+  name: string;
+  nomenclature_name: string;
   period_days: number;
-  tariff_name: string;
-  video_call_bitrate: number;
-  video_sharing_bitrate: number;
-  close_date?: string;
-  cost_workplace?: string;
+  benefit?: string;
+  description?: string;
   disk_space_quota_mb?: string;
-  free_workplaces?: number;
-  is_billing_free?: boolean;
-  is_billing_full_time?: boolean;
-  is_default_tariff?: boolean;
-  is_recalc_change_tariff?: boolean;
+  free_workplace_countt?: number;
+  is_default?: boolean;
+  is_free?: boolean;
+  is_public?: boolean;
   max_video_user?: number;
   max_voice_user?: number;
+  max_workplace_count?: number;
+  min_workplace_count?: number;
   open_date?: string;
+  priority?: number;
+  step_increasing_workplaces?: number;
+  video_call_bitrate?: number;
+  video_sharing_bitrate?: number;
   /* eslint-enable camelcase */
 }
 
 export class CreateTariffRequest implements TDProtoClass<CreateTariffRequest> {
   /**
    * Request to create the tariff
-   * @param currency Currency of tariff
-   * @param minStepWorkplaces Minimum step of change count workspaces on tariff
-   * @param minTariffWorkplaces Count of minimum workspaces on tariff
-   * @param periodDays Number of paid days
-   * @param tariffName Name of tariff
-   * @param videoCallBitrate Bitrate of video in video co
-   * @param videoSharingBitrate Bitrate of video in video sharing
-   * @param closeDate Date of closing tariff
    * @param costWorkplace Cost of one workplace
+   * @param currency Currency of tariff
+   * @param name Name of tariff
+   * @param nomenclatureName Nomenclature name of tariff
+   * @param periodDays Number of paid days
+   * @param benefit Benefit of tariff
+   * @param description Description of tariff
    * @param diskSpaceQuotaMb Disk space limit per user
-   * @param freeWorkplaces Count of free workspaces
-   * @param isBillingFree Flag of availability of free seats when exceeding FreeWorkplace
-   * @param isBillingFullTime Flag of accounting without looking at the number of days before the billing period
-   * @param isDefaultTariff Default tariff flag that is set when registering an account
-   * @param isRecalcChangeTariff Flag for accounting for unspent days when switching to a new tariff
+   * @param freeWorkplaceCountt Count of free workspaces
+   * @param isDefault Default tariff flag that is set when registering an account
+   * @param isFree Flag of availability of free seats when exceeding FreeWorkplace
+   * @param isPublic Flag of publicity
    * @param maxVideoUser Maximum count of users in video conference
    * @param maxVoiceUser Maximum count of users in voice conference
+   * @param maxWorkplaceCount Count of maximum workspaces on tariff
+   * @param minWorkplaceCount Count of minimum workspaces on tariff
    * @param openDate Date of opening tariff
+   * @param priority Priority of tariff
+   * @param stepIncreasingWorkplaces Minimum step of change count workspaces on tariff
+   * @param videoCallBitrate Bitrate of video in video co
+   * @param videoSharingBitrate Bitrate of video in video sharing
    */
   constructor (
+    public costWorkplace: string,
     public currency: Currency,
-    public minStepWorkplaces: number,
-    public minTariffWorkplaces: number,
+    public name: string,
+    public nomenclatureName: string,
     public periodDays: number,
-    public tariffName: string,
-    public videoCallBitrate: number,
-    public videoSharingBitrate: number,
-    public closeDate?: string,
-    public costWorkplace?: string,
+    public benefit?: string,
+    public description?: string,
     public diskSpaceQuotaMb?: string,
-    public freeWorkplaces?: number,
-    public isBillingFree?: boolean,
-    public isBillingFullTime?: boolean,
-    public isDefaultTariff?: boolean,
-    public isRecalcChangeTariff?: boolean,
+    public freeWorkplaceCountt?: number,
+    public isDefault?: boolean,
+    public isFree?: boolean,
+    public isPublic?: boolean,
     public maxVideoUser?: number,
     public maxVoiceUser?: number,
+    public maxWorkplaceCount?: number,
+    public minWorkplaceCount?: number,
     public openDate?: string,
+    public priority?: number,
+    public stepIncreasingWorkplaces?: number,
+    public videoCallBitrate?: number,
+    public videoSharingBitrate?: number,
   ) {}
 
   public static fromJSON (raw: CreateTariffRequestJSON): CreateTariffRequest {
     return new CreateTariffRequest(
-      raw.currency,
-      raw.min_step_workplaces,
-      raw.min_tariff_workplaces,
-      raw.period_days,
-      raw.tariff_name,
-      raw.video_call_bitrate,
-      raw.video_sharing_bitrate,
-      raw.close_date,
       raw.cost_workplace,
+      raw.currency,
+      raw.name,
+      raw.nomenclature_name,
+      raw.period_days,
+      raw.benefit,
+      raw.description,
       raw.disk_space_quota_mb,
-      raw.free_workplaces,
-      raw.is_billing_free,
-      raw.is_billing_full_time,
-      raw.is_default_tariff,
-      raw.is_recalc_change_tariff,
+      raw.free_workplace_countt,
+      raw.is_default,
+      raw.is_free,
+      raw.is_public,
       raw.max_video_user,
       raw.max_voice_user,
+      raw.max_workplace_count,
+      raw.min_workplace_count,
       raw.open_date,
+      raw.priority,
+      raw.step_increasing_workplaces,
+      raw.video_call_bitrate,
+      raw.video_sharing_bitrate,
     )
   }
 
   public mappableFields = [
-    'currency',
-    'minStepWorkplaces',
-    'minTariffWorkplaces',
-    'periodDays',
-    'tariffName',
-    'videoCallBitrate',
-    'videoSharingBitrate',
-    'closeDate',
     'costWorkplace',
+    'currency',
+    'name',
+    'nomenclatureName',
+    'periodDays',
+    'benefit',
+    'description',
     'diskSpaceQuotaMb',
-    'freeWorkplaces',
-    'isBillingFree',
-    'isBillingFullTime',
-    'isDefaultTariff',
-    'isRecalcChangeTariff',
+    'freeWorkplaceCountt',
+    'isDefault',
+    'isFree',
+    'isPublic',
     'maxVideoUser',
     'maxVoiceUser',
+    'maxWorkplaceCount',
+    'minWorkplaceCount',
     'openDate',
+    'priority',
+    'stepIncreasingWorkplaces',
+    'videoCallBitrate',
+    'videoSharingBitrate',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    currency: () => ({ currency: this.currency }),
-    minStepWorkplaces: () => ({ min_step_workplaces: this.minStepWorkplaces }),
-    minTariffWorkplaces: () => ({ min_tariff_workplaces: this.minTariffWorkplaces }),
-    periodDays: () => ({ period_days: this.periodDays }),
-    tariffName: () => ({ tariff_name: this.tariffName }),
-    videoCallBitrate: () => ({ video_call_bitrate: this.videoCallBitrate }),
-    videoSharingBitrate: () => ({ video_sharing_bitrate: this.videoSharingBitrate }),
-    closeDate: () => ({ close_date: this.closeDate }),
     costWorkplace: () => ({ cost_workplace: this.costWorkplace }),
+    currency: () => ({ currency: this.currency }),
+    name: () => ({ name: this.name }),
+    nomenclatureName: () => ({ nomenclature_name: this.nomenclatureName }),
+    periodDays: () => ({ period_days: this.periodDays }),
+    benefit: () => ({ benefit: this.benefit }),
+    description: () => ({ description: this.description }),
     diskSpaceQuotaMb: () => ({ disk_space_quota_mb: this.diskSpaceQuotaMb }),
-    freeWorkplaces: () => ({ free_workplaces: this.freeWorkplaces }),
-    isBillingFree: () => ({ is_billing_free: this.isBillingFree }),
-    isBillingFullTime: () => ({ is_billing_full_time: this.isBillingFullTime }),
-    isDefaultTariff: () => ({ is_default_tariff: this.isDefaultTariff }),
-    isRecalcChangeTariff: () => ({ is_recalc_change_tariff: this.isRecalcChangeTariff }),
+    freeWorkplaceCountt: () => ({ free_workplace_countt: this.freeWorkplaceCountt }),
+    isDefault: () => ({ is_default: this.isDefault }),
+    isFree: () => ({ is_free: this.isFree }),
+    isPublic: () => ({ is_public: this.isPublic }),
     maxVideoUser: () => ({ max_video_user: this.maxVideoUser }),
     maxVoiceUser: () => ({ max_voice_user: this.maxVoiceUser }),
+    maxWorkplaceCount: () => ({ max_workplace_count: this.maxWorkplaceCount }),
+    minWorkplaceCount: () => ({ min_workplace_count: this.minWorkplaceCount }),
     openDate: () => ({ open_date: this.openDate }),
+    priority: () => ({ priority: this.priority }),
+    stepIncreasingWorkplaces: () => ({ step_increasing_workplaces: this.stepIncreasingWorkplaces }),
+    videoCallBitrate: () => ({ video_call_bitrate: this.videoCallBitrate }),
+    videoSharingBitrate: () => ({ video_sharing_bitrate: this.videoSharingBitrate }),
     /* eslint-enable camelcase */
   }
 
@@ -19153,24 +19171,28 @@ export interface TariffBillingJSON {
   /* eslint-disable camelcase */
   cost_workplace: string;
   currency: Currency;
+  description: string;
   disk_space_quota_mb: string;
-  free_workplaces: number;
-  is_billing_free: boolean;
-  is_billing_full_time: boolean;
-  is_default_tariff: boolean;
-  is_recalc_change_tariff: boolean;
+  free_workplace_count: number;
+  id: number;
+  is_default: boolean;
+  is_free: boolean;
+  is_public: boolean;
   max_video_user: number;
   max_voice_user: number;
-  min_step_workplaces: number;
-  min_tariff_workplaces: number;
+  name: string;
+  nomenclature_name: string;
   open_date: string;
   period_days: number;
   status: TariffStatus;
-  tariff_id: string;
-  tariff_name: string;
+  step_increasing_workplaces: number;
   video_call_bitrate: number;
   video_sharing_bitrate: number;
+  benefit?: string;
   close_date?: string;
+  max_workplace_count?: number;
+  min_workplace_count?: number;
+  priority?: number;
   /* eslint-enable camelcase */
 }
 
@@ -19179,118 +19201,138 @@ export class TariffBilling implements TDProtoClass<TariffBilling> {
    * Tariff struct of billing API
    * @param costWorkplace Cost of one workplace
    * @param currency Currency of tariff
+   * @param description Description of tariff
    * @param diskSpaceQuotaMb Disk space limit per user
-   * @param freeWorkplaces Count of free workspaces
-   * @param isBillingFree Flag of availability of free seats when exceeding FreeWorkplace
-   * @param isBillingFullTime Flag of accounting without looking at the number of days before the billing period
-   * @param isDefaultTariff Default tariff flag that is set when registering an account
-   * @param isRecalcChangeTariff Flag for accounting for unspent days when switching to a new tariff
+   * @param freeWorkplaceCount Count of free workspaces
+   * @param id Tariff id
+   * @param isDefault Default tariff flag that is set when registering an account
+   * @param isFree Flag of availability of free seats when exceeding FreeWorkplace
+   * @param isPublic Flag of publicity
    * @param maxVideoUser Maximum count of users in video conference
    * @param maxVoiceUser Maximum count of users in voice conference
-   * @param minStepWorkplaces Minimum step of change count workspaces on tariff
-   * @param minTariffWorkplaces Count of minimum workspaces on tariff
+   * @param name Name of tariff
+   * @param nomenclatureName Nomenclature name of tariff
    * @param openDate Date of opening tariff
    * @param periodDays Number of paid days
    * @param status Status of tariff
-   * @param tariffId Tariff id
-   * @param tariffName Name of tariff
+   * @param stepIncreasingWorkplaces Minimum step of change count workspaces on tariff
    * @param videoCallBitrate Bitrate of video in video co
    * @param videoSharingBitrate Bitrate of video in video sharing
+   * @param benefit Benefit of tariff
    * @param closeDate Date of closing tariff
+   * @param maxWorkplaceCount Count of maximum workspaces on tariff
+   * @param minWorkplaceCount Count of minimum workspaces on tariff
+   * @param priority Priority of tariff
    */
   constructor (
     public costWorkplace: string,
     public currency: Currency,
+    public description: string,
     public diskSpaceQuotaMb: string,
-    public freeWorkplaces: number,
-    public isBillingFree: boolean,
-    public isBillingFullTime: boolean,
-    public isDefaultTariff: boolean,
-    public isRecalcChangeTariff: boolean,
+    public freeWorkplaceCount: number,
+    public id: number,
+    public isDefault: boolean,
+    public isFree: boolean,
+    public isPublic: boolean,
     public maxVideoUser: number,
     public maxVoiceUser: number,
-    public minStepWorkplaces: number,
-    public minTariffWorkplaces: number,
+    public name: string,
+    public nomenclatureName: string,
     public openDate: string,
     public periodDays: number,
     public status: TariffStatus,
-    public tariffId: string,
-    public tariffName: string,
+    public stepIncreasingWorkplaces: number,
     public videoCallBitrate: number,
     public videoSharingBitrate: number,
+    public benefit?: string,
     public closeDate?: string,
+    public maxWorkplaceCount?: number,
+    public minWorkplaceCount?: number,
+    public priority?: number,
   ) {}
 
   public static fromJSON (raw: TariffBillingJSON): TariffBilling {
     return new TariffBilling(
       raw.cost_workplace,
       raw.currency,
+      raw.description,
       raw.disk_space_quota_mb,
-      raw.free_workplaces,
-      raw.is_billing_free,
-      raw.is_billing_full_time,
-      raw.is_default_tariff,
-      raw.is_recalc_change_tariff,
+      raw.free_workplace_count,
+      raw.id,
+      raw.is_default,
+      raw.is_free,
+      raw.is_public,
       raw.max_video_user,
       raw.max_voice_user,
-      raw.min_step_workplaces,
-      raw.min_tariff_workplaces,
+      raw.name,
+      raw.nomenclature_name,
       raw.open_date,
       raw.period_days,
       raw.status,
-      raw.tariff_id,
-      raw.tariff_name,
+      raw.step_increasing_workplaces,
       raw.video_call_bitrate,
       raw.video_sharing_bitrate,
+      raw.benefit,
       raw.close_date,
+      raw.max_workplace_count,
+      raw.min_workplace_count,
+      raw.priority,
     )
   }
 
   public mappableFields = [
     'costWorkplace',
     'currency',
+    'description',
     'diskSpaceQuotaMb',
-    'freeWorkplaces',
-    'isBillingFree',
-    'isBillingFullTime',
-    'isDefaultTariff',
-    'isRecalcChangeTariff',
+    'freeWorkplaceCount',
+    'id',
+    'isDefault',
+    'isFree',
+    'isPublic',
     'maxVideoUser',
     'maxVoiceUser',
-    'minStepWorkplaces',
-    'minTariffWorkplaces',
+    'name',
+    'nomenclatureName',
     'openDate',
     'periodDays',
     'status',
-    'tariffId',
-    'tariffName',
+    'stepIncreasingWorkplaces',
     'videoCallBitrate',
     'videoSharingBitrate',
+    'benefit',
     'closeDate',
+    'maxWorkplaceCount',
+    'minWorkplaceCount',
+    'priority',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
     costWorkplace: () => ({ cost_workplace: this.costWorkplace }),
     currency: () => ({ currency: this.currency }),
+    description: () => ({ description: this.description }),
     diskSpaceQuotaMb: () => ({ disk_space_quota_mb: this.diskSpaceQuotaMb }),
-    freeWorkplaces: () => ({ free_workplaces: this.freeWorkplaces }),
-    isBillingFree: () => ({ is_billing_free: this.isBillingFree }),
-    isBillingFullTime: () => ({ is_billing_full_time: this.isBillingFullTime }),
-    isDefaultTariff: () => ({ is_default_tariff: this.isDefaultTariff }),
-    isRecalcChangeTariff: () => ({ is_recalc_change_tariff: this.isRecalcChangeTariff }),
+    freeWorkplaceCount: () => ({ free_workplace_count: this.freeWorkplaceCount }),
+    id: () => ({ id: this.id }),
+    isDefault: () => ({ is_default: this.isDefault }),
+    isFree: () => ({ is_free: this.isFree }),
+    isPublic: () => ({ is_public: this.isPublic }),
     maxVideoUser: () => ({ max_video_user: this.maxVideoUser }),
     maxVoiceUser: () => ({ max_voice_user: this.maxVoiceUser }),
-    minStepWorkplaces: () => ({ min_step_workplaces: this.minStepWorkplaces }),
-    minTariffWorkplaces: () => ({ min_tariff_workplaces: this.minTariffWorkplaces }),
+    name: () => ({ name: this.name }),
+    nomenclatureName: () => ({ nomenclature_name: this.nomenclatureName }),
     openDate: () => ({ open_date: this.openDate }),
     periodDays: () => ({ period_days: this.periodDays }),
     status: () => ({ status: this.status }),
-    tariffId: () => ({ tariff_id: this.tariffId }),
-    tariffName: () => ({ tariff_name: this.tariffName }),
+    stepIncreasingWorkplaces: () => ({ step_increasing_workplaces: this.stepIncreasingWorkplaces }),
     videoCallBitrate: () => ({ video_call_bitrate: this.videoCallBitrate }),
     videoSharingBitrate: () => ({ video_sharing_bitrate: this.videoSharingBitrate }),
+    benefit: () => ({ benefit: this.benefit }),
     closeDate: () => ({ close_date: this.closeDate }),
+    maxWorkplaceCount: () => ({ max_workplace_count: this.maxWorkplaceCount }),
+    minWorkplaceCount: () => ({ min_workplace_count: this.minWorkplaceCount }),
+    priority: () => ({ priority: this.priority }),
     /* eslint-enable camelcase */
   }
 
@@ -21127,7 +21169,7 @@ export interface UpdateTariffRequestJSON {
   /* eslint-disable camelcase */
   tariff_id: string;
   close_date?: string;
-  is_default_tariff?: boolean;
+  is_default?: boolean;
   status?: TariffStatus;
   /* eslint-enable camelcase */
 }
@@ -21137,13 +21179,13 @@ export class UpdateTariffRequest implements TDProtoClass<UpdateTariffRequest> {
    * Request to update the tariff
    * @param tariffId Tariff id
    * @param closeDate Date of closing tariff
-   * @param isDefaultTariff Default tariff flag that is set when registering an account
+   * @param isDefault Default tariff flag that is set when registering an account
    * @param status Status of tariff
    */
   constructor (
     public tariffId: string,
     public closeDate?: string,
-    public isDefaultTariff?: boolean,
+    public isDefault?: boolean,
     public status?: TariffStatus,
   ) {}
 
@@ -21151,7 +21193,7 @@ export class UpdateTariffRequest implements TDProtoClass<UpdateTariffRequest> {
     return new UpdateTariffRequest(
       raw.tariff_id,
       raw.close_date,
-      raw.is_default_tariff,
+      raw.is_default,
       raw.status,
     )
   }
@@ -21159,7 +21201,7 @@ export class UpdateTariffRequest implements TDProtoClass<UpdateTariffRequest> {
   public mappableFields = [
     'tariffId',
     'closeDate',
-    'isDefaultTariff',
+    'isDefault',
     'status',
   ] as const
 
@@ -21167,7 +21209,7 @@ export class UpdateTariffRequest implements TDProtoClass<UpdateTariffRequest> {
     /* eslint-disable camelcase */
     tariffId: () => ({ tariff_id: this.tariffId }),
     closeDate: () => ({ close_date: this.closeDate }),
-    isDefaultTariff: () => ({ is_default_tariff: this.isDefaultTariff }),
+    isDefault: () => ({ is_default: this.isDefault }),
     status: () => ({ status: this.status }),
     /* eslint-enable camelcase */
   }
