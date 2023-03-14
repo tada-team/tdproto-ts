@@ -110,10 +110,12 @@ export type PersonalAccountStatus =
    | 'PERSONAL_ACCOUNT_STATUS_ACTIVE'
    | 'PERSONAL_ACCOUNT_STATUS_SUSPENDED'
    | 'PERSONAL_ACCOUNT_STATUS_BLOCKED'
+   | 'PERSONAL_ACCOUNT_STATUS_UNSPECIFIED'
 
 export type TariffStatus =
    | 'TARIFF_STATUS_ACTIVE'
    | 'TARIFF_STATUS_ARCHIVE'
+   | 'TARIFF_STATUS_UNSPECIFIED'
 
 export type TeamStatus =
    | 'owner'
@@ -5201,116 +5203,122 @@ export class CreatePersonalAccountRequest implements TDProtoClass<CreatePersonal
 
 export interface CreatePersonalAccountResponseJSON {
   /* eslint-disable camelcase */
-  discount_amount: number;
-  discount_id: string;
-  free_workplaces: number;
-  next_billing_date: string;
+  empty_workplace_count: number;
+  free_workplace_count: number;
+  is_blocked: boolean;
+  is_suspended: boolean;
+  occupied_workplace_count: number;
+  owner_id: number;
   owner_uuid: string;
-  paid_workplaces: number;
-  personal_account_id: string;
+  paid_workplace_count: number;
+  personal_account_id: number;
   status: PersonalAccountStatus;
-  tariff_id: string;
-  tariff_name: string;
-  team_count: number;
-  users_count: number;
+  tariff: TariffBillingJSON;
+  teams_count: number;
   workplace_count: number;
-  full_name?: string;
-  phone?: string;
+  block_date?: string;
+  next_billing_date?: string;
+  suspend_date?: string;
   /* eslint-enable camelcase */
 }
 
 export class CreatePersonalAccountResponse implements TDProtoClass<CreatePersonalAccountResponse> {
   /**
    * CreatePersonalAccountResponse response on create personal account
-   * @param discountAmount Amount of Discount on personal account
-   * @param discountId ID Discount on personal account
-   * @param freeWorkplaces Count of free workplaces on personal account
-   * @param nextBillingDate Date of next debiting funds
-   * @param ownerUuid ID User who owns this personal account
-   * @param paidWorkplaces Count of paid workplaces on personal account
+   * @param emptyWorkplaceCount Count of empty workplaces on personal account
+   * @param freeWorkplaceCount Count of free workplaces on personal account
+   * @param isBlocked Is the account blocked
+   * @param isSuspended Is the account suspended
+   * @param occupiedWorkplaceCount Count of occupied workplaces on personal account
+   * @param ownerId ID User who owns this personal account
+   * @param ownerUuid UUID of User who owns this personal account
+   * @param paidWorkplaceCount Count of paid workplaces on personal account
    * @param personalAccountId PersonalAccountBilling ID
    * @param status Status of personal account
-   * @param tariffId ID Tariff on this personal account
-   * @param tariffName Name Tariff on this personal account
-   * @param teamCount Count of teams on personal account
-   * @param usersCount Count of user on personal account
+   * @param tariff Tariff on this personal account
+   * @param teamsCount Count of teams on personal account
    * @param workplaceCount Count of workplaces on personal account
-   * @param fullName Full name of owner personal account
-   * @param phone Phone number of owner account
+   * @param blockDate Account blocking date
+   * @param nextBillingDate Date of next debiting funds
+   * @param suspendDate Account suspending date
    */
   constructor (
-    public discountAmount: number,
-    public discountId: string,
-    public freeWorkplaces: number,
-    public nextBillingDate: string,
+    public emptyWorkplaceCount: number,
+    public freeWorkplaceCount: number,
+    public isBlocked: boolean,
+    public isSuspended: boolean,
+    public occupiedWorkplaceCount: number,
+    public ownerId: number,
     public ownerUuid: string,
-    public paidWorkplaces: number,
-    public personalAccountId: string,
+    public paidWorkplaceCount: number,
+    public personalAccountId: number,
     public status: PersonalAccountStatus,
-    public tariffId: string,
-    public tariffName: string,
-    public teamCount: number,
-    public usersCount: number,
+    public tariff: TariffBilling,
+    public teamsCount: number,
     public workplaceCount: number,
-    public fullName?: string,
-    public phone?: string,
+    public blockDate?: string,
+    public nextBillingDate?: string,
+    public suspendDate?: string,
   ) {}
 
   public static fromJSON (raw: CreatePersonalAccountResponseJSON): CreatePersonalAccountResponse {
     return new CreatePersonalAccountResponse(
-      raw.discount_amount,
-      raw.discount_id,
-      raw.free_workplaces,
-      raw.next_billing_date,
+      raw.empty_workplace_count,
+      raw.free_workplace_count,
+      raw.is_blocked,
+      raw.is_suspended,
+      raw.occupied_workplace_count,
+      raw.owner_id,
       raw.owner_uuid,
-      raw.paid_workplaces,
+      raw.paid_workplace_count,
       raw.personal_account_id,
       raw.status,
-      raw.tariff_id,
-      raw.tariff_name,
-      raw.team_count,
-      raw.users_count,
+      TariffBilling.fromJSON(raw.tariff),
+      raw.teams_count,
       raw.workplace_count,
-      raw.full_name,
-      raw.phone,
+      raw.block_date,
+      raw.next_billing_date,
+      raw.suspend_date,
     )
   }
 
   public mappableFields = [
-    'discountAmount',
-    'discountId',
-    'freeWorkplaces',
-    'nextBillingDate',
+    'emptyWorkplaceCount',
+    'freeWorkplaceCount',
+    'isBlocked',
+    'isSuspended',
+    'occupiedWorkplaceCount',
+    'ownerId',
     'ownerUuid',
-    'paidWorkplaces',
+    'paidWorkplaceCount',
     'personalAccountId',
     'status',
-    'tariffId',
-    'tariffName',
-    'teamCount',
-    'usersCount',
+    'tariff',
+    'teamsCount',
     'workplaceCount',
-    'fullName',
-    'phone',
+    'blockDate',
+    'nextBillingDate',
+    'suspendDate',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    discountAmount: () => ({ discount_amount: this.discountAmount }),
-    discountId: () => ({ discount_id: this.discountId }),
-    freeWorkplaces: () => ({ free_workplaces: this.freeWorkplaces }),
-    nextBillingDate: () => ({ next_billing_date: this.nextBillingDate }),
+    emptyWorkplaceCount: () => ({ empty_workplace_count: this.emptyWorkplaceCount }),
+    freeWorkplaceCount: () => ({ free_workplace_count: this.freeWorkplaceCount }),
+    isBlocked: () => ({ is_blocked: this.isBlocked }),
+    isSuspended: () => ({ is_suspended: this.isSuspended }),
+    occupiedWorkplaceCount: () => ({ occupied_workplace_count: this.occupiedWorkplaceCount }),
+    ownerId: () => ({ owner_id: this.ownerId }),
     ownerUuid: () => ({ owner_uuid: this.ownerUuid }),
-    paidWorkplaces: () => ({ paid_workplaces: this.paidWorkplaces }),
+    paidWorkplaceCount: () => ({ paid_workplace_count: this.paidWorkplaceCount }),
     personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
     status: () => ({ status: this.status }),
-    tariffId: () => ({ tariff_id: this.tariffId }),
-    tariffName: () => ({ tariff_name: this.tariffName }),
-    teamCount: () => ({ team_count: this.teamCount }),
-    usersCount: () => ({ users_count: this.usersCount }),
+    tariff: () => ({ tariff: this.tariff.toJSON() }),
+    teamsCount: () => ({ teams_count: this.teamsCount }),
     workplaceCount: () => ({ workplace_count: this.workplaceCount }),
-    fullName: () => ({ full_name: this.fullName }),
-    phone: () => ({ phone: this.phone }),
+    blockDate: () => ({ block_date: this.blockDate }),
+    nextBillingDate: () => ({ next_billing_date: this.nextBillingDate }),
+    suspendDate: () => ({ suspend_date: this.suspendDate }),
     /* eslint-enable camelcase */
   }
 
@@ -7487,116 +7495,122 @@ export class GetChangesTariffsByPersonalAccountResponse implements TDProtoClass<
 
 export interface GetPersonalAccountByIDResponseJSON {
   /* eslint-disable camelcase */
-  discount_amount: number;
-  discount_id: string;
-  free_workplaces: number;
-  next_billing_date: string;
+  empty_workplace_count: number;
+  free_workplace_count: number;
+  is_blocked: boolean;
+  is_suspended: boolean;
+  occupied_workplace_count: number;
+  owner_id: number;
   owner_uuid: string;
-  paid_workplaces: number;
-  personal_account_id: string;
+  paid_workplace_count: number;
+  personal_account_id: number;
   status: PersonalAccountStatus;
-  tariff_id: string;
-  tariff_name: string;
-  team_count: number;
-  users_count: number;
+  tariff: TariffBillingJSON;
+  teams_count: number;
   workplace_count: number;
-  full_name?: string;
-  phone?: string;
+  block_date?: string;
+  next_billing_date?: string;
+  suspend_date?: string;
   /* eslint-enable camelcase */
 }
 
 export class GetPersonalAccountByIDResponse implements TDProtoClass<GetPersonalAccountByIDResponse> {
   /**
    * GetPersonalAccountByIDResponse response on get personal account by ID
-   * @param discountAmount Amount of Discount on personal account
-   * @param discountId ID Discount on personal account
-   * @param freeWorkplaces Count of free workplaces on personal account
-   * @param nextBillingDate Date of next debiting funds
-   * @param ownerUuid ID User who owns this personal account
-   * @param paidWorkplaces Count of paid workplaces on personal account
+   * @param emptyWorkplaceCount Count of empty workplaces on personal account
+   * @param freeWorkplaceCount Count of free workplaces on personal account
+   * @param isBlocked Is the account blocked
+   * @param isSuspended Is the account suspended
+   * @param occupiedWorkplaceCount Count of occupied workplaces on personal account
+   * @param ownerId ID User who owns this personal account
+   * @param ownerUuid UUID of User who owns this personal account
+   * @param paidWorkplaceCount Count of paid workplaces on personal account
    * @param personalAccountId PersonalAccountBilling ID
    * @param status Status of personal account
-   * @param tariffId ID Tariff on this personal account
-   * @param tariffName Name Tariff on this personal account
-   * @param teamCount Count of teams on personal account
-   * @param usersCount Count of user on personal account
+   * @param tariff Tariff on this personal account
+   * @param teamsCount Count of teams on personal account
    * @param workplaceCount Count of workplaces on personal account
-   * @param fullName Full name of owner personal account
-   * @param phone Phone number of owner account
+   * @param blockDate Account blocking date
+   * @param nextBillingDate Date of next debiting funds
+   * @param suspendDate Account suspending date
    */
   constructor (
-    public discountAmount: number,
-    public discountId: string,
-    public freeWorkplaces: number,
-    public nextBillingDate: string,
+    public emptyWorkplaceCount: number,
+    public freeWorkplaceCount: number,
+    public isBlocked: boolean,
+    public isSuspended: boolean,
+    public occupiedWorkplaceCount: number,
+    public ownerId: number,
     public ownerUuid: string,
-    public paidWorkplaces: number,
-    public personalAccountId: string,
+    public paidWorkplaceCount: number,
+    public personalAccountId: number,
     public status: PersonalAccountStatus,
-    public tariffId: string,
-    public tariffName: string,
-    public teamCount: number,
-    public usersCount: number,
+    public tariff: TariffBilling,
+    public teamsCount: number,
     public workplaceCount: number,
-    public fullName?: string,
-    public phone?: string,
+    public blockDate?: string,
+    public nextBillingDate?: string,
+    public suspendDate?: string,
   ) {}
 
   public static fromJSON (raw: GetPersonalAccountByIDResponseJSON): GetPersonalAccountByIDResponse {
     return new GetPersonalAccountByIDResponse(
-      raw.discount_amount,
-      raw.discount_id,
-      raw.free_workplaces,
-      raw.next_billing_date,
+      raw.empty_workplace_count,
+      raw.free_workplace_count,
+      raw.is_blocked,
+      raw.is_suspended,
+      raw.occupied_workplace_count,
+      raw.owner_id,
       raw.owner_uuid,
-      raw.paid_workplaces,
+      raw.paid_workplace_count,
       raw.personal_account_id,
       raw.status,
-      raw.tariff_id,
-      raw.tariff_name,
-      raw.team_count,
-      raw.users_count,
+      TariffBilling.fromJSON(raw.tariff),
+      raw.teams_count,
       raw.workplace_count,
-      raw.full_name,
-      raw.phone,
+      raw.block_date,
+      raw.next_billing_date,
+      raw.suspend_date,
     )
   }
 
   public mappableFields = [
-    'discountAmount',
-    'discountId',
-    'freeWorkplaces',
-    'nextBillingDate',
+    'emptyWorkplaceCount',
+    'freeWorkplaceCount',
+    'isBlocked',
+    'isSuspended',
+    'occupiedWorkplaceCount',
+    'ownerId',
     'ownerUuid',
-    'paidWorkplaces',
+    'paidWorkplaceCount',
     'personalAccountId',
     'status',
-    'tariffId',
-    'tariffName',
-    'teamCount',
-    'usersCount',
+    'tariff',
+    'teamsCount',
     'workplaceCount',
-    'fullName',
-    'phone',
+    'blockDate',
+    'nextBillingDate',
+    'suspendDate',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    discountAmount: () => ({ discount_amount: this.discountAmount }),
-    discountId: () => ({ discount_id: this.discountId }),
-    freeWorkplaces: () => ({ free_workplaces: this.freeWorkplaces }),
-    nextBillingDate: () => ({ next_billing_date: this.nextBillingDate }),
+    emptyWorkplaceCount: () => ({ empty_workplace_count: this.emptyWorkplaceCount }),
+    freeWorkplaceCount: () => ({ free_workplace_count: this.freeWorkplaceCount }),
+    isBlocked: () => ({ is_blocked: this.isBlocked }),
+    isSuspended: () => ({ is_suspended: this.isSuspended }),
+    occupiedWorkplaceCount: () => ({ occupied_workplace_count: this.occupiedWorkplaceCount }),
+    ownerId: () => ({ owner_id: this.ownerId }),
     ownerUuid: () => ({ owner_uuid: this.ownerUuid }),
-    paidWorkplaces: () => ({ paid_workplaces: this.paidWorkplaces }),
+    paidWorkplaceCount: () => ({ paid_workplace_count: this.paidWorkplaceCount }),
     personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
     status: () => ({ status: this.status }),
-    tariffId: () => ({ tariff_id: this.tariffId }),
-    tariffName: () => ({ tariff_name: this.tariffName }),
-    teamCount: () => ({ team_count: this.teamCount }),
-    usersCount: () => ({ users_count: this.usersCount }),
+    tariff: () => ({ tariff: this.tariff.toJSON() }),
+    teamsCount: () => ({ teams_count: this.teamsCount }),
     workplaceCount: () => ({ workplace_count: this.workplaceCount }),
-    fullName: () => ({ full_name: this.fullName }),
-    phone: () => ({ phone: this.phone }),
+    blockDate: () => ({ block_date: this.blockDate }),
+    nextBillingDate: () => ({ next_billing_date: this.nextBillingDate }),
+    suspendDate: () => ({ suspend_date: this.suspendDate }),
     /* eslint-enable camelcase */
   }
 
@@ -12907,116 +12921,122 @@ export class PdfVersion implements TDProtoClass<PdfVersion> {
 
 export interface PersonalAccountBillingJSON {
   /* eslint-disable camelcase */
-  discount_amount: number;
-  discount_id: string;
-  free_workplaces: number;
-  next_billing_date: string;
+  empty_workplace_count: number;
+  free_workplace_count: number;
+  is_blocked: boolean;
+  is_suspended: boolean;
+  occupied_workplace_count: number;
+  owner_id: number;
   owner_uuid: string;
-  paid_workplaces: number;
-  personal_account_id: string;
+  paid_workplace_count: number;
+  personal_account_id: number;
   status: PersonalAccountStatus;
-  tariff_id: string;
-  tariff_name: string;
-  team_count: number;
-  users_count: number;
+  tariff: TariffBillingJSON;
+  teams_count: number;
   workplace_count: number;
-  full_name?: string;
-  phone?: string;
+  block_date?: string;
+  next_billing_date?: string;
+  suspend_date?: string;
   /* eslint-enable camelcase */
 }
 
 export class PersonalAccountBilling implements TDProtoClass<PersonalAccountBilling> {
   /**
    * PersonalAccountBilling struct of billing api
-   * @param discountAmount Amount of Discount on personal account
-   * @param discountId ID Discount on personal account
-   * @param freeWorkplaces Count of free workplaces on personal account
-   * @param nextBillingDate Date of next debiting funds
-   * @param ownerUuid ID User who owns this personal account
-   * @param paidWorkplaces Count of paid workplaces on personal account
+   * @param emptyWorkplaceCount Count of empty workplaces on personal account
+   * @param freeWorkplaceCount Count of free workplaces on personal account
+   * @param isBlocked Is the account blocked
+   * @param isSuspended Is the account suspended
+   * @param occupiedWorkplaceCount Count of occupied workplaces on personal account
+   * @param ownerId ID User who owns this personal account
+   * @param ownerUuid UUID of User who owns this personal account
+   * @param paidWorkplaceCount Count of paid workplaces on personal account
    * @param personalAccountId PersonalAccountBilling ID
    * @param status Status of personal account
-   * @param tariffId ID Tariff on this personal account
-   * @param tariffName Name Tariff on this personal account
-   * @param teamCount Count of teams on personal account
-   * @param usersCount Count of user on personal account
+   * @param tariff Tariff on this personal account
+   * @param teamsCount Count of teams on personal account
    * @param workplaceCount Count of workplaces on personal account
-   * @param fullName Full name of owner personal account
-   * @param phone Phone number of owner account
+   * @param blockDate Account blocking date
+   * @param nextBillingDate Date of next debiting funds
+   * @param suspendDate Account suspending date
    */
   constructor (
-    public discountAmount: number,
-    public discountId: string,
-    public freeWorkplaces: number,
-    public nextBillingDate: string,
+    public emptyWorkplaceCount: number,
+    public freeWorkplaceCount: number,
+    public isBlocked: boolean,
+    public isSuspended: boolean,
+    public occupiedWorkplaceCount: number,
+    public ownerId: number,
     public ownerUuid: string,
-    public paidWorkplaces: number,
-    public personalAccountId: string,
+    public paidWorkplaceCount: number,
+    public personalAccountId: number,
     public status: PersonalAccountStatus,
-    public tariffId: string,
-    public tariffName: string,
-    public teamCount: number,
-    public usersCount: number,
+    public tariff: TariffBilling,
+    public teamsCount: number,
     public workplaceCount: number,
-    public fullName?: string,
-    public phone?: string,
+    public blockDate?: string,
+    public nextBillingDate?: string,
+    public suspendDate?: string,
   ) {}
 
   public static fromJSON (raw: PersonalAccountBillingJSON): PersonalAccountBilling {
     return new PersonalAccountBilling(
-      raw.discount_amount,
-      raw.discount_id,
-      raw.free_workplaces,
-      raw.next_billing_date,
+      raw.empty_workplace_count,
+      raw.free_workplace_count,
+      raw.is_blocked,
+      raw.is_suspended,
+      raw.occupied_workplace_count,
+      raw.owner_id,
       raw.owner_uuid,
-      raw.paid_workplaces,
+      raw.paid_workplace_count,
       raw.personal_account_id,
       raw.status,
-      raw.tariff_id,
-      raw.tariff_name,
-      raw.team_count,
-      raw.users_count,
+      TariffBilling.fromJSON(raw.tariff),
+      raw.teams_count,
       raw.workplace_count,
-      raw.full_name,
-      raw.phone,
+      raw.block_date,
+      raw.next_billing_date,
+      raw.suspend_date,
     )
   }
 
   public mappableFields = [
-    'discountAmount',
-    'discountId',
-    'freeWorkplaces',
-    'nextBillingDate',
+    'emptyWorkplaceCount',
+    'freeWorkplaceCount',
+    'isBlocked',
+    'isSuspended',
+    'occupiedWorkplaceCount',
+    'ownerId',
     'ownerUuid',
-    'paidWorkplaces',
+    'paidWorkplaceCount',
     'personalAccountId',
     'status',
-    'tariffId',
-    'tariffName',
-    'teamCount',
-    'usersCount',
+    'tariff',
+    'teamsCount',
     'workplaceCount',
-    'fullName',
-    'phone',
+    'blockDate',
+    'nextBillingDate',
+    'suspendDate',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    discountAmount: () => ({ discount_amount: this.discountAmount }),
-    discountId: () => ({ discount_id: this.discountId }),
-    freeWorkplaces: () => ({ free_workplaces: this.freeWorkplaces }),
-    nextBillingDate: () => ({ next_billing_date: this.nextBillingDate }),
+    emptyWorkplaceCount: () => ({ empty_workplace_count: this.emptyWorkplaceCount }),
+    freeWorkplaceCount: () => ({ free_workplace_count: this.freeWorkplaceCount }),
+    isBlocked: () => ({ is_blocked: this.isBlocked }),
+    isSuspended: () => ({ is_suspended: this.isSuspended }),
+    occupiedWorkplaceCount: () => ({ occupied_workplace_count: this.occupiedWorkplaceCount }),
+    ownerId: () => ({ owner_id: this.ownerId }),
     ownerUuid: () => ({ owner_uuid: this.ownerUuid }),
-    paidWorkplaces: () => ({ paid_workplaces: this.paidWorkplaces }),
+    paidWorkplaceCount: () => ({ paid_workplace_count: this.paidWorkplaceCount }),
     personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
     status: () => ({ status: this.status }),
-    tariffId: () => ({ tariff_id: this.tariffId }),
-    tariffName: () => ({ tariff_name: this.tariffName }),
-    teamCount: () => ({ team_count: this.teamCount }),
-    usersCount: () => ({ users_count: this.usersCount }),
+    tariff: () => ({ tariff: this.tariff.toJSON() }),
+    teamsCount: () => ({ teams_count: this.teamsCount }),
     workplaceCount: () => ({ workplace_count: this.workplaceCount }),
-    fullName: () => ({ full_name: this.fullName }),
-    phone: () => ({ phone: this.phone }),
+    blockDate: () => ({ block_date: this.blockDate }),
+    nextBillingDate: () => ({ next_billing_date: this.nextBillingDate }),
+    suspendDate: () => ({ suspend_date: this.suspendDate }),
     /* eslint-enable camelcase */
   }
 
@@ -19169,10 +19189,10 @@ export class Tariff implements TDProtoClass<Tariff> {
 
 export interface TariffBillingJSON {
   /* eslint-disable camelcase */
-  cost_workplace: string;
+  cost_workplace: number;
   currency: Currency;
   description: string;
-  disk_space_quota_mb: string;
+  disk_space_quota_mb: number;
   free_workplace_count: number;
   id: number;
   is_default: boolean;
@@ -19225,10 +19245,10 @@ export class TariffBilling implements TDProtoClass<TariffBilling> {
    * @param priority Priority of tariff
    */
   constructor (
-    public costWorkplace: string,
+    public costWorkplace: number,
     public currency: Currency,
     public description: string,
-    public diskSpaceQuotaMb: string,
+    public diskSpaceQuotaMb: number,
     public freeWorkplaceCount: number,
     public id: number,
     public isDefault: boolean,
