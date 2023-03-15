@@ -7411,32 +7411,32 @@ export class Freq implements TDProtoClass<Freq> {
 
 export interface GetActiveTariffsListResponseJSON {
   /* eslint-disable camelcase */
-  tariffs: TariffBillingJSON[];
+  tariff_list: TariffBillingJSON[];
   /* eslint-enable camelcase */
 }
 
 export class GetActiveTariffsListResponse implements TDProtoClass<GetActiveTariffsListResponse> {
   /**
    * Response from getting a list of active tariffs
-   * @param tariffs DOCUMENTATION MISSING
+   * @param tariffList DOCUMENTATION MISSING
    */
   constructor (
-    public tariffs: TariffBilling[],
+    public tariffList: TariffBilling[],
   ) {}
 
   public static fromJSON (raw: GetActiveTariffsListResponseJSON): GetActiveTariffsListResponse {
     return new GetActiveTariffsListResponse(
-      raw.tariffs.map(TariffBilling.fromJSON),
+      raw.tariff_list.map(TariffBilling.fromJSON),
     )
   }
 
   public mappableFields = [
-    'tariffs',
+    'tariffList',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    tariffs: () => ({ tariffs: this.tariffs.map(u => u.toJSON()) }),
+    tariffList: () => ({ tariff_list: this.tariffList.map(u => u.toJSON()) }),
     /* eslint-enable camelcase */
   }
 
@@ -7669,32 +7669,32 @@ export class GetPersonalAccountsListResponse implements TDProtoClass<GetPersonal
 
 export interface GetTariffsListResponseJSON {
   /* eslint-disable camelcase */
-  tariffs: TariffBillingJSON[];
+  tariff_list: TariffBillingJSON[];
   /* eslint-enable camelcase */
 }
 
 export class GetTariffsListResponse implements TDProtoClass<GetTariffsListResponse> {
   /**
    * Response from getting a list of tariffs
-   * @param tariffs DOCUMENTATION MISSING
+   * @param tariffList DOCUMENTATION MISSING
    */
   constructor (
-    public tariffs: TariffBilling[],
+    public tariffList: TariffBilling[],
   ) {}
 
   public static fromJSON (raw: GetTariffsListResponseJSON): GetTariffsListResponse {
     return new GetTariffsListResponse(
-      raw.tariffs.map(TariffBilling.fromJSON),
+      raw.tariff_list.map(TariffBilling.fromJSON),
     )
   }
 
   public mappableFields = [
-    'tariffs',
+    'tariffList',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    tariffs: () => ({ tariffs: this.tariffs.map(u => u.toJSON()) }),
+    tariffList: () => ({ tariff_list: this.tariffList.map(u => u.toJSON()) }),
     /* eslint-enable camelcase */
   }
 
