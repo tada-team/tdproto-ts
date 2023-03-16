@@ -19194,7 +19194,7 @@ export interface TariffBillingJSON {
   description: string;
   disk_space_quota_mb: number;
   free_workplace_count: number;
-  id: number;
+  id: string;
   is_default: boolean;
   is_free: boolean;
   is_public: boolean;
@@ -19250,7 +19250,7 @@ export class TariffBilling implements TDProtoClass<TariffBilling> {
     public description: string,
     public diskSpaceQuotaMb: number,
     public freeWorkplaceCount: number,
-    public id: number,
+    public id: string,
     public isDefault: boolean,
     public isFree: boolean,
     public isPublic: boolean,
