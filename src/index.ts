@@ -18810,8 +18810,10 @@ export interface SubtaskJSON {
   jid: JID;
   num: number;
   title: string;
+  complexity?: number;
   deadline?: ISODateTimeString;
   deadline_expired?: boolean;
+  importance?: number;
   public?: boolean;
   task_status?: string;
   /* eslint-enable camelcase */
@@ -18825,8 +18827,10 @@ export class Subtask implements TDProtoClass<Subtask> {
    * @param jid Task id
    * @param num Task number in this team
    * @param title Task title. Generated from number and description
+   * @param complexity Subtask complexity, number
    * @param deadline Subtask deadline in iso format, if any
    * @param deadlineExpired Is subtask deadline expired
+   * @param importance Subtask importance, if available in team
    * @param isPublic Is task or group public for non-guests
    * @param taskStatus Subtask task status
    */
@@ -18836,8 +18840,10 @@ export class Subtask implements TDProtoClass<Subtask> {
     public jid: JID,
     public num: number,
     public title: string,
+    public complexity?: number,
     public deadline?: ISODateTimeString,
     public deadlineExpired?: boolean,
+    public importance?: number,
     public isPublic?: boolean,
     public taskStatus?: string,
   ) {}
@@ -18849,8 +18855,10 @@ export class Subtask implements TDProtoClass<Subtask> {
       raw.jid,
       raw.num,
       raw.title,
+      raw.complexity,
       raw.deadline,
       raw.deadline_expired,
+      raw.importance,
       raw.public,
       raw.task_status,
     )
@@ -18862,8 +18870,10 @@ export class Subtask implements TDProtoClass<Subtask> {
     'jid',
     'num',
     'title',
+    'complexity',
     'deadline',
     'deadlineExpired',
+    'importance',
     'isPublic',
     'taskStatus',
   ] as const
@@ -18875,8 +18885,10 @@ export class Subtask implements TDProtoClass<Subtask> {
     jid: () => ({ jid: this.jid }),
     num: () => ({ num: this.num }),
     title: () => ({ title: this.title }),
+    complexity: () => ({ complexity: this.complexity }),
     deadline: () => ({ deadline: this.deadline }),
     deadlineExpired: () => ({ deadline_expired: this.deadlineExpired }),
+    importance: () => ({ importance: this.importance }),
     isPublic: () => ({ public: this.isPublic }),
     taskStatus: () => ({ task_status: this.taskStatus }),
     /* eslint-enable camelcase */
