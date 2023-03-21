@@ -4199,6 +4199,7 @@ export interface ContactJSON {
   can_create_group?: boolean;
   can_create_meeting?: boolean;
   can_create_task?: boolean;
+  can_create_team?: boolean;
   can_delete?: boolean;
   can_delete_any_message?: boolean;
   can_import_chats?: boolean;
@@ -4273,6 +4274,7 @@ export class Contact implements TDProtoClass<Contact> {
    * @param canCreateGroup Can I create group chats in this team
    * @param canCreateMeeting Can I create meetings in this team
    * @param canCreateTask Can I create task for this contact
+   * @param canCreateTeam Can i create new team
    * @param canDelete Can I remove this contact from team
    * @param canDeleteAnyMessage Deprecated
    * @param canImportChats Can I import chats from external services (now its only telegram)
@@ -4343,6 +4345,7 @@ export class Contact implements TDProtoClass<Contact> {
     public canCreateGroup?: boolean,
     public canCreateMeeting?: boolean,
     public canCreateTask?: boolean,
+    public canCreateTeam?: boolean,
     public canDelete?: boolean,
     public canDeleteAnyMessage?: boolean,
     public canImportChats?: boolean,
@@ -4415,6 +4418,7 @@ export class Contact implements TDProtoClass<Contact> {
       raw.can_create_group,
       raw.can_create_meeting,
       raw.can_create_task,
+      raw.can_create_team,
       raw.can_delete,
       raw.can_delete_any_message,
       raw.can_import_chats,
@@ -4487,6 +4491,7 @@ export class Contact implements TDProtoClass<Contact> {
     'canCreateGroup',
     'canCreateMeeting',
     'canCreateTask',
+    'canCreateTeam',
     'canDelete',
     'canDeleteAnyMessage',
     'canImportChats',
@@ -4559,6 +4564,7 @@ export class Contact implements TDProtoClass<Contact> {
     canCreateGroup: () => ({ can_create_group: this.canCreateGroup }),
     canCreateMeeting: () => ({ can_create_meeting: this.canCreateMeeting }),
     canCreateTask: () => ({ can_create_task: this.canCreateTask }),
+    canCreateTeam: () => ({ can_create_team: this.canCreateTeam }),
     canDelete: () => ({ can_delete: this.canDelete }),
     canDeleteAnyMessage: () => ({ can_delete_any_message: this.canDeleteAnyMessage }),
     canImportChats: () => ({ can_import_chats: this.canImportChats }),
