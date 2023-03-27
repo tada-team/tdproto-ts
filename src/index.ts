@@ -5224,6 +5224,7 @@ export interface CreatePersonalAccountResponseJSON {
   workplace_count: number;
   block_date?: string;
   next_billing_date?: string;
+  owner?: ContactJSON;
   suspend_date?: string;
   /* eslint-enable camelcase */
 }
@@ -5246,6 +5247,7 @@ export class CreatePersonalAccountResponse implements TDProtoClass<CreatePersona
    * @param workplaceCount Count of workplaces on personal account
    * @param blockDate Account blocking date
    * @param nextBillingDate Date of next debiting funds
+   * @param owner Owner of this personal account
    * @param suspendDate Account suspending date
    */
   constructor (
@@ -5264,6 +5266,7 @@ export class CreatePersonalAccountResponse implements TDProtoClass<CreatePersona
     public workplaceCount: number,
     public blockDate?: string,
     public nextBillingDate?: string,
+    public owner?: Contact,
     public suspendDate?: string,
   ) {}
 
@@ -5284,6 +5287,7 @@ export class CreatePersonalAccountResponse implements TDProtoClass<CreatePersona
       raw.workplace_count,
       raw.block_date,
       raw.next_billing_date,
+      raw.owner && Contact.fromJSON(raw.owner),
       raw.suspend_date,
     )
   }
@@ -5304,6 +5308,7 @@ export class CreatePersonalAccountResponse implements TDProtoClass<CreatePersona
     'workplaceCount',
     'blockDate',
     'nextBillingDate',
+    'owner',
     'suspendDate',
   ] as const
 
@@ -5324,6 +5329,7 @@ export class CreatePersonalAccountResponse implements TDProtoClass<CreatePersona
     workplaceCount: () => ({ workplace_count: this.workplaceCount }),
     blockDate: () => ({ block_date: this.blockDate }),
     nextBillingDate: () => ({ next_billing_date: this.nextBillingDate }),
+    owner: () => ({ owner: this.owner?.toJSON() }),
     suspendDate: () => ({ suspend_date: this.suspendDate }),
     /* eslint-enable camelcase */
   }
@@ -7516,6 +7522,7 @@ export interface GetPersonalAccountByIDResponseJSON {
   workplace_count: number;
   block_date?: string;
   next_billing_date?: string;
+  owner?: ContactJSON;
   suspend_date?: string;
   /* eslint-enable camelcase */
 }
@@ -7538,6 +7545,7 @@ export class GetPersonalAccountByIDResponse implements TDProtoClass<GetPersonalA
    * @param workplaceCount Count of workplaces on personal account
    * @param blockDate Account blocking date
    * @param nextBillingDate Date of next debiting funds
+   * @param owner Owner of this personal account
    * @param suspendDate Account suspending date
    */
   constructor (
@@ -7556,6 +7564,7 @@ export class GetPersonalAccountByIDResponse implements TDProtoClass<GetPersonalA
     public workplaceCount: number,
     public blockDate?: string,
     public nextBillingDate?: string,
+    public owner?: Contact,
     public suspendDate?: string,
   ) {}
 
@@ -7576,6 +7585,7 @@ export class GetPersonalAccountByIDResponse implements TDProtoClass<GetPersonalA
       raw.workplace_count,
       raw.block_date,
       raw.next_billing_date,
+      raw.owner && Contact.fromJSON(raw.owner),
       raw.suspend_date,
     )
   }
@@ -7596,6 +7606,7 @@ export class GetPersonalAccountByIDResponse implements TDProtoClass<GetPersonalA
     'workplaceCount',
     'blockDate',
     'nextBillingDate',
+    'owner',
     'suspendDate',
   ] as const
 
@@ -7616,6 +7627,7 @@ export class GetPersonalAccountByIDResponse implements TDProtoClass<GetPersonalA
     workplaceCount: () => ({ workplace_count: this.workplaceCount }),
     blockDate: () => ({ block_date: this.blockDate }),
     nextBillingDate: () => ({ next_billing_date: this.nextBillingDate }),
+    owner: () => ({ owner: this.owner?.toJSON() }),
     suspendDate: () => ({ suspend_date: this.suspendDate }),
     /* eslint-enable camelcase */
   }
@@ -12942,6 +12954,7 @@ export interface PersonalAccountBillingJSON {
   workplace_count: number;
   block_date?: string;
   next_billing_date?: string;
+  owner?: ContactJSON;
   suspend_date?: string;
   /* eslint-enable camelcase */
 }
@@ -12964,6 +12977,7 @@ export class PersonalAccountBilling implements TDProtoClass<PersonalAccountBilli
    * @param workplaceCount Count of workplaces on personal account
    * @param blockDate Account blocking date
    * @param nextBillingDate Date of next debiting funds
+   * @param owner Owner of this personal account
    * @param suspendDate Account suspending date
    */
   constructor (
@@ -12982,6 +12996,7 @@ export class PersonalAccountBilling implements TDProtoClass<PersonalAccountBilli
     public workplaceCount: number,
     public blockDate?: string,
     public nextBillingDate?: string,
+    public owner?: Contact,
     public suspendDate?: string,
   ) {}
 
@@ -13002,6 +13017,7 @@ export class PersonalAccountBilling implements TDProtoClass<PersonalAccountBilli
       raw.workplace_count,
       raw.block_date,
       raw.next_billing_date,
+      raw.owner && Contact.fromJSON(raw.owner),
       raw.suspend_date,
     )
   }
@@ -13022,6 +13038,7 @@ export class PersonalAccountBilling implements TDProtoClass<PersonalAccountBilli
     'workplaceCount',
     'blockDate',
     'nextBillingDate',
+    'owner',
     'suspendDate',
   ] as const
 
@@ -13042,6 +13059,7 @@ export class PersonalAccountBilling implements TDProtoClass<PersonalAccountBilli
     workplaceCount: () => ({ workplace_count: this.workplaceCount }),
     blockDate: () => ({ block_date: this.blockDate }),
     nextBillingDate: () => ({ next_billing_date: this.nextBillingDate }),
+    owner: () => ({ owner: this.owner?.toJSON() }),
     suspendDate: () => ({ suspend_date: this.suspendDate }),
     /* eslint-enable camelcase */
   }
