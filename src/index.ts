@@ -21,6 +21,7 @@ export type CallType =
    | 'audio'
    | 'video'
    | 'video_multistream'
+   | 'ivcs'
 
 export type ChatType =
    | 'direct'
@@ -14923,6 +14924,120 @@ export class ServerCallTalkingParams implements TDProtoClass<ServerCallTalkingPa
   }
 }
 
+export interface ServerCallTrickleJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ServerCallTrickleParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerCallTrickle implements TDProtoClass<ServerCallTrickle> {
+  /**
+   * Send trickle candidate for webrtc connection
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ServerCallTrickleParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ServerCallTrickleJSON): ServerCallTrickle {
+    return new ServerCallTrickle(
+      raw.event,
+      ServerCallTrickleParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerCallTrickleJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallTrickleJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerCallTrickleParamsJSON {
+  /* eslint-disable camelcase */
+  candidate: string;
+  jid: JID;
+  sdp_mid?: string;
+  sdp_mline_index?: number;
+  /* eslint-enable camelcase */
+}
+
+export class ServerCallTrickleParams implements TDProtoClass<ServerCallTrickleParams> {
+  /**
+   * Params of client.call.trickle event
+   * @param candidate Trickle candidate
+   * @param jid Chat or contact id
+   * @param sdpMid SDP mid
+   * @param sdpMlineIndex SDP index
+   */
+  constructor (
+    public candidate: string,
+    public jid: JID,
+    public sdpMid?: string,
+    public sdpMlineIndex?: number,
+  ) {}
+
+  public static fromJSON (raw: ServerCallTrickleParamsJSON): ServerCallTrickleParams {
+    return new ServerCallTrickleParams(
+      raw.candidate,
+      raw.jid,
+      raw.sdp_mid,
+      raw.sdp_mline_index,
+    )
+  }
+
+  public mappableFields = [
+    'candidate',
+    'jid',
+    'sdpMid',
+    'sdpMlineIndex',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    candidate: () => ({ candidate: this.candidate }),
+    jid: () => ({ jid: this.jid }),
+    sdpMid: () => ({ sdp_mid: this.sdpMid }),
+    sdpMlineIndex: () => ({ sdp_mline_index: this.sdpMlineIndex }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerCallTrickleParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerCallTrickleParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface ServerChatComposingJSON {
   /* eslint-disable camelcase */
   event: string;
@@ -18758,6 +18873,8 @@ export interface SubtaskJSON {
   deadline_expired?: boolean;
   public?: boolean;
   task_status?: string;
+  complexity?: number;
+  importance?: number;
   /* eslint-enable camelcase */
 }
 
@@ -18773,6 +18890,8 @@ export class Subtask implements TDProtoClass<Subtask> {
    * @param deadlineExpired Is subtask deadline expired
    * @param isPublic Is task or group public for non-guests
    * @param taskStatus Subtask task status
+   * @param complexity Task complexity
+   * @param importance Task importance
    */
   constructor (
     public assignee: JID,
@@ -18784,6 +18903,8 @@ export class Subtask implements TDProtoClass<Subtask> {
     public deadlineExpired?: boolean,
     public isPublic?: boolean,
     public taskStatus?: string,
+    public complexity?: number,
+    public importance?: number,
   ) {}
 
   public static fromJSON (raw: SubtaskJSON): Subtask {
@@ -18797,6 +18918,8 @@ export class Subtask implements TDProtoClass<Subtask> {
       raw.deadline_expired,
       raw.public,
       raw.task_status,
+      raw.complexity,
+      raw.importance,
     )
   }
 
@@ -18810,6 +18933,8 @@ export class Subtask implements TDProtoClass<Subtask> {
     'deadlineExpired',
     'isPublic',
     'taskStatus',
+    'complexity',
+    'importance',
   ] as const
 
   readonly #mapper = {
@@ -18823,6 +18948,8 @@ export class Subtask implements TDProtoClass<Subtask> {
     deadlineExpired: () => ({ deadline_expired: this.deadlineExpired }),
     isPublic: () => ({ public: this.isPublic }),
     taskStatus: () => ({ task_status: this.taskStatus }),
+    complexity: () => ({ complexity: this.complexity }),
+    importance: () => ({ importance: this.importance }),
     /* eslint-enable camelcase */
   }
 

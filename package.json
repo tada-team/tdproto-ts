@@ -8,7 +8,8 @@
     "check-types": "tsc",
     "build": "babel src -d lib --extensions '.ts' --source-maps",
     "lint": "eslint ./src",
-    "fix": "eslint ./src --fix"
+    "fix": "eslint ./src --fix",
+    "prepare": "npm run check-types && npm run build"
   },
   "repository": {
     "type": "git",
