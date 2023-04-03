@@ -28,6 +28,13 @@ export type ChatType =
    | 'task'
    | 'meeting'
 
+export type CounterpartyType =
+   | 'COUNTERPARTY_TYPE_UNSPECIFIED'
+   | 'COUNTERPARTY_TYPE_PHYSICAL'
+   | 'COUNTERPARTY_TYPE_SELFEMPLOYED'
+   | 'COUNTERPARTY_TYPE_ENTREPRENEUR'
+   | 'COUNTERPARTY_TYPE_JURIDICAL'
+
 export type Currency =
    | 'EUR'
    | 'RUB'
@@ -4898,6 +4905,648 @@ export class ContactsSectionGetRequest implements TDProtoClass<ContactsSectionGe
 
   public toJSON (): ContactsSectionGetRequestJSON
   public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ContactsSectionGetRequestJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface CounterpartyJSON {
+  /* eslint-disable camelcase */
+  counterparty_type: CounterpartyType;
+  created_at: string;
+  full_name: string;
+  id: string;
+  legal_address: string;
+  personal_account_id: string;
+  physical_address: string;
+  taxpayer_identification_number: string;
+  accounting_dictionary_code?: string;
+  classifier_of_industrial_enterprises?: string;
+  electronic_document_management_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class Counterparty implements TDProtoClass<Counterparty> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param counterpartyType DOCUMENTATION MISSING
+   * @param createdAt DOCUMENTATION MISSING
+   * @param fullName DOCUMENTATION MISSING
+   * @param id DOCUMENTATION MISSING
+   * @param legalAddress DOCUMENTATION MISSING
+   * @param personalAccountId DOCUMENTATION MISSING
+   * @param physicalAddress DOCUMENTATION MISSING
+   * @param taxpayerIdentificationNumber DOCUMENTATION MISSING
+   * @param accountingDictionaryCode DOCUMENTATION MISSING
+   * @param classifierOfIndustrialEnterprises DOCUMENTATION MISSING
+   * @param electronicDocumentManagementId DOCUMENTATION MISSING
+   */
+  constructor (
+    public counterpartyType: CounterpartyType,
+    public createdAt: string,
+    public fullName: string,
+    public id: string,
+    public legalAddress: string,
+    public personalAccountId: string,
+    public physicalAddress: string,
+    public taxpayerIdentificationNumber: string,
+    public accountingDictionaryCode?: string,
+    public classifierOfIndustrialEnterprises?: string,
+    public electronicDocumentManagementId?: string,
+  ) {}
+
+  public static fromJSON (raw: CounterpartyJSON): Counterparty {
+    return new Counterparty(
+      raw.counterparty_type,
+      raw.created_at,
+      raw.full_name,
+      raw.id,
+      raw.legal_address,
+      raw.personal_account_id,
+      raw.physical_address,
+      raw.taxpayer_identification_number,
+      raw.accounting_dictionary_code,
+      raw.classifier_of_industrial_enterprises,
+      raw.electronic_document_management_id,
+    )
+  }
+
+  public mappableFields = [
+    'counterpartyType',
+    'createdAt',
+    'fullName',
+    'id',
+    'legalAddress',
+    'personalAccountId',
+    'physicalAddress',
+    'taxpayerIdentificationNumber',
+    'accountingDictionaryCode',
+    'classifierOfIndustrialEnterprises',
+    'electronicDocumentManagementId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    counterpartyType: () => ({ counterparty_type: this.counterpartyType }),
+    createdAt: () => ({ created_at: this.createdAt }),
+    fullName: () => ({ full_name: this.fullName }),
+    id: () => ({ id: this.id }),
+    legalAddress: () => ({ legal_address: this.legalAddress }),
+    personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
+    physicalAddress: () => ({ physical_address: this.physicalAddress }),
+    taxpayerIdentificationNumber: () => ({ taxpayer_identification_number: this.taxpayerIdentificationNumber }),
+    accountingDictionaryCode: () => ({ accounting_dictionary_code: this.accountingDictionaryCode }),
+    classifierOfIndustrialEnterprises: () => ({ classifier_of_industrial_enterprises: this.classifierOfIndustrialEnterprises }),
+    electronicDocumentManagementId: () => ({ electronic_document_management_id: this.electronicDocumentManagementId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): CounterpartyJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<CounterpartyJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface CounterpartyCreateRequestJSON {
+  /* eslint-disable camelcase */
+  counterparty_type: CounterpartyType;
+  full_name: string;
+  legal_address: string;
+  personal_account_id: string;
+  physical_address: string;
+  taxpayer_identification_number: string;
+  accounting_dictionary_code?: string;
+  classifier_of_industrial_enterprises?: string;
+  electronic_document_management_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class CounterpartyCreateRequest implements TDProtoClass<CounterpartyCreateRequest> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param counterpartyType DOCUMENTATION MISSING
+   * @param fullName DOCUMENTATION MISSING
+   * @param legalAddress DOCUMENTATION MISSING
+   * @param personalAccountId DOCUMENTATION MISSING
+   * @param physicalAddress DOCUMENTATION MISSING
+   * @param taxpayerIdentificationNumber DOCUMENTATION MISSING
+   * @param accountingDictionaryCode DOCUMENTATION MISSING
+   * @param classifierOfIndustrialEnterprises DOCUMENTATION MISSING
+   * @param electronicDocumentManagementId DOCUMENTATION MISSING
+   */
+  constructor (
+    public counterpartyType: CounterpartyType,
+    public fullName: string,
+    public legalAddress: string,
+    public personalAccountId: string,
+    public physicalAddress: string,
+    public taxpayerIdentificationNumber: string,
+    public accountingDictionaryCode?: string,
+    public classifierOfIndustrialEnterprises?: string,
+    public electronicDocumentManagementId?: string,
+  ) {}
+
+  public static fromJSON (raw: CounterpartyCreateRequestJSON): CounterpartyCreateRequest {
+    return new CounterpartyCreateRequest(
+      raw.counterparty_type,
+      raw.full_name,
+      raw.legal_address,
+      raw.personal_account_id,
+      raw.physical_address,
+      raw.taxpayer_identification_number,
+      raw.accounting_dictionary_code,
+      raw.classifier_of_industrial_enterprises,
+      raw.electronic_document_management_id,
+    )
+  }
+
+  public mappableFields = [
+    'counterpartyType',
+    'fullName',
+    'legalAddress',
+    'personalAccountId',
+    'physicalAddress',
+    'taxpayerIdentificationNumber',
+    'accountingDictionaryCode',
+    'classifierOfIndustrialEnterprises',
+    'electronicDocumentManagementId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    counterpartyType: () => ({ counterparty_type: this.counterpartyType }),
+    fullName: () => ({ full_name: this.fullName }),
+    legalAddress: () => ({ legal_address: this.legalAddress }),
+    personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
+    physicalAddress: () => ({ physical_address: this.physicalAddress }),
+    taxpayerIdentificationNumber: () => ({ taxpayer_identification_number: this.taxpayerIdentificationNumber }),
+    accountingDictionaryCode: () => ({ accounting_dictionary_code: this.accountingDictionaryCode }),
+    classifierOfIndustrialEnterprises: () => ({ classifier_of_industrial_enterprises: this.classifierOfIndustrialEnterprises }),
+    electronicDocumentManagementId: () => ({ electronic_document_management_id: this.electronicDocumentManagementId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): CounterpartyCreateRequestJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<CounterpartyCreateRequestJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface CounterpartyCreateResponseJSON {
+  /* eslint-disable camelcase */
+  counterparty_type: CounterpartyType;
+  created_at: string;
+  full_name: string;
+  id: string;
+  legal_address: string;
+  personal_account_id: string;
+  physical_address: string;
+  taxpayer_identification_number: string;
+  accounting_dictionary_code?: string;
+  classifier_of_industrial_enterprises?: string;
+  electronic_document_management_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class CounterpartyCreateResponse implements TDProtoClass<CounterpartyCreateResponse> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param counterpartyType DOCUMENTATION MISSING
+   * @param createdAt DOCUMENTATION MISSING
+   * @param fullName DOCUMENTATION MISSING
+   * @param id DOCUMENTATION MISSING
+   * @param legalAddress DOCUMENTATION MISSING
+   * @param personalAccountId DOCUMENTATION MISSING
+   * @param physicalAddress DOCUMENTATION MISSING
+   * @param taxpayerIdentificationNumber DOCUMENTATION MISSING
+   * @param accountingDictionaryCode DOCUMENTATION MISSING
+   * @param classifierOfIndustrialEnterprises DOCUMENTATION MISSING
+   * @param electronicDocumentManagementId DOCUMENTATION MISSING
+   */
+  constructor (
+    public counterpartyType: CounterpartyType,
+    public createdAt: string,
+    public fullName: string,
+    public id: string,
+    public legalAddress: string,
+    public personalAccountId: string,
+    public physicalAddress: string,
+    public taxpayerIdentificationNumber: string,
+    public accountingDictionaryCode?: string,
+    public classifierOfIndustrialEnterprises?: string,
+    public electronicDocumentManagementId?: string,
+  ) {}
+
+  public static fromJSON (raw: CounterpartyCreateResponseJSON): CounterpartyCreateResponse {
+    return new CounterpartyCreateResponse(
+      raw.counterparty_type,
+      raw.created_at,
+      raw.full_name,
+      raw.id,
+      raw.legal_address,
+      raw.personal_account_id,
+      raw.physical_address,
+      raw.taxpayer_identification_number,
+      raw.accounting_dictionary_code,
+      raw.classifier_of_industrial_enterprises,
+      raw.electronic_document_management_id,
+    )
+  }
+
+  public mappableFields = [
+    'counterpartyType',
+    'createdAt',
+    'fullName',
+    'id',
+    'legalAddress',
+    'personalAccountId',
+    'physicalAddress',
+    'taxpayerIdentificationNumber',
+    'accountingDictionaryCode',
+    'classifierOfIndustrialEnterprises',
+    'electronicDocumentManagementId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    counterpartyType: () => ({ counterparty_type: this.counterpartyType }),
+    createdAt: () => ({ created_at: this.createdAt }),
+    fullName: () => ({ full_name: this.fullName }),
+    id: () => ({ id: this.id }),
+    legalAddress: () => ({ legal_address: this.legalAddress }),
+    personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
+    physicalAddress: () => ({ physical_address: this.physicalAddress }),
+    taxpayerIdentificationNumber: () => ({ taxpayer_identification_number: this.taxpayerIdentificationNumber }),
+    accountingDictionaryCode: () => ({ accounting_dictionary_code: this.accountingDictionaryCode }),
+    classifierOfIndustrialEnterprises: () => ({ classifier_of_industrial_enterprises: this.classifierOfIndustrialEnterprises }),
+    electronicDocumentManagementId: () => ({ electronic_document_management_id: this.electronicDocumentManagementId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): CounterpartyCreateResponseJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<CounterpartyCreateResponseJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface CounterpartyDeleteRequestJSON {
+  /* eslint-disable camelcase */
+  counterparty_ids?: string;
+  /* eslint-enable camelcase */
+}
+
+export class CounterpartyDeleteRequest implements TDProtoClass<CounterpartyDeleteRequest> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param counterpartyIds DOCUMENTATION MISSING
+   */
+  constructor (
+    public counterpartyIds?: string,
+  ) {}
+
+  public static fromJSON (raw: CounterpartyDeleteRequestJSON): CounterpartyDeleteRequest {
+    return new CounterpartyDeleteRequest(
+      raw.counterparty_ids,
+    )
+  }
+
+  public mappableFields = [
+    'counterpartyIds',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    counterpartyIds: () => ({ counterparty_ids: this.counterpartyIds }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): CounterpartyDeleteRequestJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<CounterpartyDeleteRequestJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface CounterpartyGetRequestJSON {
+  /* eslint-disable camelcase */
+  accounting_dictionary_code?: string;
+  counterparty_ids?: string;
+  limit?: number;
+  offset?: number;
+  personal_account_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class CounterpartyGetRequest implements TDProtoClass<CounterpartyGetRequest> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param accountingDictionaryCode DOCUMENTATION MISSING
+   * @param counterpartyIds DOCUMENTATION MISSING
+   * @param limit DOCUMENTATION MISSING
+   * @param offset DOCUMENTATION MISSING
+   * @param personalAccountId DOCUMENTATION MISSING
+   */
+  constructor (
+    public accountingDictionaryCode?: string,
+    public counterpartyIds?: string,
+    public limit?: number,
+    public offset?: number,
+    public personalAccountId?: string,
+  ) {}
+
+  public static fromJSON (raw: CounterpartyGetRequestJSON): CounterpartyGetRequest {
+    return new CounterpartyGetRequest(
+      raw.accounting_dictionary_code,
+      raw.counterparty_ids,
+      raw.limit,
+      raw.offset,
+      raw.personal_account_id,
+    )
+  }
+
+  public mappableFields = [
+    'accountingDictionaryCode',
+    'counterpartyIds',
+    'limit',
+    'offset',
+    'personalAccountId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    accountingDictionaryCode: () => ({ accounting_dictionary_code: this.accountingDictionaryCode }),
+    counterpartyIds: () => ({ counterparty_ids: this.counterpartyIds }),
+    limit: () => ({ limit: this.limit }),
+    offset: () => ({ offset: this.offset }),
+    personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): CounterpartyGetRequestJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<CounterpartyGetRequestJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface CounterpartyGetResponseJSON {
+  /* eslint-disable camelcase */
+  counterparty_list: CounterpartyJSON[];
+  /* eslint-enable camelcase */
+}
+
+export class CounterpartyGetResponse implements TDProtoClass<CounterpartyGetResponse> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param counterpartyList DOCUMENTATION MISSING
+   */
+  constructor (
+    public counterpartyList: Counterparty[],
+  ) {}
+
+  public static fromJSON (raw: CounterpartyGetResponseJSON): CounterpartyGetResponse {
+    return new CounterpartyGetResponse(
+      raw.counterparty_list.map(Counterparty.fromJSON),
+    )
+  }
+
+  public mappableFields = [
+    'counterpartyList',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    counterpartyList: () => ({ counterparty_list: this.counterpartyList.map(u => u.toJSON()) }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): CounterpartyGetResponseJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<CounterpartyGetResponseJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface CounterpartyUpdateRequestJSON {
+  /* eslint-disable camelcase */
+  counterparty_type: CounterpartyType;
+  full_name: string;
+  id: string;
+  legal_address: string;
+  personal_account_id: string;
+  physical_address: string;
+  taxpayer_identification_number: string;
+  accounting_dictionary_code?: string;
+  classifier_of_industrial_enterprises?: string;
+  electronic_document_management_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class CounterpartyUpdateRequest implements TDProtoClass<CounterpartyUpdateRequest> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param counterpartyType DOCUMENTATION MISSING
+   * @param fullName DOCUMENTATION MISSING
+   * @param id DOCUMENTATION MISSING
+   * @param legalAddress DOCUMENTATION MISSING
+   * @param personalAccountId DOCUMENTATION MISSING
+   * @param physicalAddress DOCUMENTATION MISSING
+   * @param taxpayerIdentificationNumber DOCUMENTATION MISSING
+   * @param accountingDictionaryCode DOCUMENTATION MISSING
+   * @param classifierOfIndustrialEnterprises DOCUMENTATION MISSING
+   * @param electronicDocumentManagementId DOCUMENTATION MISSING
+   */
+  constructor (
+    public counterpartyType: CounterpartyType,
+    public fullName: string,
+    public id: string,
+    public legalAddress: string,
+    public personalAccountId: string,
+    public physicalAddress: string,
+    public taxpayerIdentificationNumber: string,
+    public accountingDictionaryCode?: string,
+    public classifierOfIndustrialEnterprises?: string,
+    public electronicDocumentManagementId?: string,
+  ) {}
+
+  public static fromJSON (raw: CounterpartyUpdateRequestJSON): CounterpartyUpdateRequest {
+    return new CounterpartyUpdateRequest(
+      raw.counterparty_type,
+      raw.full_name,
+      raw.id,
+      raw.legal_address,
+      raw.personal_account_id,
+      raw.physical_address,
+      raw.taxpayer_identification_number,
+      raw.accounting_dictionary_code,
+      raw.classifier_of_industrial_enterprises,
+      raw.electronic_document_management_id,
+    )
+  }
+
+  public mappableFields = [
+    'counterpartyType',
+    'fullName',
+    'id',
+    'legalAddress',
+    'personalAccountId',
+    'physicalAddress',
+    'taxpayerIdentificationNumber',
+    'accountingDictionaryCode',
+    'classifierOfIndustrialEnterprises',
+    'electronicDocumentManagementId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    counterpartyType: () => ({ counterparty_type: this.counterpartyType }),
+    fullName: () => ({ full_name: this.fullName }),
+    id: () => ({ id: this.id }),
+    legalAddress: () => ({ legal_address: this.legalAddress }),
+    personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
+    physicalAddress: () => ({ physical_address: this.physicalAddress }),
+    taxpayerIdentificationNumber: () => ({ taxpayer_identification_number: this.taxpayerIdentificationNumber }),
+    accountingDictionaryCode: () => ({ accounting_dictionary_code: this.accountingDictionaryCode }),
+    classifierOfIndustrialEnterprises: () => ({ classifier_of_industrial_enterprises: this.classifierOfIndustrialEnterprises }),
+    electronicDocumentManagementId: () => ({ electronic_document_management_id: this.electronicDocumentManagementId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): CounterpartyUpdateRequestJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<CounterpartyUpdateRequestJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface CounterpartyUpdateResponseJSON {
+  /* eslint-disable camelcase */
+  counterparty_type: CounterpartyType;
+  created_at: string;
+  full_name: string;
+  id: string;
+  legal_address: string;
+  personal_account_id: string;
+  physical_address: string;
+  taxpayer_identification_number: string;
+  accounting_dictionary_code?: string;
+  classifier_of_industrial_enterprises?: string;
+  electronic_document_management_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class CounterpartyUpdateResponse implements TDProtoClass<CounterpartyUpdateResponse> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param counterpartyType DOCUMENTATION MISSING
+   * @param createdAt DOCUMENTATION MISSING
+   * @param fullName DOCUMENTATION MISSING
+   * @param id DOCUMENTATION MISSING
+   * @param legalAddress DOCUMENTATION MISSING
+   * @param personalAccountId DOCUMENTATION MISSING
+   * @param physicalAddress DOCUMENTATION MISSING
+   * @param taxpayerIdentificationNumber DOCUMENTATION MISSING
+   * @param accountingDictionaryCode DOCUMENTATION MISSING
+   * @param classifierOfIndustrialEnterprises DOCUMENTATION MISSING
+   * @param electronicDocumentManagementId DOCUMENTATION MISSING
+   */
+  constructor (
+    public counterpartyType: CounterpartyType,
+    public createdAt: string,
+    public fullName: string,
+    public id: string,
+    public legalAddress: string,
+    public personalAccountId: string,
+    public physicalAddress: string,
+    public taxpayerIdentificationNumber: string,
+    public accountingDictionaryCode?: string,
+    public classifierOfIndustrialEnterprises?: string,
+    public electronicDocumentManagementId?: string,
+  ) {}
+
+  public static fromJSON (raw: CounterpartyUpdateResponseJSON): CounterpartyUpdateResponse {
+    return new CounterpartyUpdateResponse(
+      raw.counterparty_type,
+      raw.created_at,
+      raw.full_name,
+      raw.id,
+      raw.legal_address,
+      raw.personal_account_id,
+      raw.physical_address,
+      raw.taxpayer_identification_number,
+      raw.accounting_dictionary_code,
+      raw.classifier_of_industrial_enterprises,
+      raw.electronic_document_management_id,
+    )
+  }
+
+  public mappableFields = [
+    'counterpartyType',
+    'createdAt',
+    'fullName',
+    'id',
+    'legalAddress',
+    'personalAccountId',
+    'physicalAddress',
+    'taxpayerIdentificationNumber',
+    'accountingDictionaryCode',
+    'classifierOfIndustrialEnterprises',
+    'electronicDocumentManagementId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    counterpartyType: () => ({ counterparty_type: this.counterpartyType }),
+    createdAt: () => ({ created_at: this.createdAt }),
+    fullName: () => ({ full_name: this.fullName }),
+    id: () => ({ id: this.id }),
+    legalAddress: () => ({ legal_address: this.legalAddress }),
+    personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
+    physicalAddress: () => ({ physical_address: this.physicalAddress }),
+    taxpayerIdentificationNumber: () => ({ taxpayer_identification_number: this.taxpayerIdentificationNumber }),
+    accountingDictionaryCode: () => ({ accounting_dictionary_code: this.accountingDictionaryCode }),
+    classifierOfIndustrialEnterprises: () => ({ classifier_of_industrial_enterprises: this.classifierOfIndustrialEnterprises }),
+    electronicDocumentManagementId: () => ({ electronic_document_management_id: this.electronicDocumentManagementId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): CounterpartyUpdateResponseJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<CounterpartyUpdateResponseJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
