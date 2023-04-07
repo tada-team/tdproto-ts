@@ -13490,6 +13490,600 @@ export class Payment implements TDProtoClass<Payment> {
   }
 }
 
+export interface PaymentInvoiceJSON {
+  /* eslint-disable camelcase */
+  amount: number;
+  counterparty_id: string;
+  enquiry_id: string;
+  id: string;
+  status: string;
+  activate_at?: string;
+  cost_workplace?: string;
+  created_at?: string;
+  free_workplace?: string;
+  paid_at?: string;
+  tariff_name?: string;
+  workplace?: string;
+  /* eslint-enable camelcase */
+}
+
+export class PaymentInvoice implements TDProtoClass<PaymentInvoice> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param amount DOCUMENTATION MISSING
+   * @param counterpartyId DOCUMENTATION MISSING
+   * @param enquiryId DOCUMENTATION MISSING
+   * @param id DOCUMENTATION MISSING
+   * @param status DOCUMENTATION MISSING
+   * @param activateAt DOCUMENTATION MISSING
+   * @param costWorkplace DOCUMENTATION MISSING
+   * @param createdAt DOCUMENTATION MISSING
+   * @param freeWorkplace DOCUMENTATION MISSING
+   * @param paidAt DOCUMENTATION MISSING
+   * @param tariffName DOCUMENTATION MISSING
+   * @param workplace DOCUMENTATION MISSING
+   */
+  constructor (
+    public amount: number,
+    public counterpartyId: string,
+    public enquiryId: string,
+    public id: string,
+    public status: string,
+    public activateAt?: string,
+    public costWorkplace?: string,
+    public createdAt?: string,
+    public freeWorkplace?: string,
+    public paidAt?: string,
+    public tariffName?: string,
+    public workplace?: string,
+  ) {}
+
+  public static fromJSON (raw: PaymentInvoiceJSON): PaymentInvoice {
+    return new PaymentInvoice(
+      raw.amount,
+      raw.counterparty_id,
+      raw.enquiry_id,
+      raw.id,
+      raw.status,
+      raw.activate_at,
+      raw.cost_workplace,
+      raw.created_at,
+      raw.free_workplace,
+      raw.paid_at,
+      raw.tariff_name,
+      raw.workplace,
+    )
+  }
+
+  public mappableFields = [
+    'amount',
+    'counterpartyId',
+    'enquiryId',
+    'id',
+    'status',
+    'activateAt',
+    'costWorkplace',
+    'createdAt',
+    'freeWorkplace',
+    'paidAt',
+    'tariffName',
+    'workplace',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    amount: () => ({ amount: this.amount }),
+    counterpartyId: () => ({ counterparty_id: this.counterpartyId }),
+    enquiryId: () => ({ enquiry_id: this.enquiryId }),
+    id: () => ({ id: this.id }),
+    status: () => ({ status: this.status }),
+    activateAt: () => ({ activate_at: this.activateAt }),
+    costWorkplace: () => ({ cost_workplace: this.costWorkplace }),
+    createdAt: () => ({ created_at: this.createdAt }),
+    freeWorkplace: () => ({ free_workplace: this.freeWorkplace }),
+    paidAt: () => ({ paid_at: this.paidAt }),
+    tariffName: () => ({ tariff_name: this.tariffName }),
+    workplace: () => ({ workplace: this.workplace }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): PaymentInvoiceJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<PaymentInvoiceJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface PaymentInvoiceCreateRequestJSON {
+  /* eslint-disable camelcase */
+  counterparty_id: string;
+  enquiry_id: string;
+  status: string;
+  paid_at?: string;
+  /* eslint-enable camelcase */
+}
+
+export class PaymentInvoiceCreateRequest implements TDProtoClass<PaymentInvoiceCreateRequest> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param counterpartyId DOCUMENTATION MISSING
+   * @param enquiryId DOCUMENTATION MISSING
+   * @param status DOCUMENTATION MISSING
+   * @param paidAt DOCUMENTATION MISSING
+   */
+  constructor (
+    public counterpartyId: string,
+    public enquiryId: string,
+    public status: string,
+    public paidAt?: string,
+  ) {}
+
+  public static fromJSON (raw: PaymentInvoiceCreateRequestJSON): PaymentInvoiceCreateRequest {
+    return new PaymentInvoiceCreateRequest(
+      raw.counterparty_id,
+      raw.enquiry_id,
+      raw.status,
+      raw.paid_at,
+    )
+  }
+
+  public mappableFields = [
+    'counterpartyId',
+    'enquiryId',
+    'status',
+    'paidAt',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    counterpartyId: () => ({ counterparty_id: this.counterpartyId }),
+    enquiryId: () => ({ enquiry_id: this.enquiryId }),
+    status: () => ({ status: this.status }),
+    paidAt: () => ({ paid_at: this.paidAt }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): PaymentInvoiceCreateRequestJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<PaymentInvoiceCreateRequestJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface PaymentInvoiceCreateResponseJSON {
+  /* eslint-disable camelcase */
+  amount: number;
+  counterparty_id: string;
+  enquiry_id: string;
+  id: string;
+  status: string;
+  activate_at?: string;
+  cost_workplace?: string;
+  created_at?: string;
+  free_workplace?: string;
+  paid_at?: string;
+  tariff_name?: string;
+  workplace?: string;
+  /* eslint-enable camelcase */
+}
+
+export class PaymentInvoiceCreateResponse implements TDProtoClass<PaymentInvoiceCreateResponse> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param amount DOCUMENTATION MISSING
+   * @param counterpartyId DOCUMENTATION MISSING
+   * @param enquiryId DOCUMENTATION MISSING
+   * @param id DOCUMENTATION MISSING
+   * @param status DOCUMENTATION MISSING
+   * @param activateAt DOCUMENTATION MISSING
+   * @param costWorkplace DOCUMENTATION MISSING
+   * @param createdAt DOCUMENTATION MISSING
+   * @param freeWorkplace DOCUMENTATION MISSING
+   * @param paidAt DOCUMENTATION MISSING
+   * @param tariffName DOCUMENTATION MISSING
+   * @param workplace DOCUMENTATION MISSING
+   */
+  constructor (
+    public amount: number,
+    public counterpartyId: string,
+    public enquiryId: string,
+    public id: string,
+    public status: string,
+    public activateAt?: string,
+    public costWorkplace?: string,
+    public createdAt?: string,
+    public freeWorkplace?: string,
+    public paidAt?: string,
+    public tariffName?: string,
+    public workplace?: string,
+  ) {}
+
+  public static fromJSON (raw: PaymentInvoiceCreateResponseJSON): PaymentInvoiceCreateResponse {
+    return new PaymentInvoiceCreateResponse(
+      raw.amount,
+      raw.counterparty_id,
+      raw.enquiry_id,
+      raw.id,
+      raw.status,
+      raw.activate_at,
+      raw.cost_workplace,
+      raw.created_at,
+      raw.free_workplace,
+      raw.paid_at,
+      raw.tariff_name,
+      raw.workplace,
+    )
+  }
+
+  public mappableFields = [
+    'amount',
+    'counterpartyId',
+    'enquiryId',
+    'id',
+    'status',
+    'activateAt',
+    'costWorkplace',
+    'createdAt',
+    'freeWorkplace',
+    'paidAt',
+    'tariffName',
+    'workplace',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    amount: () => ({ amount: this.amount }),
+    counterpartyId: () => ({ counterparty_id: this.counterpartyId }),
+    enquiryId: () => ({ enquiry_id: this.enquiryId }),
+    id: () => ({ id: this.id }),
+    status: () => ({ status: this.status }),
+    activateAt: () => ({ activate_at: this.activateAt }),
+    costWorkplace: () => ({ cost_workplace: this.costWorkplace }),
+    createdAt: () => ({ created_at: this.createdAt }),
+    freeWorkplace: () => ({ free_workplace: this.freeWorkplace }),
+    paidAt: () => ({ paid_at: this.paidAt }),
+    tariffName: () => ({ tariff_name: this.tariffName }),
+    workplace: () => ({ workplace: this.workplace }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): PaymentInvoiceCreateResponseJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<PaymentInvoiceCreateResponseJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface PaymentInvoiceGetListRequestJSON {
+  /* eslint-disable camelcase */
+  counterparty_id?: string;
+  enquiry_id?: string;
+  limit?: number;
+  offset?: number;
+  status?: string;
+  /* eslint-enable camelcase */
+}
+
+export class PaymentInvoiceGetListRequest implements TDProtoClass<PaymentInvoiceGetListRequest> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param counterpartyId DOCUMENTATION MISSING
+   * @param enquiryId DOCUMENTATION MISSING
+   * @param limit DOCUMENTATION MISSING
+   * @param offset DOCUMENTATION MISSING
+   * @param status DOCUMENTATION MISSING
+   */
+  constructor (
+    public counterpartyId?: string,
+    public enquiryId?: string,
+    public limit?: number,
+    public offset?: number,
+    public status?: string,
+  ) {}
+
+  public static fromJSON (raw: PaymentInvoiceGetListRequestJSON): PaymentInvoiceGetListRequest {
+    return new PaymentInvoiceGetListRequest(
+      raw.counterparty_id,
+      raw.enquiry_id,
+      raw.limit,
+      raw.offset,
+      raw.status,
+    )
+  }
+
+  public mappableFields = [
+    'counterpartyId',
+    'enquiryId',
+    'limit',
+    'offset',
+    'status',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    counterpartyId: () => ({ counterparty_id: this.counterpartyId }),
+    enquiryId: () => ({ enquiry_id: this.enquiryId }),
+    limit: () => ({ limit: this.limit }),
+    offset: () => ({ offset: this.offset }),
+    status: () => ({ status: this.status }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): PaymentInvoiceGetListRequestJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<PaymentInvoiceGetListRequestJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface PaymentInvoiceGetListResponseJSON {
+  /* eslint-disable camelcase */
+  payment_invoice_list: PaymentInvoiceJSON[];
+  /* eslint-enable camelcase */
+}
+
+export class PaymentInvoiceGetListResponse implements TDProtoClass<PaymentInvoiceGetListResponse> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param paymentInvoiceList DOCUMENTATION MISSING
+   */
+  constructor (
+    public paymentInvoiceList: PaymentInvoice[],
+  ) {}
+
+  public static fromJSON (raw: PaymentInvoiceGetListResponseJSON): PaymentInvoiceGetListResponse {
+    return new PaymentInvoiceGetListResponse(
+      raw.payment_invoice_list.map(PaymentInvoice.fromJSON),
+    )
+  }
+
+  public mappableFields = [
+    'paymentInvoiceList',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    paymentInvoiceList: () => ({ payment_invoice_list: this.paymentInvoiceList.map(u => u.toJSON()) }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): PaymentInvoiceGetListResponseJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<PaymentInvoiceGetListResponseJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface PaymentInvoiceGetRequestJSON {
+  /* eslint-disable camelcase */
+  payment_invoice_ids: string;
+  /* eslint-enable camelcase */
+}
+
+export class PaymentInvoiceGetRequest implements TDProtoClass<PaymentInvoiceGetRequest> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param paymentInvoiceIds DOCUMENTATION MISSING
+   */
+  constructor (
+    public paymentInvoiceIds: string,
+  ) {}
+
+  public static fromJSON (raw: PaymentInvoiceGetRequestJSON): PaymentInvoiceGetRequest {
+    return new PaymentInvoiceGetRequest(
+      raw.payment_invoice_ids,
+    )
+  }
+
+  public mappableFields = [
+    'paymentInvoiceIds',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    paymentInvoiceIds: () => ({ payment_invoice_ids: this.paymentInvoiceIds }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): PaymentInvoiceGetRequestJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<PaymentInvoiceGetRequestJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface PaymentInvoiceUpdateRequestJSON {
+  /* eslint-disable camelcase */
+  counterparty_id: string;
+  enquiry_id: string;
+  paid_at: string;
+  status: string;
+  /* eslint-enable camelcase */
+}
+
+export class PaymentInvoiceUpdateRequest implements TDProtoClass<PaymentInvoiceUpdateRequest> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param counterpartyId DOCUMENTATION MISSING
+   * @param enquiryId DOCUMENTATION MISSING
+   * @param paidAt DOCUMENTATION MISSING
+   * @param status DOCUMENTATION MISSING
+   */
+  constructor (
+    public counterpartyId: string,
+    public enquiryId: string,
+    public paidAt: string,
+    public status: string,
+  ) {}
+
+  public static fromJSON (raw: PaymentInvoiceUpdateRequestJSON): PaymentInvoiceUpdateRequest {
+    return new PaymentInvoiceUpdateRequest(
+      raw.counterparty_id,
+      raw.enquiry_id,
+      raw.paid_at,
+      raw.status,
+    )
+  }
+
+  public mappableFields = [
+    'counterpartyId',
+    'enquiryId',
+    'paidAt',
+    'status',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    counterpartyId: () => ({ counterparty_id: this.counterpartyId }),
+    enquiryId: () => ({ enquiry_id: this.enquiryId }),
+    paidAt: () => ({ paid_at: this.paidAt }),
+    status: () => ({ status: this.status }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): PaymentInvoiceUpdateRequestJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<PaymentInvoiceUpdateRequestJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface PaymentInvoiceUpdateResponseJSON {
+  /* eslint-disable camelcase */
+  amount: number;
+  counterparty_id: string;
+  enquiry_id: string;
+  id: string;
+  status: string;
+  activate_at?: string;
+  cost_workplace?: string;
+  created_at?: string;
+  free_workplace?: string;
+  paid_at?: string;
+  tariff_name?: string;
+  workplace?: string;
+  /* eslint-enable camelcase */
+}
+
+export class PaymentInvoiceUpdateResponse implements TDProtoClass<PaymentInvoiceUpdateResponse> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param amount DOCUMENTATION MISSING
+   * @param counterpartyId DOCUMENTATION MISSING
+   * @param enquiryId DOCUMENTATION MISSING
+   * @param id DOCUMENTATION MISSING
+   * @param status DOCUMENTATION MISSING
+   * @param activateAt DOCUMENTATION MISSING
+   * @param costWorkplace DOCUMENTATION MISSING
+   * @param createdAt DOCUMENTATION MISSING
+   * @param freeWorkplace DOCUMENTATION MISSING
+   * @param paidAt DOCUMENTATION MISSING
+   * @param tariffName DOCUMENTATION MISSING
+   * @param workplace DOCUMENTATION MISSING
+   */
+  constructor (
+    public amount: number,
+    public counterpartyId: string,
+    public enquiryId: string,
+    public id: string,
+    public status: string,
+    public activateAt?: string,
+    public costWorkplace?: string,
+    public createdAt?: string,
+    public freeWorkplace?: string,
+    public paidAt?: string,
+    public tariffName?: string,
+    public workplace?: string,
+  ) {}
+
+  public static fromJSON (raw: PaymentInvoiceUpdateResponseJSON): PaymentInvoiceUpdateResponse {
+    return new PaymentInvoiceUpdateResponse(
+      raw.amount,
+      raw.counterparty_id,
+      raw.enquiry_id,
+      raw.id,
+      raw.status,
+      raw.activate_at,
+      raw.cost_workplace,
+      raw.created_at,
+      raw.free_workplace,
+      raw.paid_at,
+      raw.tariff_name,
+      raw.workplace,
+    )
+  }
+
+  public mappableFields = [
+    'amount',
+    'counterpartyId',
+    'enquiryId',
+    'id',
+    'status',
+    'activateAt',
+    'costWorkplace',
+    'createdAt',
+    'freeWorkplace',
+    'paidAt',
+    'tariffName',
+    'workplace',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    amount: () => ({ amount: this.amount }),
+    counterpartyId: () => ({ counterparty_id: this.counterpartyId }),
+    enquiryId: () => ({ enquiry_id: this.enquiryId }),
+    id: () => ({ id: this.id }),
+    status: () => ({ status: this.status }),
+    activateAt: () => ({ activate_at: this.activateAt }),
+    costWorkplace: () => ({ cost_workplace: this.costWorkplace }),
+    createdAt: () => ({ created_at: this.createdAt }),
+    freeWorkplace: () => ({ free_workplace: this.freeWorkplace }),
+    paidAt: () => ({ paid_at: this.paidAt }),
+    tariffName: () => ({ tariff_name: this.tariffName }),
+    workplace: () => ({ workplace: this.workplace }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): PaymentInvoiceUpdateResponseJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<PaymentInvoiceUpdateResponseJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface PdfVersionJSON {
   /* eslint-disable camelcase */
   url: string;
