@@ -5208,48 +5208,6 @@ export class CounterpartyCreateResponse implements TDProtoClass<CounterpartyCrea
   }
 }
 
-export interface CounterpartyDeleteRequestJSON {
-  /* eslint-disable camelcase */
-  counterparty_ids?: string;
-  /* eslint-enable camelcase */
-}
-
-export class CounterpartyDeleteRequest implements TDProtoClass<CounterpartyDeleteRequest> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param counterpartyIds DOCUMENTATION MISSING
-   */
-  constructor (
-    public counterpartyIds?: string,
-  ) {}
-
-  public static fromJSON (raw: CounterpartyDeleteRequestJSON): CounterpartyDeleteRequest {
-    return new CounterpartyDeleteRequest(
-      raw.counterparty_ids,
-    )
-  }
-
-  public mappableFields = [
-    'counterpartyIds',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    counterpartyIds: () => ({ counterparty_ids: this.counterpartyIds }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): CounterpartyDeleteRequestJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<CounterpartyDeleteRequestJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
 export interface CounterpartyGetRequestJSON {
   /* eslint-disable camelcase */
   accounting_dictionary_code?: string;
@@ -5362,7 +5320,6 @@ export interface CounterpartyUpdateRequestJSON {
   /* eslint-disable camelcase */
   counterparty_type: CounterpartyType;
   full_name: string;
-  id: string;
   legal_address: string;
   personal_account_id: string;
   physical_address: string;
@@ -5378,7 +5335,6 @@ export class CounterpartyUpdateRequest implements TDProtoClass<CounterpartyUpdat
    * MISSING CLASS DOCUMENTATION
    * @param counterpartyType DOCUMENTATION MISSING
    * @param fullName DOCUMENTATION MISSING
-   * @param id DOCUMENTATION MISSING
    * @param legalAddress DOCUMENTATION MISSING
    * @param personalAccountId DOCUMENTATION MISSING
    * @param physicalAddress DOCUMENTATION MISSING
@@ -5390,7 +5346,6 @@ export class CounterpartyUpdateRequest implements TDProtoClass<CounterpartyUpdat
   constructor (
     public counterpartyType: CounterpartyType,
     public fullName: string,
-    public id: string,
     public legalAddress: string,
     public personalAccountId: string,
     public physicalAddress: string,
@@ -5404,7 +5359,6 @@ export class CounterpartyUpdateRequest implements TDProtoClass<CounterpartyUpdat
     return new CounterpartyUpdateRequest(
       raw.counterparty_type,
       raw.full_name,
-      raw.id,
       raw.legal_address,
       raw.personal_account_id,
       raw.physical_address,
@@ -5418,7 +5372,6 @@ export class CounterpartyUpdateRequest implements TDProtoClass<CounterpartyUpdat
   public mappableFields = [
     'counterpartyType',
     'fullName',
-    'id',
     'legalAddress',
     'personalAccountId',
     'physicalAddress',
@@ -5432,7 +5385,6 @@ export class CounterpartyUpdateRequest implements TDProtoClass<CounterpartyUpdat
     /* eslint-disable camelcase */
     counterpartyType: () => ({ counterparty_type: this.counterpartyType }),
     fullName: () => ({ full_name: this.fullName }),
-    id: () => ({ id: this.id }),
     legalAddress: () => ({ legal_address: this.legalAddress }),
     personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
     physicalAddress: () => ({ physical_address: this.physicalAddress }),
