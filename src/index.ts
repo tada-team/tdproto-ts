@@ -21894,6 +21894,7 @@ export interface TeamJSON {
   notebot?: JID;
   owner?: ContactJSON;
   pinned?: boolean;
+  pinned_sort_ordering?: number;
   single_group?: JID;
   subscription?: SubscriptionJSON;
   task_importance_max?: number;
@@ -21935,6 +21936,7 @@ export class Team implements TDProtoClass<Team> {
    * @param notebot Сurrent team favorites bot, jid of chat
    * @param owner Team owner
    * @param pinned Team pinned
+   * @param pinnedSortOrdering Sort ordering for pinned team
    * @param singleGroup For single group teams, jid of chat
    * @param subscription Сurrent team subscription
    * @param taskImportanceMax Maximum value of task importance. Default is 5
@@ -21972,6 +21974,7 @@ export class Team implements TDProtoClass<Team> {
     public readonly notebot?: JID,
     public owner?: Contact,
     public pinned?: boolean,
+    public pinnedSortOrdering?: number,
     public readonly singleGroup?: JID,
     public subscription?: Subscription,
     public taskImportanceMax?: number,
@@ -22011,6 +22014,7 @@ export class Team implements TDProtoClass<Team> {
       raw.notebot,
       raw.owner && Contact.fromJSON(raw.owner),
       raw.pinned,
+      raw.pinned_sort_ordering,
       raw.single_group,
       raw.subscription && Subscription.fromJSON(raw.subscription),
       raw.task_importance_max,
@@ -22050,6 +22054,7 @@ export class Team implements TDProtoClass<Team> {
     'notebot',
     'owner',
     'pinned',
+    'pinnedSortOrdering',
     'singleGroup',
     'subscription',
     'taskImportanceMax',
@@ -22089,6 +22094,7 @@ export class Team implements TDProtoClass<Team> {
     notebot: () => ({ notebot: this.notebot }),
     owner: () => ({ owner: this.owner?.toJSON() }),
     pinned: () => ({ pinned: this.pinned }),
+    pinnedSortOrdering: () => ({ pinned_sort_ordering: this.pinnedSortOrdering }),
     singleGroup: () => ({ single_group: this.singleGroup }),
     subscription: () => ({ subscription: this.subscription?.toJSON() }),
     taskImportanceMax: () => ({ task_importance_max: this.taskImportanceMax }),
