@@ -40,6 +40,30 @@ export type Currency =
    | 'RUB'
    | 'USD'
 
+export type EnquiryPaymentStatus =
+   | 'ENQUIRY_PAYMENT_STATUS'
+   | 'ENQUIRY_PAYMENT_STATUS_WAITING_CONFIRMATION'
+   | 'ENQUIRY_PAYMENT_STATUS_WAITING_CREDITING'
+   | 'ENQUIRY_PAYMENT_STATUS_PAID'
+   | 'PAYMENT_TYPE_PAPER_DOCUMENT_MANAGEMENT'
+   | 'PAYMENT_TYPE_ELECTRONIC_DOCUMENT_MANAGEMENT'
+   | 'PAYMENT_TYPE_BANK_CARD'
+   | 'PAYMENT_TYPE_TECHNICAL'
+
+export type EnquiryStatus =
+   | 'ENQUIRY_STATUS_UNSPECIFIED'
+   | 'ENQUIRY_STATUS_WAITING'
+   | 'ENQUIRY_STATUS_CANCELLED'
+   | 'ENQUIRY_STATUS_ACTIVE'
+   | 'ENQUIRY_STATUS_EXPIRED'
+   | 'ENQUIRY_STATUS_DONE'
+
+export type EnquiryType =
+   | 'ENQUIRY_TYPE_UNSPECIFIED'
+   | 'ENQUIRY_TYPE_RENEWAL'
+   | 'ENQUIRY_TYPE_BASIC'
+   | 'ENQUIRY_TYPE_EXTENSION'
+
 export type GroupStatus =
    | 'admin'
    | 'member'
@@ -112,6 +136,9 @@ export type ParseState =
    | 'unpacking'
    | 'need_mapping'
    | 'generating'
+
+export type PaymentType =
+   | 'PAYMENT_TYPE_UNSPECIFIED'
 
 export type PersonalAccountStatus =
    | 'PERSONAL_ACCOUNT_STATUS_ACTIVE'
@@ -7224,6 +7251,540 @@ export class Emoji implements TDProtoClass<Emoji> {
   }
 }
 
+export interface EnquiryJSON {
+  /* eslint-disable camelcase */
+  amount: number;
+  enquiry_payment_status: EnquiryPaymentStatus;
+  enquiry_status: EnquiryStatus;
+  enquiry_type: EnquiryType;
+  free_workplace_count: number;
+  id: string;
+  payment_type: PaymentType;
+  period_days: number;
+  personal_account_id: string;
+  selectable_workplace_count: number;
+  tariff_name: string;
+  workplace_price: number;
+  activate_at?: string;
+  activation_date?: string;
+  actually_paid_at?: string;
+  created_at?: string;
+  credited_at?: string;
+  deactivation_date?: string;
+  expiration_at?: string;
+  file_name?: string;
+  fixation_paid_at?: string;
+  media_url?: string;
+  /* eslint-enable camelcase */
+}
+
+export class Enquiry implements TDProtoClass<Enquiry> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param amount DOCUMENTATION MISSING
+   * @param enquiryPaymentStatus DOCUMENTATION MISSING
+   * @param enquiryStatus DOCUMENTATION MISSING
+   * @param enquiryType DOCUMENTATION MISSING
+   * @param freeWorkplaceCount DOCUMENTATION MISSING
+   * @param id DOCUMENTATION MISSING
+   * @param paymentType DOCUMENTATION MISSING
+   * @param periodDays DOCUMENTATION MISSING
+   * @param personalAccountId DOCUMENTATION MISSING
+   * @param selectableWorkplaceCount DOCUMENTATION MISSING
+   * @param tariffName DOCUMENTATION MISSING
+   * @param workplacePrice DOCUMENTATION MISSING
+   * @param activateAt DOCUMENTATION MISSING
+   * @param activationDate DOCUMENTATION MISSING
+   * @param actuallyPaidAt DOCUMENTATION MISSING
+   * @param createdAt DOCUMENTATION MISSING
+   * @param creditedAt DOCUMENTATION MISSING
+   * @param deactivationDate DOCUMENTATION MISSING
+   * @param expirationAt DOCUMENTATION MISSING
+   * @param fileName DOCUMENTATION MISSING
+   * @param fixationPaidAt DOCUMENTATION MISSING
+   * @param mediaUrl DOCUMENTATION MISSING
+   */
+  constructor (
+    public amount: number,
+    public enquiryPaymentStatus: EnquiryPaymentStatus,
+    public enquiryStatus: EnquiryStatus,
+    public enquiryType: EnquiryType,
+    public freeWorkplaceCount: number,
+    public id: string,
+    public paymentType: PaymentType,
+    public periodDays: number,
+    public personalAccountId: string,
+    public selectableWorkplaceCount: number,
+    public tariffName: string,
+    public workplacePrice: number,
+    public activateAt?: string,
+    public activationDate?: string,
+    public actuallyPaidAt?: string,
+    public createdAt?: string,
+    public creditedAt?: string,
+    public deactivationDate?: string,
+    public expirationAt?: string,
+    public fileName?: string,
+    public fixationPaidAt?: string,
+    public mediaUrl?: string,
+  ) {}
+
+  public static fromJSON (raw: EnquiryJSON): Enquiry {
+    return new Enquiry(
+      raw.amount,
+      raw.enquiry_payment_status,
+      raw.enquiry_status,
+      raw.enquiry_type,
+      raw.free_workplace_count,
+      raw.id,
+      raw.payment_type,
+      raw.period_days,
+      raw.personal_account_id,
+      raw.selectable_workplace_count,
+      raw.tariff_name,
+      raw.workplace_price,
+      raw.activate_at,
+      raw.activation_date,
+      raw.actually_paid_at,
+      raw.created_at,
+      raw.credited_at,
+      raw.deactivation_date,
+      raw.expiration_at,
+      raw.file_name,
+      raw.fixation_paid_at,
+      raw.media_url,
+    )
+  }
+
+  public mappableFields = [
+    'amount',
+    'enquiryPaymentStatus',
+    'enquiryStatus',
+    'enquiryType',
+    'freeWorkplaceCount',
+    'id',
+    'paymentType',
+    'periodDays',
+    'personalAccountId',
+    'selectableWorkplaceCount',
+    'tariffName',
+    'workplacePrice',
+    'activateAt',
+    'activationDate',
+    'actuallyPaidAt',
+    'createdAt',
+    'creditedAt',
+    'deactivationDate',
+    'expirationAt',
+    'fileName',
+    'fixationPaidAt',
+    'mediaUrl',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    amount: () => ({ amount: this.amount }),
+    enquiryPaymentStatus: () => ({ enquiry_payment_status: this.enquiryPaymentStatus }),
+    enquiryStatus: () => ({ enquiry_status: this.enquiryStatus }),
+    enquiryType: () => ({ enquiry_type: this.enquiryType }),
+    freeWorkplaceCount: () => ({ free_workplace_count: this.freeWorkplaceCount }),
+    id: () => ({ id: this.id }),
+    paymentType: () => ({ payment_type: this.paymentType }),
+    periodDays: () => ({ period_days: this.periodDays }),
+    personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
+    selectableWorkplaceCount: () => ({ selectable_workplace_count: this.selectableWorkplaceCount }),
+    tariffName: () => ({ tariff_name: this.tariffName }),
+    workplacePrice: () => ({ workplace_price: this.workplacePrice }),
+    activateAt: () => ({ activate_at: this.activateAt }),
+    activationDate: () => ({ activation_date: this.activationDate }),
+    actuallyPaidAt: () => ({ actually_paid_at: this.actuallyPaidAt }),
+    createdAt: () => ({ created_at: this.createdAt }),
+    creditedAt: () => ({ credited_at: this.creditedAt }),
+    deactivationDate: () => ({ deactivation_date: this.deactivationDate }),
+    expirationAt: () => ({ expiration_at: this.expirationAt }),
+    fileName: () => ({ file_name: this.fileName }),
+    fixationPaidAt: () => ({ fixation_paid_at: this.fixationPaidAt }),
+    mediaUrl: () => ({ media_url: this.mediaUrl }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): EnquiryJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<EnquiryJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface EnquiryCreateRequestJSON {
+  /* eslint-disable camelcase */
+  counterparty_id: string;
+  selectable_tariff_id: string;
+  selectable_workplace_count: number;
+  /* eslint-enable camelcase */
+}
+
+export class EnquiryCreateRequest implements TDProtoClass<EnquiryCreateRequest> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param counterpartyId DOCUMENTATION MISSING
+   * @param selectableTariffId DOCUMENTATION MISSING
+   * @param selectableWorkplaceCount DOCUMENTATION MISSING
+   */
+  constructor (
+    public counterpartyId: string,
+    public selectableTariffId: string,
+    public selectableWorkplaceCount: number,
+  ) {}
+
+  public static fromJSON (raw: EnquiryCreateRequestJSON): EnquiryCreateRequest {
+    return new EnquiryCreateRequest(
+      raw.counterparty_id,
+      raw.selectable_tariff_id,
+      raw.selectable_workplace_count,
+    )
+  }
+
+  public mappableFields = [
+    'counterpartyId',
+    'selectableTariffId',
+    'selectableWorkplaceCount',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    counterpartyId: () => ({ counterparty_id: this.counterpartyId }),
+    selectableTariffId: () => ({ selectable_tariff_id: this.selectableTariffId }),
+    selectableWorkplaceCount: () => ({ selectable_workplace_count: this.selectableWorkplaceCount }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): EnquiryCreateRequestJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<EnquiryCreateRequestJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface EnquiryCreateResponseJSON {
+  /* eslint-disable camelcase */
+  amount: number;
+  enquiry_payment_status: EnquiryPaymentStatus;
+  enquiry_status: EnquiryStatus;
+  enquiry_type: EnquiryType;
+  free_workplace_count: number;
+  id: string;
+  payment_type: PaymentType;
+  period_days: number;
+  personal_account_id: string;
+  selectable_workplace_count: number;
+  tariff_name: string;
+  workplace_price: number;
+  activate_at?: string;
+  activation_date?: string;
+  actually_paid_at?: string;
+  created_at?: string;
+  credited_at?: string;
+  deactivation_date?: string;
+  expiration_at?: string;
+  file_name?: string;
+  fixation_paid_at?: string;
+  media_url?: string;
+  /* eslint-enable camelcase */
+}
+
+export class EnquiryCreateResponse implements TDProtoClass<EnquiryCreateResponse> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param amount DOCUMENTATION MISSING
+   * @param enquiryPaymentStatus DOCUMENTATION MISSING
+   * @param enquiryStatus DOCUMENTATION MISSING
+   * @param enquiryType DOCUMENTATION MISSING
+   * @param freeWorkplaceCount DOCUMENTATION MISSING
+   * @param id DOCUMENTATION MISSING
+   * @param paymentType DOCUMENTATION MISSING
+   * @param periodDays DOCUMENTATION MISSING
+   * @param personalAccountId DOCUMENTATION MISSING
+   * @param selectableWorkplaceCount DOCUMENTATION MISSING
+   * @param tariffName DOCUMENTATION MISSING
+   * @param workplacePrice DOCUMENTATION MISSING
+   * @param activateAt DOCUMENTATION MISSING
+   * @param activationDate DOCUMENTATION MISSING
+   * @param actuallyPaidAt DOCUMENTATION MISSING
+   * @param createdAt DOCUMENTATION MISSING
+   * @param creditedAt DOCUMENTATION MISSING
+   * @param deactivationDate DOCUMENTATION MISSING
+   * @param expirationAt DOCUMENTATION MISSING
+   * @param fileName DOCUMENTATION MISSING
+   * @param fixationPaidAt DOCUMENTATION MISSING
+   * @param mediaUrl DOCUMENTATION MISSING
+   */
+  constructor (
+    public amount: number,
+    public enquiryPaymentStatus: EnquiryPaymentStatus,
+    public enquiryStatus: EnquiryStatus,
+    public enquiryType: EnquiryType,
+    public freeWorkplaceCount: number,
+    public id: string,
+    public paymentType: PaymentType,
+    public periodDays: number,
+    public personalAccountId: string,
+    public selectableWorkplaceCount: number,
+    public tariffName: string,
+    public workplacePrice: number,
+    public activateAt?: string,
+    public activationDate?: string,
+    public actuallyPaidAt?: string,
+    public createdAt?: string,
+    public creditedAt?: string,
+    public deactivationDate?: string,
+    public expirationAt?: string,
+    public fileName?: string,
+    public fixationPaidAt?: string,
+    public mediaUrl?: string,
+  ) {}
+
+  public static fromJSON (raw: EnquiryCreateResponseJSON): EnquiryCreateResponse {
+    return new EnquiryCreateResponse(
+      raw.amount,
+      raw.enquiry_payment_status,
+      raw.enquiry_status,
+      raw.enquiry_type,
+      raw.free_workplace_count,
+      raw.id,
+      raw.payment_type,
+      raw.period_days,
+      raw.personal_account_id,
+      raw.selectable_workplace_count,
+      raw.tariff_name,
+      raw.workplace_price,
+      raw.activate_at,
+      raw.activation_date,
+      raw.actually_paid_at,
+      raw.created_at,
+      raw.credited_at,
+      raw.deactivation_date,
+      raw.expiration_at,
+      raw.file_name,
+      raw.fixation_paid_at,
+      raw.media_url,
+    )
+  }
+
+  public mappableFields = [
+    'amount',
+    'enquiryPaymentStatus',
+    'enquiryStatus',
+    'enquiryType',
+    'freeWorkplaceCount',
+    'id',
+    'paymentType',
+    'periodDays',
+    'personalAccountId',
+    'selectableWorkplaceCount',
+    'tariffName',
+    'workplacePrice',
+    'activateAt',
+    'activationDate',
+    'actuallyPaidAt',
+    'createdAt',
+    'creditedAt',
+    'deactivationDate',
+    'expirationAt',
+    'fileName',
+    'fixationPaidAt',
+    'mediaUrl',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    amount: () => ({ amount: this.amount }),
+    enquiryPaymentStatus: () => ({ enquiry_payment_status: this.enquiryPaymentStatus }),
+    enquiryStatus: () => ({ enquiry_status: this.enquiryStatus }),
+    enquiryType: () => ({ enquiry_type: this.enquiryType }),
+    freeWorkplaceCount: () => ({ free_workplace_count: this.freeWorkplaceCount }),
+    id: () => ({ id: this.id }),
+    paymentType: () => ({ payment_type: this.paymentType }),
+    periodDays: () => ({ period_days: this.periodDays }),
+    personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
+    selectableWorkplaceCount: () => ({ selectable_workplace_count: this.selectableWorkplaceCount }),
+    tariffName: () => ({ tariff_name: this.tariffName }),
+    workplacePrice: () => ({ workplace_price: this.workplacePrice }),
+    activateAt: () => ({ activate_at: this.activateAt }),
+    activationDate: () => ({ activation_date: this.activationDate }),
+    actuallyPaidAt: () => ({ actually_paid_at: this.actuallyPaidAt }),
+    createdAt: () => ({ created_at: this.createdAt }),
+    creditedAt: () => ({ credited_at: this.creditedAt }),
+    deactivationDate: () => ({ deactivation_date: this.deactivationDate }),
+    expirationAt: () => ({ expiration_at: this.expirationAt }),
+    fileName: () => ({ file_name: this.fileName }),
+    fixationPaidAt: () => ({ fixation_paid_at: this.fixationPaidAt }),
+    mediaUrl: () => ({ media_url: this.mediaUrl }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): EnquiryCreateResponseJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<EnquiryCreateResponseJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface EnquiryGetListRequestJSON {
+  /* eslint-disable camelcase */
+  date_activate_to?: string;
+  date_create_from?: string;
+  date_create_to?: string;
+  date_deactivate_to?: string;
+  enquiry_payment_status?: EnquiryPaymentStatus;
+  enquiry_status?: EnquiryStatus;
+  limit?: number;
+  offset?: number;
+  /* eslint-enable camelcase */
+}
+
+export class EnquiryGetListRequest implements TDProtoClass<EnquiryGetListRequest> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param dateActivateTo DOCUMENTATION MISSING
+   * @param dateCreateFrom DOCUMENTATION MISSING
+   * @param dateCreateTo DOCUMENTATION MISSING
+   * @param dateDeactivateTo DOCUMENTATION MISSING
+   * @param enquiryPaymentStatus DOCUMENTATION MISSING
+   * @param enquiryStatus DOCUMENTATION MISSING
+   * @param limit DOCUMENTATION MISSING
+   * @param offset DOCUMENTATION MISSING
+   */
+  constructor (
+    public dateActivateTo?: string,
+    public dateCreateFrom?: string,
+    public dateCreateTo?: string,
+    public dateDeactivateTo?: string,
+    public enquiryPaymentStatus?: EnquiryPaymentStatus,
+    public enquiryStatus?: EnquiryStatus,
+    public limit?: number,
+    public offset?: number,
+  ) {}
+
+  public static fromJSON (raw: EnquiryGetListRequestJSON): EnquiryGetListRequest {
+    return new EnquiryGetListRequest(
+      raw.date_activate_to,
+      raw.date_create_from,
+      raw.date_create_to,
+      raw.date_deactivate_to,
+      raw.enquiry_payment_status,
+      raw.enquiry_status,
+      raw.limit,
+      raw.offset,
+    )
+  }
+
+  public mappableFields = [
+    'dateActivateTo',
+    'dateCreateFrom',
+    'dateCreateTo',
+    'dateDeactivateTo',
+    'enquiryPaymentStatus',
+    'enquiryStatus',
+    'limit',
+    'offset',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    dateActivateTo: () => ({ date_activate_to: this.dateActivateTo }),
+    dateCreateFrom: () => ({ date_create_from: this.dateCreateFrom }),
+    dateCreateTo: () => ({ date_create_to: this.dateCreateTo }),
+    dateDeactivateTo: () => ({ date_deactivate_to: this.dateDeactivateTo }),
+    enquiryPaymentStatus: () => ({ enquiry_payment_status: this.enquiryPaymentStatus }),
+    enquiryStatus: () => ({ enquiry_status: this.enquiryStatus }),
+    limit: () => ({ limit: this.limit }),
+    offset: () => ({ offset: this.offset }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): EnquiryGetListRequestJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<EnquiryGetListRequestJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface EnquiryGetListResponseJSON {
+  /* eslint-disable camelcase */
+  count: number;
+  limit: number;
+  objects: EnquiryJSON[];
+  offset: number;
+  /* eslint-enable camelcase */
+}
+
+export class EnquiryGetListResponse implements TDProtoClass<EnquiryGetListResponse> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param count DOCUMENTATION MISSING
+   * @param limit DOCUMENTATION MISSING
+   * @param objects DOCUMENTATION MISSING
+   * @param offset DOCUMENTATION MISSING
+   */
+  constructor (
+    public count: number,
+    public limit: number,
+    public objects: Enquiry[],
+    public offset: number,
+  ) {}
+
+  public static fromJSON (raw: EnquiryGetListResponseJSON): EnquiryGetListResponse {
+    return new EnquiryGetListResponse(
+      raw.count,
+      raw.limit,
+      raw.objects.map(Enquiry.fromJSON),
+      raw.offset,
+    )
+  }
+
+  public mappableFields = [
+    'count',
+    'limit',
+    'objects',
+    'offset',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    count: () => ({ count: this.count }),
+    limit: () => ({ limit: this.limit }),
+    objects: () => ({ objects: this.objects.map(u => u.toJSON()) }),
+    offset: () => ({ offset: this.offset }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): EnquiryGetListResponseJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<EnquiryGetListResponseJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface FeaturesJSON {
   /* eslint-disable camelcase */
   afk_age: number;
@@ -12794,6 +13355,66 @@ export class OnlineContact implements TDProtoClass<OnlineContact> {
   }
 }
 
+export interface PaginatedBillingEnquiriesJSON {
+  /* eslint-disable camelcase */
+  count: number;
+  limit: number;
+  objects: EnquiryJSON[];
+  offset: number;
+  /* eslint-enable camelcase */
+}
+
+export class PaginatedBillingEnquiries implements TDProtoClass<PaginatedBillingEnquiries> {
+  /**
+   * Paginated billing enquirires
+   * @param count DOCUMENTATION MISSING
+   * @param limit DOCUMENTATION MISSING
+   * @param objects DOCUMENTATION MISSING
+   * @param offset DOCUMENTATION MISSING
+   */
+  constructor (
+    public count: number,
+    public limit: number,
+    public objects: Enquiry[],
+    public offset: number,
+  ) {}
+
+  public static fromJSON (raw: PaginatedBillingEnquiriesJSON): PaginatedBillingEnquiries {
+    return new PaginatedBillingEnquiries(
+      raw.count,
+      raw.limit,
+      raw.objects.map(Enquiry.fromJSON),
+      raw.offset,
+    )
+  }
+
+  public mappableFields = [
+    'count',
+    'limit',
+    'objects',
+    'offset',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    count: () => ({ count: this.count }),
+    limit: () => ({ limit: this.limit }),
+    objects: () => ({ objects: this.objects.map(u => u.toJSON()) }),
+    offset: () => ({ offset: this.offset }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): PaginatedBillingEnquiriesJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<PaginatedBillingEnquiriesJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface PaginatedChatsJSON {
   /* eslint-disable camelcase */
   count: number;
@@ -13481,600 +14102,6 @@ export class Payment implements TDProtoClass<Payment> {
 
   public toJSON (): PaymentJSON
   public toJSON (fields: Array<this['mappableFields'][number]>): Partial<PaymentJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface PaymentInvoiceJSON {
-  /* eslint-disable camelcase */
-  amount: number;
-  counterparty_id: string;
-  enquiry_id: string;
-  id: string;
-  status: string;
-  activate_at?: string;
-  cost_workplace?: string;
-  created_at?: string;
-  free_workplace?: string;
-  paid_at?: string;
-  tariff_name?: string;
-  workplace?: string;
-  /* eslint-enable camelcase */
-}
-
-export class PaymentInvoice implements TDProtoClass<PaymentInvoice> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param amount DOCUMENTATION MISSING
-   * @param counterpartyId DOCUMENTATION MISSING
-   * @param enquiryId DOCUMENTATION MISSING
-   * @param id DOCUMENTATION MISSING
-   * @param status DOCUMENTATION MISSING
-   * @param activateAt DOCUMENTATION MISSING
-   * @param costWorkplace DOCUMENTATION MISSING
-   * @param createdAt DOCUMENTATION MISSING
-   * @param freeWorkplace DOCUMENTATION MISSING
-   * @param paidAt DOCUMENTATION MISSING
-   * @param tariffName DOCUMENTATION MISSING
-   * @param workplace DOCUMENTATION MISSING
-   */
-  constructor (
-    public amount: number,
-    public counterpartyId: string,
-    public enquiryId: string,
-    public id: string,
-    public status: string,
-    public activateAt?: string,
-    public costWorkplace?: string,
-    public createdAt?: string,
-    public freeWorkplace?: string,
-    public paidAt?: string,
-    public tariffName?: string,
-    public workplace?: string,
-  ) {}
-
-  public static fromJSON (raw: PaymentInvoiceJSON): PaymentInvoice {
-    return new PaymentInvoice(
-      raw.amount,
-      raw.counterparty_id,
-      raw.enquiry_id,
-      raw.id,
-      raw.status,
-      raw.activate_at,
-      raw.cost_workplace,
-      raw.created_at,
-      raw.free_workplace,
-      raw.paid_at,
-      raw.tariff_name,
-      raw.workplace,
-    )
-  }
-
-  public mappableFields = [
-    'amount',
-    'counterpartyId',
-    'enquiryId',
-    'id',
-    'status',
-    'activateAt',
-    'costWorkplace',
-    'createdAt',
-    'freeWorkplace',
-    'paidAt',
-    'tariffName',
-    'workplace',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    amount: () => ({ amount: this.amount }),
-    counterpartyId: () => ({ counterparty_id: this.counterpartyId }),
-    enquiryId: () => ({ enquiry_id: this.enquiryId }),
-    id: () => ({ id: this.id }),
-    status: () => ({ status: this.status }),
-    activateAt: () => ({ activate_at: this.activateAt }),
-    costWorkplace: () => ({ cost_workplace: this.costWorkplace }),
-    createdAt: () => ({ created_at: this.createdAt }),
-    freeWorkplace: () => ({ free_workplace: this.freeWorkplace }),
-    paidAt: () => ({ paid_at: this.paidAt }),
-    tariffName: () => ({ tariff_name: this.tariffName }),
-    workplace: () => ({ workplace: this.workplace }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): PaymentInvoiceJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<PaymentInvoiceJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface PaymentInvoiceCreateRequestJSON {
-  /* eslint-disable camelcase */
-  counterparty_id: string;
-  enquiry_id: string;
-  status: string;
-  paid_at?: string;
-  /* eslint-enable camelcase */
-}
-
-export class PaymentInvoiceCreateRequest implements TDProtoClass<PaymentInvoiceCreateRequest> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param counterpartyId DOCUMENTATION MISSING
-   * @param enquiryId DOCUMENTATION MISSING
-   * @param status DOCUMENTATION MISSING
-   * @param paidAt DOCUMENTATION MISSING
-   */
-  constructor (
-    public counterpartyId: string,
-    public enquiryId: string,
-    public status: string,
-    public paidAt?: string,
-  ) {}
-
-  public static fromJSON (raw: PaymentInvoiceCreateRequestJSON): PaymentInvoiceCreateRequest {
-    return new PaymentInvoiceCreateRequest(
-      raw.counterparty_id,
-      raw.enquiry_id,
-      raw.status,
-      raw.paid_at,
-    )
-  }
-
-  public mappableFields = [
-    'counterpartyId',
-    'enquiryId',
-    'status',
-    'paidAt',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    counterpartyId: () => ({ counterparty_id: this.counterpartyId }),
-    enquiryId: () => ({ enquiry_id: this.enquiryId }),
-    status: () => ({ status: this.status }),
-    paidAt: () => ({ paid_at: this.paidAt }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): PaymentInvoiceCreateRequestJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<PaymentInvoiceCreateRequestJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface PaymentInvoiceCreateResponseJSON {
-  /* eslint-disable camelcase */
-  amount: number;
-  counterparty_id: string;
-  enquiry_id: string;
-  id: string;
-  status: string;
-  activate_at?: string;
-  cost_workplace?: string;
-  created_at?: string;
-  free_workplace?: string;
-  paid_at?: string;
-  tariff_name?: string;
-  workplace?: string;
-  /* eslint-enable camelcase */
-}
-
-export class PaymentInvoiceCreateResponse implements TDProtoClass<PaymentInvoiceCreateResponse> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param amount DOCUMENTATION MISSING
-   * @param counterpartyId DOCUMENTATION MISSING
-   * @param enquiryId DOCUMENTATION MISSING
-   * @param id DOCUMENTATION MISSING
-   * @param status DOCUMENTATION MISSING
-   * @param activateAt DOCUMENTATION MISSING
-   * @param costWorkplace DOCUMENTATION MISSING
-   * @param createdAt DOCUMENTATION MISSING
-   * @param freeWorkplace DOCUMENTATION MISSING
-   * @param paidAt DOCUMENTATION MISSING
-   * @param tariffName DOCUMENTATION MISSING
-   * @param workplace DOCUMENTATION MISSING
-   */
-  constructor (
-    public amount: number,
-    public counterpartyId: string,
-    public enquiryId: string,
-    public id: string,
-    public status: string,
-    public activateAt?: string,
-    public costWorkplace?: string,
-    public createdAt?: string,
-    public freeWorkplace?: string,
-    public paidAt?: string,
-    public tariffName?: string,
-    public workplace?: string,
-  ) {}
-
-  public static fromJSON (raw: PaymentInvoiceCreateResponseJSON): PaymentInvoiceCreateResponse {
-    return new PaymentInvoiceCreateResponse(
-      raw.amount,
-      raw.counterparty_id,
-      raw.enquiry_id,
-      raw.id,
-      raw.status,
-      raw.activate_at,
-      raw.cost_workplace,
-      raw.created_at,
-      raw.free_workplace,
-      raw.paid_at,
-      raw.tariff_name,
-      raw.workplace,
-    )
-  }
-
-  public mappableFields = [
-    'amount',
-    'counterpartyId',
-    'enquiryId',
-    'id',
-    'status',
-    'activateAt',
-    'costWorkplace',
-    'createdAt',
-    'freeWorkplace',
-    'paidAt',
-    'tariffName',
-    'workplace',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    amount: () => ({ amount: this.amount }),
-    counterpartyId: () => ({ counterparty_id: this.counterpartyId }),
-    enquiryId: () => ({ enquiry_id: this.enquiryId }),
-    id: () => ({ id: this.id }),
-    status: () => ({ status: this.status }),
-    activateAt: () => ({ activate_at: this.activateAt }),
-    costWorkplace: () => ({ cost_workplace: this.costWorkplace }),
-    createdAt: () => ({ created_at: this.createdAt }),
-    freeWorkplace: () => ({ free_workplace: this.freeWorkplace }),
-    paidAt: () => ({ paid_at: this.paidAt }),
-    tariffName: () => ({ tariff_name: this.tariffName }),
-    workplace: () => ({ workplace: this.workplace }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): PaymentInvoiceCreateResponseJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<PaymentInvoiceCreateResponseJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface PaymentInvoiceGetListRequestJSON {
-  /* eslint-disable camelcase */
-  counterparty_id?: string;
-  enquiry_id?: string;
-  limit?: number;
-  offset?: number;
-  status?: string;
-  /* eslint-enable camelcase */
-}
-
-export class PaymentInvoiceGetListRequest implements TDProtoClass<PaymentInvoiceGetListRequest> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param counterpartyId DOCUMENTATION MISSING
-   * @param enquiryId DOCUMENTATION MISSING
-   * @param limit DOCUMENTATION MISSING
-   * @param offset DOCUMENTATION MISSING
-   * @param status DOCUMENTATION MISSING
-   */
-  constructor (
-    public counterpartyId?: string,
-    public enquiryId?: string,
-    public limit?: number,
-    public offset?: number,
-    public status?: string,
-  ) {}
-
-  public static fromJSON (raw: PaymentInvoiceGetListRequestJSON): PaymentInvoiceGetListRequest {
-    return new PaymentInvoiceGetListRequest(
-      raw.counterparty_id,
-      raw.enquiry_id,
-      raw.limit,
-      raw.offset,
-      raw.status,
-    )
-  }
-
-  public mappableFields = [
-    'counterpartyId',
-    'enquiryId',
-    'limit',
-    'offset',
-    'status',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    counterpartyId: () => ({ counterparty_id: this.counterpartyId }),
-    enquiryId: () => ({ enquiry_id: this.enquiryId }),
-    limit: () => ({ limit: this.limit }),
-    offset: () => ({ offset: this.offset }),
-    status: () => ({ status: this.status }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): PaymentInvoiceGetListRequestJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<PaymentInvoiceGetListRequestJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface PaymentInvoiceGetListResponseJSON {
-  /* eslint-disable camelcase */
-  payment_invoice_list: PaymentInvoiceJSON[];
-  /* eslint-enable camelcase */
-}
-
-export class PaymentInvoiceGetListResponse implements TDProtoClass<PaymentInvoiceGetListResponse> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param paymentInvoiceList DOCUMENTATION MISSING
-   */
-  constructor (
-    public paymentInvoiceList: PaymentInvoice[],
-  ) {}
-
-  public static fromJSON (raw: PaymentInvoiceGetListResponseJSON): PaymentInvoiceGetListResponse {
-    return new PaymentInvoiceGetListResponse(
-      raw.payment_invoice_list.map(PaymentInvoice.fromJSON),
-    )
-  }
-
-  public mappableFields = [
-    'paymentInvoiceList',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    paymentInvoiceList: () => ({ payment_invoice_list: this.paymentInvoiceList.map(u => u.toJSON()) }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): PaymentInvoiceGetListResponseJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<PaymentInvoiceGetListResponseJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface PaymentInvoiceGetRequestJSON {
-  /* eslint-disable camelcase */
-  payment_invoice_ids: string;
-  /* eslint-enable camelcase */
-}
-
-export class PaymentInvoiceGetRequest implements TDProtoClass<PaymentInvoiceGetRequest> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param paymentInvoiceIds DOCUMENTATION MISSING
-   */
-  constructor (
-    public paymentInvoiceIds: string,
-  ) {}
-
-  public static fromJSON (raw: PaymentInvoiceGetRequestJSON): PaymentInvoiceGetRequest {
-    return new PaymentInvoiceGetRequest(
-      raw.payment_invoice_ids,
-    )
-  }
-
-  public mappableFields = [
-    'paymentInvoiceIds',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    paymentInvoiceIds: () => ({ payment_invoice_ids: this.paymentInvoiceIds }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): PaymentInvoiceGetRequestJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<PaymentInvoiceGetRequestJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface PaymentInvoiceUpdateRequestJSON {
-  /* eslint-disable camelcase */
-  counterparty_id: string;
-  enquiry_id: string;
-  paid_at: string;
-  status: string;
-  /* eslint-enable camelcase */
-}
-
-export class PaymentInvoiceUpdateRequest implements TDProtoClass<PaymentInvoiceUpdateRequest> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param counterpartyId DOCUMENTATION MISSING
-   * @param enquiryId DOCUMENTATION MISSING
-   * @param paidAt DOCUMENTATION MISSING
-   * @param status DOCUMENTATION MISSING
-   */
-  constructor (
-    public counterpartyId: string,
-    public enquiryId: string,
-    public paidAt: string,
-    public status: string,
-  ) {}
-
-  public static fromJSON (raw: PaymentInvoiceUpdateRequestJSON): PaymentInvoiceUpdateRequest {
-    return new PaymentInvoiceUpdateRequest(
-      raw.counterparty_id,
-      raw.enquiry_id,
-      raw.paid_at,
-      raw.status,
-    )
-  }
-
-  public mappableFields = [
-    'counterpartyId',
-    'enquiryId',
-    'paidAt',
-    'status',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    counterpartyId: () => ({ counterparty_id: this.counterpartyId }),
-    enquiryId: () => ({ enquiry_id: this.enquiryId }),
-    paidAt: () => ({ paid_at: this.paidAt }),
-    status: () => ({ status: this.status }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): PaymentInvoiceUpdateRequestJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<PaymentInvoiceUpdateRequestJSON>
-  public toJSON (fields?: Array<this['mappableFields'][number]>) {
-    if (fields && fields.length > 0) {
-      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
-    } else {
-      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
-    }
-  }
-}
-
-export interface PaymentInvoiceUpdateResponseJSON {
-  /* eslint-disable camelcase */
-  amount: number;
-  counterparty_id: string;
-  enquiry_id: string;
-  id: string;
-  status: string;
-  activate_at?: string;
-  cost_workplace?: string;
-  created_at?: string;
-  free_workplace?: string;
-  paid_at?: string;
-  tariff_name?: string;
-  workplace?: string;
-  /* eslint-enable camelcase */
-}
-
-export class PaymentInvoiceUpdateResponse implements TDProtoClass<PaymentInvoiceUpdateResponse> {
-  /**
-   * MISSING CLASS DOCUMENTATION
-   * @param amount DOCUMENTATION MISSING
-   * @param counterpartyId DOCUMENTATION MISSING
-   * @param enquiryId DOCUMENTATION MISSING
-   * @param id DOCUMENTATION MISSING
-   * @param status DOCUMENTATION MISSING
-   * @param activateAt DOCUMENTATION MISSING
-   * @param costWorkplace DOCUMENTATION MISSING
-   * @param createdAt DOCUMENTATION MISSING
-   * @param freeWorkplace DOCUMENTATION MISSING
-   * @param paidAt DOCUMENTATION MISSING
-   * @param tariffName DOCUMENTATION MISSING
-   * @param workplace DOCUMENTATION MISSING
-   */
-  constructor (
-    public amount: number,
-    public counterpartyId: string,
-    public enquiryId: string,
-    public id: string,
-    public status: string,
-    public activateAt?: string,
-    public costWorkplace?: string,
-    public createdAt?: string,
-    public freeWorkplace?: string,
-    public paidAt?: string,
-    public tariffName?: string,
-    public workplace?: string,
-  ) {}
-
-  public static fromJSON (raw: PaymentInvoiceUpdateResponseJSON): PaymentInvoiceUpdateResponse {
-    return new PaymentInvoiceUpdateResponse(
-      raw.amount,
-      raw.counterparty_id,
-      raw.enquiry_id,
-      raw.id,
-      raw.status,
-      raw.activate_at,
-      raw.cost_workplace,
-      raw.created_at,
-      raw.free_workplace,
-      raw.paid_at,
-      raw.tariff_name,
-      raw.workplace,
-    )
-  }
-
-  public mappableFields = [
-    'amount',
-    'counterpartyId',
-    'enquiryId',
-    'id',
-    'status',
-    'activateAt',
-    'costWorkplace',
-    'createdAt',
-    'freeWorkplace',
-    'paidAt',
-    'tariffName',
-    'workplace',
-  ] as const
-
-  readonly #mapper = {
-    /* eslint-disable camelcase */
-    amount: () => ({ amount: this.amount }),
-    counterpartyId: () => ({ counterparty_id: this.counterpartyId }),
-    enquiryId: () => ({ enquiry_id: this.enquiryId }),
-    id: () => ({ id: this.id }),
-    status: () => ({ status: this.status }),
-    activateAt: () => ({ activate_at: this.activateAt }),
-    costWorkplace: () => ({ cost_workplace: this.costWorkplace }),
-    createdAt: () => ({ created_at: this.createdAt }),
-    freeWorkplace: () => ({ free_workplace: this.freeWorkplace }),
-    paidAt: () => ({ paid_at: this.paidAt }),
-    tariffName: () => ({ tariff_name: this.tariffName }),
-    workplace: () => ({ workplace: this.workplace }),
-    /* eslint-enable camelcase */
-  }
-
-  public toJSON (): PaymentInvoiceUpdateResponseJSON
-  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<PaymentInvoiceUpdateResponseJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
