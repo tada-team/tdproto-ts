@@ -7270,8 +7270,10 @@ export interface EnquiryJSON {
   actually_paid_at?: string;
   created_at?: string;
   credited_at?: string;
+  deactivate_at?: string;
   deactivation_date?: string;
-  expiration_at?: string;
+  expiration_date?: string;
+  expired_at?: string;
   file_name?: string;
   fixation_paid_at?: string;
   media_url?: string;
@@ -7298,8 +7300,10 @@ export class Enquiry implements TDProtoClass<Enquiry> {
    * @param actuallyPaidAt DOCUMENTATION MISSING
    * @param createdAt DOCUMENTATION MISSING
    * @param creditedAt DOCUMENTATION MISSING
+   * @param deactivateAt DOCUMENTATION MISSING
    * @param deactivationDate DOCUMENTATION MISSING
-   * @param expirationAt DOCUMENTATION MISSING
+   * @param expirationDate DOCUMENTATION MISSING
+   * @param expiredAt DOCUMENTATION MISSING
    * @param fileName DOCUMENTATION MISSING
    * @param fixationPaidAt DOCUMENTATION MISSING
    * @param mediaUrl DOCUMENTATION MISSING
@@ -7322,8 +7326,10 @@ export class Enquiry implements TDProtoClass<Enquiry> {
     public actuallyPaidAt?: string,
     public createdAt?: string,
     public creditedAt?: string,
+    public deactivateAt?: string,
     public deactivationDate?: string,
-    public expirationAt?: string,
+    public expirationDate?: string,
+    public expiredAt?: string,
     public fileName?: string,
     public fixationPaidAt?: string,
     public mediaUrl?: string,
@@ -7348,8 +7354,10 @@ export class Enquiry implements TDProtoClass<Enquiry> {
       raw.actually_paid_at,
       raw.created_at,
       raw.credited_at,
+      raw.deactivate_at,
       raw.deactivation_date,
-      raw.expiration_at,
+      raw.expiration_date,
+      raw.expired_at,
       raw.file_name,
       raw.fixation_paid_at,
       raw.media_url,
@@ -7374,8 +7382,10 @@ export class Enquiry implements TDProtoClass<Enquiry> {
     'actuallyPaidAt',
     'createdAt',
     'creditedAt',
+    'deactivateAt',
     'deactivationDate',
-    'expirationAt',
+    'expirationDate',
+    'expiredAt',
     'fileName',
     'fixationPaidAt',
     'mediaUrl',
@@ -7400,8 +7410,10 @@ export class Enquiry implements TDProtoClass<Enquiry> {
     actuallyPaidAt: () => ({ actually_paid_at: this.actuallyPaidAt }),
     createdAt: () => ({ created_at: this.createdAt }),
     creditedAt: () => ({ credited_at: this.creditedAt }),
+    deactivateAt: () => ({ deactivate_at: this.deactivateAt }),
     deactivationDate: () => ({ deactivation_date: this.deactivationDate }),
-    expirationAt: () => ({ expiration_at: this.expirationAt }),
+    expirationDate: () => ({ expiration_date: this.expirationDate }),
+    expiredAt: () => ({ expired_at: this.expiredAt }),
     fileName: () => ({ file_name: this.fileName }),
     fixationPaidAt: () => ({ fixation_paid_at: this.fixationPaidAt }),
     mediaUrl: () => ({ media_url: this.mediaUrl }),
@@ -7492,8 +7504,10 @@ export interface EnquiryCreateResponseJSON {
   actually_paid_at?: string;
   created_at?: string;
   credited_at?: string;
+  deactivate_at?: string;
   deactivation_date?: string;
-  expiration_at?: string;
+  expiration_date?: string;
+  expired_at?: string;
   file_name?: string;
   fixation_paid_at?: string;
   media_url?: string;
@@ -7520,8 +7534,10 @@ export class EnquiryCreateResponse implements TDProtoClass<EnquiryCreateResponse
    * @param actuallyPaidAt DOCUMENTATION MISSING
    * @param createdAt DOCUMENTATION MISSING
    * @param creditedAt DOCUMENTATION MISSING
+   * @param deactivateAt DOCUMENTATION MISSING
    * @param deactivationDate DOCUMENTATION MISSING
-   * @param expirationAt DOCUMENTATION MISSING
+   * @param expirationDate DOCUMENTATION MISSING
+   * @param expiredAt DOCUMENTATION MISSING
    * @param fileName DOCUMENTATION MISSING
    * @param fixationPaidAt DOCUMENTATION MISSING
    * @param mediaUrl DOCUMENTATION MISSING
@@ -7544,8 +7560,10 @@ export class EnquiryCreateResponse implements TDProtoClass<EnquiryCreateResponse
     public actuallyPaidAt?: string,
     public createdAt?: string,
     public creditedAt?: string,
+    public deactivateAt?: string,
     public deactivationDate?: string,
-    public expirationAt?: string,
+    public expirationDate?: string,
+    public expiredAt?: string,
     public fileName?: string,
     public fixationPaidAt?: string,
     public mediaUrl?: string,
@@ -7570,8 +7588,10 @@ export class EnquiryCreateResponse implements TDProtoClass<EnquiryCreateResponse
       raw.actually_paid_at,
       raw.created_at,
       raw.credited_at,
+      raw.deactivate_at,
       raw.deactivation_date,
-      raw.expiration_at,
+      raw.expiration_date,
+      raw.expired_at,
       raw.file_name,
       raw.fixation_paid_at,
       raw.media_url,
@@ -7596,8 +7616,10 @@ export class EnquiryCreateResponse implements TDProtoClass<EnquiryCreateResponse
     'actuallyPaidAt',
     'createdAt',
     'creditedAt',
+    'deactivateAt',
     'deactivationDate',
-    'expirationAt',
+    'expirationDate',
+    'expiredAt',
     'fileName',
     'fixationPaidAt',
     'mediaUrl',
@@ -7622,8 +7644,10 @@ export class EnquiryCreateResponse implements TDProtoClass<EnquiryCreateResponse
     actuallyPaidAt: () => ({ actually_paid_at: this.actuallyPaidAt }),
     createdAt: () => ({ created_at: this.createdAt }),
     creditedAt: () => ({ credited_at: this.creditedAt }),
+    deactivateAt: () => ({ deactivate_at: this.deactivateAt }),
     deactivationDate: () => ({ deactivation_date: this.deactivationDate }),
-    expirationAt: () => ({ expiration_at: this.expirationAt }),
+    expirationDate: () => ({ expiration_date: this.expirationDate }),
+    expiredAt: () => ({ expired_at: this.expiredAt }),
     fileName: () => ({ file_name: this.fileName }),
     fixationPaidAt: () => ({ fixation_paid_at: this.fixationPaidAt }),
     mediaUrl: () => ({ media_url: this.mediaUrl }),
