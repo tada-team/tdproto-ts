@@ -40,26 +40,13 @@ export type Currency =
    | 'RUB'
    | 'USD'
 
-export type EnquiryPaymentStatus =
-   | 'ENQUIRY_PAYMENT_STATUS'
-   | 'ENQUIRY_PAYMENT_STATUS_WAITING_CONFIRMATION'
-   | 'ENQUIRY_PAYMENT_STATUS_WAITING_CREDITING'
-   | 'ENQUIRY_PAYMENT_STATUS_PAID'
-
 export type EnquiryStatus =
    | 'ENQUIRY_STATUS_UNSPECIFIED'
-   | 'ENQUIRY_STATUS_WAITING'
-   | 'ENQUIRY_STATUS_CANCELLED'
-   | 'ENQUIRY_STATUS_ACTIVE'
+   | 'ENQUIRY_STATUS_PAID'
    | 'ENQUIRY_STATUS_EXPIRED'
-   | 'ENQUIRY_STATUS_DONE'
-
-export type EnquiryStatusFilter =
-   | 'ENQUIRY_STATUS_FILTER_PAID'
-   | 'ENQUIRY_STATUS_FILTER_EXPIRED'
-   | 'ENQUIRY_STATUS_FILTER_CANCELLED'
-   | 'ENQUIRY_STATUS_FILTER_WAITING_CONFIRMATION'
-   | 'ENQUIRY_STATUS_FILTER_WAITING_CREDITING'
+   | 'ENQUIRY_STATUS_CANCELLED'
+   | 'ENQUIRY_STATUS_WAITING_CONFIRMATION'
+   | 'ENQUIRY_STATUS_WAITING_CREDITING'
 
 export type EnquiryType =
    | 'ENQUIRY_TYPE_UNSPECIFIED'
@@ -7261,8 +7248,6 @@ export class Emoji implements TDProtoClass<Emoji> {
 export interface EnquiryJSON {
   /* eslint-disable camelcase */
   amount: number;
-  enquiry_payment_status: EnquiryPaymentStatus;
-  enquiry_status: EnquiryStatus;
   enquiry_type: EnquiryType;
   free_workplace_count: number;
   id: string;
@@ -7270,6 +7255,7 @@ export interface EnquiryJSON {
   period_days: number;
   personal_account_id: string;
   selectable_workplace_count: number;
+  status: EnquiryStatus;
   tariff_name: string;
   workplace_price: number;
   activate_at?: string;
@@ -7291,8 +7277,6 @@ export class Enquiry implements TDProtoClass<Enquiry> {
   /**
    * MISSING CLASS DOCUMENTATION
    * @param amount DOCUMENTATION MISSING
-   * @param enquiryPaymentStatus DOCUMENTATION MISSING
-   * @param enquiryStatus DOCUMENTATION MISSING
    * @param enquiryType DOCUMENTATION MISSING
    * @param freeWorkplaceCount DOCUMENTATION MISSING
    * @param id DOCUMENTATION MISSING
@@ -7300,6 +7284,7 @@ export class Enquiry implements TDProtoClass<Enquiry> {
    * @param periodDays DOCUMENTATION MISSING
    * @param personalAccountId DOCUMENTATION MISSING
    * @param selectableWorkplaceCount DOCUMENTATION MISSING
+   * @param status DOCUMENTATION MISSING
    * @param tariffName DOCUMENTATION MISSING
    * @param workplacePrice DOCUMENTATION MISSING
    * @param activateAt DOCUMENTATION MISSING
@@ -7317,8 +7302,6 @@ export class Enquiry implements TDProtoClass<Enquiry> {
    */
   constructor (
     public amount: number,
-    public enquiryPaymentStatus: EnquiryPaymentStatus,
-    public enquiryStatus: EnquiryStatus,
     public enquiryType: EnquiryType,
     public freeWorkplaceCount: number,
     public id: string,
@@ -7326,6 +7309,7 @@ export class Enquiry implements TDProtoClass<Enquiry> {
     public periodDays: number,
     public personalAccountId: string,
     public selectableWorkplaceCount: number,
+    public status: EnquiryStatus,
     public tariffName: string,
     public workplacePrice: number,
     public activateAt?: string,
@@ -7345,8 +7329,6 @@ export class Enquiry implements TDProtoClass<Enquiry> {
   public static fromJSON (raw: EnquiryJSON): Enquiry {
     return new Enquiry(
       raw.amount,
-      raw.enquiry_payment_status,
-      raw.enquiry_status,
       raw.enquiry_type,
       raw.free_workplace_count,
       raw.id,
@@ -7354,6 +7336,7 @@ export class Enquiry implements TDProtoClass<Enquiry> {
       raw.period_days,
       raw.personal_account_id,
       raw.selectable_workplace_count,
+      raw.status,
       raw.tariff_name,
       raw.workplace_price,
       raw.activate_at,
@@ -7373,8 +7356,6 @@ export class Enquiry implements TDProtoClass<Enquiry> {
 
   public mappableFields = [
     'amount',
-    'enquiryPaymentStatus',
-    'enquiryStatus',
     'enquiryType',
     'freeWorkplaceCount',
     'id',
@@ -7382,6 +7363,7 @@ export class Enquiry implements TDProtoClass<Enquiry> {
     'periodDays',
     'personalAccountId',
     'selectableWorkplaceCount',
+    'status',
     'tariffName',
     'workplacePrice',
     'activateAt',
@@ -7401,8 +7383,6 @@ export class Enquiry implements TDProtoClass<Enquiry> {
   readonly #mapper = {
     /* eslint-disable camelcase */
     amount: () => ({ amount: this.amount }),
-    enquiryPaymentStatus: () => ({ enquiry_payment_status: this.enquiryPaymentStatus }),
-    enquiryStatus: () => ({ enquiry_status: this.enquiryStatus }),
     enquiryType: () => ({ enquiry_type: this.enquiryType }),
     freeWorkplaceCount: () => ({ free_workplace_count: this.freeWorkplaceCount }),
     id: () => ({ id: this.id }),
@@ -7410,6 +7390,7 @@ export class Enquiry implements TDProtoClass<Enquiry> {
     periodDays: () => ({ period_days: this.periodDays }),
     personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
     selectableWorkplaceCount: () => ({ selectable_workplace_count: this.selectableWorkplaceCount }),
+    status: () => ({ status: this.status }),
     tariffName: () => ({ tariff_name: this.tariffName }),
     workplacePrice: () => ({ workplace_price: this.workplacePrice }),
     activateAt: () => ({ activate_at: this.activateAt }),
@@ -7495,8 +7476,6 @@ export class EnquiryCreateRequest implements TDProtoClass<EnquiryCreateRequest> 
 export interface EnquiryCreateResponseJSON {
   /* eslint-disable camelcase */
   amount: number;
-  enquiry_payment_status: EnquiryPaymentStatus;
-  enquiry_status: EnquiryStatus;
   enquiry_type: EnquiryType;
   free_workplace_count: number;
   id: string;
@@ -7504,6 +7483,7 @@ export interface EnquiryCreateResponseJSON {
   period_days: number;
   personal_account_id: string;
   selectable_workplace_count: number;
+  status: EnquiryStatus;
   tariff_name: string;
   workplace_price: number;
   activate_at?: string;
@@ -7525,8 +7505,6 @@ export class EnquiryCreateResponse implements TDProtoClass<EnquiryCreateResponse
   /**
    * MISSING CLASS DOCUMENTATION
    * @param amount DOCUMENTATION MISSING
-   * @param enquiryPaymentStatus DOCUMENTATION MISSING
-   * @param enquiryStatus DOCUMENTATION MISSING
    * @param enquiryType DOCUMENTATION MISSING
    * @param freeWorkplaceCount DOCUMENTATION MISSING
    * @param id DOCUMENTATION MISSING
@@ -7534,6 +7512,7 @@ export class EnquiryCreateResponse implements TDProtoClass<EnquiryCreateResponse
    * @param periodDays DOCUMENTATION MISSING
    * @param personalAccountId DOCUMENTATION MISSING
    * @param selectableWorkplaceCount DOCUMENTATION MISSING
+   * @param status DOCUMENTATION MISSING
    * @param tariffName DOCUMENTATION MISSING
    * @param workplacePrice DOCUMENTATION MISSING
    * @param activateAt DOCUMENTATION MISSING
@@ -7551,8 +7530,6 @@ export class EnquiryCreateResponse implements TDProtoClass<EnquiryCreateResponse
    */
   constructor (
     public amount: number,
-    public enquiryPaymentStatus: EnquiryPaymentStatus,
-    public enquiryStatus: EnquiryStatus,
     public enquiryType: EnquiryType,
     public freeWorkplaceCount: number,
     public id: string,
@@ -7560,6 +7537,7 @@ export class EnquiryCreateResponse implements TDProtoClass<EnquiryCreateResponse
     public periodDays: number,
     public personalAccountId: string,
     public selectableWorkplaceCount: number,
+    public status: EnquiryStatus,
     public tariffName: string,
     public workplacePrice: number,
     public activateAt?: string,
@@ -7579,8 +7557,6 @@ export class EnquiryCreateResponse implements TDProtoClass<EnquiryCreateResponse
   public static fromJSON (raw: EnquiryCreateResponseJSON): EnquiryCreateResponse {
     return new EnquiryCreateResponse(
       raw.amount,
-      raw.enquiry_payment_status,
-      raw.enquiry_status,
       raw.enquiry_type,
       raw.free_workplace_count,
       raw.id,
@@ -7588,6 +7564,7 @@ export class EnquiryCreateResponse implements TDProtoClass<EnquiryCreateResponse
       raw.period_days,
       raw.personal_account_id,
       raw.selectable_workplace_count,
+      raw.status,
       raw.tariff_name,
       raw.workplace_price,
       raw.activate_at,
@@ -7607,8 +7584,6 @@ export class EnquiryCreateResponse implements TDProtoClass<EnquiryCreateResponse
 
   public mappableFields = [
     'amount',
-    'enquiryPaymentStatus',
-    'enquiryStatus',
     'enquiryType',
     'freeWorkplaceCount',
     'id',
@@ -7616,6 +7591,7 @@ export class EnquiryCreateResponse implements TDProtoClass<EnquiryCreateResponse
     'periodDays',
     'personalAccountId',
     'selectableWorkplaceCount',
+    'status',
     'tariffName',
     'workplacePrice',
     'activateAt',
@@ -7635,8 +7611,6 @@ export class EnquiryCreateResponse implements TDProtoClass<EnquiryCreateResponse
   readonly #mapper = {
     /* eslint-disable camelcase */
     amount: () => ({ amount: this.amount }),
-    enquiryPaymentStatus: () => ({ enquiry_payment_status: this.enquiryPaymentStatus }),
-    enquiryStatus: () => ({ enquiry_status: this.enquiryStatus }),
     enquiryType: () => ({ enquiry_type: this.enquiryType }),
     freeWorkplaceCount: () => ({ free_workplace_count: this.freeWorkplaceCount }),
     id: () => ({ id: this.id }),
@@ -7644,6 +7618,7 @@ export class EnquiryCreateResponse implements TDProtoClass<EnquiryCreateResponse
     periodDays: () => ({ period_days: this.periodDays }),
     personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
     selectableWorkplaceCount: () => ({ selectable_workplace_count: this.selectableWorkplaceCount }),
+    status: () => ({ status: this.status }),
     tariffName: () => ({ tariff_name: this.tariffName }),
     workplacePrice: () => ({ workplace_price: this.workplacePrice }),
     activateAt: () => ({ activate_at: this.activateAt }),
@@ -7678,7 +7653,7 @@ export interface EnquiryGetListRequestJSON {
   date_create_from?: string;
   date_create_to?: string;
   date_deactivate_to?: string;
-  enquiry_status_filter?: EnquiryStatusFilter;
+  enquiry_status_filter?: EnquiryStatus;
   limit?: number;
   offset?: number;
   /* eslint-enable camelcase */
@@ -7700,7 +7675,7 @@ export class EnquiryGetListRequest implements TDProtoClass<EnquiryGetListRequest
     public dateCreateFrom?: string,
     public dateCreateTo?: string,
     public dateDeactivateTo?: string,
-    public enquiryStatusFilter?: EnquiryStatusFilter,
+    public enquiryStatusFilter?: EnquiryStatus,
     public limit?: number,
     public offset?: number,
   ) {}
