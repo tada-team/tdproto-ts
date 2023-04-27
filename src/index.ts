@@ -14631,12 +14631,13 @@ export class Resp implements TDProtoClass<Resp> {
 
 export interface ResponsiblePersonJSON {
   /* eslint-disable camelcase */
-  counterparty_id: string;
+  display_name: string;
   email: string;
   first_name: string;
   id: string;
   last_name: string;
   phone: string;
+  held_post?: string;
   patronymic?: string;
   /* eslint-enable camelcase */
 }
@@ -14644,54 +14645,59 @@ export interface ResponsiblePersonJSON {
 export class ResponsiblePerson implements TDProtoClass<ResponsiblePerson> {
   /**
    * MISSING CLASS DOCUMENTATION
-   * @param counterpartyId DOCUMENTATION MISSING
+   * @param displayName DOCUMENTATION MISSING
    * @param email DOCUMENTATION MISSING
    * @param firstName DOCUMENTATION MISSING
    * @param id DOCUMENTATION MISSING
    * @param lastName DOCUMENTATION MISSING
    * @param phone DOCUMENTATION MISSING
+   * @param heldPost DOCUMENTATION MISSING
    * @param patronymic DOCUMENTATION MISSING
    */
   constructor (
-    public counterpartyId: string,
+    public displayName: string,
     public email: string,
     public firstName: string,
     public id: string,
     public lastName: string,
     public phone: string,
+    public heldPost?: string,
     public patronymic?: string,
   ) {}
 
   public static fromJSON (raw: ResponsiblePersonJSON): ResponsiblePerson {
     return new ResponsiblePerson(
-      raw.counterparty_id,
+      raw.display_name,
       raw.email,
       raw.first_name,
       raw.id,
       raw.last_name,
       raw.phone,
+      raw.held_post,
       raw.patronymic,
     )
   }
 
   public mappableFields = [
-    'counterpartyId',
+    'displayName',
     'email',
     'firstName',
     'id',
     'lastName',
     'phone',
+    'heldPost',
     'patronymic',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    counterpartyId: () => ({ counterparty_id: this.counterpartyId }),
+    displayName: () => ({ display_name: this.displayName }),
     email: () => ({ email: this.email }),
     firstName: () => ({ first_name: this.firstName }),
     id: () => ({ id: this.id }),
     lastName: () => ({ last_name: this.lastName }),
     phone: () => ({ phone: this.phone }),
+    heldPost: () => ({ held_post: this.heldPost }),
     patronymic: () => ({ patronymic: this.patronymic }),
     /* eslint-enable camelcase */
   }
@@ -14709,11 +14715,12 @@ export class ResponsiblePerson implements TDProtoClass<ResponsiblePerson> {
 
 export interface ResponsiblePersonCreateRequestJSON {
   /* eslint-disable camelcase */
-  counterparty_id: string;
   email: string;
   first_name: string;
   last_name: string;
+  personal_account_id: string;
   phone: string;
+  held_post?: string;
   patronymic?: string;
   /* eslint-enable camelcase */
 }
@@ -14721,49 +14728,54 @@ export interface ResponsiblePersonCreateRequestJSON {
 export class ResponsiblePersonCreateRequest implements TDProtoClass<ResponsiblePersonCreateRequest> {
   /**
    * MISSING CLASS DOCUMENTATION
-   * @param counterpartyId DOCUMENTATION MISSING
    * @param email DOCUMENTATION MISSING
    * @param firstName DOCUMENTATION MISSING
    * @param lastName DOCUMENTATION MISSING
+   * @param personalAccountId DOCUMENTATION MISSING
    * @param phone DOCUMENTATION MISSING
+   * @param heldPost DOCUMENTATION MISSING
    * @param patronymic DOCUMENTATION MISSING
    */
   constructor (
-    public counterpartyId: string,
     public email: string,
     public firstName: string,
     public lastName: string,
+    public personalAccountId: string,
     public phone: string,
+    public heldPost?: string,
     public patronymic?: string,
   ) {}
 
   public static fromJSON (raw: ResponsiblePersonCreateRequestJSON): ResponsiblePersonCreateRequest {
     return new ResponsiblePersonCreateRequest(
-      raw.counterparty_id,
       raw.email,
       raw.first_name,
       raw.last_name,
+      raw.personal_account_id,
       raw.phone,
+      raw.held_post,
       raw.patronymic,
     )
   }
 
   public mappableFields = [
-    'counterpartyId',
     'email',
     'firstName',
     'lastName',
+    'personalAccountId',
     'phone',
+    'heldPost',
     'patronymic',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    counterpartyId: () => ({ counterparty_id: this.counterpartyId }),
     email: () => ({ email: this.email }),
     firstName: () => ({ first_name: this.firstName }),
     lastName: () => ({ last_name: this.lastName }),
+    personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
     phone: () => ({ phone: this.phone }),
+    heldPost: () => ({ held_post: this.heldPost }),
     patronymic: () => ({ patronymic: this.patronymic }),
     /* eslint-enable camelcase */
   }
@@ -14781,12 +14793,13 @@ export class ResponsiblePersonCreateRequest implements TDProtoClass<ResponsibleP
 
 export interface ResponsiblePersonCreateResponseJSON {
   /* eslint-disable camelcase */
-  counterparty_id: string;
+  display_name: string;
   email: string;
   first_name: string;
   id: string;
   last_name: string;
   phone: string;
+  held_post?: string;
   patronymic?: string;
   /* eslint-enable camelcase */
 }
@@ -14794,54 +14807,59 @@ export interface ResponsiblePersonCreateResponseJSON {
 export class ResponsiblePersonCreateResponse implements TDProtoClass<ResponsiblePersonCreateResponse> {
   /**
    * MISSING CLASS DOCUMENTATION
-   * @param counterpartyId DOCUMENTATION MISSING
+   * @param displayName DOCUMENTATION MISSING
    * @param email DOCUMENTATION MISSING
    * @param firstName DOCUMENTATION MISSING
    * @param id DOCUMENTATION MISSING
    * @param lastName DOCUMENTATION MISSING
    * @param phone DOCUMENTATION MISSING
+   * @param heldPost DOCUMENTATION MISSING
    * @param patronymic DOCUMENTATION MISSING
    */
   constructor (
-    public counterpartyId: string,
+    public displayName: string,
     public email: string,
     public firstName: string,
     public id: string,
     public lastName: string,
     public phone: string,
+    public heldPost?: string,
     public patronymic?: string,
   ) {}
 
   public static fromJSON (raw: ResponsiblePersonCreateResponseJSON): ResponsiblePersonCreateResponse {
     return new ResponsiblePersonCreateResponse(
-      raw.counterparty_id,
+      raw.display_name,
       raw.email,
       raw.first_name,
       raw.id,
       raw.last_name,
       raw.phone,
+      raw.held_post,
       raw.patronymic,
     )
   }
 
   public mappableFields = [
-    'counterpartyId',
+    'displayName',
     'email',
     'firstName',
     'id',
     'lastName',
     'phone',
+    'heldPost',
     'patronymic',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    counterpartyId: () => ({ counterparty_id: this.counterpartyId }),
+    displayName: () => ({ display_name: this.displayName }),
     email: () => ({ email: this.email }),
     firstName: () => ({ first_name: this.firstName }),
     id: () => ({ id: this.id }),
     lastName: () => ({ last_name: this.lastName }),
     phone: () => ({ phone: this.phone }),
+    heldPost: () => ({ held_post: this.heldPost }),
     patronymic: () => ({ patronymic: this.patronymic }),
     /* eslint-enable camelcase */
   }
@@ -14901,7 +14919,6 @@ export class ResponsiblePersonDeleteRequest implements TDProtoClass<ResponsibleP
 
 export interface ResponsiblePersonGetListRequestJSON {
   /* eslint-disable camelcase */
-  counterparty_id?: string;
   limit?: number;
   offset?: number;
   /* eslint-enable camelcase */
@@ -14910,33 +14927,28 @@ export interface ResponsiblePersonGetListRequestJSON {
 export class ResponsiblePersonGetListRequest implements TDProtoClass<ResponsiblePersonGetListRequest> {
   /**
    * MISSING CLASS DOCUMENTATION
-   * @param counterpartyId DOCUMENTATION MISSING
    * @param limit DOCUMENTATION MISSING
    * @param offset DOCUMENTATION MISSING
    */
   constructor (
-    public counterpartyId?: string,
     public limit?: number,
     public offset?: number,
   ) {}
 
   public static fromJSON (raw: ResponsiblePersonGetListRequestJSON): ResponsiblePersonGetListRequest {
     return new ResponsiblePersonGetListRequest(
-      raw.counterparty_id,
       raw.limit,
       raw.offset,
     )
   }
 
   public mappableFields = [
-    'counterpartyId',
     'limit',
     'offset',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    counterpartyId: () => ({ counterparty_id: this.counterpartyId }),
     limit: () => ({ limit: this.limit }),
     offset: () => ({ offset: this.offset }),
     /* eslint-enable camelcase */
@@ -15039,68 +15051,74 @@ export class ResponsiblePersonGetResponse implements TDProtoClass<ResponsiblePer
 
 export interface ResponsiblePersonUpdateRequestJSON {
   /* eslint-disable camelcase */
-  counterparty_id: string;
+  display_name: string;
   email: string;
   first_name: string;
   id: string;
   last_name: string;
-  patronymic: string;
   phone: string;
+  held_post?: string;
+  patronymic?: string;
   /* eslint-enable camelcase */
 }
 
 export class ResponsiblePersonUpdateRequest implements TDProtoClass<ResponsiblePersonUpdateRequest> {
   /**
    * MISSING CLASS DOCUMENTATION
-   * @param counterpartyId DOCUMENTATION MISSING
+   * @param displayName DOCUMENTATION MISSING
    * @param email DOCUMENTATION MISSING
    * @param firstName DOCUMENTATION MISSING
    * @param id DOCUMENTATION MISSING
    * @param lastName DOCUMENTATION MISSING
-   * @param patronymic DOCUMENTATION MISSING
    * @param phone DOCUMENTATION MISSING
+   * @param heldPost DOCUMENTATION MISSING
+   * @param patronymic DOCUMENTATION MISSING
    */
   constructor (
-    public counterpartyId: string,
+    public displayName: string,
     public email: string,
     public firstName: string,
     public id: string,
     public lastName: string,
-    public patronymic: string,
     public phone: string,
+    public heldPost?: string,
+    public patronymic?: string,
   ) {}
 
   public static fromJSON (raw: ResponsiblePersonUpdateRequestJSON): ResponsiblePersonUpdateRequest {
     return new ResponsiblePersonUpdateRequest(
-      raw.counterparty_id,
+      raw.display_name,
       raw.email,
       raw.first_name,
       raw.id,
       raw.last_name,
-      raw.patronymic,
       raw.phone,
+      raw.held_post,
+      raw.patronymic,
     )
   }
 
   public mappableFields = [
-    'counterpartyId',
+    'displayName',
     'email',
     'firstName',
     'id',
     'lastName',
-    'patronymic',
     'phone',
+    'heldPost',
+    'patronymic',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    counterpartyId: () => ({ counterparty_id: this.counterpartyId }),
+    displayName: () => ({ display_name: this.displayName }),
     email: () => ({ email: this.email }),
     firstName: () => ({ first_name: this.firstName }),
     id: () => ({ id: this.id }),
     lastName: () => ({ last_name: this.lastName }),
-    patronymic: () => ({ patronymic: this.patronymic }),
     phone: () => ({ phone: this.phone }),
+    heldPost: () => ({ held_post: this.heldPost }),
+    patronymic: () => ({ patronymic: this.patronymic }),
     /* eslint-enable camelcase */
   }
 
@@ -15117,12 +15135,13 @@ export class ResponsiblePersonUpdateRequest implements TDProtoClass<ResponsibleP
 
 export interface ResponsiblePersonUpdateResponseJSON {
   /* eslint-disable camelcase */
-  counterparty_id: string;
+  display_name: string;
   email: string;
   first_name: string;
   id: string;
   last_name: string;
   phone: string;
+  held_post?: string;
   patronymic?: string;
   /* eslint-enable camelcase */
 }
@@ -15130,54 +15149,59 @@ export interface ResponsiblePersonUpdateResponseJSON {
 export class ResponsiblePersonUpdateResponse implements TDProtoClass<ResponsiblePersonUpdateResponse> {
   /**
    * MISSING CLASS DOCUMENTATION
-   * @param counterpartyId DOCUMENTATION MISSING
+   * @param displayName DOCUMENTATION MISSING
    * @param email DOCUMENTATION MISSING
    * @param firstName DOCUMENTATION MISSING
    * @param id DOCUMENTATION MISSING
    * @param lastName DOCUMENTATION MISSING
    * @param phone DOCUMENTATION MISSING
+   * @param heldPost DOCUMENTATION MISSING
    * @param patronymic DOCUMENTATION MISSING
    */
   constructor (
-    public counterpartyId: string,
+    public displayName: string,
     public email: string,
     public firstName: string,
     public id: string,
     public lastName: string,
     public phone: string,
+    public heldPost?: string,
     public patronymic?: string,
   ) {}
 
   public static fromJSON (raw: ResponsiblePersonUpdateResponseJSON): ResponsiblePersonUpdateResponse {
     return new ResponsiblePersonUpdateResponse(
-      raw.counterparty_id,
+      raw.display_name,
       raw.email,
       raw.first_name,
       raw.id,
       raw.last_name,
       raw.phone,
+      raw.held_post,
       raw.patronymic,
     )
   }
 
   public mappableFields = [
-    'counterpartyId',
+    'displayName',
     'email',
     'firstName',
     'id',
     'lastName',
     'phone',
+    'heldPost',
     'patronymic',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    counterpartyId: () => ({ counterparty_id: this.counterpartyId }),
+    displayName: () => ({ display_name: this.displayName }),
     email: () => ({ email: this.email }),
     firstName: () => ({ first_name: this.firstName }),
     id: () => ({ id: this.id }),
     lastName: () => ({ last_name: this.lastName }),
     phone: () => ({ phone: this.phone }),
+    heldPost: () => ({ held_post: this.heldPost }),
     patronymic: () => ({ patronymic: this.patronymic }),
     /* eslint-enable camelcase */
   }
