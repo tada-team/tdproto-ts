@@ -5836,10 +5836,10 @@ export interface CreatePersonalAccountResponseJSON {
   is_blocked: boolean;
   is_suspended: boolean;
   occupied_workplace_count: number;
-  owner_id: number;
+  owner_id: string;
   owner_uuid: string;
   paid_workplace_count: number;
-  personal_account_id: number;
+  personal_account_id: string;
   status: PersonalAccountStatus;
   tariff: TariffBillingJSON;
   teams_count: number;
@@ -5878,10 +5878,10 @@ export class CreatePersonalAccountResponse implements TDProtoClass<CreatePersona
     public isBlocked: boolean,
     public isSuspended: boolean,
     public occupiedWorkplaceCount: number,
-    public ownerId: number,
+    public ownerId: string,
     public ownerUuid: string,
     public paidWorkplaceCount: number,
-    public personalAccountId: number,
+    public personalAccountId: string,
     public status: PersonalAccountStatus,
     public tariff: TariffBilling,
     public teamsCount: number,
@@ -8674,10 +8674,10 @@ export interface GetPersonalAccountByIDResponseJSON {
   is_blocked: boolean;
   is_suspended: boolean;
   occupied_workplace_count: number;
-  owner_id: number;
+  owner_id: string;
   owner_uuid: string;
   paid_workplace_count: number;
-  personal_account_id: number;
+  personal_account_id: string;
   status: PersonalAccountStatus;
   tariff: TariffBillingJSON;
   teams_count: number;
@@ -8716,10 +8716,10 @@ export class GetPersonalAccountByIDResponse implements TDProtoClass<GetPersonalA
     public isBlocked: boolean,
     public isSuspended: boolean,
     public occupiedWorkplaceCount: number,
-    public ownerId: number,
+    public ownerId: string,
     public ownerUuid: string,
     public paidWorkplaceCount: number,
-    public personalAccountId: number,
+    public personalAccountId: string,
     public status: PersonalAccountStatus,
     public tariff: TariffBilling,
     public teamsCount: number,
@@ -14166,10 +14166,10 @@ export interface PersonalAccountBillingJSON {
   is_blocked: boolean;
   is_suspended: boolean;
   occupied_workplace_count: number;
-  owner_id: number;
+  owner_id: string;
   owner_uuid: string;
   paid_workplace_count: number;
-  personal_account_id: number;
+  personal_account_id: string;
   status: PersonalAccountStatus;
   tariff: TariffBillingJSON;
   teams_count: number;
@@ -14208,10 +14208,10 @@ export class PersonalAccountBilling implements TDProtoClass<PersonalAccountBilli
     public isBlocked: boolean,
     public isSuspended: boolean,
     public occupiedWorkplaceCount: number,
-    public ownerId: number,
+    public ownerId: string,
     public ownerUuid: string,
     public paidWorkplaceCount: number,
-    public personalAccountId: number,
+    public personalAccountId: string,
     public status: PersonalAccountStatus,
     public tariff: TariffBilling,
     public teamsCount: number,
@@ -14718,7 +14718,6 @@ export interface ResponsiblePersonCreateRequestJSON {
   email: string;
   first_name: string;
   last_name: string;
-  personal_account_id: string;
   phone: string;
   held_post?: string;
   patronymic?: string;
@@ -14731,7 +14730,6 @@ export class ResponsiblePersonCreateRequest implements TDProtoClass<ResponsibleP
    * @param email DOCUMENTATION MISSING
    * @param firstName DOCUMENTATION MISSING
    * @param lastName DOCUMENTATION MISSING
-   * @param personalAccountId DOCUMENTATION MISSING
    * @param phone DOCUMENTATION MISSING
    * @param heldPost DOCUMENTATION MISSING
    * @param patronymic DOCUMENTATION MISSING
@@ -14740,7 +14738,6 @@ export class ResponsiblePersonCreateRequest implements TDProtoClass<ResponsibleP
     public email: string,
     public firstName: string,
     public lastName: string,
-    public personalAccountId: string,
     public phone: string,
     public heldPost?: string,
     public patronymic?: string,
@@ -14751,7 +14748,6 @@ export class ResponsiblePersonCreateRequest implements TDProtoClass<ResponsibleP
       raw.email,
       raw.first_name,
       raw.last_name,
-      raw.personal_account_id,
       raw.phone,
       raw.held_post,
       raw.patronymic,
@@ -14762,7 +14758,6 @@ export class ResponsiblePersonCreateRequest implements TDProtoClass<ResponsibleP
     'email',
     'firstName',
     'lastName',
-    'personalAccountId',
     'phone',
     'heldPost',
     'patronymic',
@@ -14773,7 +14768,6 @@ export class ResponsiblePersonCreateRequest implements TDProtoClass<ResponsibleP
     email: () => ({ email: this.email }),
     firstName: () => ({ first_name: this.firstName }),
     lastName: () => ({ last_name: this.lastName }),
-    personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
     phone: () => ({ phone: this.phone }),
     heldPost: () => ({ held_post: this.heldPost }),
     patronymic: () => ({ patronymic: this.patronymic }),
