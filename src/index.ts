@@ -7653,9 +7653,9 @@ export interface EnquiryGetListRequestJSON {
   date_create_from?: string;
   date_create_to?: string;
   date_deactivate_to?: string;
-  enquiry_status_filter?: EnquiryStatus;
   limit?: number;
   offset?: number;
+  status?: EnquiryStatus;
   /* eslint-enable camelcase */
 }
 
@@ -7666,18 +7666,18 @@ export class EnquiryGetListRequest implements TDProtoClass<EnquiryGetListRequest
    * @param dateCreateFrom DOCUMENTATION MISSING
    * @param dateCreateTo DOCUMENTATION MISSING
    * @param dateDeactivateTo DOCUMENTATION MISSING
-   * @param enquiryStatusFilter DOCUMENTATION MISSING
    * @param limit DOCUMENTATION MISSING
    * @param offset DOCUMENTATION MISSING
+   * @param status DOCUMENTATION MISSING
    */
   constructor (
     public dateActivateTo?: string,
     public dateCreateFrom?: string,
     public dateCreateTo?: string,
     public dateDeactivateTo?: string,
-    public enquiryStatusFilter?: EnquiryStatus,
     public limit?: number,
     public offset?: number,
+    public status?: EnquiryStatus,
   ) {}
 
   public static fromJSON (raw: EnquiryGetListRequestJSON): EnquiryGetListRequest {
@@ -7686,9 +7686,9 @@ export class EnquiryGetListRequest implements TDProtoClass<EnquiryGetListRequest
       raw.date_create_from,
       raw.date_create_to,
       raw.date_deactivate_to,
-      raw.enquiry_status_filter,
       raw.limit,
       raw.offset,
+      raw.status,
     )
   }
 
@@ -7697,9 +7697,9 @@ export class EnquiryGetListRequest implements TDProtoClass<EnquiryGetListRequest
     'dateCreateFrom',
     'dateCreateTo',
     'dateDeactivateTo',
-    'enquiryStatusFilter',
     'limit',
     'offset',
+    'status',
   ] as const
 
   readonly #mapper = {
@@ -7708,9 +7708,9 @@ export class EnquiryGetListRequest implements TDProtoClass<EnquiryGetListRequest
     dateCreateFrom: () => ({ date_create_from: this.dateCreateFrom }),
     dateCreateTo: () => ({ date_create_to: this.dateCreateTo }),
     dateDeactivateTo: () => ({ date_deactivate_to: this.dateDeactivateTo }),
-    enquiryStatusFilter: () => ({ enquiry_status_filter: this.enquiryStatusFilter }),
     limit: () => ({ limit: this.limit }),
     offset: () => ({ offset: this.offset }),
+    status: () => ({ status: this.status }),
     /* eslint-enable camelcase */
   }
 
