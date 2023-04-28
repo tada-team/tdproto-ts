@@ -9197,32 +9197,32 @@ export class GetUsersInfoByUserUUIDArrayRequest implements TDProtoClass<GetUsers
 
 export interface GetUsersInfoByUserUUIDArrayResponseJSON {
   /* eslint-disable camelcase */
-  user_info?: UserInfoJSON[];
+  user_list?: UserInfoJSON[];
   /* eslint-enable camelcase */
 }
 
 export class GetUsersInfoByUserUUIDArrayResponse implements TDProtoClass<GetUsersInfoByUserUUIDArrayResponse> {
   /**
    * GetUsersInfoByUserUUIDArrayResponse response on get user information by array of UUID's users
-   * @param userInfo DOCUMENTATION MISSING
+   * @param userList DOCUMENTATION MISSING
    */
   constructor (
-    public userInfo?: UserInfo[],
+    public userList?: UserInfo[],
   ) {}
 
   public static fromJSON (raw: GetUsersInfoByUserUUIDArrayResponseJSON): GetUsersInfoByUserUUIDArrayResponse {
     return new GetUsersInfoByUserUUIDArrayResponse(
-      raw.user_info && raw.user_info.map(UserInfo.fromJSON),
+      raw.user_list && raw.user_list.map(UserInfo.fromJSON),
     )
   }
 
   public mappableFields = [
-    'userInfo',
+    'userList',
   ] as const
 
   readonly #mapper = {
     /* eslint-disable camelcase */
-    userInfo: () => ({ user_info: this.userInfo?.map(u => u.toJSON()) }),
+    userList: () => ({ user_list: this.userList?.map(u => u.toJSON()) }),
     /* eslint-enable camelcase */
   }
 
