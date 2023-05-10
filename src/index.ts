@@ -8955,6 +8955,48 @@ export class GetTeamOnPersonalAccountResponse implements TDProtoClass<GetTeamOnP
   }
 }
 
+export interface GetTeamsFilterJSON {
+  /* eslint-disable camelcase */
+  status?: TeamStatus;
+  /* eslint-enable camelcase */
+}
+
+export class GetTeamsFilter implements TDProtoClass<GetTeamsFilter> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param status DOCUMENTATION MISSING
+   */
+  constructor (
+    public status?: TeamStatus,
+  ) {}
+
+  public static fromJSON (raw: GetTeamsFilterJSON): GetTeamsFilter {
+    return new GetTeamsFilter(
+      raw.status,
+    )
+  }
+
+  public mappableFields = [
+    'status',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    status: () => ({ status: this.status }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): GetTeamsFilterJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<GetTeamsFilterJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface GetTeamsOnPersonalAccountResponseJSON {
   /* eslint-disable camelcase */
   teams: GetTeamOnPersonalAccountResponseJSON[];
