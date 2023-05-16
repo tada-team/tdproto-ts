@@ -17791,6 +17791,102 @@ export class ServerLoginParams implements TDProtoClass<ServerLoginParams> {
   }
 }
 
+export interface ServerLogoutJSON {
+  /* eslint-disable camelcase */
+  event: string;
+  params: ServerLogoutParamsJSON;
+  confirm_id?: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerLogout implements TDProtoClass<ServerLogout> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param event DOCUMENTATION MISSING
+   * @param params DOCUMENTATION MISSING
+   * @param confirmId DOCUMENTATION MISSING
+   */
+  constructor (
+    public event: string,
+    public params: ServerLogoutParams,
+    public confirmId?: string,
+  ) {}
+
+  public static fromJSON (raw: ServerLogoutJSON): ServerLogout {
+    return new ServerLogout(
+      raw.event,
+      ServerLogoutParams.fromJSON(raw.params),
+      raw.confirm_id,
+    )
+  }
+
+  public mappableFields = [
+    'event',
+    'params',
+    'confirmId',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    event: () => ({ event: this.event }),
+    params: () => ({ params: this.params.toJSON() }),
+    confirmId: () => ({ confirm_id: this.confirmId }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerLogoutJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerLogoutJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ServerLogoutParamsJSON {
+  /* eslint-disable camelcase */
+  reason: string;
+  /* eslint-enable camelcase */
+}
+
+export class ServerLogoutParams implements TDProtoClass<ServerLogoutParams> {
+  /**
+   * Params of the server.logout event
+   * @param reason Reason
+   */
+  constructor (
+    public reason: string,
+  ) {}
+
+  public static fromJSON (raw: ServerLogoutParamsJSON): ServerLogoutParams {
+    return new ServerLogoutParams(
+      raw.reason,
+    )
+  }
+
+  public mappableFields = [
+    'reason',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    reason: () => ({ reason: this.reason }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ServerLogoutParamsJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ServerLogoutParamsJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
 export interface ServerMeetingCellUpdatedJSON {
   /* eslint-disable camelcase */
   event: string;
