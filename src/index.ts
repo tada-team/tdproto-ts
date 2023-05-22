@@ -1647,6 +1647,7 @@ export interface ChatJSON {
   pinned_message?: MessageJSON;
   pinned_sort_ordering?: number;
   readonly_for_members?: boolean;
+  revision?: number;
   section?: string;
   spent_time?: number;
   status?: GroupStatus;
@@ -1695,8 +1696,8 @@ export class Chat implements TDProtoClass<Chat> {
    * @param done Task done date in iso format, if any
    * @param doneReason Task done reason, if any
    * @param draft Last message draft, if any
-   * @param draftGentime Last message draft version, if any
-   * @param draftNum Deprecated
+   * @param draftGentime Last message draft version, if any Deprecated: use DraftRevision instead
+   * @param draftNum Deprecated: use DraftRevision instead
    * @param feed Present in feed (main screen)
    * @param hidden Hidden chat
    * @param importance Task importance, if available in team
@@ -1727,6 +1728,7 @@ export class Chat implements TDProtoClass<Chat> {
    * @param pinnedMessage Pinned message for this chat
    * @param pinnedSortOrdering Sort ordering for pinned chat
    * @param readonlyForMembers Readonly for non-admins group chat (Like Channels in Telegram but switchable)
+   * @param revision Last message draft version, if any, Unixtime(ms)
    * @param section Project / section id, if any
    * @param spentTime Task spent time, number
    * @param status My status in group chat
@@ -1804,6 +1806,7 @@ export class Chat implements TDProtoClass<Chat> {
     public pinnedMessage?: Message,
     public pinnedSortOrdering?: number,
     public readonlyForMembers?: boolean,
+    public revision?: number,
     public section?: string,
     public spentTime?: number,
     public status?: GroupStatus,
@@ -1882,6 +1885,7 @@ export class Chat implements TDProtoClass<Chat> {
       raw.pinned_message && Message.fromJSON(raw.pinned_message),
       raw.pinned_sort_ordering,
       raw.readonly_for_members,
+      raw.revision,
       raw.section,
       raw.spent_time,
       raw.status,
@@ -1960,6 +1964,7 @@ export class Chat implements TDProtoClass<Chat> {
     'pinnedMessage',
     'pinnedSortOrdering',
     'readonlyForMembers',
+    'revision',
     'section',
     'spentTime',
     'status',
@@ -2038,6 +2043,7 @@ export class Chat implements TDProtoClass<Chat> {
     pinnedMessage: () => ({ pinned_message: this.pinnedMessage?.toJSON() }),
     pinnedSortOrdering: () => ({ pinned_sort_ordering: this.pinnedSortOrdering }),
     readonlyForMembers: () => ({ readonly_for_members: this.readonlyForMembers }),
+    revision: () => ({ revision: this.revision }),
     section: () => ({ section: this.section }),
     spentTime: () => ({ spent_time: this.spentTime }),
     status: () => ({ status: this.status }),
@@ -3551,7 +3557,7 @@ export class ClientChatComposingParams implements TDProtoClass<ClientChatComposi
    * Params of the client.chat.composing event
    * @param jid Chat or contact id
    * @param composing true = start typing / audio recording, false = stop
-   * @param draft Message draft data
+   * @param draft Message draft data Deprecated
    * @param isAudio true = audiomessage, false = text typing
    */
   constructor (
@@ -10604,6 +10610,7 @@ export interface MeetingJSON {
   pinned_message?: MessageJSON;
   pinned_sort_ordering?: number;
   readonly_for_members?: boolean;
+  revision?: number;
   section?: string;
   spent_time?: number;
   status?: GroupStatus;
@@ -10660,8 +10667,8 @@ export class Meeting implements TDProtoClass<Meeting> {
    * @param done Task done date in iso format, if any
    * @param doneReason Task done reason, if any
    * @param draft Last message draft, if any
-   * @param draftGentime Last message draft version, if any
-   * @param draftNum Deprecated
+   * @param draftGentime Last message draft version, if any Deprecated: use DraftRevision instead
+   * @param draftNum Deprecated: use DraftRevision instead
    * @param feed Present in feed (main screen)
    * @param freq DOCUMENTATION MISSING
    * @param hidden Hidden chat
@@ -10701,6 +10708,7 @@ export class Meeting implements TDProtoClass<Meeting> {
    * @param pinnedMessage Pinned message for this chat
    * @param pinnedSortOrdering Sort ordering for pinned chat
    * @param readonlyForMembers Readonly for non-admins group chat (Like Channels in Telegram but switchable)
+   * @param revision Last message draft version, if any, Unixtime(ms)
    * @param section Project / section id, if any
    * @param spentTime Task spent time, number
    * @param status My status in group chat
@@ -10795,6 +10803,7 @@ export class Meeting implements TDProtoClass<Meeting> {
     public pinnedMessage?: Message,
     public pinnedSortOrdering?: number,
     public readonlyForMembers?: boolean,
+    public revision?: number,
     public section?: string,
     public spentTime?: number,
     public status?: GroupStatus,
@@ -10890,6 +10899,7 @@ export class Meeting implements TDProtoClass<Meeting> {
       raw.pinned_message && Message.fromJSON(raw.pinned_message),
       raw.pinned_sort_ordering,
       raw.readonly_for_members,
+      raw.revision,
       raw.section,
       raw.spent_time,
       raw.status,
@@ -10985,6 +10995,7 @@ export class Meeting implements TDProtoClass<Meeting> {
     'pinnedMessage',
     'pinnedSortOrdering',
     'readonlyForMembers',
+    'revision',
     'section',
     'spentTime',
     'status',
@@ -11080,6 +11091,7 @@ export class Meeting implements TDProtoClass<Meeting> {
     pinnedMessage: () => ({ pinned_message: this.pinnedMessage?.toJSON() }),
     pinnedSortOrdering: () => ({ pinned_sort_ordering: this.pinnedSortOrdering }),
     readonlyForMembers: () => ({ readonly_for_members: this.readonlyForMembers }),
+    revision: () => ({ revision: this.revision }),
     section: () => ({ section: this.section }),
     spentTime: () => ({ spent_time: this.spentTime }),
     status: () => ({ status: this.status }),
@@ -17137,6 +17149,7 @@ export interface ServerChatDraftParamsJSON {
   draft_gentime: number;
   draft_num: number;
   jid: JID;
+  revision: number;
   /* eslint-enable camelcase */
 }
 
@@ -17144,15 +17157,17 @@ export class ServerChatDraftParams implements TDProtoClass<ServerChatDraftParams
   /**
    * Params of the server.chat.draft event
    * @param draft Draft text
-   * @param draftGentime Draft version
-   * @param draftNum Deprecated
+   * @param draftGentime Draft version Deprecated: use Revision instead
+   * @param draftNum Deprecated: use Revision instead
    * @param jid Chat or contact id
+   * @param revision Revision Unixtime(ms)
    */
   constructor (
     public draft: string,
     public draftGentime: number,
     public draftNum: number,
     public jid: JID,
+    public revision: number,
   ) {}
 
   public static fromJSON (raw: ServerChatDraftParamsJSON): ServerChatDraftParams {
@@ -17161,6 +17176,7 @@ export class ServerChatDraftParams implements TDProtoClass<ServerChatDraftParams
       raw.draft_gentime,
       raw.draft_num,
       raw.jid,
+      raw.revision,
     )
   }
 
@@ -17169,6 +17185,7 @@ export class ServerChatDraftParams implements TDProtoClass<ServerChatDraftParams
     'draftGentime',
     'draftNum',
     'jid',
+    'revision',
   ] as const
 
   readonly #mapper = {
@@ -17177,6 +17194,7 @@ export class ServerChatDraftParams implements TDProtoClass<ServerChatDraftParams
     draftGentime: () => ({ draft_gentime: this.draftGentime }),
     draftNum: () => ({ draft_num: this.draftNum }),
     jid: () => ({ jid: this.jid }),
+    revision: () => ({ revision: this.revision }),
     /* eslint-enable camelcase */
   }
 
