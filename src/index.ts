@@ -1616,6 +1616,7 @@ export interface ChatJSON {
   draft?: string;
   draft_gentime?: number;
   draft_num?: number;
+  draft_revision?: number;
   feed?: boolean;
   hidden?: boolean;
   importance?: number;
@@ -1647,7 +1648,6 @@ export interface ChatJSON {
   pinned_message?: MessageJSON;
   pinned_sort_ordering?: number;
   readonly_for_members?: boolean;
-  revision?: number;
   section?: string;
   spent_time?: number;
   status?: GroupStatus;
@@ -1696,8 +1696,9 @@ export class Chat implements TDProtoClass<Chat> {
    * @param done Task done date in iso format, if any
    * @param doneReason Task done reason, if any
    * @param draft Last message draft, if any
-   * @param draftGentime Last message draft version, if any Deprecated: use DraftRevision instead
+   * @param draftGentime Deprecated: use DraftRevision instead. Last message draft version, if any
    * @param draftNum Deprecated: use DraftRevision instead
+   * @param draftRevision Last message draft version, if any. unixtime(ms)
    * @param feed Present in feed (main screen)
    * @param hidden Hidden chat
    * @param importance Task importance, if available in team
@@ -1728,7 +1729,6 @@ export class Chat implements TDProtoClass<Chat> {
    * @param pinnedMessage Pinned message for this chat
    * @param pinnedSortOrdering Sort ordering for pinned chat
    * @param readonlyForMembers Readonly for non-admins group chat (Like Channels in Telegram but switchable)
-   * @param revision Last message draft version, if any, Unixtime(ms)
    * @param section Project / section id, if any
    * @param spentTime Task spent time, number
    * @param status My status in group chat
@@ -1775,6 +1775,7 @@ export class Chat implements TDProtoClass<Chat> {
     public draft?: string,
     public draftGentime?: number,
     public draftNum?: number,
+    public draftRevision?: number,
     public feed?: boolean,
     public hidden?: boolean,
     public importance?: number,
@@ -1806,7 +1807,6 @@ export class Chat implements TDProtoClass<Chat> {
     public pinnedMessage?: Message,
     public pinnedSortOrdering?: number,
     public readonlyForMembers?: boolean,
-    public revision?: number,
     public section?: string,
     public spentTime?: number,
     public status?: GroupStatus,
@@ -1855,6 +1855,7 @@ export class Chat implements TDProtoClass<Chat> {
       raw.draft,
       raw.draft_gentime,
       raw.draft_num,
+      raw.draft_revision,
       raw.feed,
       raw.hidden,
       raw.importance,
@@ -1885,7 +1886,6 @@ export class Chat implements TDProtoClass<Chat> {
       raw.pinned_message && Message.fromJSON(raw.pinned_message),
       raw.pinned_sort_ordering,
       raw.readonly_for_members,
-      raw.revision,
       raw.section,
       raw.spent_time,
       raw.status,
@@ -1934,6 +1934,7 @@ export class Chat implements TDProtoClass<Chat> {
     'draft',
     'draftGentime',
     'draftNum',
+    'draftRevision',
     'feed',
     'hidden',
     'importance',
@@ -1964,7 +1965,6 @@ export class Chat implements TDProtoClass<Chat> {
     'pinnedMessage',
     'pinnedSortOrdering',
     'readonlyForMembers',
-    'revision',
     'section',
     'spentTime',
     'status',
@@ -2013,6 +2013,7 @@ export class Chat implements TDProtoClass<Chat> {
     draft: () => ({ draft: this.draft }),
     draftGentime: () => ({ draft_gentime: this.draftGentime }),
     draftNum: () => ({ draft_num: this.draftNum }),
+    draftRevision: () => ({ draft_revision: this.draftRevision }),
     feed: () => ({ feed: this.feed }),
     hidden: () => ({ hidden: this.hidden }),
     importance: () => ({ importance: this.importance }),
@@ -2043,7 +2044,6 @@ export class Chat implements TDProtoClass<Chat> {
     pinnedMessage: () => ({ pinned_message: this.pinnedMessage?.toJSON() }),
     pinnedSortOrdering: () => ({ pinned_sort_ordering: this.pinnedSortOrdering }),
     readonlyForMembers: () => ({ readonly_for_members: this.readonlyForMembers }),
-    revision: () => ({ revision: this.revision }),
     section: () => ({ section: this.section }),
     spentTime: () => ({ spent_time: this.spentTime }),
     status: () => ({ status: this.status }),
@@ -10570,6 +10570,7 @@ export interface MeetingJSON {
   draft?: string;
   draft_gentime?: number;
   draft_num?: number;
+  draft_revision?: number;
   feed?: boolean;
   freq?: FreqJSON;
   hidden?: boolean;
@@ -10610,7 +10611,6 @@ export interface MeetingJSON {
   pinned_message?: MessageJSON;
   pinned_sort_ordering?: number;
   readonly_for_members?: boolean;
-  revision?: number;
   section?: string;
   spent_time?: number;
   status?: GroupStatus;
@@ -10667,8 +10667,9 @@ export class Meeting implements TDProtoClass<Meeting> {
    * @param done Task done date in iso format, if any
    * @param doneReason Task done reason, if any
    * @param draft Last message draft, if any
-   * @param draftGentime Last message draft version, if any Deprecated: use DraftRevision instead
+   * @param draftGentime Deprecated: use DraftRevision instead. Last message draft version, if any
    * @param draftNum Deprecated: use DraftRevision instead
+   * @param draftRevision Last message draft version, if any. unixtime(ms)
    * @param feed Present in feed (main screen)
    * @param freq DOCUMENTATION MISSING
    * @param hidden Hidden chat
@@ -10708,7 +10709,6 @@ export class Meeting implements TDProtoClass<Meeting> {
    * @param pinnedMessage Pinned message for this chat
    * @param pinnedSortOrdering Sort ordering for pinned chat
    * @param readonlyForMembers Readonly for non-admins group chat (Like Channels in Telegram but switchable)
-   * @param revision Last message draft version, if any, Unixtime(ms)
    * @param section Project / section id, if any
    * @param spentTime Task spent time, number
    * @param status My status in group chat
@@ -10763,6 +10763,7 @@ export class Meeting implements TDProtoClass<Meeting> {
     public draft?: string,
     public draftGentime?: number,
     public draftNum?: number,
+    public draftRevision?: number,
     public feed?: boolean,
     public freq?: Freq,
     public hidden?: boolean,
@@ -10803,7 +10804,6 @@ export class Meeting implements TDProtoClass<Meeting> {
     public pinnedMessage?: Message,
     public pinnedSortOrdering?: number,
     public readonlyForMembers?: boolean,
-    public revision?: number,
     public section?: string,
     public spentTime?: number,
     public status?: GroupStatus,
@@ -10860,6 +10860,7 @@ export class Meeting implements TDProtoClass<Meeting> {
       raw.draft,
       raw.draft_gentime,
       raw.draft_num,
+      raw.draft_revision,
       raw.feed,
       raw.freq && Freq.fromJSON(raw.freq),
       raw.hidden,
@@ -10899,7 +10900,6 @@ export class Meeting implements TDProtoClass<Meeting> {
       raw.pinned_message && Message.fromJSON(raw.pinned_message),
       raw.pinned_sort_ordering,
       raw.readonly_for_members,
-      raw.revision,
       raw.section,
       raw.spent_time,
       raw.status,
@@ -10956,6 +10956,7 @@ export class Meeting implements TDProtoClass<Meeting> {
     'draft',
     'draftGentime',
     'draftNum',
+    'draftRevision',
     'feed',
     'freq',
     'hidden',
@@ -10995,7 +10996,6 @@ export class Meeting implements TDProtoClass<Meeting> {
     'pinnedMessage',
     'pinnedSortOrdering',
     'readonlyForMembers',
-    'revision',
     'section',
     'spentTime',
     'status',
@@ -11052,6 +11052,7 @@ export class Meeting implements TDProtoClass<Meeting> {
     draft: () => ({ draft: this.draft }),
     draftGentime: () => ({ draft_gentime: this.draftGentime }),
     draftNum: () => ({ draft_num: this.draftNum }),
+    draftRevision: () => ({ draft_revision: this.draftRevision }),
     feed: () => ({ feed: this.feed }),
     freq: () => ({ freq: this.freq?.toJSON() }),
     hidden: () => ({ hidden: this.hidden }),
@@ -11091,7 +11092,6 @@ export class Meeting implements TDProtoClass<Meeting> {
     pinnedMessage: () => ({ pinned_message: this.pinnedMessage?.toJSON() }),
     pinnedSortOrdering: () => ({ pinned_sort_ordering: this.pinnedSortOrdering }),
     readonlyForMembers: () => ({ readonly_for_members: this.readonlyForMembers }),
-    revision: () => ({ revision: this.revision }),
     section: () => ({ section: this.section }),
     spentTime: () => ({ spent_time: this.spentTime }),
     status: () => ({ status: this.status }),
