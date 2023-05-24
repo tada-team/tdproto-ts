@@ -40,13 +40,19 @@ export type Currency =
    | 'RUB'
    | 'USD'
 
+export type EnquiryPaymentStatus =
+   | 'ENQUIRY_PAYMENT_STATUS'
+   | 'ENQUIRY_PAYMENT_STATUS_WAITING_CONFIRMATION'
+   | 'ENQUIRY_PAYMENT_STATUS_WAITING_CREDITING'
+   | 'ENQUIRY_PAYMENT_STATUS_PAID'
+
 export type EnquiryStatus =
    | 'ENQUIRY_STATUS_UNSPECIFIED'
-   | 'ENQUIRY_STATUS_PAID'
-   | 'ENQUIRY_STATUS_EXPIRED'
+   | 'ENQUIRY_STATUS_WAITING'
    | 'ENQUIRY_STATUS_CANCELLED'
-   | 'ENQUIRY_STATUS_WAITING_CONFIRMATION'
-   | 'ENQUIRY_STATUS_WAITING_CREDITING'
+   | 'ENQUIRY_STATUS_ACTIVE'
+   | 'ENQUIRY_STATUS_EXPIRED'
+   | 'ENQUIRY_STATUS_DONE'
 
 export type EnquiryType =
    | 'ENQUIRY_TYPE_UNSPECIFIED'
@@ -7257,6 +7263,7 @@ export interface EnquiryJSON {
   enquiry_type: EnquiryType;
   free_workplace_count: number;
   id: string;
+  payment_status: EnquiryPaymentStatus;
   payment_type: PaymentType;
   period_days: number;
   personal_account_id: string;
@@ -7286,6 +7293,7 @@ export class Enquiry implements TDProtoClass<Enquiry> {
    * @param enquiryType DOCUMENTATION MISSING
    * @param freeWorkplaceCount DOCUMENTATION MISSING
    * @param id DOCUMENTATION MISSING
+   * @param paymentStatus DOCUMENTATION MISSING
    * @param paymentType DOCUMENTATION MISSING
    * @param periodDays DOCUMENTATION MISSING
    * @param personalAccountId DOCUMENTATION MISSING
@@ -7311,6 +7319,7 @@ export class Enquiry implements TDProtoClass<Enquiry> {
     public enquiryType: EnquiryType,
     public freeWorkplaceCount: number,
     public id: string,
+    public paymentStatus: EnquiryPaymentStatus,
     public paymentType: PaymentType,
     public periodDays: number,
     public personalAccountId: string,
@@ -7338,6 +7347,7 @@ export class Enquiry implements TDProtoClass<Enquiry> {
       raw.enquiry_type,
       raw.free_workplace_count,
       raw.id,
+      raw.payment_status,
       raw.payment_type,
       raw.period_days,
       raw.personal_account_id,
@@ -7365,6 +7375,7 @@ export class Enquiry implements TDProtoClass<Enquiry> {
     'enquiryType',
     'freeWorkplaceCount',
     'id',
+    'paymentStatus',
     'paymentType',
     'periodDays',
     'personalAccountId',
@@ -7392,6 +7403,7 @@ export class Enquiry implements TDProtoClass<Enquiry> {
     enquiryType: () => ({ enquiry_type: this.enquiryType }),
     freeWorkplaceCount: () => ({ free_workplace_count: this.freeWorkplaceCount }),
     id: () => ({ id: this.id }),
+    paymentStatus: () => ({ payment_status: this.paymentStatus }),
     paymentType: () => ({ payment_type: this.paymentType }),
     periodDays: () => ({ period_days: this.periodDays }),
     personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
@@ -7485,6 +7497,7 @@ export interface EnquiryCreateResponseJSON {
   enquiry_type: EnquiryType;
   free_workplace_count: number;
   id: string;
+  payment_status: EnquiryPaymentStatus;
   payment_type: PaymentType;
   period_days: number;
   personal_account_id: string;
@@ -7514,6 +7527,7 @@ export class EnquiryCreateResponse implements TDProtoClass<EnquiryCreateResponse
    * @param enquiryType DOCUMENTATION MISSING
    * @param freeWorkplaceCount DOCUMENTATION MISSING
    * @param id DOCUMENTATION MISSING
+   * @param paymentStatus DOCUMENTATION MISSING
    * @param paymentType DOCUMENTATION MISSING
    * @param periodDays DOCUMENTATION MISSING
    * @param personalAccountId DOCUMENTATION MISSING
@@ -7539,6 +7553,7 @@ export class EnquiryCreateResponse implements TDProtoClass<EnquiryCreateResponse
     public enquiryType: EnquiryType,
     public freeWorkplaceCount: number,
     public id: string,
+    public paymentStatus: EnquiryPaymentStatus,
     public paymentType: PaymentType,
     public periodDays: number,
     public personalAccountId: string,
@@ -7566,6 +7581,7 @@ export class EnquiryCreateResponse implements TDProtoClass<EnquiryCreateResponse
       raw.enquiry_type,
       raw.free_workplace_count,
       raw.id,
+      raw.payment_status,
       raw.payment_type,
       raw.period_days,
       raw.personal_account_id,
@@ -7593,6 +7609,7 @@ export class EnquiryCreateResponse implements TDProtoClass<EnquiryCreateResponse
     'enquiryType',
     'freeWorkplaceCount',
     'id',
+    'paymentStatus',
     'paymentType',
     'periodDays',
     'personalAccountId',
@@ -7620,6 +7637,7 @@ export class EnquiryCreateResponse implements TDProtoClass<EnquiryCreateResponse
     enquiryType: () => ({ enquiry_type: this.enquiryType }),
     freeWorkplaceCount: () => ({ free_workplace_count: this.freeWorkplaceCount }),
     id: () => ({ id: this.id }),
+    paymentStatus: () => ({ payment_status: this.paymentStatus }),
     paymentType: () => ({ payment_type: this.paymentType }),
     periodDays: () => ({ period_days: this.periodDays }),
     personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
