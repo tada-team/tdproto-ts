@@ -10160,6 +10160,7 @@ export interface InvitableUserJSON {
   display_name: string;
   icons: IconDataJSON;
   uid: string;
+  from_another_account?: boolean;
   node?: string;
   teams?: string[];
   /* eslint-enable camelcase */
@@ -10171,6 +10172,7 @@ export class InvitableUser implements TDProtoClass<InvitableUser> {
    * @param displayName Full name
    * @param icons Icons
    * @param uid Account id
+   * @param fromAnotherAccount Флаг нахождения пользователя на другом аккаунте
    * @param node Node uid for external users
    * @param teams Common team uids, if any
    */
@@ -10178,6 +10180,7 @@ export class InvitableUser implements TDProtoClass<InvitableUser> {
     public displayName: string,
     public icons: IconData,
     public uid: string,
+    public fromAnotherAccount?: boolean,
     public node?: string,
     public teams?: string[],
   ) {}
@@ -10187,6 +10190,7 @@ export class InvitableUser implements TDProtoClass<InvitableUser> {
       raw.display_name,
       IconData.fromJSON(raw.icons),
       raw.uid,
+      raw.from_another_account,
       raw.node,
       raw.teams,
     )
@@ -10196,6 +10200,7 @@ export class InvitableUser implements TDProtoClass<InvitableUser> {
     'displayName',
     'icons',
     'uid',
+    'fromAnotherAccount',
     'node',
     'teams',
   ] as const
@@ -10205,6 +10210,7 @@ export class InvitableUser implements TDProtoClass<InvitableUser> {
     displayName: () => ({ display_name: this.displayName }),
     icons: () => ({ icons: this.icons.toJSON() }),
     uid: () => ({ uid: this.uid }),
+    fromAnotherAccount: () => ({ from_another_account: this.fromAnotherAccount }),
     node: () => ({ node: this.node }),
     teams: () => ({ teams: this.teams }),
     /* eslint-enable camelcase */
