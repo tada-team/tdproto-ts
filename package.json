@@ -44,7 +44,7 @@
     "typescript": "^4.2.3"
   },
   "files": [
-    "lib/**/*"
+    "src/**/*"
   ],
   "dependencies": {
     "core-js": "^3.10.0"
