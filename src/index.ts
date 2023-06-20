@@ -27,6 +27,7 @@ export type ChatType =
    | 'group'
    | 'task'
    | 'meeting'
+   | 'thread'
 
 export type CounterpartyType =
    | 'COUNTERPARTY_TYPE_UNSPECIFIED'
@@ -10160,6 +10161,7 @@ export interface InvitableUserJSON {
   display_name: string;
   icons: IconDataJSON;
   uid: string;
+  from_another_account?: boolean;
   node?: string;
   teams?: string[];
   /* eslint-enable camelcase */
@@ -10171,6 +10173,7 @@ export class InvitableUser implements TDProtoClass<InvitableUser> {
    * @param displayName Full name
    * @param icons Icons
    * @param uid Account id
+   * @param fromAnotherAccount Флаг нахождения пользователя на другом аккаунте
    * @param node Node uid for external users
    * @param teams Common team uids, if any
    */
@@ -10178,6 +10181,7 @@ export class InvitableUser implements TDProtoClass<InvitableUser> {
     public displayName: string,
     public icons: IconData,
     public uid: string,
+    public fromAnotherAccount?: boolean,
     public node?: string,
     public teams?: string[],
   ) {}
@@ -10187,6 +10191,7 @@ export class InvitableUser implements TDProtoClass<InvitableUser> {
       raw.display_name,
       IconData.fromJSON(raw.icons),
       raw.uid,
+      raw.from_another_account,
       raw.node,
       raw.teams,
     )
@@ -10196,6 +10201,7 @@ export class InvitableUser implements TDProtoClass<InvitableUser> {
     'displayName',
     'icons',
     'uid',
+    'fromAnotherAccount',
     'node',
     'teams',
   ] as const
@@ -10205,6 +10211,7 @@ export class InvitableUser implements TDProtoClass<InvitableUser> {
     displayName: () => ({ display_name: this.displayName }),
     icons: () => ({ icons: this.icons.toJSON() }),
     uid: () => ({ uid: this.uid }),
+    fromAnotherAccount: () => ({ from_another_account: this.fromAnotherAccount }),
     node: () => ({ node: this.node }),
     teams: () => ({ teams: this.teams }),
     /* eslint-enable camelcase */
@@ -12355,6 +12362,8 @@ export interface MessageJSON {
   received?: boolean;
   reply_to?: MessageJSON;
   silently?: boolean;
+  thread_jid?: JID;
+  thread_messages_count?: number;
   uploads?: UploadJSON[];
   /* eslint-enable camelcase */
 }
@@ -12392,6 +12401,8 @@ export class Message implements TDProtoClass<Message> {
    * @param received Message was seen by anybody in chat. True or null
    * @param replyTo Message that was replied to, if any
    * @param silently Message has no pushes and did not affect any counters
+   * @param threadJid ThreadJID
+   * @param threadMessagesCount Thread Messages Count
    * @param uploads Message uploads
    */
   constructor (
@@ -12425,6 +12436,8 @@ export class Message implements TDProtoClass<Message> {
     public readonly received?: boolean,
     public replyTo?: Message,
     public readonly silently?: boolean,
+    public threadJid?: JID,
+    public threadMessagesCount?: number,
     public uploads?: Upload[],
   ) {}
 
@@ -12460,6 +12473,8 @@ export class Message implements TDProtoClass<Message> {
       raw.received,
       raw.reply_to && Message.fromJSON(raw.reply_to),
       raw.silently,
+      raw.thread_jid,
+      raw.thread_messages_count,
       raw.uploads && raw.uploads.map(Upload.fromJSON),
     )
   }
@@ -12495,6 +12510,8 @@ export class Message implements TDProtoClass<Message> {
     'received',
     'replyTo',
     'silently',
+    'threadJid',
+    'threadMessagesCount',
     'uploads',
   ] as const
 
@@ -12530,6 +12547,8 @@ export class Message implements TDProtoClass<Message> {
     received: () => ({ received: this.received }),
     replyTo: () => ({ reply_to: this.replyTo?.toJSON() }),
     silently: () => ({ silently: this.silently }),
+    threadJid: () => ({ thread_jid: this.threadJid }),
+    threadMessagesCount: () => ({ thread_messages_count: this.threadMessagesCount }),
     uploads: () => ({ uploads: this.uploads?.map(u => u.toJSON()) }),
     /* eslint-enable camelcase */
   }
