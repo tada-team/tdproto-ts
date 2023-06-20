@@ -27,6 +27,7 @@ export type ChatType =
    | 'group'
    | 'task'
    | 'meeting'
+   | 'thread'
 
 export type CounterpartyType =
    | 'COUNTERPARTY_TYPE_UNSPECIFIED'
@@ -12361,6 +12362,8 @@ export interface MessageJSON {
   received?: boolean;
   reply_to?: MessageJSON;
   silently?: boolean;
+  thread_jid?: JID;
+  thread_messages_count?: number;
   uploads?: UploadJSON[];
   /* eslint-enable camelcase */
 }
@@ -12398,6 +12401,8 @@ export class Message implements TDProtoClass<Message> {
    * @param received Message was seen by anybody in chat. True or null
    * @param replyTo Message that was replied to, if any
    * @param silently Message has no pushes and did not affect any counters
+   * @param threadJid ThreadJID
+   * @param threadMessagesCount Thread Messages Count
    * @param uploads Message uploads
    */
   constructor (
@@ -12431,6 +12436,8 @@ export class Message implements TDProtoClass<Message> {
     public readonly received?: boolean,
     public replyTo?: Message,
     public readonly silently?: boolean,
+    public threadJid?: JID,
+    public threadMessagesCount?: number,
     public uploads?: Upload[],
   ) {}
 
@@ -12466,6 +12473,8 @@ export class Message implements TDProtoClass<Message> {
       raw.received,
       raw.reply_to && Message.fromJSON(raw.reply_to),
       raw.silently,
+      raw.thread_jid,
+      raw.thread_messages_count,
       raw.uploads && raw.uploads.map(Upload.fromJSON),
     )
   }
@@ -12501,6 +12510,8 @@ export class Message implements TDProtoClass<Message> {
     'received',
     'replyTo',
     'silently',
+    'threadJid',
+    'threadMessagesCount',
     'uploads',
   ] as const
 
@@ -12536,6 +12547,8 @@ export class Message implements TDProtoClass<Message> {
     received: () => ({ received: this.received }),
     replyTo: () => ({ reply_to: this.replyTo?.toJSON() }),
     silently: () => ({ silently: this.silently }),
+    threadJid: () => ({ thread_jid: this.threadJid }),
+    threadMessagesCount: () => ({ thread_messages_count: this.threadMessagesCount }),
     uploads: () => ({ uploads: this.uploads?.map(u => u.toJSON()) }),
     /* eslint-enable camelcase */
   }
