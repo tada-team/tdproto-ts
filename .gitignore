@@ -107,4 +107,4 @@ dist
 .idea
 
 # Build artefacts
-/lib/
+# /lib/
