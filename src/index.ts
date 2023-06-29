@@ -1650,6 +1650,8 @@ export interface ChatJSON {
   num_unread_notices?: number;
   observers?: JID[];
   owner?: JID;
+  parent_chat_id?: JID;
+  parent_message_id?: string;
   parents?: SubtaskJSON[];
   pinned?: boolean;
   pinned_message?: MessageJSON;
@@ -1731,6 +1733,8 @@ export class Chat implements TDProtoClass<Chat> {
    * @param numUnreadNotices Mentions (@) counter
    * @param observers Task followers id's. TODO: rename to "followers"
    * @param owner Task creator
+   * @param parentChatId Parent chat uid for thread
+   * @param parentMessageId Parent message uid for thread
    * @param parents Parent tasks
    * @param pinned Is chat pinned on top
    * @param pinnedMessage Pinned message for this chat
@@ -1809,6 +1813,8 @@ export class Chat implements TDProtoClass<Chat> {
     public numUnreadNotices?: number,
     public observers?: JID[],
     public owner?: JID,
+    public parentChatId?: JID,
+    public parentMessageId?: string,
     public parents?: Subtask[],
     public pinned?: boolean,
     public pinnedMessage?: Message,
@@ -1888,6 +1894,8 @@ export class Chat implements TDProtoClass<Chat> {
       raw.num_unread_notices,
       raw.observers,
       raw.owner,
+      raw.parent_chat_id,
+      raw.parent_message_id,
       raw.parents && raw.parents.map(Subtask.fromJSON),
       raw.pinned,
       raw.pinned_message && Message.fromJSON(raw.pinned_message),
@@ -1967,6 +1975,8 @@ export class Chat implements TDProtoClass<Chat> {
     'numUnreadNotices',
     'observers',
     'owner',
+    'parentChatId',
+    'parentMessageId',
     'parents',
     'pinned',
     'pinnedMessage',
@@ -2046,6 +2056,8 @@ export class Chat implements TDProtoClass<Chat> {
     numUnreadNotices: () => ({ num_unread_notices: this.numUnreadNotices }),
     observers: () => ({ observers: this.observers }),
     owner: () => ({ owner: this.owner }),
+    parentChatId: () => ({ parent_chat_id: this.parentChatId }),
+    parentMessageId: () => ({ parent_message_id: this.parentMessageId }),
     parents: () => ({ parents: this.parents?.map(u => u.toJSON()) }),
     pinned: () => ({ pinned: this.pinned }),
     pinnedMessage: () => ({ pinned_message: this.pinnedMessage?.toJSON() }),
@@ -10630,6 +10642,8 @@ export interface MeetingJSON {
   owner?: JID;
   owner_contact_uuid?: JID;
   owner_user_uuid?: string;
+  parent_chat_id?: JID;
+  parent_message_id?: string;
   parents?: SubtaskJSON[];
   personal_account_id?: string;
   pinned?: boolean;
@@ -10728,6 +10742,8 @@ export class Meeting implements TDProtoClass<Meeting> {
    * @param owner Task creator
    * @param ownerContactUuid DOCUMENTATION MISSING
    * @param ownerUserUuid DOCUMENTATION MISSING
+   * @param parentChatId Parent chat uid for thread
+   * @param parentMessageId Parent message uid for thread
    * @param parents Parent tasks
    * @param personalAccountId DOCUMENTATION MISSING
    * @param pinned Is chat pinned on top
@@ -10823,6 +10839,8 @@ export class Meeting implements TDProtoClass<Meeting> {
     public owner?: JID,
     public ownerContactUuid?: JID,
     public ownerUserUuid?: string,
+    public parentChatId?: JID,
+    public parentMessageId?: string,
     public parents?: Subtask[],
     public personalAccountId?: string,
     public pinned?: boolean,
@@ -10919,6 +10937,8 @@ export class Meeting implements TDProtoClass<Meeting> {
       raw.owner,
       raw.owner_contact_uuid,
       raw.owner_user_uuid,
+      raw.parent_chat_id,
+      raw.parent_message_id,
       raw.parents && raw.parents.map(Subtask.fromJSON),
       raw.personal_account_id,
       raw.pinned,
@@ -11015,6 +11035,8 @@ export class Meeting implements TDProtoClass<Meeting> {
     'owner',
     'ownerContactUuid',
     'ownerUserUuid',
+    'parentChatId',
+    'parentMessageId',
     'parents',
     'personalAccountId',
     'pinned',
@@ -11111,6 +11133,8 @@ export class Meeting implements TDProtoClass<Meeting> {
     owner: () => ({ owner: this.owner }),
     ownerContactUuid: () => ({ owner_contact_uuid: this.ownerContactUuid }),
     ownerUserUuid: () => ({ owner_user_uuid: this.ownerUserUuid }),
+    parentChatId: () => ({ parent_chat_id: this.parentChatId }),
+    parentMessageId: () => ({ parent_message_id: this.parentMessageId }),
     parents: () => ({ parents: this.parents?.map(u => u.toJSON()) }),
     personalAccountId: () => ({ personal_account_id: this.personalAccountId }),
     pinned: () => ({ pinned: this.pinned }),
