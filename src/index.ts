@@ -7925,6 +7925,7 @@ export interface FeaturesJSON {
   only_one_device_per_call?: boolean;
   recaptcha_web_key_v2?: string;
   recaptcha_web_key_v3?: string;
+  threads_enabled?: boolean;
   web_login_background?: string;
   /* eslint-enable camelcase */
 }
@@ -8033,6 +8034,7 @@ export class Features implements TDProtoClass<Features> {
    * @param onlyOneDevicePerCall Disallow call from multiple devices. Experimental
    * @param recaptchaWebKeyV2 ReCaptcha Web Key V2
    * @param recaptchaWebKeyV3 ReCaptcha Web Key V3
+   * @param threadsEnabled Thread enabled flag
    * @param webLoginBackground WebBackground image url, if any
    */
   constructor (
@@ -8137,6 +8139,7 @@ export class Features implements TDProtoClass<Features> {
     public onlyOneDevicePerCall?: boolean,
     public recaptchaWebKeyV2?: string,
     public recaptchaWebKeyV3?: string,
+    public threadsEnabled?: boolean,
     public webLoginBackground?: string,
   ) {}
 
@@ -8243,6 +8246,7 @@ export class Features implements TDProtoClass<Features> {
       raw.only_one_device_per_call,
       raw.recaptcha_web_key_v2,
       raw.recaptcha_web_key_v3,
+      raw.threads_enabled,
       raw.web_login_background,
     )
   }
@@ -8349,6 +8353,7 @@ export class Features implements TDProtoClass<Features> {
     'onlyOneDevicePerCall',
     'recaptchaWebKeyV2',
     'recaptchaWebKeyV3',
+    'threadsEnabled',
     'webLoginBackground',
   ] as const
 
@@ -8455,6 +8460,7 @@ export class Features implements TDProtoClass<Features> {
     onlyOneDevicePerCall: () => ({ only_one_device_per_call: this.onlyOneDevicePerCall }),
     recaptchaWebKeyV2: () => ({ recaptcha_web_key_v2: this.recaptchaWebKeyV2 }),
     recaptchaWebKeyV3: () => ({ recaptcha_web_key_v3: this.recaptchaWebKeyV3 }),
+    threadsEnabled: () => ({ threads_enabled: this.threadsEnabled }),
     webLoginBackground: () => ({ web_login_background: this.webLoginBackground }),
     /* eslint-enable camelcase */
   }
