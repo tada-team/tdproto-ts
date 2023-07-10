@@ -40,7 +40,6 @@ export type Currency =
    | 'EUR'
    | 'RUB'
    | 'USD'
-   | 'CNY'
 
 export type EnquiryPaymentStatus =
    | 'ENQUIRY_PAYMENT_STATUS'
