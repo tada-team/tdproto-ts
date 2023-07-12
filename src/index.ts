@@ -23988,6 +23988,7 @@ export class UserWithMe implements TDProtoClass<UserWithMe> {
 
 export interface WallpaperJSON {
   /* eslint-disable camelcase */
+  description: string;
   key: string;
   name: string;
   url: string;
@@ -23997,11 +23998,13 @@ export interface WallpaperJSON {
 export class Wallpaper implements TDProtoClass<Wallpaper> {
   /**
    * Chat wallpaper
+   * @param description test description
    * @param key Unique identifier
    * @param name Localized description
    * @param url Url to jpg or png
    */
   constructor (
+    public description: string,
     public key: string,
     public name: string,
     public url: string,
@@ -24009,6 +24012,7 @@ export class Wallpaper implements TDProtoClass<Wallpaper> {
 
   public static fromJSON (raw: WallpaperJSON): Wallpaper {
     return new Wallpaper(
+      raw.description,
       raw.key,
       raw.name,
       raw.url,
@@ -24016,6 +24020,7 @@ export class Wallpaper implements TDProtoClass<Wallpaper> {
   }
 
   public mappableFields = [
+    'description',
     'key',
     'name',
     'url',
@@ -24023,6 +24028,7 @@ export class Wallpaper implements TDProtoClass<Wallpaper> {
 
   readonly #mapper = {
     /* eslint-disable camelcase */
+    description: () => ({ description: this.description }),
     key: () => ({ key: this.key }),
     name: () => ({ name: this.name }),
     url: () => ({ url: this.url }),
