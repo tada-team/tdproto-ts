@@ -10196,27 +10196,24 @@ export declare class UserWithMe implements TDProtoClass<UserWithMe> {
     toJSON(fields: Array<this['mappableFields'][number]>): Partial<UserWithMeJSON>;
 }
 export interface WallpaperJSON {
-    description: string;
     key: string;
     name: string;
     url: string;
 }
 export declare class Wallpaper implements TDProtoClass<Wallpaper> {
     #private;
-    description: string;
     key: string;
     name: string;
     url: string;
     /**
      * Chat wallpaper
-     * @param description test description
      * @param key Unique identifier
      * @param name Localized description
      * @param url Url to jpg or png
      */
-    constructor(description: string, key: string, name: string, url: string);
+    constructor(key: string, name: string, url: string);
     static fromJSON(raw: WallpaperJSON): Wallpaper;
-    mappableFields: readonly ["description", "key", "name", "url"];
+    mappableFields: readonly ["key", "name", "url"];
     toJSON(): WallpaperJSON;
     toJSON(fields: Array<this['mappableFields'][number]>): Partial<WallpaperJSON>;
 }
