@@ -84,6 +84,7 @@ export type MarkupType =
 export type Mediasubtype =
    | 'sticker'
    | 'newtask'
+   | 'named'
 
 export type Mediatype =
    | 'plain'
@@ -20792,6 +20793,7 @@ export interface SubscriptionJSON {
   /* eslint-disable camelcase */
   uid: string;
   activated?: string;
+  empty_workplace_count?: number;
   expires?: string;
   tariff_uid?: string;
   user_uid?: string;
@@ -20803,6 +20805,7 @@ export class Subscription implements TDProtoClass<Subscription> {
    * Subscription - an entity that signifies the fact of subscribing to the tariff of any team for a certain period (not defined, in the case of the default tariff)
    * @param uid Subscription id
    * @param activated Subscription activation time
+   * @param emptyWorkplaceCount EmptyWorkplaceCount empty workplace count
    * @param expires Subscription expiration time
    * @param tariffUid ID of the tariff for which the subscription is valid
    * @param userUid ID of the user who subscribed
@@ -20810,6 +20813,7 @@ export class Subscription implements TDProtoClass<Subscription> {
   constructor (
     public uid: string,
     public activated?: string,
+    public emptyWorkplaceCount?: number,
     public expires?: string,
     public tariffUid?: string,
     public userUid?: string,
@@ -20819,6 +20823,7 @@ export class Subscription implements TDProtoClass<Subscription> {
     return new Subscription(
       raw.uid,
       raw.activated,
+      raw.empty_workplace_count,
       raw.expires,
       raw.tariff_uid,
       raw.user_uid,
@@ -20828,6 +20833,7 @@ export class Subscription implements TDProtoClass<Subscription> {
   public mappableFields = [
     'uid',
     'activated',
+    'emptyWorkplaceCount',
     'expires',
     'tariffUid',
     'userUid',
@@ -20837,6 +20843,7 @@ export class Subscription implements TDProtoClass<Subscription> {
     /* eslint-disable camelcase */
     uid: () => ({ uid: this.uid }),
     activated: () => ({ activated: this.activated }),
+    emptyWorkplaceCount: () => ({ empty_workplace_count: this.emptyWorkplaceCount }),
     expires: () => ({ expires: this.expires }),
     tariffUid: () => ({ tariff_uid: this.tariffUid }),
     userUid: () => ({ user_uid: this.userUid }),

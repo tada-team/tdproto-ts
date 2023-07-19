@@ -14,7 +14,7 @@ export declare type EnquiryType = 'ENQUIRY_TYPE_UNSPECIFIED' | 'ENQUIRY_TYPE_REN
 export declare type GroupStatus = 'admin' | 'member';
 export declare type ICETransportPolicy = 'relay' | 'all';
 export declare type MarkupType = 'bold' | 'italic' | 'underscore' | 'strike' | 'code' | 'codeblock' | 'quote' | 'link' | 'time' | 'unsafe';
-export declare type Mediasubtype = 'sticker' | 'newtask';
+export declare type Mediasubtype = 'sticker' | 'newtask' | 'named';
 export declare type Mediatype = 'plain' | 'change' | 'deleted' | 'file' | 'image' | 'video' | 'audiomsg' | 'contact' | 'pdf';
 export declare type MeetingMemberStatus = 'MEETING_MEMBER_STATUS_OWNER' | 'MEETING_MEMBER_STATUS_ADMIN' | 'MEETING_MEMBER_STATUS_MEMBER' | 'MEETING_MEMBER_STATUS_OPTIONAL_MEMBER';
 export declare type MeetingPresenceStatus = 'MEETING_PRESENCE_STATUS_ACCEPTED' | 'MEETING_PRESENCE_STATUS_REJECTED' | 'MEETING_PRESENCE_STATUS_DOUBTS' | 'MEETING_PRESENCE_STATUS_WAITING';
@@ -8779,6 +8779,7 @@ export declare class Stickerpack implements TDProtoClass<Stickerpack> {
 export interface SubscriptionJSON {
     uid: string;
     activated?: string;
+    empty_workplace_count?: number;
     expires?: string;
     tariff_uid?: string;
     user_uid?: string;
@@ -8787,6 +8788,7 @@ export declare class Subscription implements TDProtoClass<Subscription> {
     #private;
     uid: string;
     activated?: string | undefined;
+    emptyWorkplaceCount?: number | undefined;
     expires?: string | undefined;
     tariffUid?: string | undefined;
     userUid?: string | undefined;
@@ -8794,13 +8796,14 @@ export declare class Subscription implements TDProtoClass<Subscription> {
      * Subscription - an entity that signifies the fact of subscribing to the tariff of any team for a certain period (not defined, in the case of the default tariff)
      * @param uid Subscription id
      * @param activated Subscription activation time
+     * @param emptyWorkplaceCount EmptyWorkplaceCount empty workplace count
      * @param expires Subscription expiration time
      * @param tariffUid ID of the tariff for which the subscription is valid
      * @param userUid ID of the user who subscribed
      */
-    constructor(uid: string, activated?: string | undefined, expires?: string | undefined, tariffUid?: string | undefined, userUid?: string | undefined);
+    constructor(uid: string, activated?: string | undefined, emptyWorkplaceCount?: number | undefined, expires?: string | undefined, tariffUid?: string | undefined, userUid?: string | undefined);
     static fromJSON(raw: SubscriptionJSON): Subscription;
-    mappableFields: readonly ["uid", "activated", "expires", "tariffUid", "userUid"];
+    mappableFields: readonly ["uid", "activated", "emptyWorkplaceCount", "expires", "tariffUid", "userUid"];
     toJSON(): SubscriptionJSON;
     toJSON(fields: Array<this['mappableFields'][number]>): Partial<SubscriptionJSON>;
 }
