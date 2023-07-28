@@ -148,6 +148,16 @@ export type PersonalAccountStatus =
    | 'PERSONAL_ACCOUNT_STATUS_BLOCKED'
    | 'PERSONAL_ACCOUNT_STATUS_UNSPECIFIED'
 
+export type PublicStatusType =
+   | 'none'
+   | 'remote'
+   | 'vacation'
+   | 'sick'
+   | 'commuting'
+   | 'do_not_disturb'
+   | 'lunch'
+   | 'be_right_back'
+
 export type TariffStatus =
    | 'TARIFF_STATUS_ACTIVE'
    | 'TARIFF_STATUS_ARCHIVE'
@@ -4291,6 +4301,7 @@ export interface ContactJSON {
   munread_first?: boolean;
   node?: string;
   patronymic?: string;
+  public_status?: ContactPublicStatusJSON;
   quiet_time_finish?: string;
   quiet_time_start?: string;
   reaction_notifications_enabled?: boolean;
@@ -4366,6 +4377,7 @@ export class Contact implements TDProtoClass<Contact> {
    * @param munreadFirst Show unread chats first in feed in mobile app
    * @param node Node uid for external users
    * @param patronymic Patronymic, if any
+   * @param publicStatus Public Status
    * @param quietTimeFinish Quiet time finish
    * @param quietTimeStart Quiet time start
    * @param reactionNotificationsEnabled Push notifications for reactions
@@ -4437,6 +4449,7 @@ export class Contact implements TDProtoClass<Contact> {
     public munreadFirst?: boolean,
     public node?: string,
     public patronymic?: string,
+    public publicStatus?: ContactPublicStatus,
     public quietTimeFinish?: string,
     public quietTimeStart?: string,
     public reactionNotificationsEnabled?: boolean,
@@ -4510,6 +4523,7 @@ export class Contact implements TDProtoClass<Contact> {
       raw.munread_first,
       raw.node,
       raw.patronymic,
+      raw.public_status && ContactPublicStatus.fromJSON(raw.public_status),
       raw.quiet_time_finish,
       raw.quiet_time_start,
       raw.reaction_notifications_enabled,
@@ -4583,6 +4597,7 @@ export class Contact implements TDProtoClass<Contact> {
     'munreadFirst',
     'node',
     'patronymic',
+    'publicStatus',
     'quietTimeFinish',
     'quietTimeStart',
     'reactionNotificationsEnabled',
@@ -4656,6 +4671,7 @@ export class Contact implements TDProtoClass<Contact> {
     munreadFirst: () => ({ munread_first: this.munreadFirst }),
     node: () => ({ node: this.node }),
     patronymic: () => ({ patronymic: this.patronymic }),
+    publicStatus: () => ({ public_status: this.publicStatus?.toJSON() }),
     quietTimeFinish: () => ({ quiet_time_finish: this.quietTimeFinish }),
     quietTimeStart: () => ({ quiet_time_start: this.quietTimeStart }),
     reactionNotificationsEnabled: () => ({ reaction_notifications_enabled: this.reactionNotificationsEnabled }),
@@ -4820,6 +4836,54 @@ export class ContactPreview implements TDProtoClass<ContactPreview> {
 
   public toJSON (): ContactPreviewJSON
   public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ContactPreviewJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface ContactPublicStatusJSON {
+  /* eslint-disable camelcase */
+  expires_at: ISODateTimeString;
+  status: PublicStatusJSON;
+  /* eslint-enable camelcase */
+}
+
+export class ContactPublicStatus implements TDProtoClass<ContactPublicStatus> {
+  /**
+   * MISSING CLASS DOCUMENTATION
+   * @param expiresAt Expires at (iso datetime)
+   * @param status Public Status
+   */
+  constructor (
+    public expiresAt: ISODateTimeString,
+    public status: PublicStatus,
+  ) {}
+
+  public static fromJSON (raw: ContactPublicStatusJSON): ContactPublicStatus {
+    return new ContactPublicStatus(
+      raw.expires_at,
+      PublicStatus.fromJSON(raw.status),
+    )
+  }
+
+  public mappableFields = [
+    'expiresAt',
+    'status',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    expiresAt: () => ({ expires_at: this.expiresAt }),
+    status: () => ({ status: this.status.toJSON() }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): ContactPublicStatusJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<ContactPublicStatusJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
@@ -14410,6 +14474,78 @@ export class PersonalAccountBilling implements TDProtoClass<PersonalAccountBilli
 
   public toJSON (): PersonalAccountBillingJSON
   public toJSON (fields: Array<this['mappableFields'][number]>): Partial<PersonalAccountBillingJSON>
+  public toJSON (fields?: Array<this['mappableFields'][number]>) {
+    if (fields && fields.length > 0) {
+      return Object.assign({}, ...fields.map(f => this.#mapper[f]()))
+    } else {
+      return Object.assign({}, ...Object.values(this.#mapper).map(v => v()))
+    }
+  }
+}
+
+export interface PublicStatusJSON {
+  /* eslint-disable camelcase */
+  duration_label: string;
+  duration_seconds: number;
+  emoji: string;
+  status_en: string;
+  status_ru: string;
+  type: PublicStatusType;
+  /* eslint-enable camelcase */
+}
+
+export class PublicStatus implements TDProtoClass<PublicStatus> {
+  /**
+   * Public Status
+   * @param durationLabel Duration Label
+   * @param durationSeconds Duration in seconds
+   * @param emoji Display emoji
+   * @param statusEn Status Label English
+   * @param statusRu Status Label Russian
+   * @param type Public Status Type
+   */
+  constructor (
+    public durationLabel: string,
+    public durationSeconds: number,
+    public emoji: string,
+    public statusEn: string,
+    public statusRu: string,
+    public type: PublicStatusType,
+  ) {}
+
+  public static fromJSON (raw: PublicStatusJSON): PublicStatus {
+    return new PublicStatus(
+      raw.duration_label,
+      raw.duration_seconds,
+      raw.emoji,
+      raw.status_en,
+      raw.status_ru,
+      raw.type,
+    )
+  }
+
+  public mappableFields = [
+    'durationLabel',
+    'durationSeconds',
+    'emoji',
+    'statusEn',
+    'statusRu',
+    'type',
+  ] as const
+
+  readonly #mapper = {
+    /* eslint-disable camelcase */
+    durationLabel: () => ({ duration_label: this.durationLabel }),
+    durationSeconds: () => ({ duration_seconds: this.durationSeconds }),
+    emoji: () => ({ emoji: this.emoji }),
+    statusEn: () => ({ status_en: this.statusEn }),
+    statusRu: () => ({ status_ru: this.statusRu }),
+    type: () => ({ type: this.type }),
+    /* eslint-enable camelcase */
+  }
+
+  public toJSON (): PublicStatusJSON
+  public toJSON (fields: Array<this['mappableFields'][number]>): Partial<PublicStatusJSON>
   public toJSON (fields?: Array<this['mappableFields'][number]>) {
     if (fields && fields.length > 0) {
       return Object.assign({}, ...fields.map(f => this.#mapper[f]()))

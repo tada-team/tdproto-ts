@@ -24,6 +24,7 @@ export declare type MessengerType = 'telegram';
 export declare type ParseState = 'not_found' | 'unpacking' | 'need_mapping' | 'generating';
 export declare type PaymentType = 'PAYMENT_TYPE_UNSPECIFIED' | 'PAYMENT_TYPE_PAPER_DOCUMENT_MANAGEMENT' | 'PAYMENT_TYPE_ELECTRONIC_DOCUMENT_MANAGEMENT' | 'PAYMENT_TYPE_BANK_CARD' | 'PAYMENT_TYPE_TECHNICAL';
 export declare type PersonalAccountStatus = 'PERSONAL_ACCOUNT_STATUS_ACTIVE' | 'PERSONAL_ACCOUNT_STATUS_SUSPENDED' | 'PERSONAL_ACCOUNT_STATUS_BLOCKED' | 'PERSONAL_ACCOUNT_STATUS_UNSPECIFIED';
+export declare type PublicStatusType = 'none' | 'remote' | 'vacation' | 'sick' | 'commuting' | 'do_not_disturb' | 'lunch' | 'be_right_back';
 export declare type TariffStatus = 'TARIFF_STATUS_ACTIVE' | 'TARIFF_STATUS_ARCHIVE' | 'TARIFF_STATUS_UNSPECIFIED';
 export declare type TeamStatus = 'owner' | 'admin' | 'member' | 'guest';
 export declare type UploadMediaType = 'file' | 'image' | 'video' | 'audio' | 'imagefile';
@@ -1785,6 +1786,7 @@ export interface ContactJSON {
     munread_first?: boolean;
     node?: string;
     patronymic?: string;
+    public_status?: ContactPublicStatusJSON;
     quiet_time_finish?: string;
     quiet_time_start?: string;
     reaction_notifications_enabled?: boolean;
@@ -1857,6 +1859,7 @@ export declare class Contact implements TDProtoClass<Contact> {
     munreadFirst?: boolean | undefined;
     node?: string | undefined;
     patronymic?: string | undefined;
+    publicStatus?: ContactPublicStatus | undefined;
     quietTimeFinish?: string | undefined;
     quietTimeStart?: string | undefined;
     reactionNotificationsEnabled?: boolean | undefined;
@@ -1928,6 +1931,7 @@ export declare class Contact implements TDProtoClass<Contact> {
      * @param munreadFirst Show unread chats first in feed in mobile app
      * @param node Node uid for external users
      * @param patronymic Patronymic, if any
+     * @param publicStatus Public Status
      * @param quietTimeFinish Quiet time finish
      * @param quietTimeStart Quiet time start
      * @param reactionNotificationsEnabled Push notifications for reactions
@@ -1938,9 +1942,9 @@ export declare class Contact implements TDProtoClass<Contact> {
      * @param timezone Timezone, if any
      * @param unreadFirst Show unread chats first in feed
      */
-    constructor(contactEmail: string, contactPhone: string, displayName: string, gentime: number, icons: IconData, jid: JID, role: string, sections: string[], shortName: string, status: TeamStatus, altSend?: boolean | undefined, alwaysSendPushes?: boolean | undefined, asteriskMention?: boolean | undefined, auth2faEnabled?: boolean | undefined, auth2faStatus?: string | undefined, botname?: string | undefined, canAddToGroup?: boolean | undefined, canAddToTeam?: boolean | undefined, canCall?: boolean | undefined, canCreateGroup?: boolean | undefined, canCreateMeeting?: boolean | undefined, canCreateTask?: boolean | undefined, canCreateTeam?: boolean | undefined, canDelete?: boolean | undefined, canDeleteAnyMessage?: boolean | undefined, canImportChats?: boolean | undefined, canImportTasks?: boolean | undefined, canJoinPublicGroups?: boolean | undefined, canJoinPublicTasks?: boolean | undefined, canManageColorRules?: boolean | undefined, canManageIntegrations?: boolean | undefined, canManageProjects?: boolean | undefined, canManageSections?: boolean | undefined, canManageTags?: boolean | undefined, canSendMessage?: boolean | undefined, cantSendMessageReason?: string | undefined, changeableFields?: string[] | undefined, contactMshortView?: boolean | undefined, contactShortView?: boolean | undefined, contactShowArchived?: boolean | undefined, customFields?: ContactCustomFields | undefined, debugShowActivity?: boolean | undefined, defaultLang?: string | undefined, dropallEnabled?: boolean | undefined, familyName?: string | undefined, focusUntil?: string | undefined, givenName?: string | undefined, groupMshortView?: boolean | undefined, groupNotificationsEnabled?: boolean | undefined, groupShortView?: boolean | undefined, hidePushesContent?: boolean | undefined, isArchive?: boolean | undefined, lastActivity?: string | undefined, meetingMshortView?: boolean | undefined, meetingNotificationsEnabled?: boolean | undefined, meetingShortView?: boolean | undefined, mood?: string | undefined, munreadFirst?: boolean | undefined, node?: string | undefined, patronymic?: string | undefined, quietTimeFinish?: string | undefined, quietTimeStart?: string | undefined, reactionNotificationsEnabled?: boolean | undefined, systembotNotificationsEnabled?: boolean | undefined, taskMshortView?: boolean | undefined, taskNotificationsEnabled?: boolean | undefined, taskShortView?: boolean | undefined, timezone?: string | undefined, unreadFirst?: boolean | undefined);
+    constructor(contactEmail: string, contactPhone: string, displayName: string, gentime: number, icons: IconData, jid: JID, role: string, sections: string[], shortName: string, status: TeamStatus, altSend?: boolean | undefined, alwaysSendPushes?: boolean | undefined, asteriskMention?: boolean | undefined, auth2faEnabled?: boolean | undefined, auth2faStatus?: string | undefined, botname?: string | undefined, canAddToGroup?: boolean | undefined, canAddToTeam?: boolean | undefined, canCall?: boolean | undefined, canCreateGroup?: boolean | undefined, canCreateMeeting?: boolean | undefined, canCreateTask?: boolean | undefined, canCreateTeam?: boolean | undefined, canDelete?: boolean | undefined, canDeleteAnyMessage?: boolean | undefined, canImportChats?: boolean | undefined, canImportTasks?: boolean | undefined, canJoinPublicGroups?: boolean | undefined, canJoinPublicTasks?: boolean | undefined, canManageColorRules?: boolean | undefined, canManageIntegrations?: boolean | undefined, canManageProjects?: boolean | undefined, canManageSections?: boolean | undefined, canManageTags?: boolean | undefined, canSendMessage?: boolean | undefined, cantSendMessageReason?: string | undefined, changeableFields?: string[] | undefined, contactMshortView?: boolean | undefined, contactShortView?: boolean | undefined, contactShowArchived?: boolean | undefined, customFields?: ContactCustomFields | undefined, debugShowActivity?: boolean | undefined, defaultLang?: string | undefined, dropallEnabled?: boolean | undefined, familyName?: string | undefined, focusUntil?: string | undefined, givenName?: string | undefined, groupMshortView?: boolean | undefined, groupNotificationsEnabled?: boolean | undefined, groupShortView?: boolean | undefined, hidePushesContent?: boolean | undefined, isArchive?: boolean | undefined, lastActivity?: string | undefined, meetingMshortView?: boolean | undefined, meetingNotificationsEnabled?: boolean | undefined, meetingShortView?: boolean | undefined, mood?: string | undefined, munreadFirst?: boolean | undefined, node?: string | undefined, patronymic?: string | undefined, publicStatus?: ContactPublicStatus | undefined, quietTimeFinish?: string | undefined, quietTimeStart?: string | undefined, reactionNotificationsEnabled?: boolean | undefined, systembotNotificationsEnabled?: boolean | undefined, taskMshortView?: boolean | undefined, taskNotificationsEnabled?: boolean | undefined, taskShortView?: boolean | undefined, timezone?: string | undefined, unreadFirst?: boolean | undefined);
     static fromJSON(raw: ContactJSON): Contact;
-    mappableFields: readonly ["contactEmail", "contactPhone", "displayName", "gentime", "icons", "jid", "role", "sections", "shortName", "status", "altSend", "alwaysSendPushes", "asteriskMention", "auth2faEnabled", "auth2faStatus", "botname", "canAddToGroup", "canAddToTeam", "canCall", "canCreateGroup", "canCreateMeeting", "canCreateTask", "canCreateTeam", "canDelete", "canDeleteAnyMessage", "canImportChats", "canImportTasks", "canJoinPublicGroups", "canJoinPublicTasks", "canManageColorRules", "canManageIntegrations", "canManageProjects", "canManageSections", "canManageTags", "canSendMessage", "cantSendMessageReason", "changeableFields", "contactMshortView", "contactShortView", "contactShowArchived", "customFields", "debugShowActivity", "defaultLang", "dropallEnabled", "familyName", "focusUntil", "givenName", "groupMshortView", "groupNotificationsEnabled", "groupShortView", "hidePushesContent", "isArchive", "lastActivity", "meetingMshortView", "meetingNotificationsEnabled", "meetingShortView", "mood", "munreadFirst", "node", "patronymic", "quietTimeFinish", "quietTimeStart", "reactionNotificationsEnabled", "systembotNotificationsEnabled", "taskMshortView", "taskNotificationsEnabled", "taskShortView", "timezone", "unreadFirst"];
+    mappableFields: readonly ["contactEmail", "contactPhone", "displayName", "gentime", "icons", "jid", "role", "sections", "shortName", "status", "altSend", "alwaysSendPushes", "asteriskMention", "auth2faEnabled", "auth2faStatus", "botname", "canAddToGroup", "canAddToTeam", "canCall", "canCreateGroup", "canCreateMeeting", "canCreateTask", "canCreateTeam", "canDelete", "canDeleteAnyMessage", "canImportChats", "canImportTasks", "canJoinPublicGroups", "canJoinPublicTasks", "canManageColorRules", "canManageIntegrations", "canManageProjects", "canManageSections", "canManageTags", "canSendMessage", "cantSendMessageReason", "changeableFields", "contactMshortView", "contactShortView", "contactShowArchived", "customFields", "debugShowActivity", "defaultLang", "dropallEnabled", "familyName", "focusUntil", "givenName", "groupMshortView", "groupNotificationsEnabled", "groupShortView", "hidePushesContent", "isArchive", "lastActivity", "meetingMshortView", "meetingNotificationsEnabled", "meetingShortView", "mood", "munreadFirst", "node", "patronymic", "publicStatus", "quietTimeFinish", "quietTimeStart", "reactionNotificationsEnabled", "systembotNotificationsEnabled", "taskMshortView", "taskNotificationsEnabled", "taskShortView", "timezone", "unreadFirst"];
     toJSON(): ContactJSON;
     toJSON(fields: Array<this['mappableFields'][number]>): Partial<ContactJSON>;
 }
@@ -2008,6 +2012,25 @@ export declare class ContactPreview implements TDProtoClass<ContactPreview> {
     mappableFields: readonly ["familyName", "givenName", "phone", "role", "section", "_error", "patronymic"];
     toJSON(): ContactPreviewJSON;
     toJSON(fields: Array<this['mappableFields'][number]>): Partial<ContactPreviewJSON>;
+}
+export interface ContactPublicStatusJSON {
+    expires_at: ISODateTimeString;
+    status: PublicStatusJSON;
+}
+export declare class ContactPublicStatus implements TDProtoClass<ContactPublicStatus> {
+    #private;
+    expiresAt: ISODateTimeString;
+    status: PublicStatus;
+    /**
+     * MISSING CLASS DOCUMENTATION
+     * @param expiresAt Expires at (iso datetime)
+     * @param status Public Status
+     */
+    constructor(expiresAt: ISODateTimeString, status: PublicStatus);
+    static fromJSON(raw: ContactPublicStatusJSON): ContactPublicStatus;
+    mappableFields: readonly ["expiresAt", "status"];
+    toJSON(): ContactPublicStatusJSON;
+    toJSON(fields: Array<this['mappableFields'][number]>): Partial<ContactPublicStatusJSON>;
 }
 export interface ContactShortJSON {
     display_name: string;
@@ -6167,6 +6190,37 @@ export declare class PersonalAccountBilling implements TDProtoClass<PersonalAcco
     mappableFields: readonly ["emptyWorkplaceCount", "freeWorkplaceCount", "isBlocked", "isSuspended", "occupiedWorkplaceCount", "ownerId", "ownerUuid", "paidWorkplaceCount", "personalAccountId", "status", "tariff", "teamsCount", "workplaceCount", "blockDate", "nextBillingDate", "owner", "suspendDate"];
     toJSON(): PersonalAccountBillingJSON;
     toJSON(fields: Array<this['mappableFields'][number]>): Partial<PersonalAccountBillingJSON>;
+}
+export interface PublicStatusJSON {
+    duration_label: string;
+    duration_seconds: number;
+    emoji: string;
+    status_en: string;
+    status_ru: string;
+    type: PublicStatusType;
+}
+export declare class PublicStatus implements TDProtoClass<PublicStatus> {
+    #private;
+    durationLabel: string;
+    durationSeconds: number;
+    emoji: string;
+    statusEn: string;
+    statusRu: string;
+    type: PublicStatusType;
+    /**
+     * Public Status
+     * @param durationLabel Duration Label
+     * @param durationSeconds Duration in seconds
+     * @param emoji Display emoji
+     * @param statusEn Status Label English
+     * @param statusRu Status Label Russian
+     * @param type Public Status Type
+     */
+    constructor(durationLabel: string, durationSeconds: number, emoji: string, statusEn: string, statusRu: string, type: PublicStatusType);
+    static fromJSON(raw: PublicStatusJSON): PublicStatus;
+    mappableFields: readonly ["durationLabel", "durationSeconds", "emoji", "statusEn", "statusRu", "type"];
+    toJSON(): PublicStatusJSON;
+    toJSON(fields: Array<this['mappableFields'][number]>): Partial<PublicStatusJSON>;
 }
 export interface PushDeviceJSON {
     allowed_notifications: boolean;
