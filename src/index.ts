@@ -1667,6 +1667,7 @@ export interface ChatJSON {
   pinned?: boolean;
   pinned_message?: MessageJSON;
   pinned_sort_ordering?: number;
+  public_status?: PublicStatusJSON;
   readonly_for_members?: boolean;
   section?: string;
   spent_time?: number;
@@ -1750,6 +1751,7 @@ export class Chat implements TDProtoClass<Chat> {
    * @param pinned Is chat pinned on top
    * @param pinnedMessage Pinned message for this chat
    * @param pinnedSortOrdering Sort ordering for pinned chat
+   * @param publicStatus Public Status
    * @param readonlyForMembers Readonly for non-admins group chat (Like Channels in Telegram but switchable)
    * @param section Project / section id, if any
    * @param spentTime Task spent time, number
@@ -1830,6 +1832,7 @@ export class Chat implements TDProtoClass<Chat> {
     public pinned?: boolean,
     public pinnedMessage?: Message,
     public pinnedSortOrdering?: number,
+    public publicStatus?: PublicStatus,
     public readonlyForMembers?: boolean,
     public section?: string,
     public spentTime?: number,
@@ -1911,6 +1914,7 @@ export class Chat implements TDProtoClass<Chat> {
       raw.pinned,
       raw.pinned_message && Message.fromJSON(raw.pinned_message),
       raw.pinned_sort_ordering,
+      raw.public_status && PublicStatus.fromJSON(raw.public_status),
       raw.readonly_for_members,
       raw.section,
       raw.spent_time,
@@ -1992,6 +1996,7 @@ export class Chat implements TDProtoClass<Chat> {
     'pinned',
     'pinnedMessage',
     'pinnedSortOrdering',
+    'publicStatus',
     'readonlyForMembers',
     'section',
     'spentTime',
@@ -2073,6 +2078,7 @@ export class Chat implements TDProtoClass<Chat> {
     pinned: () => ({ pinned: this.pinned }),
     pinnedMessage: () => ({ pinned_message: this.pinnedMessage?.toJSON() }),
     pinnedSortOrdering: () => ({ pinned_sort_ordering: this.pinnedSortOrdering }),
+    publicStatus: () => ({ public_status: this.publicStatus?.toJSON() }),
     readonlyForMembers: () => ({ readonly_for_members: this.readonlyForMembers }),
     section: () => ({ section: this.section }),
     spentTime: () => ({ spent_time: this.spentTime }),
@@ -10720,6 +10726,7 @@ export interface MeetingJSON {
   pinned?: boolean;
   pinned_message?: MessageJSON;
   pinned_sort_ordering?: number;
+  public_status?: PublicStatusJSON;
   readonly_for_members?: boolean;
   section?: string;
   spent_time?: number;
@@ -10820,6 +10827,7 @@ export class Meeting implements TDProtoClass<Meeting> {
    * @param pinned Is chat pinned on top
    * @param pinnedMessage Pinned message for this chat
    * @param pinnedSortOrdering Sort ordering for pinned chat
+   * @param publicStatus Public Status
    * @param readonlyForMembers Readonly for non-admins group chat (Like Channels in Telegram but switchable)
    * @param section Project / section id, if any
    * @param spentTime Task spent time, number
@@ -10917,6 +10925,7 @@ export class Meeting implements TDProtoClass<Meeting> {
     public pinned?: boolean,
     public pinnedMessage?: Message,
     public pinnedSortOrdering?: number,
+    public publicStatus?: PublicStatus,
     public readonlyForMembers?: boolean,
     public section?: string,
     public spentTime?: number,
@@ -11015,6 +11024,7 @@ export class Meeting implements TDProtoClass<Meeting> {
       raw.pinned,
       raw.pinned_message && Message.fromJSON(raw.pinned_message),
       raw.pinned_sort_ordering,
+      raw.public_status && PublicStatus.fromJSON(raw.public_status),
       raw.readonly_for_members,
       raw.section,
       raw.spent_time,
@@ -11113,6 +11123,7 @@ export class Meeting implements TDProtoClass<Meeting> {
     'pinned',
     'pinnedMessage',
     'pinnedSortOrdering',
+    'publicStatus',
     'readonlyForMembers',
     'section',
     'spentTime',
@@ -11211,6 +11222,7 @@ export class Meeting implements TDProtoClass<Meeting> {
     pinned: () => ({ pinned: this.pinned }),
     pinnedMessage: () => ({ pinned_message: this.pinnedMessage?.toJSON() }),
     pinnedSortOrdering: () => ({ pinned_sort_ordering: this.pinnedSortOrdering }),
+    publicStatus: () => ({ public_status: this.publicStatus?.toJSON() }),
     readonlyForMembers: () => ({ readonly_for_members: this.readonlyForMembers }),
     section: () => ({ section: this.section }),
     spentTime: () => ({ spent_time: this.spentTime }),
