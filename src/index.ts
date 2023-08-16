@@ -200,6 +200,7 @@ export interface TeamUnreadJSON {
    group: UnreadJSON;
    task: UnreadJSON;
    meeting: UnreadJSON;
+   thread: UnreadJSON;
    /* eslint-enable camelcase */
 }
 
@@ -208,7 +209,8 @@ export class TeamUnread implements TDProtoClass<TeamUnread> {
     public direct: Unread,
     public group: Unread,
     public task: Unread,
-    public meeting: Unread
+    public meeting: Unread,
+    public thread: Unread,
   ) {}
 
   public static fromJSON (raw: TeamUnreadJSON): TeamUnread {
@@ -217,6 +219,7 @@ export class TeamUnread implements TDProtoClass<TeamUnread> {
       Unread.fromJSON(raw.group),
       Unread.fromJSON(raw.task),
       Unread.fromJSON(raw.meeting),
+      Unread.fromJSON(raw.thread),
     )
   }
 
@@ -225,6 +228,7 @@ export class TeamUnread implements TDProtoClass<TeamUnread> {
     'group',
     'task',
     'meeting',
+    'thread',
   ] as const
 
   readonly #mapper = {
@@ -233,6 +237,7 @@ export class TeamUnread implements TDProtoClass<TeamUnread> {
     group: () => ({ group: this.group.toJSON() }),
     task: () => ({ task: this.task.toJSON() }),
     meeting: () => ({ meeting: this.meeting.toJSON() }),
+    thread: () => ({ thread: this.thread.toJSON() }),
     /* eslint-enable camelcase */
   }
 

@@ -42,6 +42,7 @@ export interface TeamUnreadJSON {
     group: UnreadJSON;
     task: UnreadJSON;
     meeting: UnreadJSON;
+    thread: UnreadJSON;
 }
 export declare class TeamUnread implements TDProtoClass<TeamUnread> {
     #private;
@@ -49,9 +50,10 @@ export declare class TeamUnread implements TDProtoClass<TeamUnread> {
     group: Unread;
     task: Unread;
     meeting: Unread;
-    constructor(direct: Unread, group: Unread, task: Unread, meeting: Unread);
+    thread: Unread;
+    constructor(direct: Unread, group: Unread, task: Unread, meeting: Unread, thread: Unread);
     static fromJSON(raw: TeamUnreadJSON): TeamUnread;
-    mappableFields: readonly ["direct", "group", "task", "meeting"];
+    mappableFields: readonly ["direct", "group", "task", "meeting", "thread"];
     toJSON(): TeamUnreadJSON;
     toJSON(fields: Array<this['mappableFields'][number]>): Partial<TeamUnreadJSON>;
 }
