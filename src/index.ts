@@ -24012,6 +24012,7 @@ export interface UserWithMeJSON {
   inviter?: JID;
   patronymic?: string;
   phone?: string;
+  team_account?: PersonalAccountBillingJSON;
   /* eslint-enable camelcase */
 }
 
@@ -24038,6 +24039,7 @@ export class UserWithMe implements TDProtoClass<UserWithMe> {
    * @param inviter Inviter id, if any
    * @param patronymic Patronymic, if any
    * @param phone Phone for login
+   * @param teamAccount Personal account from billing by opened team
    */
   constructor (
     public altSend: boolean,
@@ -24060,6 +24062,7 @@ export class UserWithMe implements TDProtoClass<UserWithMe> {
     public inviter?: JID,
     public patronymic?: string,
     public phone?: string,
+    public teamAccount?: PersonalAccountBilling,
   ) {}
 
   public static fromJSON (raw: UserWithMeJSON): UserWithMe {
@@ -24084,6 +24087,7 @@ export class UserWithMe implements TDProtoClass<UserWithMe> {
       raw.inviter,
       raw.patronymic,
       raw.phone,
+      raw.team_account && PersonalAccountBilling.fromJSON(raw.team_account),
     )
   }
 
@@ -24108,6 +24112,7 @@ export class UserWithMe implements TDProtoClass<UserWithMe> {
     'inviter',
     'patronymic',
     'phone',
+    'teamAccount',
   ] as const
 
   readonly #mapper = {
@@ -24132,6 +24137,7 @@ export class UserWithMe implements TDProtoClass<UserWithMe> {
     inviter: () => ({ inviter: this.inviter }),
     patronymic: () => ({ patronymic: this.patronymic }),
     phone: () => ({ phone: this.phone }),
+    teamAccount: () => ({ team_account: this.teamAccount?.toJSON() }),
     /* eslint-enable camelcase */
   }
 

@@ -10208,6 +10208,7 @@ export interface UserWithMeJSON {
     inviter?: JID;
     patronymic?: string;
     phone?: string;
+    team_account?: PersonalAccountBillingJSON;
 }
 export declare class UserWithMe implements TDProtoClass<UserWithMe> {
     #private;
@@ -10231,6 +10232,7 @@ export declare class UserWithMe implements TDProtoClass<UserWithMe> {
     inviter?: string | undefined;
     patronymic?: string | undefined;
     phone?: string | undefined;
+    teamAccount?: PersonalAccountBilling | undefined;
     /**
      * Account data with extra information
      * @param altSend Use Ctrl/Cmd + Enter instead Enter
@@ -10253,10 +10255,11 @@ export declare class UserWithMe implements TDProtoClass<UserWithMe> {
      * @param inviter Inviter id, if any
      * @param patronymic Patronymic, if any
      * @param phone Phone for login
+     * @param teamAccount Personal account from billing by opened team
      */
-    constructor(altSend: boolean, alwaysSendPushes: boolean, asteriskMention: boolean, devices: PushDevice[], hidePushesContent: boolean, icons: IconData, munreadFirst: boolean, quietTimeFinish: string, quietTimeStart: string, teams: Team[], timezone: string, unreadFirst: boolean, account?: PersonalAccountBilling | undefined, defaultLang?: string | undefined, email?: string | undefined, familyName?: string | undefined, givenName?: string | undefined, inviter?: string | undefined, patronymic?: string | undefined, phone?: string | undefined);
+    constructor(altSend: boolean, alwaysSendPushes: boolean, asteriskMention: boolean, devices: PushDevice[], hidePushesContent: boolean, icons: IconData, munreadFirst: boolean, quietTimeFinish: string, quietTimeStart: string, teams: Team[], timezone: string, unreadFirst: boolean, account?: PersonalAccountBilling | undefined, defaultLang?: string | undefined, email?: string | undefined, familyName?: string | undefined, givenName?: string | undefined, inviter?: string | undefined, patronymic?: string | undefined, phone?: string | undefined, teamAccount?: PersonalAccountBilling | undefined);
     static fromJSON(raw: UserWithMeJSON): UserWithMe;
-    mappableFields: readonly ["altSend", "alwaysSendPushes", "asteriskMention", "devices", "hidePushesContent", "icons", "munreadFirst", "quietTimeFinish", "quietTimeStart", "teams", "timezone", "unreadFirst", "account", "defaultLang", "email", "familyName", "givenName", "inviter", "patronymic", "phone"];
+    mappableFields: readonly ["altSend", "alwaysSendPushes", "asteriskMention", "devices", "hidePushesContent", "icons", "munreadFirst", "quietTimeFinish", "quietTimeStart", "teams", "timezone", "unreadFirst", "account", "defaultLang", "email", "familyName", "givenName", "inviter", "patronymic", "phone", "teamAccount"];
     toJSON(): UserWithMeJSON;
     toJSON(fields: Array<this['mappableFields'][number]>): Partial<UserWithMeJSON>;
 }
